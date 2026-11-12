@@ -16,12 +16,16 @@ nextflow_workflow {
     tag "bwamem2"
     tag "bwamem2/index"
     tag "bwamem2/mem"
+    tag "bwamem3"
+    tag "bwamem3/index"
+    tag "bwamem3/mem"
     tag "dragmap"
     tag "dragmap/hashtable"
     tag "dragmap/align"
     tag "snapaligner"
     tag "snapaligner/index"
     tag "snapaligner/align"
+    tag "strobealign"
 
     test("test_fastq_align_bowtie2_SE") {
         setup {
@@ -29,7 +33,10 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -39,7 +46,10 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
                 input[1] = BOWTIE2_BUILD.out.index
-                input[2] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[2] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
                 input[3] = "bowtie2"
                 input[4] = true
                 """
@@ -49,10 +59,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -63,7 +70,10 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/bowtie2/build/main.nf"
                 process {
                     """
-                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    input[0] = Channel.value([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -83,10 +93,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.versions[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -116,13 +123,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -152,13 +153,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -188,13 +183,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -224,13 +213,67 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    workflow.out.versions,
-                    ).match()
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_bwamem3_SE"){
+        setup {
+            run("BWAMEM3_INDEX") {
+                script "../../../../modules/nf-core/bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
                 }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "bwamem3"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_bwamem3_PE"){
+        setup {
+            run("BWAMEM3_INDEX") {
+                script "../../../../modules/nf-core/bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "bwamem3"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -260,11 +303,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -294,11 +333,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    file(workflow.out.versions[0]).name
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -328,7 +363,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -358,7 +393,47 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_SE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_strobealign_PE"){
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = [[:],[]]
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "strobealign"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }

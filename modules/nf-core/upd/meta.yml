@@ -24,9 +24,10 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,11 +36,28 @@ output:
           type: file
           description: BED file
           pattern: "*.{bed}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_upd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - upd:
+          type: string
+          description: The name of the tool
+      - upd --version 2>&1 | sed 's/upd, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - upd:
+          type: string
+          description: The name of the tool
+      - upd --version 2>&1 | sed 's/upd, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@hrydbeck"
 maintainers:

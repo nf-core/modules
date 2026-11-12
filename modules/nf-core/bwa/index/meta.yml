@@ -12,6 +12,12 @@ tools:
         a large reference genome, such as the human genome.
       homepage: http://bio-bwa.sourceforge.net/
       documentation: https://bio-bwa.sourceforge.net/bwa.shtml
+      doi: "10.1093/bioinformatics/btp324"
+      publication:
+        author: "Li, H. & Durbin, R."
+        year: 2009
+        title: "Fast and accurate short read alignment with Burrows–Wheeler transform"
+        source: "Bioinformatics"
       arxiv: arXiv:1303.3997
       licence: ["GPL-3.0-or-later"]
       identifier: "biotools:bwa"
@@ -28,8 +34,8 @@ input:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -42,15 +48,30 @@ output:
           pattern: "*.{amb,ann,bwt,pac,sa}"
           ontologies:
             - edam: "http://edamontology.org/data_3210" # Genome index
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_bwa:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@maxulysse"
 maintainers:
-  - "@drpatelh"
   - "@maxulysse"
   - "@gallvp"

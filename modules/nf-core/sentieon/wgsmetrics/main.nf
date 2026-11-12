@@ -1,61 +1,54 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_WGSMETRICS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
-        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ee64f3b4cd58eaa6ed3a7a0769c0a5f4fbd150842fa64358831970bacaf37e6/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--df1987151f8b6d33'}"
 
     input:
-    tuple val(meta) , path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(intervals_list)
 
     output:
     tuple val(meta), path('*.txt'), emit: wgs_metrics
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args   ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
-    def interval = intervals_list  ? "--interval ${intervals_list}" : ""
-    def input    = bam.sort().collect{"-i $it"}.join(' ')
-    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
-        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
-        ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def interval = intervals_list ? "--interval ${intervals_list}" : ""
+    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
-    $sentieonLicense
+    ${sentieonLicense}
 
     sentieon \\
         driver \\
-        -t $task.cpus \\
-        -r $fasta \\
-        $input \\
-        $interval \\
-        $args \\
+        -t ${task.cpus} \\
+        -r ${fasta} \\
+        ${input} \\
+        ${interval} \\
+        ${args} \\
         --algo WgsMetricsAlgo \\
         ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

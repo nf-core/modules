@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MOLKARTGARAGE_CLAHE {
     tag "$meta.id"
     label 'process_medium'
@@ -9,7 +12,8 @@ process MOLKARTGARAGE_CLAHE {
 
     output:
     tuple val(meta), path("*.tiff") , emit: img_clahe
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('clahe'), eval("python /local/scripts/molkart_clahe.py --version"), emit: versions_clahe, topic: versions
+    tuple val("${task.process}"), val('scikit-image'), eval("python -c 'import skimage; print(skimage.__version__)'"), emit: versions_scikitimage, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,23 +31,12 @@ process MOLKARTGARAGE_CLAHE {
         --output ${prefix}.tiff \
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        molkart_clahe: \$(python /local/scripts/molkart_clahe.py --version)
-        scikit-image: 0.19.2
-    END_VERSIONS
+    sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.tiff
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tiff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        molkart_clahe: \$(python3 /local/scripts/molkart_clahe.py  --version)
-        scikit-image: 0.19.2
-    END_VERSIONS
     """
 }

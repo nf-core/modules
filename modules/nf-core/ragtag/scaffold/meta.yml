@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: ragtag_scaffold
 description: |
   Scaffolding is the process of ordering and orienting draft assembly (query)
@@ -18,9 +17,9 @@ tools:
       documentation: "https://github.com/malonge/RagTag/wiki"
       tool_dev_url: "https://github.com/malonge/RagTag"
       doi: "10.1186/s13059-022-02823-7"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ragtag
-
 input:
   - - meta:
         type: map
@@ -31,6 +30,7 @@ input:
         type: file
         description: Assembly to be scaffolded
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +40,7 @@ input:
         type: file
         description: Reference assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -49,6 +50,7 @@ input:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -58,24 +60,26 @@ input:
         type: file
         description: list of query sequences to leave unplaced
         pattern: "*.txt"
+        ontologies: []
     - hard_skip:
         type: file
-        description: list of query headers to leave unplaced and exclude from 'chr0'
-          ('-C')
+        description: list of query headers to leave unplaced and exclude from 'chr0' ('-C')
         pattern: "*.txt"
+        ontologies: []
 output:
-  - corrected_assembly:
-      - meta:
+  corrected_assembly:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
-      - "*.fasta":
+      - "*.fasta.gz":
           type: file
           description: FASTA file containing the patched assembly
-          pattern: "*.fasta"
-  - corrected_agp:
-      - meta:
+          pattern: "*.fasta.gz"
+          ontologies: []
+  corrected_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +88,9 @@ output:
           type: file
           description: agp file defining how corrected_assembly is built
           pattern: "*.agp"
-  - corrected_stats:
-      - meta:
+          ontologies: []
+  corrected_stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,13 +99,108 @@ output:
           type: file
           description: Statistics on the scaffold
           pattern: "*.stats"
-
-  - versions:
-      - versions.yml:
+          ontologies: []
+  ragtag_paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.paf.gz":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: PAF file of alignments between reference and input
+          pattern: "*.paf.gz"
+          ontologies: []
+  ragtag_paf_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.paf.log":
+          type: file
+          description: Log file of the ragtag alignment when using minimap2
+          pattern: "*.paf.log"
+          ontologies: []
+  ragtag_delta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.delta.gz":
+          type: file
+          description: Nucmer delta file of alignments between reference and input
+          pattern: "*.delta.gz"
+          ontologies: []
+  ragtag_delta_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.delta.log":
+          type: file
+          description: Log file of the ragtag alignment when using nucmer
+          pattern: "*.paf.log"
+          ontologies: []
+  confidence_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.confidence.txt":
+          type: file
+          description: Confidence scores used in scaffolding
+          pattern: "*.confidence.txt"
+          ontologies: []
+  versions_ragtag:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschan"
 maintainers:
   - "@nschan"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ragtag_gzip:5de7cc3ac89b3ac4
+      build_id: bd-5de7cc3ac89b3ac4_1
+      scan_id: sc-9004a78dd58fb85b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ragtag_gzip:dfef69773e1e2e60
+      build_id: bd-dfef69773e1e2e60_1
+      scan_id: sc-1bd2a9d95d9b669e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ragtag_gzip:6c49af651b260c0f
+      build_id: bd-6c49af651b260c0f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/3836fefb293bbbf2be52f760b1833819ae30fe71cd3becf270a4bd5149e5b9b6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ragtag_gzip:a3315c68605fff45
+      build_id: bd-a3315c68605fff45_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/81c52d2b24a8d43d151f8eec1bd3379cb614f28134604c90224d5393a985bf33/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ragtag/scaffold/.conda-lock/linux_amd64-bd-5de7cc3ac89b3ac4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ragtag/scaffold/.conda-lock/linux_arm64-bd-dfef69773e1e2e60_1.txt

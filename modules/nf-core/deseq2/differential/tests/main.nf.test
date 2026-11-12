@@ -9,6 +9,277 @@ nextflow_process {
     tag "deseq2"
     tag "deseq2/differential"
 
+    test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
+        config './contrasts_interaction.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT.treatmentTreated'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.results,
+                        process.out.size_factors,
+                        process.out.normalised_counts,
+                        process.out.rlog_counts,
+                        process.out.vst_counts,
+                        process.out.model,
+                        process.out.versions,
+                        file(process.out.dispersion_plot_png[0][1]).name,
+                        file(process.out.dispersion_plot_pdf[0][1]).name,
+                        file(process.out.rdata[0][1]).name
+                    ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+    test("RNAseq - Feature Counts - formula + limma contrast string - interaction") {
+        config './contrasts_interaction.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO',
+                    'formula': '~ 0 + genotype',
+                    'comparison': 'genotypeWT - genotypeKO'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.results,
+                        process.out.size_factors,
+                        process.out.normalised_counts,
+                        process.out.rlog_counts,
+                        process.out.vst_counts,
+                        process.out.model,
+                        process.out.versions,
+                        file(process.out.dispersion_plot_png[0][1]).name,
+                        file(process.out.dispersion_plot_pdf[0][1]).name,
+                        file(process.out.rdata[0][1]).name
+                    ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+    test("RNAseq - Feature Counts - formula + limma contrast string - shrunken") {
+        config './contrasts_shrink.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO',
+                    'formula': '~ 0 + genotype',
+                    'comparison': 'genotypeWT - genotypeKO'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.results,
+                        process.out.size_factors,
+                        process.out.normalised_counts,
+                        process.out.rlog_counts,
+                        process.out.vst_counts,
+                        process.out.model,
+                        process.out.versions,
+                        file(process.out.dispersion_plot_png[0][1]).name,
+                        file(process.out.dispersion_plot_pdf[0][1]).name,
+                        file(process.out.rdata[0][1]).name
+                    ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+    test("RNAseq - Feature Counts - apeglm shrinkage") {
+        config './contrasts_shrink_apeglm.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT.treatmentTreated'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        process.out.results,
+                        process.out.size_factors,
+                        process.out.normalised_counts,
+                        process.out.rlog_counts,
+                        process.out.vst_counts,
+                        process.out.model,
+                        process.out.versions,
+                        file(process.out.dispersion_plot_png[0][1]).name,
+                        file(process.out.dispersion_plot_pdf[0][1]).name,
+                        file(process.out.rdata[0][1]).name
+                    ).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
+            )
+        }
+    }
+
+    test("RNAseq - Feature Counts - standard contrast - apeglm error") {
+        config './contrasts_shrink_apeglm.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO',
+                    'variable': 'genotype',
+                    'reference': 'KO',
+                    'target': 'WT'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).join('\n').contains("apeglm shrinkage requires a model coefficient") }
+            )
+        }
+    }
+
+    test("RNAseq - Feature Counts - formula + limma contrast string - apeglm error") {
+        config './contrasts_shrink_apeglm.config'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    'id': 'genotype_WT_KO',
+                    'formula': '~ 0 + genotype',
+                    'comparison': 'genotypeWT - genotypeKO'
+                ])
+                .map {
+                    tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                }
+
+                input[1] = Channel.of([
+                    [ id: 'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).join('\n').contains("apeglm shrinkage requires a model coefficient") }
+            )
+        }
+    }
+
     test("mouse - contrasts - matrix") {
 
         config './contrasts_matrix.config'
@@ -21,7 +292,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -49,7 +320,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -69,7 +341,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -102,7 +374,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -123,7 +396,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -151,7 +424,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -171,7 +445,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -202,7 +476,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -222,7 +497,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -253,7 +528,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -273,7 +549,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
 
                 // Convert the matrix to a CSV first
@@ -307,7 +583,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -327,7 +604,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -355,7 +632,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -375,7 +653,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -403,7 +681,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -423,7 +702,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -451,7 +730,8 @@ nextflow_process {
                     process.out.vst_counts,
                     process.out.model,
                     process.out.versions,
-                    file(process.out.dispersion_plot[0][1]).name,
+                    file(process.out.dispersion_plot_png[0][1]).name,
+                    file(process.out.dispersion_plot_pdf[0][1]).name,
                     file(process.out.rdata[0][1]).name
                 ).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("DESeq2_1.34.0") }
@@ -472,7 +752,7 @@ nextflow_process {
                 ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
                     .splitCsv ( header:true, sep:',' )
                     .map{
-                        tuple(it, it.variable, it.reference, it.target)
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                 ch_matrix = [
                     [id: 'test'],
@@ -492,7 +772,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( process.out).match() }
+                { assert snapshot( process.out ).match() }
             )
         }
     }

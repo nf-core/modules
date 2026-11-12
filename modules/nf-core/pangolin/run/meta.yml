@@ -11,7 +11,8 @@ tools:
         Phylogenetic Assignment of Named Global Outbreak LINeages
       homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
       manual: https://github.com/cov-lineages/pangolin#pangolearn-description
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:pangolin_cov-lineages
 input:
   - - meta:
@@ -22,14 +23,14 @@ input:
         type: file
         description: |
           The genome assembly to be evaluated
-  - - db:
-        type: directory
-        description: |
-          Directory containing the Pangolin database
-
+        ontologies: []
+  - db:
+      type: directory
+      description: |
+        Directory containing the Pangolin database
 output:
-  - report:
-      - meta:
+  report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +38,29 @@ output:
           type: file
           description: Pangolin lineage report
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 #CSV
+  versions_pangolin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed 's/pangolin //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed 's/pangolin //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kevinmenden"
   - "@drpatelh"

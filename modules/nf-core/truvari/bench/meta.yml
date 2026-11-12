@@ -25,22 +25,29 @@ input:
         type: file
         description: Input SV VCF file
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: Input SV VCF index file
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
     - truth_vcf:
         type: file
         description: Input VCF file with truth SVs
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - truth_tbi:
         type: file
         description: Input VCF index file with truth SVs
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
     - bed:
         type: file
         description: BED file containing regions to compare
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -50,6 +57,7 @@ input:
         type: file
         description: Reference FASTA file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -59,9 +67,10 @@ input:
         type: file
         description: Reference FASTA index file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - fn_vcf:
-      - meta:
+  fn_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +79,10 @@ output:
           type: file
           description: VCF file with false negatives
           pattern: "*.fn.vcf.gz"
-  - fn_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fn_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +91,9 @@ output:
           type: file
           description: VCF index file with false negatives
           pattern: "*.fn.vcf.gz.tbi"
-  - fp_vcf:
-      - meta:
+          ontologies: []
+  fp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +102,10 @@ output:
           type: file
           description: VCF file with false positives
           pattern: "*.fp.vcf.gz"
-  - fp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  fp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +114,9 @@ output:
           type: file
           description: VCF index file with false positives
           pattern: "*.fp.vcf.gz.tbi"
-  - tp_base_vcf:
-      - meta:
+          ontologies: []
+  tp_base_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +125,10 @@ output:
           type: file
           description: VCF file with base true positives
           pattern: "*.tp-base.vcf.gz"
-  - tp_base_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_base_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +137,9 @@ output:
           type: file
           description: VCF index file with base true positives
           pattern: "*.tp-base.vcf.gz.tbi"
-  - tp_comp_vcf:
-      - meta:
+          ontologies: []
+  tp_comp_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +148,10 @@ output:
           type: file
           description: VCF file with compared true positives
           pattern: "*.tp-comp.vcf.gz"
-  - tp_comp_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tp_comp_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +160,9 @@ output:
           type: file
           description: VCF index file with compared true positives
           pattern: "*.tp-comp.vcf.gz.tbi"
-  - summary:
-      - meta:
+          ontologies: []
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,12 +171,66 @@ output:
           type: file
           description: Summary JSON file with results from the benchmark
           pattern: "*.summary.json"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log.txt":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Log file from Truvari run
+          pattern: "*.log.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_1964
+  versions_truvari:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - truvari:
+          type: string
+          description: The name of the tool
+      - "truvari version | sed 's/Truvari v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - truvari:
+          type: string
+          description: The name of the tool
+      - "truvari version | sed 's/Truvari v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/truvari:5.4.0--a783dff809870f2f
+      build_id: bd-a783dff809870f2f_1
+      scan_id: sc-27c33c4b01d2c7c1_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/truvari:5.4.0--cbc97b037887e8ec
+      build_id: bd-cbc97b037887e8ec_1
+      scan_id: sc-1750cf0f1e6a7659_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/truvari:5.4.0--20dbdbec2dce7ea4
+      build_id: bd-20dbdbec2dce7ea4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcb554578972eea4ca66731f80a41017d591edf30d34f7b3c4a6ef78b0ef4ff3/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/truvari:5.4.0--2d48ca7fc61cbecb
+      build_id: bd-2d48ca7fc61cbecb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24d8407c3b7d1ff8fc73dd43063f220636b2a5b973a353cd8ebbc196f2e955c6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/truvari/bench/.conda-lock/linux_amd64-bd-a783dff809870f2f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/truvari/bench/.conda-lock/linux_arm64-bd-cbc97b037887e8ec_1.txt

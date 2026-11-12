@@ -1,19 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ADAPTERREMOVALFIXPREFIX {
     tag "$meta.id"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
-        'biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcbd0698a0040500e6509ae9d79603db1dd42900980b95e057459f1d87a567fa/data'
+        : 'community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--930e325758ebb090'}"
 
     input:
     tuple val(meta), path(fastq)
-
     output:
     tuple val(meta), path("*.fq.gz"), emit: fixed_fastq
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('adapterremovalfixprefix'), eval('echo 0.0.5'), emit: versions_adapterremovalfixprefix, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,28 +24,19 @@ process ADAPTERREMOVALFIXPREFIX {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if ("${fastq}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     AdapterRemovalFixPrefix \\
         ${fastq} \\
         ${args} \\
         | gzip > ${prefix}.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.0.5' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    echo | gzip > ${prefix}.fq.gz
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        adapterremovalfixprefix: ${VERSION}
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.fq.gz
     """
 }

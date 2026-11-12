@@ -1,16 +1,56 @@
 {
-    "versions": {
+    "test_glimpse_ligate": {
         "content": [
             [
-                "versions.yml:md5,0cc9dfe9c9c1087666c418aa3379cf85"
-            ]
+                [
+                    {
+                        "id": "input"
+                    },
+                    "input.vcf.gz",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=false, phasedAutodetect=false]",
+                    "bcb1deefc22f80c32d5ca5cedb56cd75"
+                ]
+            ],
+            {
+                "versions_glimpse": [
+                    [
+                        "GLIMPSE_LIGATE",
+                        "glimpse",
+                        "1.1.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2023-10-17T11:56:25.087453677"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T17:24:23.21883658"
     },
-    "ligate": {
+    "test_glimpse_ligate -- stub": {
         "content": [
-            "chr21\t16799989\t21:16799989:T:C\tT\tC\t.\t.\tRAF=0.000468897;AF=0;INFO=1\tGT:DS:GP:HS\t0/0:0:1,0,0:0"
+            {
+                "merged_variants": [
+                    [
+                        {
+                            "id": "input"
+                        },
+                        "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_glimpse": [
+                    [
+                        "GLIMPSE_LIGATE",
+                        "glimpse",
+                        "1.1.1"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2023-10-17T11:56:25.116120487"
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-05T17:24:29.871386677"
     }
 }

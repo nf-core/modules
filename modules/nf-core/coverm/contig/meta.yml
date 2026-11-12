@@ -23,13 +23,15 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - input:
         type: file
         description: |
           FASTA/FASTQ containing reads (can be gzipped), or sorted BAM files of reads mapped to a reference.
           If supplying PE fasta for multiple samples, should be in the order "sample1_1, sample1_2, sample2_1, sample2_2...".
         pattern: "*.{fa,fq,fa.gz,fq.gz,bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_2572 # BAM
 
   - - meta2:
         type: map
@@ -39,37 +41,75 @@ input:
 
     - reference:
         type: file
-        description: Reference FASTA file to map reads to, or minimap2/strobealign index.
+        description: |
+          Reference FASTA file to map reads to, or minimap2/strobealign index.
           Not required if using BAM input.
         pattern: "*.{fasta,fasta.gz,mmi,sti}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
 
-  - - bam_input:
-        type: boolean
-        description: True if input is bam files
+  - bam_input:
+      type: boolean
+      description: True if input is bam files
 
-  - - interleaved:
-        type: boolean
-        description: True if input is interleaved fastq file
+  - interleaved:
+      type: boolean
+      description: True if input is interleaved fastq file
+
+  - enable_bam_output:
+      type: boolean
+      description: True to enable BAM output of aligned reads
 
 output:
-  - coverage:
-      - meta:
+  coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.depths.{txt}"
-      - "*.depth.txt":
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-          pattern: "*.depths.{txt}"
-  - versions:
-      - versions.yml:
+            e.g. `[ id:'sample1' ]`
+      - "*.depth.tsv":
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Tab-delimited file containing coverage information for each contig and sample.
+          pattern: "*.depth.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM file containing aligned reads.
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+
+  versions_coverm:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coverm:
+          type: string
+          description: The tool name
+      - 'coverm --version | sed "s/coverm //"':
+          type: string
+          description: Command used to collect the version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coverm:
+          type: string
+          description: The tool name
+      - 'coverm --version | sed "s/coverm //"':
+          type: string
+          description: Command used to collect the version
+
 authors:
   - "@prototaxites"
 maintainers:

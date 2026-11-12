@@ -22,7 +22,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
                     [], [],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.eagle.22.map.gz", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.22.eagle.map.gz", checkIfExists: true)
                 ])
                 """
             }
@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -48,11 +48,11 @@ nextflow_process {
                 """
                 input[0] = Channel.of([
                     [ id:'input', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr22.1X.vcf.gz.csi", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.GRCh38.eagle.22.map.gz", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.22.eagle.map.gz", checkIfExists: true)
                 ])
                 """
             }
@@ -63,7 +63,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -93,8 +93,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions.get(0)).yaml
+                    sanitizeOutput(process.out),
                 ).match() }
             )
         }

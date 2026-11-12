@@ -11,7 +11,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -23,14 +24,17 @@ input:
         type: file
         description: VCF/BCF file
         pattern: "*.{vcf.gz,vcf,bcf}"
+        ontologies: []
     - header:
         type: file
         description: New header to add to the VCF
         pattern: "*.{header.txt}"
+        ontologies: []
     - samples:
         type: file
         description: File containing sample names to update (one sample per line)
         pattern: "*.{samples.txt}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,9 +44,10 @@ input:
         type: file
         description: Fasta index to update header sequences with
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +56,9 @@ output:
           type: file
           description: VCF with updated header, bgzipped per default
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -61,11 +67,28 @@ output:
           type: file
           description: Index of VCF with updated header
           pattern: "*.{csi,tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@bjohnnyd"
   - "@jemten"
@@ -74,3 +97,27 @@ maintainers:
   - "@bjohnnyd"
   - "@jemten"
   - "@ramprasadn"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--f8757489807f9c95
+      build_id: bd-f8757489807f9c95_9
+      scan_id: sc-6fa01fa7c518cc7b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c
+      build_id: bd-130aa7603bf3bf5c_9
+      scan_id: sc-b06bc84035abd22b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--4dd0f0a20494e269
+      build_id: bd-4dd0f0a20494e269_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--37bf17f884a2aca6
+      build_id: bd-37bf17f884a2aca6_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaac198ac93d951bb9cbd8b1d83ba1c4485fa43e0cbcfa9403096fc7b88956b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/reheader/.conda-lock/linux_amd64-bd-130aa7603bf3bf5c_9.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/reheader/.conda-lock/linux_arm64-bd-f8757489807f9c95_9.txt

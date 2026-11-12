@@ -22,24 +22,41 @@ input:
     - chromsizes:
         type: file
         description: Path to a chromsizes file.
+        ontologies: []
     - cool_bin:
         type: integer
         description: Resolution (bin size) in base pairs
 output:
-  - bed:
-      - meta:
-          type: file
-          description: Genome segmentation at a fixed resolution as a BED file.
-          pattern: "*.bed"
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
       - "*.bed":
           type: file
           description: Genome segmentation at a fixed resolution as a BED file.
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nservant"
   - "@muffato"

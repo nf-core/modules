@@ -15,7 +15,8 @@ tools:
       documentation: https://mash.readthedocs.io/en/latest/sketches.html
       tool_dev_url: https://github.com/marbl/Mash
       doi: "10.1186/s13059-016-0997-x"
-      licence: ["https://github.com/marbl/Mash/blob/master/LICENSE.txt"]
+      licence:
+        - "https://github.com/marbl/Mash/blob/master/LICENSE.txt"
       identifier: biotools:mash
 input:
   - - meta:
@@ -26,9 +27,10 @@ input:
     - reads:
         type: file
         description: List of input paired-end FastQ files
+        ontologies: []
 output:
-  - mash:
-      - meta:
+  mash:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,8 +39,9 @@ output:
           type: file
           description: Sketch output
           pattern: "*.{mash}"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,11 +50,28 @@ output:
           type: file
           description: Sketch statistics
           pattern: "*.{mash_stats}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_mash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@thanhleviet"
 maintainers:

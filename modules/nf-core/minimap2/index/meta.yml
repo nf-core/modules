@@ -10,7 +10,8 @@ tools:
         A versatile pairwise aligner for genomic and spliced nucleotide sequences.
       homepage: https://github.com/lh3/minimap2
       documentation: https://github.com/lh3/minimap2#uguide
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -22,9 +23,10 @@ input:
         type: file
         description: |
           Reference database in FASTA format.
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,11 +35,28 @@ output:
           type: file
           description: Minimap2 fasta index.
           pattern: "*.mmi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_minimap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

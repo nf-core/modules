@@ -51,7 +51,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bt2out,
                     path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()}
             )
         }
@@ -78,10 +78,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
@@ -111,7 +108,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bt2out,
                     path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()}
             )
         }
@@ -131,9 +128,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
                     []
                 ])
-                input[1] = [[],[]]
-                input[2] = []
-                input[3] = []
+                input[1] = [[],[],[]]
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = []
                 """
                 }
             }
@@ -161,7 +159,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bt2out,
                     path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()}
             )
         }
@@ -182,9 +180,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
                     []
                 ])
-                input[1] = [[],[]]
-                input[2] = []
-                input[3] = []
+                input[1] = [[],[],[]]
+                input[2] = [[], []]
+                input[3] = [[], []]
+                input[4] = []
                 """
                 }
             }
@@ -206,10 +205,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
@@ -238,7 +234,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bt2out,
                     path(process.out.profile.get(0).get(1)).readLines()[2..-1].join('\n').md5(),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()}
             )
         }

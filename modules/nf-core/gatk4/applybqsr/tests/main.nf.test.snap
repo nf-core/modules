@@ -2,7 +2,15 @@
     "sarscov2 - bam - stub": {
         "content": [
             {
-                "0": [
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
                     [
                         {
                             "id": "test"
@@ -10,115 +18,245 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "1": [
-                    
-                ],
-                "2": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
-                ],
-                "bam": [
+                "versions_gatk4": [
                     [
-                        {
-                            "id": "test"
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
                     ]
                 ],
-                "cram": [
-                    
-                ],
-                "versions": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-13T22:29:08.435909526",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:01:35.048141874"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     },
     "sarscov2 - bam - intervals": {
         "content": [
             {
-                "0": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,51259943bca01c92b20fb5b7ac09a246"
+                        "test.bam.bai"
                     ]
                 ],
-                "1": [
-                    
-                ],
-                "2": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
-                ],
-                "bam": [
+                "reads": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,51259943bca01c92b20fb5b7ac09a246"
+                        "test.bam:md5Reads,b194021b699cc5cf4b2b1f715e0b7b4c"
                     ]
                 ],
-                "cram": [
-                    
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ],
-                "versions": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-13T22:28:21.742490125",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:00:30.908035862"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     },
     "sarscov2 - cram": {
         "content": [
-            [
-                "versions.yml:md5,91928754768510a59bde637403ee6a94"
-            ]
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram:md5Reads,463ac3b905fbf4ddf113a94dbfa8d69f"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-14T10:31:49.345494191",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:00:59.930550712"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - bam - csi": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,fa3786cc82f066ddf34de0fd27f5330e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-14T09:59:46.634830321",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - default output format - stub": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-13T22:44:48.690307711",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     },
     "sarscov2 - bam in, cram out": {
         "content": [
-            [
-                "versions.yml:md5,91928754768510a59bde637403ee6a94"
-            ],
-            "test.cram"
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-14T10:31:28.219449187",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:00:01.611711705"
-    },
-    "test.cram": {
-        "content": [
-            "test.cram"
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:00:59.941506312"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     },
     "sarscov2 - cram - stub": {
         "content": [
             {
-                "0": [
-                    
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
-                "1": [
+                "reads": [
                     [
                         {
                             "id": "test"
@@ -126,68 +264,67 @@
                         "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "2": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
-                ],
-                "bam": [
-                    
-                ],
-                "cram": [
+                "versions_gatk4": [
                     [
-                        {
-                            "id": "test"
-                        },
-                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-13T22:28:56.624706068",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T07:01:14.787020044"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     },
     "sarscov2 - bam": {
         "content": [
             {
-                "0": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,213acb451007a0098a6a6a360fa68d72"
+                        "test.bam.bai:md5,bfec05a3c6e63cd09aa1618ebcfcf2e1"
                     ]
                 ],
-                "1": [
-                    
-                ],
-                "2": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
-                ],
-                "bam": [
+                "reads": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,213acb451007a0098a6a6a360fa68d72"
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
                     ]
                 ],
-                "cram": [
-                    
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ],
-                "versions": [
-                    "versions.yml:md5,91928754768510a59bde637403ee6a94"
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-14T09:59:35.980705899",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.2"
-        },
-        "timestamp": "2025-05-15T06:59:29.61561398"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     }
 }

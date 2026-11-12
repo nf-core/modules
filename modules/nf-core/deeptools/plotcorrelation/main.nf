@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPTOOLS_PLOTCORRELATION {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.5--pyhdfd78af_0':
-        'biocontainers/deeptools:3.5.5--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba9641d61acf134c6b989b3af5f25bcd5aadb3faf692a41c00ba4cd25f99032e/data'
+:         'community.wave.seqera.io/library/deeptools:3.5.6--511a2b05870b9ec3' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -15,7 +18,7 @@ process DEEPTOOLS_PLOTCORRELATION {
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: matrix
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('deeptools'), eval('plotCorrelation --version | sed "s/plotCorrelation //g"') , emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +36,6 @@ process DEEPTOOLS_PLOTCORRELATION {
         --whatToPlot $resolved_plot_type \\
         --plotFile ${prefix}.plotCorrelation.pdf \\
         --outFileCorMatrix ${prefix}.plotCorrelation.mat.tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(plotCorrelation --version | sed -e "s/plotCorrelation //g")
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +43,5 @@ process DEEPTOOLS_PLOTCORRELATION {
     """
     touch ${prefix}.plotCorrelation.pdf
     touch ${prefix}.plotCorrelation.mat.tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        deeptools: \$(plotCorrelation --version | sed -e "s/plotCorrelation //g")
-    END_VERSIONS
     """
 }

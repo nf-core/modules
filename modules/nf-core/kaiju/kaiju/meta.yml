@@ -1,6 +1,5 @@
 name: kaiju_kaiju
-description: Taxonomic classification of metagenomic sequence data using a protein
-  reference database
+description: Taxonomic classification of metagenomic sequence data using a protein reference database
 keywords:
   - classify
   - metagenomics
@@ -13,7 +12,8 @@ tools:
       documentation: https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
-      licence: ["GNU GPL v3"]
+      licence:
+        - "GNU GPL v3"
       identifier: biotools:kaiju
 input:
   - - meta:
@@ -27,14 +27,16 @@ input:
           List of input fastq/fasta files of size 1 and 2 for single-end and paired-end data,
           respectively.
         pattern: "*.{fastq,fq,fasta,fa,fsa,fas,fna,fastq.gz,fq.gz,fasta.gz,fa.gz,fsa.gz,fas.gz,fna.gz}"
-  - - db:
-        type: directory
-        description: |
-          List containing the database and nodes files for Kaiju
-          e.g. [ 'database.fmi', 'nodes.dmp' ]
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - db:
+      type: directory
+      description: |
+        List or directory containing the database and NCBI taxonomy files (names and nodes) for Kaiju
+        e.g. [ 'database.fmi', 'names.dmp', 'nodes.dmp' ]
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,11 +45,29 @@ output:
           type: file
           description: Results with taxonomic classification of each read
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_kaiju:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@talnor"
   - "@sofstam"
@@ -56,3 +76,27 @@ maintainers:
   - "@talnor"
   - "@sofstam"
   - "@jfy133"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/kaiju:1.10.3--47fcff356cad6412
+      build_id: bd-47fcff356cad6412_1
+      scan_id: sc-beb914d4ce0d30d9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/kaiju:1.10.3--8b4a2069cc29ac7a
+      build_id: bd-8b4a2069cc29ac7a_1
+      scan_id: sc-55a97698dd23bdfa_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/kaiju:1.10.3--f24f31b315cf8038
+      build_id: bd-f24f31b315cf8038_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/2645f08391d48e1594c3830ffc69bcce055e5a09b1706de4cae3508b82b1426e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kaiju:1.10.3--d4d45c6b258f1f61
+      build_id: bd-d4d45c6b258f1f61_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40cd79a6bb3b5feabe877bef8498d63a3b91fed44b30556af4c7e6554c4310f2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kaiju/kaiju/.conda-lock/linux_amd64-bd-8b4a2069cc29ac7a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/kaiju/kaiju/.conda-lock/linux_arm64-bd-47fcff356cad6412_1.txt

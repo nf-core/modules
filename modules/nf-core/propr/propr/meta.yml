@@ -9,7 +9,6 @@ keywords:
   - logratio
   - propr
   - corpcor
-
 tools:
   - "propr":
       description: "Logratio methods for omics data"
@@ -17,14 +16,16 @@ tools:
       documentation: "https://rdrr.io/cran/propr/man/propr.html"
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
-      licence: ["GPL-2"]
+      licence:
+        - "GPL-2"
       identifier: biotools:propr
   - "corpcor":
       description: "Efficient Estimation of Covariance and (Partial) Correlation"
       homepage: "https://cran.r-project.org/web/packages/corpcor/index.html"
       documentation: "https://cran.r-project.org/web/packages/corpcor/corpcor.pdf"
       doi: "10.2202/1544-6115.1175"
-      licence: ["GPL >=3"]
+      licence:
+        - "GPL >=3"
       identifier: biotools:propr
 
 input:
@@ -41,9 +42,12 @@ input:
           This matrix should not contain zeros. Otherwise, they will be replaced by the minimum number.
           It is recommended to handle the zeros beforehand with the method of preference.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - propr:
-      - meta:
+  propr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -53,8 +57,9 @@ output:
           type: file
           description: R propr object
           pattern: "*.propr.rds"
-  - matrix:
-      - meta:
+          ontologies: []
+  matrix:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -64,8 +69,10 @@ output:
           type: file
           description: Coefficient matrix
           pattern: "*.propr.tsv"
-  - fdr:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  fdr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -75,8 +82,10 @@ output:
           type: file
           description: (optional) propr fdr table
           pattern: "*.fdr.tsv"
-  - adj:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  adj:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -86,20 +95,31 @@ output:
           type: file
           description: (optional) propr adjacency table
           pattern: "*.adj.csv"
-  - warnings:
-      - "*.warnings.log":
-          type: file
-          description: Warnings
-          pattern: "*.warnings.log"
-  - session_info:
-      - "*.R_sessionInfo.log":
-          type: file
-          description: dump of R SessionInfo
-          pattern: "*.R_sessionInfo.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  warnings:
+    - "*.warnings.log":
+        type: file
+        description: Warnings
+        pattern: "*.warnings.log"
+        ontologies: []
+  session_info:
+    - "*.R_sessionInfo.log":
+        type: file
+        description: dump of R SessionInfo
+        pattern: "*.R_sessionInfo.log"
+        ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@suzannejin"

@@ -1,5 +1,5 @@
 name: samtools_mpileup
-description: BAM
+description: Generate text pileup output for one or multiple BAM files. Each input file produces a separate group of pileup columns in the output.
 keywords:
   - mpileup
   - bam
@@ -14,6 +14,11 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
       licence: ["MIT"]
       identifier: biotools:samtools
 input:
@@ -26,22 +31,35 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
+    - index:
+        type: file
+        description: CSI/BAI/CRAI file. Optional. Only required when using the '-r' parameter.
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
     - intervals:
         type: file
-        description: Interval FILE
+        description: Interval FILE. Optional.
         pattern: "*.bed"
+        ontologies: []
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
+          Groovy Map containing reference information
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: FASTA reference file
-        pattern: "*.{fasta,fa}"
+        description: FASTA reference file. Optional.
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FAI file. Optional. Only required (recommended) when using the '-f' parameter.
+        pattern: "*.{fai}"
+        ontologies: []
 output:
-  - mpileup:
-      - meta:
+  mpileup:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,14 +68,56 @@ output:
           type: file
           description: mpileup file
           pattern: "*.{mpileup}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@drpatelh"
   - "@joseespinosa"
 maintainers:
-  - "@drpatelh"
   - "@joseespinosa"
+  - "@krannich479"
+  - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523
+      build_id: bd-ca51bc8a00d53523_4
+      scan_id: sc-35f0bc96d06f5208_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools_xz:3c311ea7eb225a00
+      build_id: bd-3c311ea7eb225a00_5
+      scan_id: sc-98e4689c7427b1ef_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:7fd001d838de50bf
+      build_id: bd-7fd001d838de50bf_5
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:53a29ebacc9ac012
+      build_id: bd-53a29ebacc9ac012_5
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c168ee76fdda1f93a626dbc03d7ac3da6cfc203cf04e7df8fe590ec82e2cc66d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/mpileup/.conda-lock/linux_amd64-bd-ca51bc8a00d53523_4.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/mpileup/.conda-lock/linux_arm64-bd-3c311ea7eb225a00_5.txt

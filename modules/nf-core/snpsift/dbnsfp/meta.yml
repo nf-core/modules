@@ -9,13 +9,14 @@ keywords:
   - predictions
 tools:
   - snpsift:
-      description: SnpSift is a toolbox that allows you to filter and manipulate annotated
-        files
-      homepage: https://pcingola.github.io/SnpEff/ss_introduction/
-      documentation: https://pcingola.github.io/SnpEff/ss_dbnsfp/
+      description: SnpSift is a toolbox that allows you to filter and manipulate
+        annotated files
+      homepage: https://pcingola.github.io/SnpEff/snpsift/introduction/
+      documentation: https://pcingola.github.io/SnpEff/snpsift/dbnsfp/
       tool_dev_url: https://github.com/pcingola/SnpEff
       doi: "10.3389/fgene.2012.00035"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:snpsift
 input:
   - - meta:
@@ -27,10 +28,12 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf, vcf.gz}"
+        ontologies: []
     - vcf_tbi:
         type: file
         description: Tabix file for compressed vcf provided
         pattern: "*.{tbi}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,13 +42,15 @@ input:
         type: file
         description: Database for use to annotate
         pattern: "*.{vcf/vcf.gz}"
+        ontologies: []
     - dbs_tbi:
         type: file
         description: Tabix file for compressed database provided
         pattern: "*.{tbi}"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +59,30 @@ output:
           type: file
           description: Variant Calling File annotated
           pattern: "*.{vcf}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_snpsift:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snpsift:
+          type: string
+          description: The name of the tool
+      - SnpSift -version 2>&1 | grep -oE '[0-9]+\.[0-9]+[a-z]?':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snpsift:
+          type: string
+          description: The name of the tool
+      - SnpSift -version 2>&1 | grep -oE '[0-9]+\.[0-9]+[a-z]?':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@LlaneroHiboreo"
 maintainers:

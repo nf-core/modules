@@ -16,7 +16,8 @@ tools:
       homepage: https://github.com/brentp/bwa-meth
       documentation: https://github.com/brentp/bwa-meth
       arxiv: arXiv:1401.1129
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -27,9 +28,14 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies: []
+  - use_mem2:
+      type: boolean
+      description: |
+        If true, use bwameth index-mem2 for indexing. If false, use bwameth index (default: false)
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
@@ -37,13 +43,53 @@ output:
           type: directory
           description: Directory containing bwameth genome index
           pattern: "index"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_bwameth_index:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwameth:
+          type: string
+          description: The name of the tool
+      - bwameth.py --version | cut -f2 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
   - "@phue"
   - "@sateeshperi"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwameth:0.2.10--d9a640227e3efef9
+      build_id: bd-d9a640227e3efef9_1
+      scan_id: sc-e38177cc3221c574_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwameth:0.2.10--a589797f382631bc
+      build_id: bd-a589797f382631bc_1
+      scan_id: sc-f4ed17da1470ad5c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwameth:0.2.10--449d0d6bffe0d0ea
+      build_id: bd-449d0d6bffe0d0ea_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12bda1a46bacec84b4724f48b09117afc6e68a40c59d442bb874c638e19ee571/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwameth:0.2.10--77efa7670825aae0
+      build_id: bd-77efa7670825aae0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4405ebf9fd0b415a9e28b0cb503b11af0e86c88ab335b098ff4cf48f8f0162e1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwameth/index/.conda-lock/linux_amd64-bd-a589797f382631bc_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwameth/index/.conda-lock/linux_arm64-bd-d9a640227e3efef9_1.txt

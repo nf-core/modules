@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "proovframe_map"
 description: frame-shift correction for long read (meta)genomics - maps proteins to reads
 keywords:
@@ -13,7 +11,8 @@ tools:
       documentation: "https://github.com/thackl/proovframe"
       tool_dev_url: "https://github.com/thackl/proovframe"
       doi: "10.1101/2021.08.23.457338"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:proovframe
 
 input:
@@ -22,18 +21,34 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-    - faa:
-        type: file
-        description: A FASTA file containing a database of guide protein sequences
-        pattern: "*.{faa,fasta,fa}"
     - fasta:
         type: file
-        description: A FASTA file containing raw read nucleotide sequences
+        description: A FASTA fna file containing raw read nucleotide sequences
         pattern: "*.{fasta,fa}"
-
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - faa:
+        type: file
+        description: A proteome fasta file to create a database of guide protein sequences from
+        pattern: "*.{faa,fasta,fa}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - db:
+        type: file
+        description: A previously generated diamond database of guide protein sequences
+        pattern: "*.{dmnd}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,12 +56,31 @@ output:
       - "*.tsv":
           type: file
           description: Output TSV file with the frameshift-aware protein to read alignments
-          pattern: "*.tsv"
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_proovframe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proovframe:
+          type: string
+          description: The name of the tool
+      - proovframe 2>&1 | sed '/proovframe-v/!d;s/proovframe-v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proovframe:
+          type: string
+          description: The name of the tool
+      - proovframe 2>&1 | sed '/proovframe-v/!d;s/proovframe-v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@manuelcarbajo"
@@ -54,3 +88,4 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+  - "@Ge94"

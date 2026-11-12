@@ -1,0 +1,181 @@
+name: "gatk4_concordance"
+description: Evaluate concordance of an input VCF against a validated truth VCF
+keywords:
+  - concordance
+  - gatk4
+  - gatk
+  - genomics
+  - variant calling
+  - genotyping
+  - vcf
+  - comparison
+
+tools:
+  - "gatk4":
+      description: "Genome Analysis Toolkit (GATK4)"
+      homepage: "https://gatk.broadinstitute.org/hc/en-us"
+      documentation: "https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s"
+      tool_dev_url: "https://github.com/broadinstitute/gatk"
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
+      licence: ["BSD-3-clause"]
+      identifier: "biotools:gatk"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Evaluation VCF file created with a variant caller
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - vcf_tbi:
+        type: file
+        description: Index file for the evaluation VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
+    - truth:
+        type: file
+        description: Truth VCF file created with a variant caller
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - truth_tbi:
+        type: file
+        description: Index file for the truth VCF
+        pattern: "*.vcf.gz.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'bed' ]`
+    - intervals:
+        type: file
+        description: Bed file with the genomic regions included in the library (optional)
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'fasta' ]`
+    - fasta:
+        type: file
+        description: Reference FASTA file
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'fai' ]`
+    - fai:
+        type: file
+        description: Index of the reference FASTA file
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'dict' ]`
+    - dict:
+        type: file
+        description: Sequence dictionary of the reference FASTA file
+        pattern: "*.dict"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: A tab-delimited file containing the metrics with number of TPs, FPs, FNs, Precision, Recall and F1 statistics
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  tpfn:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tpfn.vcf":
+          type: file
+          description: Eval VCF file with tagged with TP or FN in "INFO/STATUS"
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3989"
+  tpfp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tpfp.vcf":
+          type: file
+          description: Eval VCF file with tagged with TP or FP in "INFO/STATUS"
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3989"
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/concordance/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

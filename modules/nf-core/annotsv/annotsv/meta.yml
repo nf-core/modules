@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "annotsv_annotsv"
 description: Annotation and Ranking of Structural Variation
 keywords:
@@ -13,7 +14,8 @@ tools:
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
       doi: 10.1093/bioinformatics/bty304
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: biotools:AnnotSV
 input:
   - - meta:
@@ -32,7 +34,7 @@ input:
         type: file
         description: OPTIONAL - The index for gzipped VCF files
         pattern: "*.tbi"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_3475" # Tabix index
     - candidate_small_variants:
         type: file
@@ -55,10 +57,9 @@ input:
           Groovy Map containing candidate genes information
     - candidate_genes:
         type: file
-        description: OPTIONAL - A file containing genes (either space-separated, tab-separated
-          or line-break-separated)
+        description: OPTIONAL - A file containing genes (either space-separated, tab-separated or line-break-separated)
         pattern: "*.txt"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_2330" # Text file
   - - meta4:
         type: map
@@ -76,38 +77,37 @@ input:
           Groovy Map containing candidate gene transcripts information
     - gene_transcripts:
         type: file
-        description: OPTIONAL - A file containing the preferred gene transcripts to
-          be used in priority during annotation (either space-separated or tab-separated)
+        description: OPTIONAL - A file containing the preferred gene transcripts to be used in priority during annotation (either space-separated or tab-separated)
         pattern: "*.txt"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_2330" # Text file
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tsv":
+      - "${prefix}.tsv":
           type: file
           description: A TSV file containing the annotated variants
           pattern: "*.tsv"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - unannotated_tsv:
-      - meta:
+  unannotated_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.unannotated.tsv":
+      - "${prefix}.unannotated.tsv":
           type: file
           description: OPTIONAL - TSV file containing the unannotated variants
           pattern: "*.unannotated.tsv"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,16 +117,54 @@ output:
           description: |
             OPTIONAL - A VCF file containing the annotated variants (created when `-vcf 1` is specified in the args)
           pattern: "*.vcf"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  versions_annotsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/annotsv:3.5.10--8ac092906065ea38
+      build_id: bd-8ac092906065ea38_1
+      scan_id: sc-29818db8bf91269f_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/annotsv:3.5.10--28ac84a07bcbf122
+      build_id: bd-28ac84a07bcbf122_1
+      scan_id: sc-71a30c6e17a45dfa_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/annotsv:3.5.10--6216a0366b416c30
+      build_id: bd-6216a0366b416c30_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5d84e7cd8d2dcfec68c7d289f8984fdeaf64aae4ce67b8b3d96617f85ab5dfe/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/annotsv:3.5.10--fe8d299c7e2f9e18
+      build_id: bd-fe8d299c7e2f9e18_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/664c800960f1b08bcae320959b20db6b606f3c5de2488d63376eed58f32b1a10/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/annotsv/annotsv/.conda-lock/linux_amd64-bd-28ac84a07bcbf122_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/annotsv/annotsv/.conda-lock/linux_arm64-bd-8ac092906065ea38_1.txt

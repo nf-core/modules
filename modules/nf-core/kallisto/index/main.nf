@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALLISTO_INDEX {
     tag "$fasta"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.51.1--heb0cbe2_0':
-        'biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e21d2cff2526b0995996977c057f0c17844073781f86a18b15fef178a97ed7cb/data':
+        'community.wave.seqera.io/library/kallisto:0.52.0--31c771060d82d25c' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("kallisto")  , emit: index
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('kallisto'), eval('kallisto 2>&1 | head -1 | sed "s/^kallisto //; s/Usage.*//"'), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,20 +28,10 @@ process KALLISTO_INDEX {
         $args \\
         -i kallisto \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir kallisto
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
-    END_VERSIONS
     """
 }

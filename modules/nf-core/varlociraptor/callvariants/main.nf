@@ -1,55 +1,42 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARLOCIRAPTOR_CALLVARIANTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varlociraptor:8.7.1--ha8ac579_0':
-        'biocontainers/varlociraptor:8.7.1--ha8ac579_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4788613cdc4faf20c5ebb24da24575ec3d80a8a52a0daf1c986b742444fe6c99/data'
+:         'community.wave.seqera.io/library/varlociraptor:8.12.0--294eead5eab5a1dc' }"
 
     input:
-    tuple val(meta), path(normal_vcf), path(tumor_vcf)
-    path (scenario)
-    val (scenario_sample_name)
+    tuple val(meta), path(vcfs), path(scenario), val(scenario_aliases)
 
     output:
     tuple val(meta), path("*.bcf"), emit: bcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('varlociraptor'), eval("varlociraptor --version | sed 's/^varlociraptor //'"), topic: versions, emit: versions_varlociraptor
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_called"
 
-    //If we use a scenario file and if there is more than 1 normal vcf, then collect scenario_sample_name and normal vcf to scenario_sample_name_0=normal_vcf_0 scenario_sample_name_1=normal_vcf_1, etc
-    //If we use a scenario file and if there is exactly 1 normal vcf, then scenario_sample_name=normal_vcf
-    //Else do nothing
-    def scenario_samples = normal_vcf instanceof List &&  normal_vcf.size() > 1 ? [scenario_sample_name,normal_vcf].transpose().collect{"${it[0]}=${it[1]}"}.join(' ') : "${scenario_sample_name}=${normal_vcf}"
-
-    //If no scenario is provided, fall back to tumor-normal paired calling
-    def scenario_command =  scenario ? "generic --scenario $scenario --obs ${scenario_samples}" : "tumor-normal --tumor ${tumor_vcf} --normal ${normal_vcf}"
-
+    //If we use a scenario file and if there is more than 1 vcf, then collect scenario_aliaes and vcfs to scenario_alias_0=vcf_0 scenario_alias_1=vcf_1, etc
+    //If we use a scenario file and if there is exactly 1 vcf, then scenario_alias=vcf
+    def scenario_samples = vcfs instanceof List && vcfs.size() > 1 ? [scenario_aliases, vcfs].transpose().collect { files -> "${files[0]}=${files[1]}" }.join(' ') : "${scenario_aliases}=${vcfs}"
     """
     varlociraptor call variants \\
         --output ${prefix}.bcf \\
-        ${scenario_command} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varlociraptor: \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
-    END_VERSIONS
+        generic --scenario ${scenario} --obs ${scenario_samples} \\
+        ${args}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_called"
     """
     touch ${prefix}.bcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varlociraptor: \$(echo \$(varlociraptor --version 2>&1) | sed 's/^.*varlociraptor //; s/:.*\$//' )
-    END_VERSIONS
     """
 }

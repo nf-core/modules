@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_MPILEUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5acacb55c52bec97c61fd34ffa8721fce82ce823005793592e2a80bf71632cd0/data':
-        'community.wave.seqera.io/library/bcftools:1.21--4335bec1d7b44d11' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c'}"
 
     input:
-    tuple val(meta), path(bam), path(intervals)
-    tuple val(meta2), path(fasta)
+    tuple val(meta), path(bam), path(intervals_mpileup, stageAs: 'mpileup_intervals/*'), path(intervals_call, stageAs: 'call_intervals/*')
+    tuple val(meta2), path(fasta), path(fai)
     val save_mpileup
 
     output:
-    tuple val(meta), path("*vcf.gz")     , emit: vcf
-    tuple val(meta), path("*vcf.gz.tbi") , emit: tbi
-    tuple val(meta), path("*stats.txt")  , emit: stats
+    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: vcf
+    tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
+    tuple val(meta), path("*stats.txt"), emit: stats
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
-    path  "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,44 +32,62 @@ process BCFTOOLS_MPILEUP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def mpileup = save_mpileup ? "| tee ${prefix}.mpileup" : ""
     def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
-    def intervals_cmd = intervals ? "-T ${intervals}" : ""
+    def intervals_mpileup_cmd = intervals_mpileup ? "-T ${intervals_mpileup}" : ""
+    def intervals_call_cmd = intervals_call ? "-T ${intervals_call}" : ""
+    def extension = args3.contains("--output-type b") || args3.contains("-Ob")
+        ? "bcf.gz"
+        : args3.contains("--output-type u") || args3.contains("-Ou")
+            ? "bcf"
+            : args3.contains("--output-type z") || args3.contains("-Oz")
+                ? "vcf.gz"
+                : args.contains("--output-type v") || args3.contains("-Ov")
+                    ? "vcf"
+                    : "vcf"
     """
     echo "${meta.id}" > sample_name.list
 
     bcftools \\
         mpileup \\
-        --fasta-ref $fasta \\
-        $args \\
-        $bam \\
-        $intervals_cmd \\
-        $mpileup \\
-        | bcftools call --output-type v $args2 \\
+        --fasta-ref ${fasta} \\
+        ${args} \\
+        ${bam} \\
+        ${intervals_mpileup_cmd} \\
+        ${mpileup} \\
+        | bcftools call --output-type v ${args2} ${intervals_call_cmd} \\
         | bcftools reheader --samples sample_name.list \\
-        | bcftools view --output-file ${prefix}.vcf.gz --output-type z $args3
+        | bcftools view --output-file ${prefix}.${extension} ${args3}
 
-    $bgzip_mpileup
+    ${bgzip_mpileup}
 
-    tabix -p vcf -f ${prefix}.vcf.gz
-
-    bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
+    bcftools stats ${prefix}.${extension} > ${prefix}.bcftools_stats.txt
     """
 
     stub:
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args3.contains("--output-type b") || args3.contains("-Ob")
+        ? "bcf.gz"
+        : args3.contains("--output-type u") || args3.contains("-Ou")
+            ? "bcf"
+            : args3.contains("--output-type z") || args3.contains("-Oz")
+                ? "vcf.gz"
+                : args3.contains("--output-type v") || args3.contains("-Ov")
+                    ? "vcf"
+                    : "vcf"
+    def index = args3.contains("--write-index=tbi") || args3.contains("-W=tbi")
+        ? "tbi"
+        : args3.contains("--write-index=csi") || args3.contains("-W=csi")
+            ? "csi"
+            : args3.contains("--write-index") || args3.contains("-W")
+                ? "csi"
+                : ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_mpileup = save_mpileup ? "echo '' | gzip > ${prefix}.mpileup.gz" : ""
     """
     touch ${prefix}.bcftools_stats.txt
-    echo "" | gzip > ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
-    echo "" | gzip > ${prefix}.mpileup.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-    END_VERSIONS
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
+    ${create_mpileup}
     """
 }

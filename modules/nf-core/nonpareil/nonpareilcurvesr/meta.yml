@@ -30,55 +30,78 @@ input:
         type: file
         description: One or a list of Nonpareil NPO files (From nonpareil/nonpareil)
         pattern: "*.{npo}"
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.json":
           type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
+          description: Raw nonpareil data used for generating and plotting curves in
+            JSON format
           pattern: "*.json"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.tsv" ':
+      - "*.tsv":
           type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
+          description: Nonpareil summary data in TSV format
           pattern: "*.tsv"
-  - csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.csv" ':
+      - "*.csv":
           type: file
-          description: Raw nonpareil data used for generating and plotting curves in JSON
-            format
+          description: Nonpareil summary data in CSV format
           pattern: "*.csv"
-  - pdf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - '*.pdf" ':
+      - "*.pdf":
           type: file
-          description: Plotted nonpareil curves in PDF format
+          description: Nonpareil curves plot in PDF format
           pattern: "*.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3508 # PDF
+  versions_nonpareil:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - nonpareil:
+          type: string
+          description: Tool name
+      - nonpareil -V 2>&1 | sed "s/Nonpareil v//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - nonpareil:
+          type: string
+          description: Tool name
+      - nonpareil -V 2>&1 | sed "s/Nonpareil v//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

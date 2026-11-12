@@ -27,8 +27,8 @@ input:
         description: Klebsiella genome assemblies to be screened
         pattern: "*.fasta"
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +37,28 @@ output:
           type: file
           description: Result file generated after screening
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_kleborate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kleborate:
+          type: string
+          description: The name of the tool
+      - kleborate --version | sed 's/Kleborate v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kleborate:
+          type: string
+          description: The name of the tool
+      - kleborate --version | sed 's/Kleborate v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
   - "@rpetit3"

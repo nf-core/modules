@@ -22,6 +22,7 @@ input:
     - counts:
         type: file
         description: Contains count data of repetitive regions.
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -30,9 +31,10 @@ input:
     - ref:
         type: file
         description: An input nucleotide fasta file.
+        ontologies: []
 output:
-  - intervals:
-      - meta:
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +42,28 @@ output:
       - ${output}:
           type: file
           description: intervals
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_windowmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

@@ -13,7 +13,8 @@ tools:
       documentation: "https://genometools.org/documentation.html"
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
-      licence: ["ISC"]
+      licence:
+        - "ISC"
       identifier: ""
 input:
   - - meta:
@@ -25,12 +26,13 @@ input:
         type: file
         description: Input fasta file to index
         pattern: "*.{fsa,fa,fasta}"
-  - - mode:
-        type: string
-        description: Mode must be one of 'dna', or 'protein'
+        ontologies: []
+  - mode:
+      type: string
+      description: Mode must be one of 'dna', or 'protein'
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +41,27 @@ output:
           type: directory
           description: Folder containing the suffixerator index files
           pattern: "suffixerator"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_gt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

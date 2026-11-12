@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "summarizedexperiment_summarizedexperiment"
 description: |
   SummarizedExperiment container
@@ -10,9 +9,7 @@ keywords:
   - assay
 tools:
   - "summarizedexperiment":
-      description: "The SummarizedExperiment container contains one or more assays,
-        each represented by a matrix-like object of numeric or other mode. The rows
-        typically represent genomic ranges of interest and the columns represent samples."
+      description: "The SummarizedExperiment container contains one or more assays, each represented by a matrix-like object of numeric or other mode. The rows typically represent genomic ranges of interest and the columns represent samples."
       homepage: "https://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html"
       tool_dev_url: "https://github.com/Bioconductor/SummarizedExperiment"
@@ -43,6 +40,9 @@ input:
           Metadata on matrix features. One column must contain all matrix row
           IDs.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta3:
         type: map
         description: |
@@ -55,9 +55,12 @@ input:
           Metadata on matrix columns. One column must contain all matrix column
           IDs.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - rds:
-      - meta:
+  rds:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information related to the experiment as a whole
@@ -66,8 +69,9 @@ output:
           type: file
           description: Serialised SummarizedExperiment object
           pattern: "*.SummarizedExperiment.rds"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing information related to the experiment as a whole
@@ -76,12 +80,41 @@ output:
           type: file
           description: dump of R SessionInfo
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-summarizedexperiment:1.42.0--39b9fc09268fd17d
+      build_id: bd-39b9fc09268fd17d_1
+      scan_id: sc-916f076da88ad81b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-summarizedexperiment:1.42.0--d063af9117c0855e
+      build_id: bd-d063af9117c0855e_1
+      scan_id: sc-9ddbdb66c2816512_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-summarizedexperiment:1.42.0--98540168354202d3
+      build_id: bd-98540168354202d3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c959aec5d688fd739b28eaf838a3a6e2e2e7721d2b443d9df55143dd3d04f0fd/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-summarizedexperiment:1.42.0--177b772dda1994f9
+      build_id: bd-177b772dda1994f9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4433b2cb821d4bc152f1911ab5750ca0feda7980b5e3d87a3eccbf864d0821ee/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/summarizedexperiment/summarizedexperiment/.conda-lock/linux_amd64-bd-39b9fc09268fd17d_1.txt

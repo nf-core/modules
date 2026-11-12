@@ -13,7 +13,8 @@ tools:
       documentation: "http://hmmer.org/documentation.html"
       tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
       doi: "10.1371/journal.pcbi.1002195"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: biotools:hmmer
 input:
   - - meta:
@@ -25,9 +26,10 @@ input:
         type: file
         description: HMMER flatfile database of HMM profiles
         pattern: "*"
+        ontologies: []
 output:
-  - compressed_db:
-      - meta:
+  compressed_db:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,12 +38,52 @@ output:
           type: list
           description: Binary files with compressed profiles and their index
           pattern: "*.h3?"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ochkalova"
 maintainers:
   - "@ochkalova"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/hmmer:3.4--dba1a582dd6d0e9e
+      build_id: bd-dba1a582dd6d0e9e_1
+      scan_id: sc-27b384b8bdd7c7dc_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920
+      build_id: bd-ab3efa7c16f46920_1
+      scan_id: sc-c0ab7502d268f963_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--714e6d8616316848
+      build_id: bd-714e6d8616316848_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d5df7ac892df8ccf6662c944de51bf9c76032402bfb9ac0801670c1bae7c0d1/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--27e4a7be1be3f573
+      build_id: bd-27e4a7be1be3f573_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/hmmpress/.conda-lock/linux_amd64-bd-ab3efa7c16f46920_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/hmmpress/.conda-lock/linux_arm64-bd-dba1a582dd6d0e9e_1.txt

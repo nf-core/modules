@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FIND_CONCATENATE {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7f/7fd226561e12b32bcacdf4f5ff74577e76233adf52ae5cbc499a2cdfe0e27d82/data'
         : 'community.wave.seqera.io/library/findutils_pigz:c4dd5edc44402661'}"
 
@@ -12,7 +15,9 @@ process FIND_CONCATENATE {
 
     output:
     tuple val(meta), path("${prefix}"), emit: file_out
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("find"), eval("find --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_find
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions, emit: versions_pigz
+    tuple val("${task.process}"), val("coreutils"), eval("cat --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_coreutils
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,13 +58,6 @@ process FIND_CONCATENATE {
         done < <( find to_concatenate/ -mindepth 1 -print0 | sort -z )
 
     ${cmd2}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        find: \$( find --version | sed '1!d; s/.* //' )
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        coreutils: \$( cat --version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -71,12 +69,5 @@ process FIND_CONCATENATE {
 
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        find: \$( find --version | sed '1!d; s/.* //' )
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-        coreutils: \$( cat --version | sed '1!d; s/.* //' )
-    END_VERSIONS
     """
 }

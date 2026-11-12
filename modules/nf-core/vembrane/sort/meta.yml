@@ -1,0 +1,100 @@
+name: "vembrane_sort"
+description: Sort VCF/BCF files by custom Python expressions for variant prioritization
+keywords:
+  - vcf
+  - bcf
+  - sort
+  - genomics
+  - variant
+  - prioritization
+tools:
+  - "vembrane":
+      description: "Filter VCF/BCF files with Python expressions"
+      homepage: "https://vembrane.github.io/"
+      documentation: "https://github.com/vembrane/vembrane/blob/main/docs/sort.md"
+      tool_dev_url: "https://github.com/vembrane/vembrane"
+      doi: "10.1093/bioinformatics/btac810"
+      licence: ["MIT"]
+      identifier: biotools:vembrane
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - vcf:
+        type: file
+        description: VCF/BCF file to sort
+        pattern: "*.{vcf,bcf,bcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+  - expression:
+      type: string
+      description: Python expression (or tuple of expressions) returning orderable values to sort by
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{vcf,bcf,bcf.gz}":
+          type: file
+          description: Sorted VCF/BCF file
+          pattern: "*.{vcf,bcf,bcf.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+  versions_vembrane:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - vembrane:
+          type: string
+          description: The tool name
+      - "vembrane --version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@mkatsanto"
+  - "@trangdo-hsc"
+maintainers:
+  - "@mkatsanto"
+  - "@trangdo-hsc"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/vembrane:2.6.2--0bc429af0e13a402
+      build_id: bd-0bc429af0e13a402_1
+      scan_id: sc-d77bb71ef731dbe7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/vembrane:2.6.2--93bdc53f19ef010a
+      build_id: bd-93bdc53f19ef010a_1
+      scan_id: sc-53b8f3768f97e880_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vembrane:2.6.2--c43928f6abce806c
+      build_id: bd-c43928f6abce806c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a1bc5a7c85eebca118ae436bda77e005cc6c1ca0e60687185fb1d2f195e5eaf/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vembrane:2.6.2--7d9e57608c399937
+      build_id: bd-7d9e57608c399937_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/538011e96a2fa9325c351e0301ff607c17ddc8659d89036632c947a7cb4a3cc7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vembrane/sort/.conda-lock/linux_amd64-bd-0bc429af0e13a402_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vembrane/sort/.conda-lock/linux_arm64-bd-93bdc53f19ef010a_1.txt

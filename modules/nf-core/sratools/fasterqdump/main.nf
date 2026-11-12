@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SRATOOLS_FASTERQDUMP {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' :
-        'biocontainers/mulled-v2-5f89fe0cd045cb1d615630b9261a1d17943a9b6a:2f4a4c900edd6801ff0068c2b3048b4459d119eb-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/890f3d79c515c63de69ebc6871157fc246ea5e72135f20e4ed5a1c77a6e0081f/data'
+        : 'community.wave.seqera.io/library/sra-tools_pigz:dd7a0b6dd85ec25a' }"
 
     input:
     tuple val(meta), path(sra)
@@ -14,7 +17,8 @@ process SRATOOLS_FASTERQDUMP {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
+    tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,12 +54,6 @@ process SRATOOLS_FASTERQDUMP {
         --no-name \\
         --processes $task.cpus \\
         *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 
     stub:
@@ -93,11 +91,5 @@ process SRATOOLS_FASTERQDUMP {
         --no-name \\
         --processes $task.cpus \\
         *.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(fasterq-dump --version 2>&1 | grep -Eo '[0-9.]+')
-        pigz: \$( pigz --version 2>&1 | sed 's/pigz //g' )
-    END_VERSIONS
     """
 }

@@ -10,7 +10,8 @@ tools:
         A demultiplexer for Nanopore samples
       homepage: https://github.com/nanoporetech/qcat
       documentation: https://github.com/nanoporetech/qcat#qcat
-      licence: ["MPL-2.0"]
+      licence:
+        - "MPL-2.0"
       identifier: ""
 input:
   - - meta:
@@ -22,12 +23,13 @@ input:
         type: file
         description: |
           Non-demultiplexed fastq files
-  - - barcode_kit:
-        type: string
-        description: Barcode kit used for demultiplexing
+        ontologies: []
+  - barcode_kit:
+      type: string
+      description: Barcode kit used for demultiplexing
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,14 +38,48 @@ output:
           type: file
           description: Demultiplexed fastq samples
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_qcat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qcat:
+          type: string
+          description: The name of the tool
+      - qcat --version | sed 's/.*qcat //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qcat:
+          type: string
+          description: The name of the tool
+      - qcat --version | sed 's/.*qcat //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@yuukiiwa"
   - "@drpatelh"
 maintainers:
   - "@yuukiiwa"
   - "@drpatelh"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/qcat_python_setuptools:f1f481513e1ca893
+      build_id: bd-f1f481513e1ca893_1
+      scan_id: sc-0df53c6d6dbb7684_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/qcat_python_setuptools:9cf9d173188b229b
+      build_id: bd-9cf9d173188b229b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/45/457da82216e5355e298ecd5b4ba3d5c5a81421605af9029da08680c0e31f2ba4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/qcat/.conda-lock/linux_amd64-bd-f1f481513e1ca893_1.txt

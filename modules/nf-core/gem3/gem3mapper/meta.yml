@@ -1,5 +1,6 @@
 name: "gem3_gem3mapper"
-description: Performs fastq alignment to a fasta reference using using gem3-mapper
+description: Performs fastq alignment to a fasta reference using using
+  gem3-mapper
 keywords:
   - fastq
   - genomics
@@ -8,7 +9,8 @@ tools:
   - "gem3":
       description: "The GEM indexer (v3)."
       homepage: "https://github.com/smarco/gem3-mapper"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -20,6 +22,7 @@ input:
         type: file
         description: GEM3 genome index files
         pattern: "*.{gem}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -27,16 +30,18 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - fastq:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
-          data, respectively.
+        description: List of input FastQ files of size 1 and 2 for single-end and
+          paired-end data, respectively.
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
-  - - sort_bam:
-        type: boolean
-        description: use samtools sort (true) or samtools view (false)
-        pattern: "true or false"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - sort_bam:
+      type: boolean
+      description: use samtools sort (true) or samtools view (false)
+      pattern: "true or false"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,10 +50,27 @@ output:
           type: file
           description: Sorted BAM/CRAM/SAM file
           pattern: "*.{bam,cram,sam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem3-mapper:
+          type: string
+          description: The name of the tool
+      - gem-mapper --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem3-mapper:
+          type: string
+          description: The name of the tool
+      - gem-mapper --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@miqalvarez"

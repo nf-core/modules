@@ -17,7 +17,8 @@ tools:
       homepage: https://github.com/SegataLab/cmseq
       documentation: https://github.com/SegataLab/cmseq
       tool_dev_url: https://github.com/SegataLab/cmseq
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: ""
 input:
   - - meta:
@@ -29,22 +30,26 @@ input:
         type: file
         description: BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
+        ontologies: []
     - gff:
         type: file
         description: GFF file used to extract protein-coding genes
         pattern: "*.gff"
+        ontologies: []
     - fasta:
         type: file
-        description: Optional fasta file to run on a subset of references in the BAM
-          file.
+        description: Optional fasta file to run on a subset of references in the
+          BAM file.
         pattern: .{fa,fasta,fas,fna}
+        ontologies: []
 output:
-  - polymut:
-      - meta:
+  polymut:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +58,28 @@ output:
           type: file
           description: Polymut report in `.txt` format.
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cmseq:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cmseq:
+          type: string
+          description: The tool name
+      - VERSION:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - cmseq:
+          type: string
+          description: The tool name
+      - VERSION:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
 maintainers:

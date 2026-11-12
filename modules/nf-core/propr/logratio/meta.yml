@@ -1,6 +1,6 @@
 name: "propr_logratio"
-description: Transform the data matrix using centered logratio transformation (CLR)
-  or additive logratio transformation (ALR)
+description: Transform the data matrix using centered logratio transformation
+  (CLR) or additive logratio transformation (ALR)
 keywords:
   - alr
   - clr
@@ -15,7 +15,8 @@ tools:
       documentation: "https://rdrr.io/cran/propr/man/propr.html"
       tool_dev_url: "https://github.com/tpq/propr"
       doi: "10.1038/s41598-017-16520-0"
-      licence: ["GPL-2"]
+      licence:
+        - "GPL-2"
       identifier: biotools:propr
 input:
   - - meta:
@@ -31,9 +32,12 @@ input:
           This matrix should not contain zeros. Otherwise, they will be first replaced by the minimum value.
           You may want to handle the zeros with a different method beforehand.
         pattern: "*.{csv,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - logratio:
-      - meta:
+  logratio:
+    - - meta:
           type: map
           description: |
             Groovy Map containing additional information.
@@ -41,11 +45,13 @@ output:
             [id: 'test', ...]
       - "*.logratio.tsv":
           type: file
-          description: ALR/CLR transformed data matrix. With rows = variables or genes,
-            columns = samples or cells.
+          description: ALR/CLR transformed data matrix. With rows = variables or
+            genes, columns = samples or cells.
           pattern: "*.logratio.tsv"
-  - session_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing additional information.
@@ -55,11 +61,19 @@ output:
           type: file
           description: dump of R SessionInfo
           pattern: "*.R_sessionInfo.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@suzannejin"
   - "@oprana22"

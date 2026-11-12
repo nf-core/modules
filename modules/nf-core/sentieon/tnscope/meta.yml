@@ -1,6 +1,7 @@
 name: sentieon_tnscope
-description: TNscope algorithm performs somatic variant calling on the tumor-normal
-  matched pair or the tumor only data, using a Haplotyper algorithm.
+description: TNscope algorithm performs somatic variant calling on the
+  tumor-normal matched pair or the tumor only data, using a Haplotyper
+  algorithm.
 keywords:
   - tnscope
   - sentieon
@@ -23,16 +24,20 @@ input:
         type: file
         description: One or more BAM or CRAM files.
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: Indices for the input files
         pattern: "*.{bai,crai}"
+        ontologies: []
     - intervals:
         type: file
-        description: bed or interval_list file containing interval in the reference
-          that will be used in the analysis. Only recommended for large WGS data, else 
-          the overhead may not be worth the additional parallelisation.
+        description: bed or interval_list file containing interval in the
+          reference that will be used in the analysis. Only recommended for large
+          WGS data, else the overhead may not be worth the additional
+          parallelisation.
         pattern: "*.{bed,interval_list}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,6 +47,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -51,6 +57,7 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -60,6 +67,8 @@ input:
         type: file
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
   - - meta5:
         type: map
         description: |
@@ -67,8 +76,10 @@ input:
           e.g. [ id:'test' ]
     - dbsnp_tbi:
         type: file
-        description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        description: Index of the Single Nucleotide Polymorphism database (dbSNP)
+          file
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -78,6 +89,8 @@ input:
         type: file
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
   - - meta7:
         type: map
         description: |
@@ -85,8 +98,10 @@ input:
           e.g. [ id:'test' ]
     - pon_tbi:
         type: file
-        description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        description: Index of the Single Nucleotide Polymorphism database (dbSNP)
+          file
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
   - - meta8:
         type: map
         description: |
@@ -96,6 +111,8 @@ input:
         type: file
         description: Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
   - - meta9:
         type: map
         description: |
@@ -103,11 +120,13 @@ input:
           e.g. [ id:'test' ]
     - cosmic_tbi:
         type: file
-        description: Index of the Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
+        description: Index of the Catalogue of Somatic Mutations in Cancer
+          (COSMIC) VCF file.
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -116,8 +135,9 @@ output:
           type: file
           description: VCF file
           pattern: "*.{vcf.gz}"
-  - index:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information.
@@ -126,12 +146,53 @@ output:
           type: file
           description: Index of the VCF file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--493a9352fdfbacc5
+      build_id: bd-493a9352fdfbacc5_1
+      scan_id: sc-cb424814848a20d9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c
+      build_id: bd-5e34aa16344b911c_1
+      scan_id: sc-8746dd39a4711178_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--5a01457f1db078c1
+      build_id: bd-5a01457f1db078c1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/af478c78e4ddb4fc9c570e47f3d64d86bb02e5c5467c6c095f21f95f59a7c3ab/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--95eea6ffae22db3c
+      build_id: bd-95eea6ffae22db3c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sentieon/tnscope/.conda-lock/linux_amd64-bd-5e34aa16344b911c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sentieon/tnscope/.conda-lock/linux_arm64-bd-493a9352fdfbacc5_1.txt

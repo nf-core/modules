@@ -1,0 +1,47 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+process BAMREADCOUNT {
+    tag "$meta.id"
+    label 'process_high'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba411ade937a374925c79cd8d5e1783f80b0d007f559e673eb9815dd111c3c63/data'
+        : 'community.wave.seqera.io/library/bam-readcount:1.0.1--a0d174a92a8b106d' }"
+
+    input:
+    tuple val(meta), path(bam), path(bai)
+    path(reference)
+    path(bed)
+
+    output:
+    tuple val(meta), path("*.rc"), emit: rc
+    tuple val("${task.process}"), val('bamreadcount'), eval("bam-readcount --version | awk -F'version: ' '{print \$2}' | awk -F'-' '{print \$1}'"), emit: versions_bamreadcount, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    bam-readcount \\
+        $args \\
+        -w 1 \\
+        -f ${reference} \\
+        -l ${bed} \\
+        $bam \\
+        > ${prefix}.rc
+
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo $args
+
+    touch ${prefix}.rc
+    """
+}

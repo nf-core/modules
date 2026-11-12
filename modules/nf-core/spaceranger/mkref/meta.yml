@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkref"
-description: Module to build the reference needed by the 10x Genomics Space Ranger
-  tool. Uses the spaceranger mkref command.
+description: Module to build the reference needed by the 10x Genomics Space
+  Ranger tool. Uses the spaceranger mkref command.
 keywords:
   - reference
   - mkref
@@ -23,29 +22,51 @@ tools:
         - "10x Genomics EULA"
       identifier: ""
 input:
-  - - fasta:
-        type: file
-        description: Reference genome FASTA file
-        pattern: "*.{fasta,fa}"
-  - - gtf:
-        type: file
-        description: Reference transcriptome GTF file
-        pattern: "*.gtf"
-  - - reference_name:
-        type: string
-        description: The name to give the new reference folder
-        pattern: str
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - gtf:
+      type: file
+      description: Reference transcriptome GTF file
+      pattern: "*.gtf"
+      ontologies: []
+  - reference_name:
+      type: string
+      description: The name to give the new reference folder
+      pattern: str
 output:
-  - reference:
-      - ${reference_name}:
-          type: directory
-          description: Folder containing all the reference indices needed by Space Ranger
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+  reference:
+    - ${reference_name}:
+        type: directory
+        description: Folder containing all the reference indices needed by Space
+          Ranger
+  versions_spaceranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+  - "@fasterius"

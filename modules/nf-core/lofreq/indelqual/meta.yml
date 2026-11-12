@@ -25,6 +25,7 @@ input:
         type: file
         description: BAM file
         pattern: "*.{bam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -34,9 +35,10 @@ input:
         type: file
         description: Reference genome FASTA file
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,11 +47,28 @@ output:
           type: file
           description: BAM file with indel qualities inserted into it
           pattern: "*.{bam}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_lofreq:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - lofreq:
+          type: string
+          description: Tool name
+      - "lofreq version | sed -n '1s/^.* //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - lofreq:
+          type: string
+          description: Tool name
+      - "lofreq version | sed -n '1s/^.* //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kaurravneet4123"
 maintainers:

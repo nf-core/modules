@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/GeneDx/scramble"
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
-      licence: ["CC"]
+      licence:
+        - "CC"
       identifier: ""
 input:
   - - meta:
@@ -22,10 +23,12 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: Index of the BAM/CRAM file
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,9 +38,10 @@ input:
         type: file
         description: The reference FASTA file (mandatory when using CRAM files)
         pattern: "*.{fasta,fa}"
+        ontologies: []
 output:
-  - clusters:
-      - meta:
+  clusters:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,11 +50,30 @@ output:
           type: file
           description: Tab-delimited file containing the soft-clipped clusters
           pattern: "*.clusters.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_scramble:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - scramble:
+          type: string
+          description: The tool name
+      - "1.0.2":
+          type: string
+          description: The version of the tool (hardcoded, not available via CLI)
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - scramble:
+          type: string
+          description: The tool name
+      - "1.0.2":
+          type: string
+          description: The version of the tool (hardcoded, not available via CLI)
+
 authors:
   - "@nvnieuwk"
 maintainers:

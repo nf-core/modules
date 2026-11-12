@@ -1,5 +1,6 @@
 name: "kat_hist"
 description: Creates a histogram of the number of distinct k-mers having a given frequency.
+deprecated: true
 keywords:
   - k-mer
   - histogram
@@ -25,9 +26,10 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
+        ontologies: []
 output:
-  - hist:
-      - meta:
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,8 +38,9 @@ output:
           type: file
           description: KAT histogram of k-mer counts
           pattern: "*.hist"
-  - json:
-      - meta:
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +49,10 @@ output:
           type: file
           description: KAT histogram summary of distance analysis
           pattern: "*.hist.dist_analysis.json"
-  - png:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  png:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +61,9 @@ output:
           type: file
           description: KAT plot of k-mer histogram in PNG format
           pattern: "*.png"
-  - ps:
-      - meta:
+          ontologies: []
+  ps:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,8 +72,9 @@ output:
           type: file
           description: KAT plot of k-mer histogram in PS format
           pattern: "*.ps"
-  - pdf:
-      - meta:
+          ontologies: []
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,8 +83,9 @@ output:
           type: file
           description: KAT plot of k-mer histogram in PDF format
           pattern: "*.pdf"
-  - jellyfish_hash:
-      - meta:
+          ontologies: []
+  jellyfish_hash:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,11 +94,28 @@ output:
           type: file
           description: Jellyfish hash file
           pattern: "*-hist.jf*"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_kat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kat:
+          type: string
+          description: The name of the tool
+      - kat hist --version | sed 's/kat //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kat:
+          type: string
+          description: The name of the tool
+      - kat hist --version | sed 's/kat //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

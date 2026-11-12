@@ -1,17 +1,18 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "trust4"
 description: Run TRUST4 on RNA-seq data
 keywords:
-  - sort
-  - example
-  - genomics
+  - tcr
+  - bcr
+  - genomic
+  - assembly
 tools:
   - "trust4":
       description: "TCR and BCR assembly from bulk or single-cell RNA-seq data"
       homepage: "https://github.com/liulab-dfci/TRUST4"
       documentation: "https://github.com/liulab-dfci/TRUST4"
       tool_dev_url: "https://github.com/liulab-dfci/TRUST4"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:trust4
 
 input:
@@ -24,31 +25,35 @@ input:
         type: file
         description: BAM file from bulk or single-cell RNA-seq data
         pattern: "*.bam"
+        ontologies: []
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
-          data, respectively
-  - - fasta:
-        type: file
-        description: Path to the fasta file coordinate and sequence of V/D/J/C genes
-  - - vdj_reference:
-        type: file
-        description: reference file of V/D/J genes
-  - - barcode_whitelist:
-        type: file
-        description: BarocdeWhitelist file
-  - - cell_barcode_read:
-        type: string
-        description: Read containing cell barcode (either R1 or R2)
-  - - umi_read:
-        type: string
-        description: Read containing umi barcode (either R1 or R2)
-  - - read_format:
-        type: string
-        description: Specifies where in the read the barcodes and UMIs can be found.
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively
+        ontologies: []
+  - fasta:
+      type: file
+      description: Path to the fasta file coordinate and sequence of V/D/J/C genes
+      ontologies: []
+  - vdj_reference:
+      type: file
+      description: reference file of V/D/J genes
+      ontologies: []
+  - barcode_whitelist:
+      type: file
+      description: BarocdeWhitelist file
+      ontologies: []
+  - cell_barcode_read:
+      type: string
+      description: Read containing cell barcode (either R1 or R2)
+  - umi_read:
+      type: string
+      description: Read containing umi barcode (either R1 or R2)
+  - read_format:
+      type: string
+      description: Specifies where in the read the barcodes and UMIs can be found.
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,8 +62,10 @@ output:
           type: file
           description: tsv files created by TRUST4
           pattern: "*.tsv"
-  - airr_files:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  airr_files:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,18 +74,22 @@ output:
           type: file
           description: TRUST4 results in AIRR format
           pattern: "*_airr.tsv"
-  - airr_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  airr_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${meta.id}_airr.tsv:
+      - ${prefix}_airr.tsv:
           type: file
           description: TRUST4 results in AIRR format
           pattern: "*_airr.tsv"
-  - report_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -87,8 +98,10 @@ output:
           type: file
           description: TRUST4 report in tsv format
           pattern: "*_report.tsv"
-  - fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +110,9 @@ output:
           type: file
           description: Fasta files created by TRUST4
           pattern: "*.fa"
-  - out:
-      - meta:
+          ontologies: []
+  out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -107,8 +121,9 @@ output:
           type: file
           description: Further report files
           pattern: "*.out"
-  - fq:
-      - meta:
+          ontologies: []
+  fq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -117,21 +132,43 @@ output:
           type: file
           description: Fastq files created by TRUST4
           pattern: "*.fq"
-  - outs:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  outs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "**":
           type: file
-          description: outputt files
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: output files
+          ontologies: []
+  versions_trust4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trust4:
+          type: string
+          description: The name of the tool
+      - run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trust4:
+          type: string
+          description: The name of the tool
+      - run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
-  - "@mapo9, @Joaodemeirelles"
+  - "@mapo9"
+  - "@Joaodemeirelles"
 maintainers:
   - "@mapo9"

@@ -12,10 +12,6 @@ nextflow_process {
     test("sarscov2_fasta") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
             process {
                 """
                 input[0] = [

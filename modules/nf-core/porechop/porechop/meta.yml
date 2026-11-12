@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/rrwick/Porechop"
       tool_dev_url: "https://github.com/rrwick/Porechop"
       doi: "10.1099/mgen.0.000132"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -23,9 +24,11 @@ input:
         type: file
         description: fastq/fastq.gz file
         pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +37,9 @@ output:
           type: file
           description: Demultiplexed and/or adapter-trimmed fastq.gz file
           pattern: "*.{fastq.gz}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +48,30 @@ output:
           type: file
           description: Log file containing stdout information
           pattern: "*.log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_porechop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop:
+          type: string
+          description: The name of the tool
+      - porechop --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop:
+          type: string
+          description: The name of the tool
+      - porechop --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@ggabernet"
   - "@jasmezz"

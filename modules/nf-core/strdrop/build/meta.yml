@@ -1,0 +1,92 @@
+name: "strdrop_build"
+description: Build reference json from sequencing coverage in STR VCFs
+keywords:
+  - str
+  - vcf
+  - lrs
+tools:
+  - "strdrop":
+      description: "Flag STR coverage drops in LRS data"
+      homepage: "https://github.com/dnil/strdrop"
+      documentation: "https://github.com/dnil/strdrop/blob/main/docs/README.md"
+      tool_dev_url: "https://github.com/dnil/strdrop"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - training_set:
+        type: file
+        description: Input VCF training set files
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: Output reference json file
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_strdrop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdrop:
+          type: string
+          description: The name of the tool
+      - strdrop --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - strdrop:
+          type: string
+          description: The name of the tool
+      - strdrop --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@fellen31"
+maintainers:
+  - "@fellen31"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pip_python_typing_extensions_numpy_strdrop:de2d4e2fcc806913
+      build_id: bd-de2d4e2fcc806913_1
+      scan_id: sc-2afdbcd85e17061d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pip_python_typing_extensions_numpy_strdrop:95f1c5459d42f2f0
+      build_id: bd-95f1c5459d42f2f0_1
+      scan_id: sc-9719cc37f2a86e73_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pip_python_typing_extensions_numpy_strdrop:bc4ea6d86ee98a91
+      build_id: bd-bc4ea6d86ee98a91_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/9915c87a51b3c5af344c3044ac79c7badb8b44a1aed0eeba4363bc10e2a4bc95/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pip_python_typing_extensions_numpy_strdrop:6268cf45bdf8be19
+      build_id: bd-6268cf45bdf8be19_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c57ab0dff54240e98a3ddbb23503bee80649ac4b2282a46b82125e0b822b9b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/strdrop/build/.conda-lock/linux_amd64-bd-de2d4e2fcc806913_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/strdrop/build/.conda-lock/linux_arm64-bd-95f1c5459d42f2f0_1.txt

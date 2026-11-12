@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/Mykrobe-tools/mykrobe/wiki"
       tool_dev_url: "https://github.com/Mykrobe-tools/mykrobe"
       doi: "10.1038/ncomms10063"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Mykrobe
 input:
   - - meta:
@@ -23,13 +24,14 @@ input:
         type: file
         description: BAM or FASTQ file
         pattern: "*.{bam,fastq.gz,fq.gz}"
-  - - species:
-        type: string
-        description: Species to make AMR prediction against
-        pattern: "*"
+        ontologies: []
+  - species:
+      type: string
+      description: Species to make AMR prediction against
+      pattern: "*"
 output:
-  - csv:
-      - meta:
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +40,10 @@ output:
           type: file
           description: AMR predictions in CSV format
           pattern: "*.csv"
-  - json:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,11 +52,31 @@ output:
           type: file
           description: AMR predictions in JSON format
           pattern: "*.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_mykrobe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mykrobe:
+          type: string
+          description: The name of the tool
+      - mykrobe --version 2>&1 | sed 's/^.*mykrobe v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mykrobe:
+          type: string
+          description: The name of the tool
+      - mykrobe --version 2>&1 | sed 's/^.*mykrobe v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

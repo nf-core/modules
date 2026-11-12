@@ -10,7 +10,8 @@ tools:
       homepage: "https://labsyspharm.github.io/ashlar/"
       documentation: "https://labsyspharm.github.io/ashlar/"
       doi: "10.1093/bioinformatics/btac544"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ASHLAR
 input:
   - - meta:
@@ -22,15 +23,18 @@ input:
         type: file
         description: Overlapping tile image data in formats from most commercial microscopes
         pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
-  - - opt_dfp:
-        type: file
-        description: Optional dark field image data
-  - - opt_ffp:
-        type: file
-        description: Optional flat field image data
+        ontologies: []
+  - opt_dfp:
+      type: file
+      description: Optional dark field image data
+      ontologies: []
+  - opt_ffp:
+      type: file
+      description: Optional flat field image data
+      ontologies: []
 output:
-  - tif:
-      - meta:
+  tif:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,14 +43,55 @@ output:
           type: file
           description: A pyramidal, tiled OME-TIFF file created from input images.
           pattern: "*.ome.tif"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ashlar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ashlar:
+          type: string
+          description: The name of the tool
+      - ashlar --version | sed 's/^.*ashlar //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ashlar:
+          type: string
+          description: The name of the tool
+      - ashlar --version | sed 's/^.*ashlar //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@RobJY"
   - "@jmuhlich"
 maintainers:
   - "@RobJY"
   - "@jmuhlich"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ashlar_tifffile:6466db6f351397ba
+      build_id: bd-6466db6f351397ba_1
+      scan_id: sc-cceea23b86b93d04_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ashlar_tifffile:68dd4095ed92ddc1
+      build_id: bd-68dd4095ed92ddc1_1
+      scan_id: sc-5e58fcffeb038cf9_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ashlar_tifffile:ccd3fae9b4eab232
+      build_id: bd-ccd3fae9b4eab232_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/774b24842ee0875beafb5463ee1aaf268cd2ea04b4ab09cd7e645a111543d88e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ashlar_tifffile:8071007ebd80be4b
+      build_id: bd-8071007ebd80be4b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f9a902bb541dc2abba28e73c4bac2ee14d28373abe2e14b444a5096f4919cb7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ashlar/.conda-lock/linux_amd64-bd-6466db6f351397ba_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ashlar/.conda-lock/linux_arm64-bd-68dd4095ed92ddc1_1.txt

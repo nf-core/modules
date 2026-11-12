@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process QUANTMSUTILS_MZMLSTATISTICS"
+    script "../main.nf"
+    process "QUANTMSUTILS_MZMLSTATISTICS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quantmsutils"
+    tag "quantmsutils/mzmlstatistics"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test_sample'],
+                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - mzML statistics") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "ms_statistics"])).match() }
+            )
+        }
+    }
+
+    test("proteomics - mzML statistics - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map{ meta, dir ->
+                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
+                    [meta, mzmlFile]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

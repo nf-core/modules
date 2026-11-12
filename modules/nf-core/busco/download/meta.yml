@@ -7,9 +7,7 @@ keywords:
   - proteome
 tools:
   - busco:
-      description: BUSCO provides measures for quantitative assessment of genome assembly,
-        gene set, and transcriptome completeness based on evolutionarily informed expectations
-        of gene content from near-universal single-copy orthologs selected from OrthoDB.
+      description: BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
       homepage: https://busco.ezlab.org/
       documentation: https://busco.ezlab.org/busco_userguide.html
       tool_dev_url: https://gitlab.com/ezlab/busco
@@ -17,22 +15,52 @@ tools:
       licence: ["MIT"]
       identifier: biotools:busco
 input:
-  - - lineage:
-        type: string
-        description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk"
-          to automatically select lineage
+  - lineage:
+      type: string
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to automatically select lineage
 output:
-  - download_dir:
-      - busco_downloads:
-          type: file
-          description: Directory with busco database
-          pattern: "busco_downloads"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  download_dir:
+    - busco_downloads:
+        type: file
+        description: Directory with busco database
+        pattern: "busco_downloads"
+        ontologies: []
+  versions_busco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco:
+          type: string
+          description: The name of the tool
+      - busco --version 2> /dev/null | sed 's/BUSCO //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@zachary-foster"
 maintainers:
   - "@zachary-foster"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/busco:6.1.0--c502c35c2ab05540
+      build_id: bd-c502c35c2ab05540_1
+      scan_id: sc-5eb812b63147a8d3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/busco:6.1.0--e8bfdc605fd43e86
+      build_id: bd-e8bfdc605fd43e86_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd93359cce52c80ad33d58e18a694f37dc8aee9ccf2530cce8c42f9ade5c1f3f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/busco/download/.conda-lock/linux_amd64-bd-c502c35c2ab05540_1.txt

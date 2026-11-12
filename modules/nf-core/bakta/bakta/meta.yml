@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/oschwengers/bakta
       tool_dev_url: https://github.com/oschwengers/bakta
       doi: "10.1099/mgen.0.000685"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:bakta
 input:
   - - meta:
@@ -23,19 +24,42 @@ input:
         type: file
         description: |
           FASTA file to be annotated. Has to contain at least a non-empty string dummy value.
-  - - db:
-        type: file
-        description: |
-          Path to the Bakta database. Must have amrfinderplus database directory already installed within it (in a directory called 'amrfinderplus-db/').
-  - - proteins:
-        type: file
-        description: FASTA/GenBank file of trusted proteins to first annotate from (optional)
-  - - prodigal_tf:
-        type: file
-        description: Training file to use for Prodigal (optional)
+        pattern: "*.{fa,fas,fna,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - db:
+      type: file
+      description: |
+        Path to the Bakta database directory. Must have amrfinderplus database directory already installed within it (in a directory called 'amrfinderplus-db/').
+      ontologies:
+        - edam: http://edamontology.org/data_1049
+  - proteins:
+      type: file
+      description: FASTA/GenBank file of trusted proteins to first annotate from (optional)
+      pattern: "*.{fa,fas,fna,fasta,faa}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929
+  - prodigal_tf:
+      type: file
+      description: Training file to use for Prodigal for CDS prediction(optional)
+      pattern: "*.{tf,trn}"
+      ontologies:
+        - edam: http://edamontology.org/format_2333
+  - regions:
+      type: file
+      description: GFF3 or GenBank file of pre-annotated regions (optional)
+      pattern: "*.{gbff,gff3}"
+      ontologies:
+        - edam: http://edamontology.org/format_2206
+  - hmms:
+      type: file
+      description: HMM database file for custom annotation (optional)
+      pattern: "*.hmm"
+      ontologies:
+        - edam: http://edamontology.org/format_1370
 output:
-  - embl:
-      - meta:
+  embl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +68,10 @@ output:
           type: file
           description: annotations & sequences in (multi) EMBL format
           pattern: "*.embl"
-  - faa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1927
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +80,10 @@ output:
           type: file
           description: CDS/sORF amino acid sequences as FASTA
           pattern: "*.faa"
-  - ffn:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  ffn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +92,10 @@ output:
           type: file
           description: feature nucleotide sequences as FASTA
           pattern: "*.ffn"
-  - fna:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +104,10 @@ output:
           type: file
           description: replicon/contig DNA sequences as FASTA
           pattern: "*.fna"
-  - gbff:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  gbff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,8 +116,10 @@ output:
           type: file
           description: annotations & sequences in (multi) GenBank format
           pattern: "*.gbff"
-  - gff:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1936
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -94,19 +128,23 @@ output:
           type: file
           description: annotations & sequences in GFF3 format
           pattern: "*.gff3"
-  - hypotheticals_tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1975
+  hypotheticals_tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.hypotheticals.tsv:
           type: file
-          description: additional information on hypothetical protein CDS as simple human
-            readable tab separated values
+          description: additional information on hypothetical protein CDS as simple
+            human readable tab separated values
           pattern: "*.hypotheticals.tsv"
-  - hypotheticals_faa:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  hypotheticals_faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +153,10 @@ output:
           type: file
           description: hypothetical protein CDS amino acid sequences as FASTA
           pattern: "*.hypotheticals.faa"
-  - tsv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +165,10 @@ output:
           type: file
           description: annotations as simple human readable tab separated values
           pattern: "*.tsv"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,11 +177,43 @@ output:
           type: file
           description: genome statistics and annotation summary
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.json:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: |
+            Machine-readable genome annotation output in JSON format,
+            including genome metadata, annotated genomic features,
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_bakta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/.*bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bakta:
+          type: string
+          description: The name of the tool
+      - bakta --version 2>&1 | sed 's/.*bakta //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
   - "@oschwengers"

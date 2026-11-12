@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DOUBLETDETECTION {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96f52092a8472acb59ded59ab5ec4a29a56627f0c78e3cc8a0b916c6bedd67d6/data'
         : 'community.wave.seqera.io/library/pyyaml_pip_doubletdetection:5af145ffec01d7da'}"
 
@@ -13,7 +16,7 @@ process DOUBLETDETECTION {
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
     tuple val(meta), path("*.pkl") , emit: predictions
-    path "versions.yml"            , emit: versions
+    path "versions.yml"            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

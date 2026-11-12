@@ -7,12 +7,12 @@ keywords:
   - subreads
 tools:
   - pbccs:
-      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads
-        (HiFi Reads)
+      description: pbccs - Generate Highly Accurate Single-Molecule Consensus Reads (HiFi Reads)
       homepage: https://github.com/PacificBiosciences/pbbioconda
       documentation: https://ccs.how/
       tool_dev_url: https://github.com/PacificBiosciences/ccs
-      licence: ["BSD-3-Clause-Clear"]
+      licence:
+        - "BSD-3-Clause-Clear"
       identifier: ""
 input:
   - - meta:
@@ -24,19 +24,21 @@ input:
         type: file
         description: Raw subreads bam
         pattern: "*.subreads.bam"
+        ontologies: []
     - pbi:
         type: file
         description: Pacbio BAM Index
         pattern: "*.pbi"
-  - - chunk_num:
-        type: integer
-        description: BAM part to process
-  - - chunk_on:
-        type: integer
-        description: Total number of bam parts to process
+        ontologies: []
+  - chunk_num:
+      type: integer
+      description: BAM part to process
+  - chunk_on:
+      type: integer
+      description: Total number of bam parts to process
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +47,9 @@ output:
           type: file
           description: CCS sequences in bam format
           pattern: "*.bam"
-  - pbi:
-      - meta:
+          ontologies: []
+  pbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,28 +58,33 @@ output:
           type: file
           description: PacBio Index of CCS sequences
           pattern: "*.pbi"
-  - report_txt:
-      - meta:
+          ontologies: []
+  report_txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.report.txt" ':
+      - "*.report.txt":
           type: file
-          description: Summary of CCS in txt format
-          pattern: ".txt"
-  - report_json:
-      - meta:
+          description: CCS report in text format
+          pattern: "*.report.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  report_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - '*.report.json" ':
+      - "*.report.json":
           type: file
-          description: Summary of CCS in txt json
-          pattern: ".json"
-  - metrics:
-      - meta:
+          description: CCS report in JSON format
+          pattern: "*.report.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,11 +93,31 @@ output:
           type: file
           description: Metrics about zmws
           pattern: "*.json.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_pbccs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbccs:
+          type: string
+          description: The name of the tool
+      - ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbccs:
+          type: string
+          description: The name of the tool
+      - ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@sguizard"
 maintainers:

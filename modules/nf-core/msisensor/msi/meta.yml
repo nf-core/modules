@@ -1,6 +1,7 @@
 name: msisensor_msi
 description: Evaluate microsattelite instability (MSI) using paired tumor-normal sequencing
   data
+deprecated: true
 keywords:
   - homoploymer
   - microsatellite
@@ -24,28 +25,35 @@ input:
         type: file
         description: Coordinate sorted BAM/CRAM/SAM file from normal tissue
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - normal_bai:
         type: file
         description: Index for coordinate sorted BAM/CRAM/SAM file from normal tissue
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - tumor_bam:
         type: file
         description: Coordinate sorted BAM/CRAM/SAM file from tumor tissue
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - tumor_bai:
         type: file
         description: Index for coordinate sorted BAM/CRAM/SAM file from tumor tissue
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - metascan:
         type: file
         description: metascan file
+        ontologies: []
     - homopolymers:
         type: file
         description: Output file from MSIsensor scan module
         pattern: "*.msisensor_scan.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - output:
-      - meta:
+  output:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +61,9 @@ output:
       - ${prefix}:
           type: file
           description: Output file from MSIsensor msi module
-  - output_dis:
-      - meta:
+          ontologies: []
+  output_dis:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +71,9 @@ output:
       - ${prefix}_dis:
           type: file
           description: Output file from MSIsensor module
-  - output_germline:
-      - meta:
+          ontologies: []
+  output_germline:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -71,8 +81,9 @@ output:
       - ${prefix}_germline:
           type: file
           description: Output file from MSIsensor module
-  - output_somatic:
-      - meta:
+          ontologies: []
+  output_somatic:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,11 +91,28 @@ output:
       - ${prefix}_somatic:
           type: file
           description: Output file from MSIsensor module
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_msisensor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor:
+          type: string
+          description: The name of the tool
+      - "msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor:
+          type: string
+          description: The name of the tool
+      - "msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@kevbrick"
 maintainers:

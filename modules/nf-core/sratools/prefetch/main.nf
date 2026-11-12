@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SRATOOLS_PREFETCH {
-    tag "$id"
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.1.0--h9f5acd7_0' :
-        'biocontainers/sra-tools:3.1.0--h9f5acd7_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9a7d146a9a0215c5386603fe7f0b3c347254854a447ed8dd4919a4b2eae2a88/data'
+        : 'community.wave.seqera.io/library/sra-tools_curl:c1e36977de327cd2' }"
 
     input:
     tuple val(meta), val(id)
@@ -13,35 +16,31 @@ process SRATOOLS_PREFETCH {
     path certificate
 
     output:
-    tuple val(meta), path(id, type: 'dir'), emit: sra
-    path 'versions.yml'      , emit: versions
+    tuple val(meta), path("${id}", type: 'dir'), emit: sra
+    tuple val("${task.process}"), val('sratools'), eval("prefetch --version 2>&1 | grep -Eo '[0-9.]+'"), topic: versions, emit: versions_sratools
+    tuple val("${task.process}"), val('curl'), eval("curl --version | sed '1!d;s/^curl //; s/ .*//'"), topic: versions, emit: versions_curl
 
     when:
     task.ext.when == null || task.ext.when
 
-    shell:
+    script:
     args = task.ext.args ?: ''
     args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
-    if (certificate) {
-        if (certificate.toString().endsWith('.jwt')) {
-            args += " --perm ${certificate}"
-        }
-        else if (certificate.toString().endsWith('.ngc')) {
-            args += " --ngc ${certificate}"
-        }
-    }
+    def cert_arg = certificate ?
+        (certificate.name.endsWith('.jwt') ? "--perm ${certificate}" :
+        certificate.name.endsWith('.ngc') ? "--ngc ${certificate}" : '') : ''
+    final_args = "${args} ${cert_arg}".trim()
 
-    template 'retry_with_backoff.sh'
+    """
+    echo "${args2}"
+    echo "${final_args}"
+    """
+
+    template "retry_with_backoff.sh"
 
     stub:
     """
-    mkdir $id
-    touch $id/${id}.sra
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sratools: \$(prefetch --version 2>&1 | grep -Eo '[0-9.]+')
-        curl: \$(curl --version | head -n 1 | sed 's/^curl //; s/ .*\$//')
-    END_VERSIONS
+    mkdir ${id}
+    touch ${id}/${id}.sra
     """
 }

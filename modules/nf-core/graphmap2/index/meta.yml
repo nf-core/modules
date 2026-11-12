@@ -10,27 +10,70 @@ tools:
         A versatile pairwise aligner for genomic and spliced nucleotide sequences.
       homepage: https://github.com/lbcb-sci/graphmap2
       documentation: https://github.com/lbcb-sci/graphmap2#graphmap2---a-highly-sensitive-and-accurate-mapper-for-long-error-prone-reads
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Graphmap2
 input:
-  - - fasta:
-        type: file
-        description: |
-          Reference database in FASTA format.
+  - fasta:
+      type: file
+      description: |
+        Reference database in FASTA format.
+      ontologies: []
 output:
-  - index:
-      - "*.gmidx":
-          type: file
-          description: Index file in gmidx format
-          pattern: "*.gmidx"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  index:
+    - "*.gmidx":
+        type: file
+        description: Index file in gmidx format
+        pattern: "*.gmidx"
+        ontologies: []
+  versions_graphmap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphmap2:
+          type: string
+          description: The name of the tool
+      - "graphmap2 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphmap2:
+          type: string
+          description: The name of the tool
+      - "graphmap2 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
   - "@drpatelh"
 maintainers:
   - "@yuukiiwa"
   - "@drpatelh"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/graphmap:0.6.4--4c694751d262fa1f
+      build_id: bd-4c694751d262fa1f_1
+      scan_id: sc-be8d121f6e924670_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/graphmap:0.6.4--70c4b6f1a35e5b19
+      build_id: bd-70c4b6f1a35e5b19_1
+      scan_id: sc-344fc5ccf2e9578d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/graphmap:0.6.4--d5de119607225507
+      build_id: bd-d5de119607225507_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2cc3104dc1685c517113b64d39a936d04977410994ec5982ef22fd2b76199d8f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/graphmap:0.6.4--6d9dc4709cdc4d13
+      build_id: bd-6d9dc4709cdc4d13_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b208f59c93cce08817b86c78982c91e4706412cff4d9d5e855f66568e82bcb3b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/graphmap2/index/.conda-lock/linux_amd64-bd-4c694751d262fa1f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/graphmap2/index/.conda-lock/linux_arm64-bd-70c4b6f1a35e5b19_1.txt

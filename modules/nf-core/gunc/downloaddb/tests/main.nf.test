@@ -11,12 +11,10 @@ nextflow_process {
     tag "gunc/downloaddb"
 
     test("test-gunc-downloaddb") {
-
         when {
             process {
                 """
-                input[0] = 'progenomes'
-
+                input[0] = 'test_data'
                 """
             }
         }
@@ -25,8 +23,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.db[0]).name, // ~ 12 GB file
-                    process.out.versions
+                    file(process.out.db[0]).name,
+                    process.out.versions_gunc
                     ).match()
                 }
             )
@@ -40,7 +38,6 @@ nextflow_process {
             process {
                 """
                 input[0] = 'progenomes'
-
                 """
             }
         }

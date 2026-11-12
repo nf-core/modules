@@ -12,9 +12,9 @@ tools:
       documentation: "https://github.com/Kinggerm/GetOrganelle"
       tool_dev_url: "https://github.com/Kinggerm/GetOrganelle"
       doi: "10.1186/s13059-020-02154-5"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:getorganelle
-
 input:
   - - meta:
         type: map
@@ -25,6 +25,7 @@ input:
         type: file
         description: Input fastq files
         pattern: "*.{fastq.gz}"
+        ontologies: []
   - - organelle_type:
         type: string
         description: |
@@ -33,8 +34,8 @@ input:
         type: directory
         description: GetOrganelle database
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,14 +44,38 @@ output:
           type: file
           description: Complete or partial organelle sequences
           pattern: "*.fasta.gz"
-  - etc:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
+  etc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
       - results/*:
           type: file
           description: Other output files
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_getorganelle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - getorganelle:
+          type: string
+          description: The name of the tool
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - getorganelle:
+          type: string
+          description: The name of the tool
+      - get_organelle_from_reads.py --version |& sed 's/^GetOrganelle v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@erinyoung"

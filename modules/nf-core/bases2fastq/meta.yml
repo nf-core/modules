@@ -22,86 +22,127 @@ input:
         type: file
         description: RunManifest file
         pattern: "*.{csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
     - run_dir:
         type: directory
         description: "Input run directory containing optionally containing a RunManifest.json
           if run_manifest is not supplied"
 output:
-  - sample_fastq:
-      - meta:
+  sample_fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Samples/**/*_R*.fastq.gz:
+      - ${prefix}/Samples/**/*_R*.fastq.gz:
           type: file
           description: Demultiplexed sample FASTQ files
-          pattern: "output/Samples/*/*_R*.fastq.gz"
-  - sample_json:
-      - meta:
+          pattern: "${prefix}/Samples/*/*_R*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  sample_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Samples/**/*_stats.json:
+      - ${prefix}/Samples/**/*_stats.json:
           type: file
           description: Demultiplexed sample stats
-          pattern: "output/Samples/*/*.json"
-  - qc_report:
-      - meta:
+          pattern: "${prefix}/Samples/*/*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  qc_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/*.html:
+      - ${prefix}/*_QC.html:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
-  - run_stats:
-      - meta:
+          pattern: "${prefix}//*_QC.html"
+          ontologies: []
+  multiqc_report:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/RunStats.json:
+      - ${prefix}/multiqc_report.html:
+          type: file
+          description: Multiqc HTML report
+          pattern: "${prefix}/multiqc_report.html"
+          ontologies: []
+  run_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/RunStats.json:
           type: file
           description: QC HTML report
-          pattern: "output/*.html"
-  - generated_run_manifest:
-      - meta:
+          pattern: "${prefix}/*.html"
+          ontologies: []
+  generated_run_manifest:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/RunManifest.json:
+      - ${prefix}/RunManifest.json:
           type: file
           description: Updated Run Manifest JSON from the run_manifest csv
-          pattern: "output/RunManifest.json"
-  - metrics:
-      - meta:
+          pattern: "${prefix}/RunManifest.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/Metrics.csv:
+      - ${prefix}/Metrics.csv:
           type: file
           description: Sample metrics
-          pattern: "output/Metrics.csv"
-  - unassigned:
-      - meta:
+          pattern: "${prefix}/Metrics.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  unassigned:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - output/UnassignedSequences.csv:
+      - ${prefix}/UnassignedSequences.csv:
           type: file
           description: Unassigned Sequences
-          pattern: "output/UnassignedSequences.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "${prefix}/UnassignedSequences.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions_bases2fastq:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bases2fastq:
+          type: string
+          description: The tool name
+      - bases2fastq --version | sed "s/.*version //;s/,.*//":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

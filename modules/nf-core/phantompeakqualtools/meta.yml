@@ -30,9 +30,10 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - spp:
-      - meta:
+  spp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +44,9 @@ output:
             A ChIP-Seq Processing Pipeline file containing
             peakshift/phantomPeak results
           pattern: "*.{out}"
-  - pdf:
-      - meta:
+          ontologies: []
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,8 +55,9 @@ output:
           type: file
           description: A pdf containing save cross-correlation plots
           pattern: "*.{pdf}"
-  - rdata:
-      - meta:
+          ontologies: []
+  rdata:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,11 +66,47 @@ output:
           type: file
           description: Rdata file containing the R session
           pattern: "*.{Rdata}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_r:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression ot obtain the version of the tool
+  versions_phantompeakqualtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phantompeakqualtools:
+          type: string
+          description: The name of the tool
+      - "1.2.2":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression ot obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - phantompeakqualtools:
+          type: string
+          description: The name of the tool
+      - "1.2.2":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@edmundmiller"

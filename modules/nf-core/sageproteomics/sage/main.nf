@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAGEPROTEOMICS_SAGE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sage-proteomics:0.14.7--h031d066_0' :
-        'biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
+        'quay.io/biocontainers/sage-proteomics:0.14.7--h031d066_0' }"
 
     input:
     tuple val(meta),  path("*.mzML")
@@ -16,7 +19,7 @@ process SAGEPROTEOMICS_SAGE {
     tuple val(meta), path("results.sage.tsv"),        emit: results_tsv
     tuple val(meta), path("results.json"),            emit: results_json
     tuple val(meta), path("results.sage.pin"),        emit: results_pin
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('sageproteomics'), eval("sage --version |& sed '1!d ; s/sage //'"), topic: versions, emit: versions_sageproteomics
 
     //optional outs
     tuple val(meta), path("tmt.tsv"), optional: true, emit: tmt_tsv
@@ -26,9 +29,6 @@ process SAGEPROTEOMICS_SAGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     export RAYON_NUM_THREADS=$task.cpus
 
@@ -37,24 +37,12 @@ process SAGEPROTEOMICS_SAGE {
         --fasta $fasta_proteome \\
         --write-pin \\
         *.mzML
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sageproteomics: \$(sage --version |& sed '1!d ; s/sage //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch results.json
     touch results.sage.tsv
     touch results.sage.pin
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sageproteomics: \$(sage --version |& sed '1!d ; s/sage //')
-    END_VERSIONS
     """
 }

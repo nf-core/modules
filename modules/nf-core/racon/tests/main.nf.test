@@ -3,7 +3,7 @@ nextflow_process {
     name "Test Process RACON"
     script "../main.nf"
     process "RACON"
-    
+
     tag "modules"
     tag "modules_nfcore"
     tag "racon"
@@ -13,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
@@ -26,7 +26,33 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("single-end - bacteroides_fragilis - [fastq_gz, fna_gz, paf] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.paf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

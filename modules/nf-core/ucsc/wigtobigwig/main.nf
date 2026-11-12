@@ -1,50 +1,42 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UCSC_WIGTOBIGWIG {
     tag "$meta.id"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-wigtobigwig:447--h2a80c09_1' :
-        'biocontainers/ucsc-wigtobigwig:447--h2a80c09_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9bd2ac9664903df3496bfb08aedfa8db9314fbd16f3498de896c0de8f4975d95/data'
+:         'community.wave.seqera.io/library/ucsc-wigtobigwig:482--4eb74e15915ee878' }"
 
     input:
     tuple val(meta), path(wig)
     path sizes
 
     output:
-    tuple val(meta), path("*.bw"), emit: bw
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("${prefix}.bw"), emit: bw
+    tuple val("${task.process}"), val('ucsc'), val('482'), topic: versions, emit: versions_ucsc
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     wigToBigWig \\
         $args \\
         $wig \\
         $sizes \\
         ${prefix}.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '447' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ucsc: $VERSION
-    END_VERSIONS
     """
 }

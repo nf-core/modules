@@ -1,6 +1,5 @@
 name: sratools_fasterqdump
-description: Extract sequencing reads in FASTQ format from a given NCBI Sequence Read
-  Archive (SRA).
+description: Extract sequencing reads in FASTQ format from a given NCBI Sequence Read Archive (SRA).
 keywords:
   - sequencing
   - FASTQ
@@ -11,7 +10,8 @@ tools:
       homepage: https://github.com/ncbi/sra-tools
       documentation: https://github.com/ncbi/sra-tools/wiki
       tool_dev_url: https://github.com/ncbi/sra-tools
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: ""
 input:
   - - meta:
@@ -23,20 +23,22 @@ input:
         type: directory
         description: Directory containing ETL data for the given SRA.
         pattern: "*/*.sra"
-  - - ncbi_settings:
-        type: file
-        description: >
-          An NCBI user settings file.
-        pattern: "*.mkfg"
-  - - certificate:
-        type: file
-        description: >
-          Path to a JWT cart file used to access protected dbGAP data on SRA using the
-          sra-toolkit
-        pattern: "*.cart"
+  - ncbi_settings:
+      type: file
+      description: >
+        An NCBI user settings file.
+      pattern: "*.mkfg"
+      ontologies: []
+  - certificate:
+      type: file
+      description: >
+        Path to a JWT cart file used to access protected dbGAP data on SRA using the
+        sra-toolkit
+      pattern: "*.cart"
+      ontologies: []
 output:
-  - reads:
-      - meta:
+  reads:
+    - - meta:
           type: map
           description: >
             Groovy Map containing sample information e.g. [ id:'test', single_end:false
@@ -45,13 +47,74 @@ output:
           type: file
           description: Extracted FASTQ file or files if the sequencing reads are paired-end.
           pattern: "*.fastq.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_sratools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sratools:
+          type: string
+          description: The name of the tool
+      - prefetch --version 2>&1 | grep -Eo '[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Midnighter"
 maintainers:
   - "@Midnighter"
   - "@gallvp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sra-tools_pigz:9acd5f161c455e6e
+      build_id: bd-9acd5f161c455e6e_1
+      scan_id: sc-e34215a4521d881b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sra-tools_pigz:dd7a0b6dd85ec25a
+      build_id: bd-dd7a0b6dd85ec25a_1
+      scan_id: sc-57c45020ef6dbe2c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sra-tools_pigz:5a0067ef9962acaa
+      build_id: bd-5a0067ef9962acaa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/890f3d79c515c63de69ebc6871157fc246ea5e72135f20e4ed5a1c77a6e0081f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sra-tools_pigz:212314c11cc0a44b
+      build_id: bd-212314c11cc0a44b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c596e3df07c38603214b242a7f189c7610d52bb10faf2c3e5acc3765b64e1ed5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sratools/fasterqdump/.conda-lock/linux_amd64-bd-dd7a0b6dd85ec25a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sratools/fasterqdump/.conda-lock/linux_arm64-bd-9acd5f161c455e6e_1.txt

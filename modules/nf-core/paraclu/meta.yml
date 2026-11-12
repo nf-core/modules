@@ -10,7 +10,8 @@ tools:
       homepage: https://gitlab.com/mcfrith/paraclu
       documentation: https://gitlab.com/mcfrith/paraclu
       tool_dev_url: https://gitlab.com/mcfrith/paraclu
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -22,13 +23,14 @@ input:
         type: file
         description: BED file
         pattern: "*.bed"
-  - - min_cluster:
-        type: integer
-        description: Minimum size of cluster
-        pattern: "*.bed"
+        ontologies: []
+  - min_cluster:
+      type: integer
+      description: Minimum size of cluster
+      pattern: "*.bed"
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,11 +39,30 @@ output:
           type: file
           description: clustered BED file
           pattern: "*.bed"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_paraclu:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraclu:
+          type: string
+          description: The name of the tool
+      - "10":
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraclu:
+          type: string
+          description: The name of the tool
+      - "10":
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mashehu"
 maintainers:

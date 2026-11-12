@@ -11,7 +11,8 @@ tools:
       documentation: "https://github.com/hahnlab/CAFE5"
       tool_dev_url: "https://github.com/hahnlab/CAFE5"
       doi: "10.1093/bioinformatics/btaa1027"
-      licence: ["IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"]
+      licence:
+        - "IU OPEN SOURCE LICENSE (see https://github.com/hahnlab/CAFE5/blob/master/LICENSE)"
       identifier: biotools:CaFE_Calculation_of_Free_Energy
 input:
   - - meta:
@@ -21,16 +22,18 @@ input:
           e.g. [ id:'test' ]
     - infile:
         type: file
-        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue
-          or OrthoFinder)
+        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue or OrthoFinder)
         pattern: "*.{txt,tsv,tab}"
-  - - tree:
-        type: file
-        description: Newick formatted tree
-        pattern: "*.{txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - tree:
+      type: file
+      description: Newick formatted tree
+      pattern: "*.{txt}"
+      ontologies: []
 output:
-  - cafe:
-      - meta:
+  cafe:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,32 +41,70 @@ output:
       - ${prefix}:
           type: directory
           description: A folder with all the cafe output
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-  - cafe_base_count:
-      - $prefix/*_count.tab:
-          type: file
-          description: File containing counts of genes per orthogroup
-          pattern: "*_count.tab"
-  - cafe_significant_trees:
-      - $prefix/*.tre:
-          type: file
-          description: File containing significant trees (newick format)
-          pattern: "*.tre"
-  - cafe_report:
-      - $prefix/*_report.cafe:
-          type: file
-          description: File containing the final report from cafe
-          pattern: "*_report.cafe"
-  - cafe_results:
-      - $prefix/*results.txt:
-          type: file
-          description: File containing the main result files from cafe
-          pattern: "*results.txt"
+  cafe_base_count:
+    - $prefix/*_count.tab:
+        type: file
+        description: File containing counts of genes per orthogroup
+        pattern: "*_count.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  cafe_significant_trees:
+    - $prefix/*.tre:
+        type: file
+        description: File containing significant trees (newick format)
+        pattern: "*.tre"
+        ontologies: []
+  cafe_report:
+    - $prefix/*_report.cafe:
+        type: file
+        description: File containing the final report from cafe
+        pattern: "*_report.cafe"
+        ontologies: []
+  cafe_results:
+    - $prefix/*results.txt:
+        type: file
+        description: File containing the main result files from cafe
+        pattern: "*results.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_cafe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cafe:
+          type: string
+          description: The name of the tool
+      - 5.1.0:
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cafe:
+          type: string
+          description: The name of the tool
+      - 5.1.0:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@chriswyatt1"
 maintainers:
   - "@chriswyatt1"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cafe:5.1.0--4ba563d3b90c6a6e
+      build_id: bd-4ba563d3b90c6a6e_1
+      scan_id: sc-0a85ed8319a3fa5a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cafe:5.1.0--c24b30238049ca3a
+      build_id: bd-c24b30238049ca3a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1abaff43e5320ef242c17d05367cb50bf1e256c0e4f9211e522e0c187b7ab4ba/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cafe/.conda-lock/linux_amd64-bd-4ba563d3b90c6a6e_1.txt

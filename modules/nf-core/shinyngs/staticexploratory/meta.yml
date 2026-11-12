@@ -1,6 +1,5 @@
 name: "shinyngs_staticexploratory"
-description: Make exploratory plots for analysis of matrix data, including PCA, Boxplots
-  and density plots
+description: Make exploratory plots for analysis of matrix data, including PCA, Boxplots and density plots
 keywords:
   - exploratory
   - plot
@@ -9,10 +8,9 @@ keywords:
   - PCA
 tools:
   - "shinyngs":
-      description: "Provides Shiny applications for various array and NGS applications.
-        Currently very RNA-seq centric, with plans for expansion."
+      description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
-      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      documentation: "https://pinin4fjords.github.io/shinyngs/"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
       licence: ["AGPL v3"]
       identifier: ""
@@ -27,149 +25,213 @@ input:
         type: file
         description: |
           CSV-format sample sheet with sample metadata
+        ontologies: []
     - feature_meta:
         type: file
         description: |
           TSV-format feature (e.g. gene) metadata
+        ontologies: []
     - assay_files:
         type: file
         description: |
           List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        ontologies: []
     - variable:
         type: string
         description: |
           Variable to use for the contrast variable in the plots.
 output:
-  - boxplots_png:
-      - meta:
+  boxplots_png:
+    - - meta:
           type: file
           description: |
             Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
+          ontologies: []
       - "*/png/boxplot.png":
           type: file
           description: |
             Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
-  - boxplots_html:
-      - meta:
+          ontologies: []
+  boxplots_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing HTML output for box plots covering input
+            Meta-keyed tuple containing PNG output for box plots covering input
             matrices.
+          ontologies: []
       - "*/html/boxplot.html":
           type: file
           description: |
             Meta-keyed tuple containing HTML output for box plots covering input
             matrices.
-  - densities_png:
-      - meta:
+          ontologies: []
+  densities_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing PNG output for density plots
-            covering input matrices.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/density.png":
           type: file
           description: |
             Meta-keyed tuple containing PNG output for density plots
             covering input matrices.
-  - densities_html:
-      - meta:
+          ontologies: []
+  densities_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing HTML output for density plots
-            covering input matrices.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/density.html":
           type: file
           description: |
             Meta-keyed tuple containing HTML output for density plots
             covering input matrices.
-  - pca2d_png:
-      - meta:
+          ontologies: []
+  pca2d_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for 2D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/pca2d.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for 2D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca2d_html:
-      - meta:
+          ontologies: []
+  pca2d_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing an HTML output for 2D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/pca2d.html":
           type: file
           description: |
             Meta-keyed tuple containing an HTML output for 2D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca3d_png:
-      - meta:
+          ontologies: []
+  pca3d_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for 3D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/pca3d.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for 3D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - pca3d_html:
-      - meta:
+          ontologies: []
+  pca3d_html:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing an HTML output for 3D PCA plots covering
-            specified input matrix (by default the last one in the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/pca3d.html":
           type: file
           description: |
             Meta-keyed tuple containing an HTML output for 3D PCA plots covering
             specified input matrix (by default the last one in the input list.
-  - mad_png:
-      - meta:
+          ontologies: []
+  mad_png:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG output for MAD correlation plots
-            covering specified input matrix (by default the last one in the input
-            list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/mad_correlation.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG output for MAD correlation plots
             covering specified input matrix (by default the last one in the input
             list.
-  - mad_html:
-      - meta:
-          type: map
+          ontologies: []
+  mad_html:
+    - - meta:
+          type: file
           description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/html/mad_correlation.html":
           type: file
           description: HTML output for MAD correlation plots
           pattern: "*{.html}"
-  - dendro:
-      - meta:
+          ontologies: []
+  dendro:
+    - - meta:
           type: file
           description: |
-            Meta-keyed tuple containing a PNG, for a sample clustering
-            dendrogramcovering specified input matrix (by default the last one in
-            the input list.
+            Meta-keyed tuple containing PNG output for box plots covering input
+            matrices.
+          ontologies: []
       - "*/png/sample_dendrogram.png":
           type: file
           description: |
             Meta-keyed tuple containing a PNG, for a sample clustering
             dendrogramcovering specified input matrix (by default the last one in
             the input list.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_shinyngs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3
+      build_id: bd-d43071e62bc500d3_1
+      scan_id: sc-5ac2dcb847246bad_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d168a374ce5dc1af
+      build_id: bd-d168a374ce5dc1af_1
+      scan_id: sc-0f3dfab20873614f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--b810af5b9efbb4b2
+      build_id: bd-b810af5b9efbb4b2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--ed7d3904b821c0a8
+      build_id: bd-ed7d3904b821c0a8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74ebb0b4cfa12e1174262987ffa0559ab388198ba94196a4fd295ce5a9051a22/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/shinyngs/staticexploratory/.conda-lock/linux_amd64-bd-d43071e62bc500d3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/shinyngs/staticexploratory/.conda-lock/linux_arm64-bd-d168a374ce5dc1af_1.txt

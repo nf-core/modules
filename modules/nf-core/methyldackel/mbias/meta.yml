@@ -18,7 +18,8 @@ tools:
         for methyl-seq experiments.
       homepage: https://github.com/dpryan79/MethylDackel
       documentation: https://github.com/dpryan79/MethylDackel/blob/master/README.md
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:methyldackel
 input:
   - - meta:
@@ -30,21 +31,30 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
-  - - fasta:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
         type: file
         description: Input genome fasta file
         pattern: "*.{fasta,fa}"
-  - - fai:
+        ontologies: []
+    - fai:
         type: file
         description: FASTA index file
         pattern: "*.{fai}"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,12 +63,32 @@ output:
           type: file
           description: Text file containing methylation bias
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_methyldackel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methyldackel:
+          type: string
+          description: The name of the tool
+      - MethylDackel --version 2>&1 | cut -f1 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methyldackel:
+          type: string
+          description: The name of the tool
+      - MethylDackel --version 2>&1 | cut -f1 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@phue"
 maintainers:
   - "@phue"
+  - "@eduard-watchmaker"

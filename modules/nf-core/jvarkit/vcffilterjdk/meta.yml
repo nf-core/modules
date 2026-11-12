@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jvarkit_vcffilterjdk"
 description: Filtering VCF with dynamically-compiled java expressions
 keywords:
@@ -15,9 +14,9 @@ tools:
       documentation: "https://jvarkit.readthedocs.io/"
       tool_dev_url: "https://github.com/lindenb/jvarkit"
       doi: "10.1093/bioinformatics/btx734 "
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       args_id: "$args2"
-
       identifier: ""
   - "bcftools":
       description: |
@@ -25,8 +24,11 @@ tools:
       homepage: "http://samtools.github.io/bcftools/bcftools.html"
       documentation: "http://www.htslib.org/doc/bcftools.html"
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
-      args_id: ["$args1", "$args3"]
+      licence:
+        - "MIT"
+      args_id:
+        - "$args"
+        - "$args3"
       identifier: ""
 input:
   - - meta:
@@ -38,14 +40,18 @@ input:
         type: file
         description: Input VCF/BCF file
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Optional VCF/BCF index file
         pattern: "*.{tbi,csi}"
+        ontologies: []
     - regions_file:
         type: file
         description: Optional. Restrict to regions listed in a file
         pattern: "*.{bed,bed.gz,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -55,6 +61,7 @@ input:
         type: file
         description: Fasta reference file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -64,6 +71,7 @@ input:
         type: file
         description: Fasta file index
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -73,6 +81,7 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -80,9 +89,11 @@ input:
           e.g. [ id:'test_reference' ]
     - code:
         type: file
-        description: File containing custom user code . May be empty if script if provided
-          via `task.ext.args2`.
+        description: File containing custom user code . May be empty if script if
+          provided via `task.ext.args2`.
         pattern: "*.{code,script,txt,tsv,java,js}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta6:
         type: map
         description: |
@@ -92,9 +103,11 @@ input:
         type: file
         description: Optional jvarkit pedigree.
         pattern: "*.{tsv,ped,pedigree}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -103,8 +116,9 @@ output:
           type: file
           description: VCF filtered output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -113,8 +127,9 @@ output:
           type: file
           description: Alternative VCF file index
           pattern: "*.tbi"
-  - csi:
-      - meta:
+          ontologies: []
+  csi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing VCF information
@@ -123,11 +138,47 @@ output:
           type: file
           description: Default VCF file index
           pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_jvarkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jvarkit:
+          type: string
+          description: The name of the tool
+      - jvarkit -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version |& sed '1!d;s/bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jvarkit:
+          type: string
+          description: The name of the tool
+      - jvarkit -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version |& sed '1!d;s/bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lindenb"
 maintainers:

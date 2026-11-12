@@ -19,36 +19,27 @@ input:
         description: |
           Groovy Map containing sample information.
           e.g. [ id:'test' ]
-    - bam:
+    - input:
         type: file
-        description: BAM file
-        pattern: "*.bam"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
-    - bam_index:
+        description: Input BAM / CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - input_index:
         type: file
-        description: BAM index file
-        pattern: "*.bai"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
+        description: BAM / CRAM index file
+        pattern: "*.{bam.bai,cram.crai}"
+        ontologies: []
     - bqsr_table:
         type: file
         description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
         pattern: "*.table"
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
+        ontologies: []
     - intervals:
         type: file
         description: intervals
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -58,9 +49,15 @@ input:
         type: file
         description: Reference fasta - must be unzipped.
         pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - output_fmt:
+      type: string
+      description: Output format for the alignment. Options are 'bam' or 'cram'
+      pattern: "{bam,cram}"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -69,8 +66,10 @@ output:
           type: file
           description: BAM file after applying BQSR.
           pattern: "*.bam"
-  - bai:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
@@ -78,12 +77,52 @@ output:
       - "*.bai":
           type: file
           description: bai index corresponding to output bam file.
-          pattern: "*.bai"
-  - versions:
-      - versions.yml:
+          pattern: "*.bam.bai"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.cram":
           type: file
-          description: File containing software versions.
-          pattern: "versions.yml"
+          description: CRAM file after applying BQSR.
+          pattern: "*.cram"
+          ontologies:
+            - edam: "http://edamontology.org/format_3462" # CRAM
+  crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.crai":
+          type: file
+          description: crai index corresponding to output cram file.
+          pattern: "*.cram.crai"
+          ontologies: []
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@bsiranosian"
 maintainers:

@@ -1,6 +1,6 @@
 name: metaphlan3_metaphlan3
-description: MetaPhlAn is a tool for profiling the composition of microbial communities
-  from metagenomic shotgun sequencing data.
+description: MetaPhlAn is a tool for profiling the composition of microbial
+  communities from metagenomic shotgun sequencing data.
 keywords:
   - metagenomics
   - classification
@@ -9,12 +9,13 @@ keywords:
   - fasta
 tools:
   - metaphlan3:
-      description: Identify clades (phyla to species) present in the metagenome obtained
-        from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome
+        obtained from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.7554/eLife.65088"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: ""
 input:
   - - meta:
@@ -24,41 +25,48 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: Metaphlan 3.0 can classify the metagenome from a variety of input
-          data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced
-          SAM files (produced from alignments to the MetaPHlAn marker database) and
-          intermediate bowtie2 alignment files (bowtie2out)
+        description: Metaphlan 3.0 can classify the metagenome from a variety of
+          input data types, including FASTQ files (single-end and paired-end),
+          FASTA, bowtie2-produced SAM files (produced from alignments to the
+          MetaPHlAn marker database) and intermediate bowtie2 alignment files
+          (bowtie2out)
         pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-  - - metaphlan_db:
-        type: file
-        description: |
-          Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
-          Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
-        pattern: "*/"
+        ontologies: []
+  - db_metaphlan:
+      type: file
+      description: |
+        Directory containing pre-downloaded and uncompressed MetaPhlAn3 database downloaded from: http://cmprod1.cibio.unitn.it/biobakery3/metaphlan_databases/.
+        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_v31_CHOCOPhlAn_201901') in your module.conf ext.args for METAPHLAN3_METAPHLAN3!
+      pattern: "*/"
+      ontologies: []
 output:
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*_profile.txt":
           type: file
-          description: Tab-separated output file of the predicted taxon relative abundances
+          description: Tab-separated output file of the predicted taxon relative
+            abundances
           pattern: "*.{txt}"
-  - biom:
-      - meta:
+          ontologies: []
+  biom:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.biom":
           type: file
-          description: General-use format for representing biological sample by observation
-            contingency tables
+          description: General-use format for representing biological sample by
+            observation contingency tables
           pattern: "*.{biom}"
-  - bt2out:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3746
+  bt2out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,11 +75,28 @@ output:
           type: file
           description: Bowtie2 output file
           pattern: "*.{bowtie2out.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_metaphlan3:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan3:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan3:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@MGordon09"
 maintainers:

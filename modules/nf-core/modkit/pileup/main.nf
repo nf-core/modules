@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MODKIT_PILEUP {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.4.4--hcdda2d0_0':
-        'biocontainers/ont-modkit:0.4.4--hcdda2d0_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e515e445d31be38188af5fe636e71af18abc601afacf80e9021a4752da6332/data'
+:         'community.wave.seqera.io/library/ont-modkit:0.6.4--0c623277f8775a30' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -13,10 +16,9 @@ process MODKIT_PILEUP {
     tuple val(meta3), path(bed)
 
     output:
-    tuple val(meta), path("*.bed")     , emit: bed     , optional: true
-    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
+    tuple val(meta), path("*.bed.gz")  , emit: bedgz   , optional: true
     tuple val(meta), path("*.log")     , emit: log     , optional: true
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +33,8 @@ process MODKIT_PILEUP {
     modkit \\
         pileup \\
         $args \\
+        --bgzf \\
+        --bgzf-threads ${task.cpus} \\
         --threads ${task.cpus} \\
         --prefix ${prefix} \\
         $reference \\
@@ -45,26 +49,17 @@ process MODKIT_PILEUP {
             fi
         done
     else
-        mv ${prefix}.tmp ${prefix}.bed
+        mv ${prefix}.tmp ${prefix}.bed.gz
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
-    END_VERSIONS
     """
 
     stub:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bed
-    touch ${prefix}.bedgraph
-    touch ${prefix}.log
+    echo $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        modkit: \$( modkit --version | sed 's/mod_kit //' )
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.bed.gz
+    touch ${prefix}.log
     """
 }

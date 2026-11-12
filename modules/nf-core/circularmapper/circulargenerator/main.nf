@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // This module does the following:
 //creating a modified reference genome, with an elongation_factoration of the an specified amount of bases
 process CIRCULARMAPPER_CIRCULARGENERATOR {
@@ -6,9 +9,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h2a3209d_3':
-        'biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8be5342445021f1804a5772fabfbd401b8a0dea39616a2f3dbe746792f78384/data'
+        : 'community.wave.seqera.io/library/circularmapper:1.93.5--971f1a9d9b285bbc'}"
 
     input:
     tuple val(meta), path(reference)
@@ -18,7 +21,7 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     output:
     tuple val(meta), path("*_${elongation_factor}.fasta")    , emit: fasta
     tuple val(meta), path("*${elongation_factor}_elongated") , emit: elongated
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('circulargenerator'), eval("circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'"), topic: versions, emit: versions_circulargenerator
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,23 +42,12 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
         mv ${reference.getSimpleName()}_${elongation_factor}${full_extension} ${prefix}_${elongation_factor}.fasta
         mv ${reference}_${elongation_factor}_elongated ${prefix}.fasta_${elongation_factor}_elongated
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circulargenerator: \$(circulargenerator -h | grep 'usage' | sed 's/usage: CircularGenerator//')
-    END_VERSIONS
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_${elongation_factor}.fasta
     touch ${prefix}.fasta_${elongation_factor}_elongated
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        circulargenerator: \$(circulargenerator -h | grep 'usage' | sed 's/usage: CircularGenerator//')
-    END_VERSIONS
     """
 }

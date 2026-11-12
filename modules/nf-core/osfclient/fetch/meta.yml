@@ -10,7 +10,8 @@ tools:
       homepage: "https://osfclient.readthedocs.io/en/latest/"
       documentation: "https://osfclient.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/osfclient/osfclient"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: ""
 input:
   - - meta:
@@ -25,20 +26,39 @@ input:
         type: string
         description: File to fetch from the project
 output:
-  - download_files:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
-    - "${outname}":
-        type: file
-        description: Downloaded file
-        pattern: "*"
-  - versions:
-      - "versions.yml":
+  download_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${outname}:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Downloaded file
+          pattern: "*"
+          ontologies: []
+  versions_osfclient:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - osfclient:
+          type: string
+          description: The name of the tool
+      - osf --version | sed 's/osf //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - osfclient:
+          type: string
+          description: The name of the tool
+      - osf --version | sed 's/osf //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@JacquelineAldridge"

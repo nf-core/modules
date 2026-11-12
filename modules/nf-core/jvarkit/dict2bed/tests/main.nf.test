@@ -6,7 +6,6 @@ nextflow_process {
     process "JVARKIT_DICT2BED"
     config "./nextflow.config"
 
-
     tag "modules"
     tag "modules_nfcore"
     tag "jvarkit"
@@ -20,10 +19,10 @@ nextflow_process {
                 input[0] =[
                     [id:"dict_test"],
                     [
-                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
-                     file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true),
-                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                     ]
                 ]
                 """
@@ -33,14 +32,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.bed[0][1]),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
-
     }
 
     test("sarscov2 - stub") {
@@ -53,10 +47,10 @@ nextflow_process {
                 input[0] =[
                     [id:"dict_stub"],
                     [
-                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
-                     file(params.test_data['sarscov2']['genome']['genome_dict'], checkIfExists: true),
-                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                     ]
                 ]
                 """
@@ -66,13 +60,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.bed[0][1]),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
-
     }
 }

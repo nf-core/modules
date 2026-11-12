@@ -1,6 +1,5 @@
 name: "angsd_contamination"
-description: A tool to estimate nuclear contamination in males based on heterozygosity
-  in the female chromosome.
+description: A tool to estimate nuclear contamination in males based on heterozygosity in the female chromosome.
 keywords:
   - angsd
   - population genetics
@@ -12,7 +11,9 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: ["GPL v3", "MIT"]
+      licence:
+        - "GPL v3"
+        - "MIT"
       identifier: biotools:angsd
 input:
   - - meta:
@@ -22,10 +23,10 @@ input:
           e.g. [ id:'test', single_end:false ]
     - icounts:
         type: file
-        description: Internal format for dumping binary single chrs. Useful for ANGSD
-          contamination
+        description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
         pattern: "*.icnts.gz"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: |
@@ -36,8 +37,8 @@ input:
         description: A list of variable sites to look for heterozygosity.
         ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,16 +47,44 @@ output:
           type: file
           description: Contamination estimation output.
           pattern: "*.txt"
-          ontologies: 
-            - edam: "http://edamontology.org/format_2330" # Text file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
+  versions_angsd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jbv2"
 maintainers:
   - "@jbv2"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05
+      build_id: bd-714d1c4bd0020e05_1
+      scan_id: sc-a46e932810557d21_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd_htslib:79bb9a1e1b583aa0
+      build_id: bd-79bb9a1e1b583aa0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/contamination/.conda-lock/linux_amd64-bd-714d1c4bd0020e05_1.txt

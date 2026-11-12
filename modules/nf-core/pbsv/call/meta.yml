@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pbsv_call"
 description: "pbsv/call - PacBio structural variant (SV) calling and analysis tools"
 keywords:
@@ -11,7 +10,9 @@ tools:
       homepage: "https://github.com/PacificBiosciences/"
       documentation: "https://github.com/PacificBiosciences/"
       tool_dev_url: "https://github.com/PacificBiosciences/"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -21,6 +22,7 @@ input:
     - svsig:
         type: file
         description: structural variant file
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -29,9 +31,10 @@ input:
     - fasta:
         type: file
         description: fasta file used as reference
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,11 +42,30 @@ output:
       - "*.vcf":
           type: file
           description: structural variant file
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_pbsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbsv:
+          type: string
+          description: The name of the tool
+      - pbsv --version |& sed 's/pbsv //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbsv:
+          type: string
+          description: The name of the tool
+      - pbsv --version |& sed 's/pbsv //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@tanyasarkjain"
 maintainers:

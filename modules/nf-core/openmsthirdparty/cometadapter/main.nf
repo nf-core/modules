@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OPENMSTHIRDPARTY_COMETADAPTER {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms-thirdparty:3.4.0--h9ee0642_0' :
-        'biocontainers/openms-thirdparty:3.4.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6475e53b3776cd3b71b8ff525f01da9c45dbe9401a00e5630d91ab976f20e8aa/data'
+:         'community.wave.seqera.io/library/openms-thirdparty:3.6.0--566f6f290d39203b' }"
 
     input:
     tuple val(meta), path(mzml), path(fasta)
@@ -13,7 +16,8 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
     output:
     tuple val(meta), path("*.idXML"), emit: idxml
     tuple val(meta), path("*.tsv")  , emit: pin, optional: true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('CometAdapter'), eval("CometAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_cometadapter, topic: versions
+    tuple val("${task.process}"), val('Comet'), eval("comet 2>&1 | sed -n 's/.*Comet version \" *\\(.*\\)\".*/\\1/p'"), emit: versions_comet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,27 +33,13 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
         -out ${prefix}.idXML \\
         -threads $task.cpus \\
         $args
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CometAdapter: \$(CometAdapter 2>&1 | grep -E '^Version(.*)' | sed 's/Version: //g' | cut -d ' ' -f 1 | cut -d '-' -f 1)
-        Comet: \$(comet 2>&1 | grep -E "Comet version.*" | sed 's/Comet version //g' | sed 's/"//g')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.idXML
     touch ${prefix}_pin.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        CometAdapter: \$(CometAdapter 2>&1 | grep -E '^Version(.*)' | sed 's/Version: //g' | cut -d ' ' -f 1 | cut -d '-' -f 1)
-        Comet: \$(comet 2>&1 | grep -E "Comet version.*" | sed 's/Comet version //g' | sed 's/"//g')
-    END_VERSIONS
     """
 }

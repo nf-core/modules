@@ -1,7 +1,5 @@
 name: "ragtag_patch"
-description: "Homology-based assembly patching: Make continuous joins and fill gaps
-  in 'target.fa' using sequences from 'query.fa'"
-
+description: "Homology-based assembly patching: Make continuous joins and fill gaps in 'target.fa' using sequences from 'query.fa'"
 keywords:
   - assembly
   - consensus
@@ -14,7 +12,8 @@ tools:
       documentation: "https://github.com/malonge/RagTag/wiki"
       tool_dev_url: "https://github.com/malonge/RagTag"
       doi: "10.1186/s13059-022-02823-7"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ragtag
 input:
   - - meta:
@@ -26,6 +25,7 @@ input:
         type: file
         description: Target assembly
         pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +35,7 @@ input:
         type: file
         description: Query assembly
         pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +45,7 @@ input:
         type: file
         description: list of target sequences to ignore
         pattern: "*.txt"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,9 +55,10 @@ input:
         type: file
         description: list of query sequences to ignore
         pattern: "*.txt"
+        ontologies: []
 output:
-  - patch_fasta:
-      - meta:
+  patch_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +67,9 @@ output:
           type: file
           description: FASTA file containing the patched assembly
           pattern: "*.patch.fasta"
-  - patch_agp:
-      - meta:
+          ontologies: []
+  patch_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,19 +78,20 @@ output:
           type: file
           description: AGP file defining how ragtag.patch.fasta is built
           pattern: "*.patch.agp"
-  - patch_components_fasta:
-      - meta:
+          ontologies: []
+  patch_components_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test' ]
       - "*.comps.fasta":
           type: file
-          description: The split target assembly and the renamed query assembly combined
-            into one FASTA file. This file contains all components in ragtag.patch.agp
+          description: The split target assembly and the renamed query assembly combined into one FASTA file. This file contains all components in ragtag.patch.agp
           pattern: "*.comps.fasta"
-  - assembly_alignments:
-      - meta:
+          ontologies: []
+  assembly_alignments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +100,9 @@ output:
           type: file
           description: Assembly alignment files
           pattern: "*.ragtag.patch.asm.*"
-  - target_splits_agp:
-      - meta:
+          ontologies: []
+  target_splits_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,8 +111,9 @@ output:
           type: file
           description: An AGP file defining how the target assembly was split at gaps
           pattern: "*.ctg.agp"
-  - target_splits_fasta:
-      - meta:
+          ontologies: []
+  target_splits_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -115,8 +122,9 @@ output:
           type: file
           description: FASTA file containing the target assembly split at gaps
           pattern: "*.ctg.fasta"
-  - qry_rename_agp:
-      - meta:
+          ontologies: []
+  qry_rename_agp:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,8 +133,9 @@ output:
           type: file
           description: An AGP file defining the new names for query sequences
           pattern: "*.rename.agp"
-  - qry_rename_fasta:
-      - meta:
+          ontologies: []
+  qry_rename_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -135,8 +144,9 @@ output:
           type: file
           description: A FASTA file with the original query sequence, but with new names
           pattern: "*.rename.fasta"
-  - stderr:
-      - meta:
+          ontologies: []
+  stderr:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -145,12 +155,53 @@ output:
           type: file
           description: Standard error logging for all external RagTag commands
           pattern: "*.patch.err"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ragtag:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ragtag:
+          type: string
+          description: The name of the tool
+      - ragtag.py -v | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nschan"
 maintainers:
   - "@nschan"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ragtag:2.1.0--6125126fe9d553ab
+      build_id: bd-6125126fe9d553ab_1
+      scan_id: sc-a8f9e9dfce728767_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ragtag:2.1.0--4a6c872b4348b7e6
+      build_id: bd-4a6c872b4348b7e6_1
+      scan_id: sc-3b07735314a0d832_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ragtag:2.1.0--7ac53d05abb1a6e8
+      build_id: bd-7ac53d05abb1a6e8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e783bbc5474a09f51a0f93142fb94a864715e77b40d9b33e11b53b9c6c4d08cf/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ragtag:2.1.0--f154a206c9750925
+      build_id: bd-f154a206c9750925_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a7844d5fc0e237b3d59d56c93dc48a6a847d923f17f2d8fcefb43385559c98f9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ragtag/patch/.conda-lock/linux_amd64-bd-6125126fe9d553ab_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ragtag/patch/.conda-lock/linux_arm64-bd-4a6c872b4348b7e6_1.txt

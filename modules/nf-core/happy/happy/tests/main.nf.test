@@ -9,16 +9,16 @@ nextflow_process {
     tag "happy"
     tag "happy/happy"
 
-    test("homo_sapiens - illumina - vcf") {
+    test("homo_sapiens illumina vcf bed") {
 
         when {
             process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists:true),
                         []
                         ]
                 input[1] = [
@@ -40,22 +40,170 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
-                { assert path(process.out.roc_all_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
-                { assert path(process.out.roc_indel_locations_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
-                { assert path(process.out.roc_snp_locations_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
-                { assert path(process.out.roc_indel_locations_pass_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
-                { assert path(process.out.roc_snp_locations_pass_csv.get(0).get(1)).linesGzip.toString().contains("Type") },
-                { assert snapshot(process.out.summary_csv,
-                                process.out.extended_csv,
-                                process.out.versions ).match() },
-                { assert snapshot(file(process.out.metrics_json[0][1]).name).match("metrics_json_1")},
-                { assert snapshot(file(process.out.runinfo[0][1]).name).match("runinfo_1")},
-                { assert snapshot(file(process.out.tbi[0][1]).name).match("tbi_1")},
-                { assert snapshot(process.out.versions ).match("versions_1") }
+                { assert snapshot(
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
             )
         }
     }
-    test("homo_sapiens - illumina - vcf - stub") {
+    test("homo_sapiens illumina vcf false_positives") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                        [],
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                input[3] = [[id: 'false_positives'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists:true)]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert snapshot(
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens illumina vcf stratification") {
+
+        when {
+            process {
+                """
+                // generate stratification tsv file
+            stratification_tsv = Channel.of("multi_intervals\\tmulti_intervals.bed.gz")
+                    .collectFile(name:"stratification.tsv", newLine:true)
+                    .map { [[id:'test'], it] }
+
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                        [],
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                input[3] = [[],[]]
+                input[4] = stratification_tsv
+                input[5] = [[id: 'stratification'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists:true)]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert snapshot(
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens illumina vcf nobed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
+                        [],
+                        []
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [
+                        [ id:'test3' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                        ]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                input[5] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.1") },
+                { assert snapshot(
+                    process.out.summary_csv,
+                    process.out.extended_csv,
+                    process.out.roc_all_csv,
+                    process.out.roc_indel_locations_csv,
+                    process.out.roc_snp_locations_csv,
+                    process.out.roc_indel_locations_pass_csv,
+                    process.out.roc_snp_locations_pass_csv,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.metrics_json[0][1]).name,
+                    file(process.out.runinfo[0][1]).name,
+                    file(process.out.tbi[0][1]).name
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens illumina vcf stub") {
 
         options "-stub"
 
@@ -64,8 +212,8 @@ nextflow_process {
                 """
                 input[0] = [
                         [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists:true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
                         []
                         ]

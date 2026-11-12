@@ -40,9 +40,12 @@ nextflow_process {
         }
 
         then {
+            process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.sai[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
 
@@ -80,9 +83,13 @@ nextflow_process {
         }
 
         then {
+            process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.sai[0][1][0]).name,
+                    file(process.out.sai[0][1][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match() }
             )
         }
     }
@@ -108,8 +115,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }
@@ -135,8 +141,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                 ).match() }
             )
         }

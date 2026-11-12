@@ -1,7 +1,5 @@
 name: "whamg"
-description: The wham suite consists of two programs, wham and whamg. wham, the original
-  tool, is a very sensitive method with a high false discovery rate. The second program,
-  whamg, is more accurate and better suited for general structural variant (SV) discovery.
+description: The wham suite consists of two programs, wham and whamg. wham, the original tool, is a very sensitive method with a high false discovery rate. The second program, whamg, is more accurate and better suited for general structural variant (SV) discovery.
 keywords:
   - whamg
   - wham
@@ -15,7 +13,8 @@ tools:
       documentation: "https://github.com/zeeev/wham"
       tool_dev_url: "https://github.com/zeeev/wham"
       doi: "10.1371/journal.pcbi.1004572"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -27,21 +26,25 @@ input:
         type: file
         description: BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
-  - - fasta:
-        type: file
-        description: Reference Fasta file
-        pattern: "*.{fasta,fa}"
-  - - fasta_fai:
-        type: file
-        description: Index of the reference Fasta
-        pattern: "*.fai"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference Fasta file
+      pattern: "*.{fasta,fa}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: Index of the reference Fasta
+      pattern: "*.fai"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +53,10 @@ output:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +65,9 @@ output:
           type: file
           description: Index of the VCF file
           pattern: "*.vcf.gz.tbi"
-  - graph:
-      - meta:
+          ontologies: []
+  graph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,12 +76,43 @@ output:
           type: file
           description: Graph file
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_whamg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whamg:
+          type: string
+          description: The name of the tool
+      - "whamg 2>&1 | sed -n 's/^Version: v\\([^-]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - whamg:
+          type: string
+          description: The name of the tool
+      - "whamg 2>&1 | sed -n 's/^Version: v\\([^-]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tabix_wham:0eb67c2c9cb26529
+      build_id: bd-0eb67c2c9cb26529_1
+      scan_id: sc-13bad342a433ffbc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tabix_wham:82d54adcfc98d8fd
+      build_id: bd-82d54adcfc98d8fd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5cba56edb5c342cde8d5747311d90b4678391ee383bbfbf74dd2d524e2cbcc6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/whamg/.conda-lock/linux_amd64-bd-0eb67c2c9cb26529_1.txt

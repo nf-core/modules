@@ -13,7 +13,7 @@ nextflow_process {
 
         when {
             process {
-                """                
+                """
                 input[0] = [
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/deeptools/test.computeMatrix.mat.gz', checkIfExists: true),
@@ -27,7 +27,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   file(process.out.table.get(0).get(1)).name,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )

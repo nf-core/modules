@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/cpockrandt/genmap
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -23,9 +24,10 @@ input:
         type: file
         description: fasta file to index
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -33,11 +35,27 @@ output:
       - ${prefix}:
           type: directory
           description: Genmap index directory
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_genmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed -n 's/GenMap version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed -n 's/GenMap version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
   - "@nvnieuwk"

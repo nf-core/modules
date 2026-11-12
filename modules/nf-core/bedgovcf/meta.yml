@@ -24,10 +24,13 @@ input:
         type: file
         description: The BED file to convert to VCF
         pattern: "*.bed"
+        ontologies: []
     - config:
         type: file
         description: The config file to use for the conversion
         pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
   - - meta2:
         type: map
         description: |
@@ -37,9 +40,10 @@ input:
         type: file
         description: The fasta index file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,10 +52,63 @@ output:
           type: file
           description: The converted VCF file
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_bedgovcf:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bedgovcf:
+          type: string
+          description: The tool name
+      - bedgovcf --version 2>&1 | sed 's/^bedgovcf version //':
+          type: eval
+          description: The tool version
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bedgovcf:
+          type: string
+          description: The tool name
+      - bedgovcf --version 2>&1 | sed 's/^bedgovcf version //':
+          type: eval
+          description: The tool version
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bedgovcf_htslib:2bbad2d9385390fd
+      build_id: bd-2bbad2d9385390fd_1
+      scan_id: sc-e403080c955bf06f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bedgovcf_htslib:632a307b9c349d9b
+      build_id: bd-632a307b9c349d9b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab4acf46a862a46d7ab0532fd0f8ced56a5b9c6c504efb11aea6c8885a13a61d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bedgovcf/.conda-lock/linux_amd64-bd-2bbad2d9385390fd_1.txt

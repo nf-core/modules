@@ -4,5 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::fastq-screen=0.15.3
+  - bioconda::fastq-screen=0.16.0
   - bioconda::perl-gdgraph=1.54
+  # perl-gdgraph is built for perl 5.32; an unpinned solve selects a newer perl and GD::Graph fails to load
+  - conda-forge::perl=5.32.1

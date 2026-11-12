@@ -1,0 +1,156 @@
+nextflow_process {
+
+    name "Test Process QSV_CAT"
+    script "../main.nf"
+    process "QSV_CAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qsv"
+    tag "qsv/cat"
+
+    test("csv - rows") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                    ]
+                ]
+                input[1] = "rows"
+                input[2] = "csv"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("tsv - rows") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/test.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/test.tsv', checkIfExists: true),
+                    ]
+                ]
+                input[1] = "rows"
+                input[2] = "tsv"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("mixed - rows") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/test.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                    ]
+                ]
+                input[1] = "rows"
+                input[2] = "tsv"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    // Tests concatenation of CSV files with different headers
+    test("csv - rowskey") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test2.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test3.csv', checkIfExists: true),
+                    ]
+                ]
+                input[1] = "rowskey"
+                input[2] = "csv"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("csv - rows - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                    ]
+                ]
+                input[1] = "rows"
+                input[2] = "csv"
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

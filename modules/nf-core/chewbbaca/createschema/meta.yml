@@ -11,9 +11,9 @@ tools:
       documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
       doi: "10.1099/mgen.0.000166"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -24,17 +24,19 @@ input:
         type: directory
         description: One or multiple FASTA files to create schema from
         pattern: "*.{fasta,fa,fas,fna,fasta.gz,fa.gz,fas.gz,fna.gz}"
-  - - prodigal_tf:
-        type: file
-        description: File containing the prodigal training file
-        pattern: "*.ptf"
-  - - cds:
-        type: file
-        description: File containing the prodigal cds file
-        pattern: "*.cds"
+  - prodigal_tf:
+      type: file
+      description: File containing the prodigal training file
+      pattern: "*.ptf"
+      ontologies: []
+  - cds:
+      type: file
+      description: File containing the prodigal cds file
+      pattern: "*.cds"
+      ontologies: []
 output:
-  - schema:
-      - meta:
+  schema:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,26 +45,63 @@ output:
           type: directory
           description: Schema directory
           pattern: "*/"
-  - cds_coordinates:
-      - results/cds_coordinates.tsv:
-          type: file
-          description: File containing the coordinates of the CDS in the input sample
-          pattern: "*_cds_coordinates.tsv"
-  - invalid_cds:
-      - results/invalid_cds.txt:
-          type: file
-          description: File containing the list of alleles predicted by Prodigal that
-            were excluded
-          pattern: "*_invalid_cds.txt"
-      - id_cds:
-          type: file
-          description: File containing the list of alleles predicted by Prodigal that
-            were excluded
-          pattern: "*_invalid_cds.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  cds_coordinates:
+    - results/cds_coordinates.tsv:
+        type: file
+        description: File containing the coordinates of the CDS in the input sample
+        pattern: "*_cds_coordinates.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  invalid_cds:
+    - results/invalid_cds.txt:
+        type: file
+        description: File containing the list of alleles predicted by Prodigal that were excluded
+        pattern: "*_invalid_cds.txt"
+        ontologies: []
+  versions_chewbbaca:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chewbbaca:
+          type: string
+          description: The name of the tool
+      - "chewie --version 2>&1 | sed 's/chewBBACA version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chewbbaca:
+          type: string
+          description: The name of the tool
+      - "chewie --version 2>&1 | sed 's/chewBBACA version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@anwarMZ"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/chewbbaca_libmamba:5cb18fe43b4dd316
+      build_id: bd-5cb18fe43b4dd316_1
+      scan_id: sc-1c67099da3564291_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/chewbbaca_libmamba:de41ca94d8b05ad2
+      build_id: bd-de41ca94d8b05ad2_1
+      scan_id: sc-809afd151f77a16a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/chewbbaca_libmamba:6be7e633c6939d6f
+      build_id: bd-6be7e633c6939d6f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b5c6f0ffb4cc9ba3ceb87d37068cc52dc44a4a8945a51d325ade1174ad41ac5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/chewbbaca_libmamba:48cb240dcb7802a9
+      build_id: bd-48cb240dcb7802a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d39fb0629de237b2e3f1c9faf7e093a3ca96a23bb94439dfe15a1f2bd6e552/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/chewbbaca/createschema/.conda-lock/linux_amd64-bd-de41ca94d8b05ad2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/chewbbaca/createschema/.conda-lock/linux_arm64-bd-5cb18fe43b4dd316_1.txt

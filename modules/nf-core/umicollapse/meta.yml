@@ -1,14 +1,12 @@
 name: "umicollapse"
-description: Deduplicate reads based on the mapping co-ordinate and the UMI attached
-  to the read.
+description: Deduplicate reads based on the mapping co-ordinate and the UMI attached to the read.
 keywords:
   - umicollapse
   - deduplication
   - genomics
 tools:
   - "umicollapse":
-      description: "UMICollapse contains tools for dealing with Unique Molecular Identifiers
-        (UMIs)/Random Molecular Tags (RMTs)."
+      description: "UMICollapse contains tools for dealing with Unique Molecular Identifiers (UMIs)/Random Molecular Tags (RMTs)."
       homepage: "https://github.com/Daniel-Liu-c0deb0t/UMICollapse"
       documentation: "https://github.com/Daniel-Liu-c0deb0t/UMICollapse"
       tool_dev_url: "https://github.com/siddharthab/UMICollapse"
@@ -25,19 +23,21 @@ input:
         type: file
         description: Input bam file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: |
           BAM index files corresponding to the input BAM file. Optionally can be skipped using [] when using FastQ input.
         pattern: "*.{bai}"
-  - - mode:
-        type: string
-        description: |
-          Selects the mode of Umicollapse - either fastq or bam need to be provided.
-        pattern: "{fastq,bam}"
+        ontologies: []
+  - mode:
+      type: string
+      description: |
+        Selects the mode of Umicollapse - either fastq or bam need to be provided.
+      pattern: "{fastq,bam}"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -46,8 +46,9 @@ output:
           type: file
           description: BAM file with deduplicated UMIs.
           pattern: "*.{bam}"
-  - fastq:
-      - meta:
+          ontologies: []
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -56,8 +57,10 @@ output:
           type: file
           description: FASTQ file with deduplicated UMIs.
           pattern: "*dedup*fastq.gz"
-  - log:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,11 +69,30 @@ output:
           type: file
           description: A log file with the deduplication statistics.
           pattern: "*_{UMICollapse.log}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_umicollapse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - umicollapse:
+          type: string
+          description: The name of the tool
+      - 1.1.0-0:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - umicollapse:
+          type: string
+          description: The name of the tool
+      - 1.1.0-0:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@CharlotteAnne"
   - "@chris-cheshire"
@@ -80,3 +102,27 @@ maintainers:
   - "@apeltzer"
   - "@siddharthab"
   - "@MatthiasZepper"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/umicollapse:1.1.0--b477e0da15c79404
+      build_id: bd-b477e0da15c79404_1
+      scan_id: sc-30423de1cab3bb77_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/umicollapse:1.1.0--3df26c402b70d4f4
+      build_id: bd-3df26c402b70d4f4_1
+      scan_id: sc-c3c8aa9184926e26_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/umicollapse:1.1.0--afd2b803e2f5732c
+      build_id: bd-afd2b803e2f5732c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f9ca30284277204474a2d7bc4b6c3e26ead40afc00af4c2e3ff05a0f00e833a5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/umicollapse:1.1.0--982d10caf2213a09
+      build_id: bd-982d10caf2213a09_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/05696e308cb4debe91dde77b5f9525c267044ae6bc71b85ae1ac6ac2f8203a47/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/umicollapse/.conda-lock/linux_amd64-bd-b477e0da15c79404_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/umicollapse/.conda-lock/linux_arm64-bd-3df26c402b70d4f4_1.txt

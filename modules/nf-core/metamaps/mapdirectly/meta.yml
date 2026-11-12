@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/DiltheyLab/MetaMaps/blob/master/README.md
       tool_dev_url: https://github.com/DiltheyLab/MetaMaps
       doi: "10.1038/s41467-019-10934-2"
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: biotools:metamaps
 
 input:
@@ -25,13 +26,16 @@ input:
         type: file
         description: Input fastq file containing query sequences
         pattern: "*.{fq,fastq,fastq.gz,fq.gz}"
-  - - database:
-        type: file
-        description: Database file in fasta format
-        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - database:
+      type: file
+      description: Database file in fasta format
+      pattern: "*.{fa,fasta}"
+      ontologies: []
 output:
-  - classification_res:
-      - meta:
+  classification_res:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +44,9 @@ output:
           type: file
           description: Coordinates where reads map
           pattern: "*.{classification_res}"
-  - meta_file:
-      - meta:
+          ontologies: []
+  meta_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,8 +55,9 @@ output:
           type: file
           description: Statistics for mapping result
           pattern: "*.{classification_res.meta}"
-  - meta_unmappedreadsLengths:
-      - meta:
+          ontologies: []
+  meta_unmappedreadsLengths:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +66,9 @@ output:
           type: file
           description: Statistics for length of unmapped reads
           pattern: "*.{classification_res.meta.unmappedReadsLengths}"
-  - para_file:
-      - meta:
+          ontologies: []
+  para_file:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,11 +77,30 @@ output:
           type: file
           description: Log with parameters
           pattern: "*.{classification_res.parameters}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_metamaps:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamaps:
+          type: string
+          description: The name of the tool
+      - metamaps | sed -n 's/.*MetaMaps v //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamaps:
+          type: string
+          description: The name of the tool
+      - metamaps | sed -n 's/.*MetaMaps v //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@henningonsbring"
   - "@sofstam"

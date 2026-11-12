@@ -1,0 +1,101 @@
+{
+    "sarscov2 - fastq - stub": {
+        "content": [
+            {
+                "reads": [
+                    [
+                        {
+                            "id": "test_stub",
+                            "single_end": true
+                        },
+                        [
+                            "test_stub_single.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-15T10:58:37.652046254",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "sarscov2 - fastq - single_end": {
+        "content": [
+            {
+                "reads": [
+                    [
+                        {
+                            "id": "test_single",
+                            "single_end": true
+                        },
+                        [
+                            "test_single_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T17:37:45.293059368",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "sarscov2 - fastq - paired_end": {
+        "content": [
+            {
+                "reads": [
+                    [
+                        {
+                            "id": "test_paired",
+                            "single_end": false
+                        },
+                        [
+                            "test_paired_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_paired_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T17:37:50.905358878",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "sarscov2 - fastq - both with single broken": {
+        "content": [
+            {
+                "reads": [
+                    [
+                        {
+                            "id": "test_both",
+                            "single_end": false
+                        },
+                        [
+                            "test_both_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test_both_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                        ]
+                    ],
+                    [
+                        {
+                            "id": "test_both",
+                            "single_end": true
+                        },
+                        [
+                            "test_both_single.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T17:37:56.877663489",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}

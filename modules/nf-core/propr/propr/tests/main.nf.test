@@ -24,7 +24,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -60,7 +60,7 @@ nextflow_process {
     }
 
     test("Test propr/propr while running alr+pcor.bshrink") {
-        
+
         tag "alr_pcorbshrink"
         config "./alr_pcorbshrink.config"
 
@@ -175,7 +175,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -201,7 +201,7 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
@@ -227,13 +227,34 @@ nextflow_process {
                 """
             }
         }
-        
+
         then {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out.matrix).match("Test propr/propr calculating adjacency_matrix for pcor - matrix") },
                 { assert snapshot(process.out.fdr).match("Test propr/propr calculating adjacency_matrix for pcor - fdr") },
                 { assert snapshot(process.out.adj).match("Test propr/propr calculating adjacency_matrix for pcor - adj") }
+            )
+        }
+    }
+
+    test("Test propr/propr - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

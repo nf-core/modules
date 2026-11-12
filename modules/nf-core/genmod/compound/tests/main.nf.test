@@ -25,9 +25,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                ).match() }
             )
         }
 

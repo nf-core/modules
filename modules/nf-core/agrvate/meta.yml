@@ -1,18 +1,17 @@
 name: agrvate
-description: Rapid identification of Staphylococcus aureus agr locus type and agr
-  operon variants
+description: Rapid identification of Staphylococcus aureus agr locus type and agr operon variants
 keywords:
   - fasta
   - virulence
   - Staphylococcus aureus
 tools:
   - agrvate:
-      description: Rapid identification of Staphylococcus aureus agr locus type and
-        agr operon variants.
+      description: Rapid identification of Staphylococcus aureus agr locus type and agr operon variants.
       homepage: https://github.com/VishnuRaghuram94/AgrVATE
       documentation: https://github.com/VishnuRaghuram94/AgrVATE
       tool_dev_url: https://github.com/VishnuRaghuram94/AgrVATE
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:agrvate
 input:
   - - meta:
@@ -24,11 +23,11 @@ input:
         type: file
         description: A Staphylococcus aureus fasta file.
         pattern: "*.fasta"
-        ontologies: 
+        ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
 output:
-  - summary:
-      - meta:
+  summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,21 +36,49 @@ output:
           type: file
           description: A summary of the agrvate assessment
           pattern: "*-summary.tab"
-          ontologies: 
+          ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  - results_dir:
-      - ${fasta.baseName}-results:
-          type: directory
-          description: Results of the agrvate assessment
-          pattern: "*-results"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
-          ontologies: 
-            - edam: "http://edamontology.org/format_3750" # YAML
+  results_dir:
+    - ${fasta.baseName}-results:
+        type: directory
+        description: Results of the agrvate assessment
+        pattern: "*-results"
+  versions_agrvate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
 maintainers:
   - "@abhi18av"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/agrvate:1.0.2--a11be0fee842dcd2
+      build_id: bd-a11be0fee842dcd2_1
+      scan_id: sc-f563da8305b6cead_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/agrvate:1.0.2--44c540ce15e76400
+      build_id: bd-44c540ce15e76400_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96dcafb764303f639281ee284658f92cb2abced5fb6285bdfcc965763ae98fef/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/agrvate/.conda-lock/linux_amd64-bd-a11be0fee842dcd2_1.txt

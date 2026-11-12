@@ -1,6 +1,6 @@
 name: maltextract
-description: Tool for evaluation of MALT results for true positives of ancient metagenomic
-  taxonomic screening
+description: Tool for evaluation of MALT results for true positives of ancient
+  metagenomic taxonomic screening
 keywords:
   - malt
   - MaltExtract
@@ -22,7 +22,8 @@ tools:
       documentation: https://github.com/rhuebler/hops
       tool_dev_url: https://github.com/rhuebler/hops
       doi: "10.1186/s13059-019-1903-0"
-      licence: ["GPL 3"]
+      licence:
+        - "GPL 3"
       identifier: ""
 input:
   - - meta:
@@ -34,17 +35,19 @@ input:
         type: file
         description: RMA6 files from MALT
         pattern: "*.rma6"
-  - - taxon_list:
-        type: file
-        description: List of target taxa to evaluate
-        pattern: "*.txt"
-  - - ncbi_dir:
-        type: directory
-        description: Directory containing NCBI taxonomy map and tre files
-        pattern: "${ncbi_dir}/"
+        ontologies: []
+  - taxon_list:
+      type: file
+      description: List of target taxa to evaluate
+      pattern: "*.txt"
+      ontologies: []
+  - ncbi_dir:
+      type: directory
+      description: Directory containing NCBI taxonomy map and tre files
+      pattern: "${ncbi_dir}/"
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: directory
           description: Directory containing MaltExtract text results files
           pattern: "results/"
@@ -52,11 +55,28 @@ output:
           type: directory
           description: Directory containing MaltExtract text results files
           pattern: "results/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+
+  versions_maltextract:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maltextract:
+          type: string
+          description: The name of the tool
+      - MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maltextract:
+          type: string
+          description: The name of the tool
+      - MaltExtract --help | head -n 2 | tail -n 1 | sed 's/MaltExtract version//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

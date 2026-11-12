@@ -33,7 +33,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,4c539593d78c0a07ede5759e0ce5ade8"
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
                 ],
                 "report": [
                     [
@@ -65,46 +69,47 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,4c539593d78c0a07ede5759e0ce5ade8"
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-09T15:42:32.540265",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-06-26T10:16:55.267548327"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
     },
     "tsv": {
         "content": [
-            [
-                "versions.yml:md5,4c539593d78c0a07ede5759e0ce5ade8"
-            ],
+            {
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
             [
                 "index.html",
                 "network/config.js",
                 "network/data/data_1.js",
                 "network/functions.js",
-                "network/heatmap.js",
                 "network/index_1.html",
-                "network/plots/plot_0.js",
-                "network/plots/plot_1.js",
-                "network/plots/plot_2.js",
-                "network/plots/plot_3.js",
-                "static/bootstrap-select.min.css",
-                "static/bootstrap-table-fixed-columns.min.css",
-                "static/bootstrap-table.min.css",
-                "static/bootstrap.min.css",
-                "static/bundle.js",
-                "static/datavzrd.css"
+                "network/plots/plots.js",
+                "static/bundle.js"
             ]
         ],
+        "timestamp": "2026-02-09T15:42:27.067191",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-06-26T10:15:02.495557702"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
     },
     "no_config_file": {
         "content": [
@@ -118,45 +123,109 @@
                 "report": [
                     
                 ],
-                "versions": [
+                "versions_datavzrd": [
                     
                 ]
             }
         ],
+        "timestamp": "2026-02-09T15:42:36.184057",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-06-26T10:15:09.362847938"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
     },
-    "csv": {
+    "generic - [ yaml, [ csv, tsv ] ] - report": {
         "content": [
-            [
-                "versions.yml:md5,4c539593d78c0a07ede5759e0ce5ade8"
-            ],
+            {
+                "report": [
+                    [
+                        {
+                            "id": "multiple_config"
+                        },
+                        [
+                            "index.html",
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ],
+                            [
+                                "bundle.js"
+                            ],
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
             [
                 "index.html",
-                "static/bootstrap-select.min.css",
-                "static/bootstrap-table-fixed-columns.min.css",
-                "static/bootstrap-table.min.css",
-                "static/bootstrap.min.css",
+                "network/config.js",
+                "network/data/data_1.js",
+                "network/functions.js",
+                "network/index_1.html",
+                "network/plots/plots.js",
                 "static/bundle.js",
-                "static/datavzrd.css",
                 "test/config.js",
                 "test/data/data_1.js",
                 "test/functions.js",
-                "test/heatmap.js",
                 "test/index_1.html",
-                "test/plots/plot_0.js",
-                "test/plots/plot_1.js",
-                "test/plots/plot_2.js",
-                "test/plots/plot_3.js"
+                "test/plots/plots.js"
             ]
         ],
+        "timestamp": "2026-10-23T23:20:40.734358",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-06-26T10:14:58.495338891"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "csv": {
+        "content": [
+            {
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
+            [
+                "index.html",
+                "static/bundle.js",
+                "test/config.js",
+                "test/data/data_1.js",
+                "test/functions.js",
+                "test/index_1.html",
+                "test/plots/plots.js"
+            ]
+        ],
+        "timestamp": "2026-02-09T15:42:20.848415",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
     }
 }

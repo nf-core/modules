@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AGAT_SPEXTRACTSEQUENCES {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.4.2--pl5321hdfd78af_0':
-        'biocontainers/agat:1.4.2--pl5321hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdf86a4db56d388b2cad1599b640e1e33ab964dcdb74a8147981d48a429bc7d5/data'
+:         'community.wave.seqera.io/library/agat:1.6.1--1f8d94d325805bb4' }"
 
     input:
     tuple val(meta), path(gxf)
@@ -14,7 +17,7 @@ process AGAT_SPEXTRACTSEQUENCES {
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('agat'), eval("agat --version | sed 's/v//'"), topic: versions, emit: versions_agat
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +34,6 @@ process AGAT_SPEXTRACTSEQUENCES {
         -f ${fasta} \\
         ${config_arg} \\
         -o ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_extract_sequences.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +41,5 @@ process AGAT_SPEXTRACTSEQUENCES {
     if( "${fasta}" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        agat: \$(agat_sp_extract_sequences.pl -h | sed -n 's/.*(AGAT) - Version: \\(.*\\) .*/\\1/p')
-    END_VERSIONS
     """
 }

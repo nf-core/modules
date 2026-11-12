@@ -13,7 +13,8 @@ tools:
       homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
       documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
       doi: 10.1016/S0022-2836(05)80360-2
-      licence: ["US-Government-Work"]
+      licence:
+        - "US-Government-Work"
       identifier: ""
 input:
   - - meta:
@@ -23,12 +24,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - entry:
         type: string
-        description: Entry identifier of sequence in database. It cannot be used along
-          with entry_batch
+        description: Entry identifier of sequence in database. It cannot be used
+          along with entry_batch
     - entry_batch:
         type: file
         description: |
           File with a list of entry identifiers of sequences in database (one identifier per line). It cannot be used along with entry
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,9 +40,10 @@ input:
         type: file
         description: Input BLAST-indexed database
         pattern: "*.{fa.*,fasta.*}"
+        ontologies: []
 output:
-  - fasta:
-      - meta:
+  fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +52,9 @@ output:
           type: file
           description: Output fasta file (default format)
           pattern: "*.{fasta}"
-  - text:
-      - meta:
+          ontologies: []
+  text:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,11 +64,28 @@ output:
           description: |
             Output text file (generic format if fasta not used, i.e. `--outfmt` is supplied to `ext.args`)
           pattern: "*.{txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_blastdbcmd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blastdbcmd:
+          type: string
+          description: The name of the tool
+      - "blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blastdbcmd:
+          type: string
+          description: The name of the tool
+      - "blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
 maintainers:

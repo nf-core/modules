@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SYLPH_PROFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sylph:0.7.0--h919a2d8_0' :
-        'biocontainers/sylph:0.7.0--h919a2d8_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/510a6da0825fba0cd64787439d4c802509ca02547096c350202b8b0c27207a4d/data'
+        : 'community.wave.seqera.io/library/sylph:1.0.0--b822039f65b5f44e'}"
 
     input:
     tuple val(meta), path(reads)
-    path(database)
+    path database
 
     output:
     tuple val(meta), path('*.tsv'), emit: profile_out
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('sylph'), eval('sylph -V | sed "s/sylph //g"'), topic: versions, emit: versions_sylph
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,31 +24,19 @@ process SYLPH_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def input = meta.single_end ? "-r ${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     sylph profile \\
-        -t $task.cpus \\
-        $args \\
-        $database\\
-        $input \\
+        -t ${task.cpus} \\
+        ${args} \\
+        ${database}\\
+        ${input} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
     """
     touch ${prefix}.tsv
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V | awk '{print \$2}')
-    END_VERSIONS
     """
-
 }

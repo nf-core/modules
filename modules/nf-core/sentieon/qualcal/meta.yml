@@ -1,5 +1,6 @@
 name: "sentieon_qualcal"
-description: Generate recalibration table and optionally perform base quality recalibration
+description: Generate recalibration table and optionally perform base quality
+  recalibration
 keywords:
   - base quality score recalibration
   - bqsr
@@ -22,10 +23,12 @@ input:
         type: file
         description: BAM/CRAM file from alignment
         pattern: "*.{bam,cram}"
+        ontologies: []
     - input_index:
         type: file
         description: BAI/CRAI file from alignment
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -35,6 +38,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -44,6 +48,7 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -53,6 +58,8 @@ input:
         type: file
         description: VCF files with known sites for indels / snps (optional)
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
   - - meta5:
         type: map
         description: |
@@ -62,6 +69,7 @@ input:
         type: file
         description: Tabix index of the known_sites (optional)
         pattern: "*.vcf.gz.tbi"
+        ontologies: []
   - - meta6:
         type: map
         description: |
@@ -71,12 +79,13 @@ input:
         type: file
         description: File containing recalibration values (optional)
         pattern: "*.table"
-  - - generate_recalibrated_bams:
-        type: boolean
-        description: If truem, writes recalibrated bams to disc
+        ontologies: []
+  - generate_recalibrated_bams:
+      type: boolean
+      description: If true, writes recalibrated bam files to disk
 output:
-  - table:
-      - meta:
+  table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +94,9 @@ output:
           type: file
           description: Pre Recalibration table (optional)
           pattern: "*.table"
-  - table_post:
-      - meta:
+          ontologies: []
+  table_post:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,8 +105,9 @@ output:
           type: file
           description: Post recalibration table (optional)
           pattern: "*.table.post"
-  - recal_alignment:
-      - meta:
+          ontologies: []
+  recal_alignment:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -105,18 +116,22 @@ output:
           type: file
           description: Recalibrated input files (optional)
           pattern: "*.{bam,cram}"
-  - csv:
-      - meta:
+          ontologies: []
+  csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.csv":
           type: file
-          description: Recalibration results output file used for plotting. (optional)
+          description: Recalibration results output file used for plotting.
+            (optional)
           pattern: "*.csv"
-  - pdf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -125,11 +140,28 @@ output:
           type: file
           description: PDF file containing graphs (optional)
           pattern: "*.pdf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@FriederikeHanssen"
 maintainers:

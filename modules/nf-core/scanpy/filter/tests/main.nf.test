@@ -1,0 +1,224 @@
+nextflow_process {
+
+    name "Test Process SCANPY_FILTER"
+    script "../main.nf"
+    process "SCANPY_FILTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scanpy"
+    tag "scanpy/filter"
+    tag "untar"
+
+    test("Should emit zarr output for zarr input - stub") {
+
+        options '-stub'
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = 0
+                input[2] = 0
+                input[3] = 0
+                input[4] = 0
+                input[5] = 100
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" }
+            )
+        }
+
+    }
+
+    test("Should run with zarr input") {
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = 0
+                input[2] = 0
+                input[3] = 0
+                input[4] = 0
+                input[5] = 100
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" },
+            { assert file(process.out.anndata[0][1] + "/X/.zarray").exists() }
+            )
+        }
+
+    }
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("Should run with a different symbol column") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'symbols'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+    test("Should fail with a non-existent symbol column") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'non_existent_column'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.failed }
+            )
+        }
+
+    }
+
+    test("Should run without failures - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 20
+                input[2] = 20
+                input[3] = 50
+                input[4] = 50
+                input[5] = 50
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                    process.out,
+                    path(process.out.versions[0]).yaml,
+                ).match() }
+            )
+        }
+
+    }
+
+}

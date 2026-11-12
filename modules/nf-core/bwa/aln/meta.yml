@@ -17,6 +17,11 @@ tools:
       homepage: http://bio-bwa.sourceforge.net/
       documentation: https://bio-bwa.sourceforge.net/bwa.shtml
       doi: "10.1093/bioinformatics/btp324"
+      publication:
+        author: "Li, H. & Durbin, R."
+        year: 2009
+        title: "Fast and accurate short read alignment with Burrows–Wheeler transform"
+        source: "Bioinformatics"
       licence: ["GPL-3.0-or-later"]
       identifier: "biotools:bwa"
 input:
@@ -45,8 +50,8 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_3210" # Genome index
 output:
-  - sai:
-      - meta:
+  sai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +60,29 @@ output:
           type: file
           description: Single or paired SA coordinate files
           pattern: "*.sai"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_bwa:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bwa:
+          type: string
+          description: The tool name
+      - 'bwa 2>&1 | sed -n "s/^Version: //p"':
+          type: string
+          description: The command used to generate the version of the tool
+
 authors:
   - "@jfy133"
 maintainers:

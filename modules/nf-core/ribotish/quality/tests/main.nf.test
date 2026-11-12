@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -25,12 +25,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.distribution).match("distribution_single_end") },
-                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end") },
-                { assert snapshot(process.out.offset).match("offset_single_end") },
-                { assert snapshot(process.out.versions).match("versions_single_end") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf", "distribution"])).match() }
             )
         }
     }
@@ -38,11 +35,11 @@ nextflow_process {
     test("sarscov2 [bam] - single_end - stub") {
 
         options '-stub'
-        
+
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test', single_end:true, strandedness:'forward' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780888_chr20.bam.bai", checkIfExists: true)
@@ -53,12 +50,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.distribution).match("distribution_single_end_stub") },
-                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end_stub") },
-                { assert snapshot(process.out.offset).match("offset_single_end_stub") },
-                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bcftools_pluginscatter"
 description: Split VCF by chunks or regions, creating multiple VCFs.
 keywords:
@@ -13,7 +12,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -25,37 +25,41 @@ input:
         type: file
         description: The input VCF to scatter
         pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies: []
     - tbi:
         type: file
         description: Optional index of the input VCF
         pattern: "*.tbi"
-  - - sites_per_chunk:
-        type: integer
-        description: |
-          How many variants should be in each output file
-          Either this or `scatter` or `scatter_file` have to be given
-  - - scatter:
-        type: string
-        description: |
-          A comma delimited list of regions to scatter into
-          Either this or `sites_per_chunk` or `scatter_file` have to be given
-  - - scatter_file:
-        type: file
-        description: |
-          A file containing a region on each line with an optional second column containing the filename
-          Either this or `sites_per_chunk` or `scatter` have to be given
-  - - regions:
-        type: file
-        description: Optional file containing the regions to work on
-        pattern: "*.bed"
-  - - targets:
-        type: file
-        description: Optional file containing the regions to work on (but streams instead
-          of index-jumping)
-        pattern: "*.bed"
-output:
+        ontologies: []
+  - sites_per_chunk:
+      type: integer
+      description: |
+        How many variants should be in each output file
+        Either this or `scatter` or `scatter_file` have to be given
   - scatter:
-      - meta:
+      type: string
+      description: |
+        A comma delimited list of regions to scatter into
+        Either this or `sites_per_chunk` or `scatter_file` have to be given
+  - scatter_file:
+      type: file
+      description: |
+        A file containing a region on each line with an optional second column containing the filename
+        Either this or `sites_per_chunk` or `scatter` have to be given
+      ontologies: []
+  - regions:
+      type: file
+      description: Optional file containing the regions to work on
+      pattern: "*.bed"
+      ontologies: []
+  - targets:
+      type: file
+      description: Optional file containing the regions to work on (but streams instead of index-jumping)
+      pattern: "*.bed"
+      ontologies: []
+output:
+  scatter:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,32 +68,63 @@ output:
           type: file
           description: The resulting files of the scattering
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-  - csi:
-      - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c
+      build_id: bd-130aa7603bf3bf5c_9
+      scan_id: sc-b06bc84035abd22b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--f8757489807f9c95
+      build_id: bd-f8757489807f9c95_9
+      scan_id: sc-6fa01fa7c518cc7b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--4dd0f0a20494e269
+      build_id: bd-4dd0f0a20494e269_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--37bf17f884a2aca6
+      build_id: bd-37bf17f884a2aca6_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaac198ac93d951bb9cbd8b1d83ba1c4485fa43e0cbcfa9403096fc7b88956b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/pluginscatter/.conda-lock/linux_amd64-bd-130aa7603bf3bf5c_9.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/pluginscatter/.conda-lock/linux_arm64-bd-f8757489807f9c95_9.txt

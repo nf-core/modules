@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mudskipper_bulk"
 description: Convert genomic BAM/SAM files to transcriptomic BAM/RAD files.
 keywords:
@@ -10,12 +9,12 @@ keywords:
   - rad
 tools:
   - "mudskipper":
-      description: "mudskipper is a tool for converting genomic BAM/SAM files to transcriptomic
-        BAM/RAD files."
+      description: "mudskipper is a tool for converting genomic BAM/SAM files to transcriptomic BAM/RAD files."
       homepage: "https://github.com/OceanGenomics/mudskipper"
       documentation: "https://github.com/OceanGenomics/mudskipper"
       tool_dev_url: "https://github.com/OceanGenomics/mudskipper"
-      licence: ["BSD 3-clause"]
+      licence:
+        - "BSD 3-clause"
       identifier: ""
 
 input:
@@ -28,19 +27,26 @@ input:
         type: file
         description: Name-Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-  - - index:
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - index:
         type: directory
         description: Annotation index created by mudskipper/index
-  - - gtf:
-        type: file
-        description: Annotation file
-        pattern: "*.{gtf,gff,gff3}"
-  - - rad:
-        type: string
-        description: File type
+  - gtf:
+      type: file
+      description: Annotation file
+      pattern: "*.{gtf,gff,gff3}"
+      ontologies: []
+  - rad:
+      type: string
+      description: File type
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +55,9 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-  - rad:
-      - meta:
+          ontologies: []
+  rad:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,10 +66,29 @@ output:
           type: file
           description: RAD file
           pattern: "*.rad"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_mudskipper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mudskipper:
+          type: string
+          description: The name of the tool
+      - mudskipper -V 2>&1 | sed 's/.*mudskipper //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mudskipper:
+          type: string
+          description: The name of the tool
+      - mudskipper -V 2>&1 | sed 's/.*mudskipper //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@anoronh4"

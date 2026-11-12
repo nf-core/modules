@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPSIFT_DBNSFP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snpsift:5.1d--hdfd78af_0' :
-        'biocontainers/snpsift:5.1d--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d8ec79a01bcc86a5ce258c66fc18e48c1826aebc7e7114454757919162ff9e6/data'
+        : 'community.wave.seqera.io/library/snpsift:5.4.0c--6546f37f72acfb46'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi)
-    tuple val(meta2), path(database), path(dbs_tbi)// TBI files are optional (use when compressed VCF file)
+    tuple val(meta2), path(database), path(dbs_tbi)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift -version 2>&1 | grep -oE '[0-9]+\\.[0-9]+[a-z]?'"), emit: versions_snpsift, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,24 +27,14 @@ process SNPSIFT_DBNSFP {
     """
     SnpSift \\
         dbnsfp \\
-        $args \\
-        -db $database \\
-        $vcf > ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
+        ${args} \\
+        -db ${database} \\
+        ${vcf} > ${prefix}.vcf
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
     """
 }

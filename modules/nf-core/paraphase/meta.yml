@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "paraphase"
 description: "HiFi-based caller for highly homologous genes"
 keywords:
@@ -12,9 +11,9 @@ tools:
       documentation: "https://github.com/PacificBiosciences/paraphase"
       tool_dev_url: "https://github.com/PacificBiosciences/paraphase"
       doi: "10.1016/j.ajhg.2023.01.001"
-      licence: ["BSD-3-clause-Clear"]
+      licence:
+        - "BSD-3-clause-Clear"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,10 +24,12 @@ input:
         type: file
         description: Sorted BAM file
         pattern: "*.bam"
+        ontologies: []
     - bai:
         type: file
         description: Index of BAM file
         pattern: "*.bai"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +39,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,9 +49,11 @@ input:
         type: file
         description: Config file
         pattern: "*.yaml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +62,10 @@ output:
           type: file
           description: Summary of haplotype and variant calls
           pattern: "*.paraphase.json"
-  - bam:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,8 +74,9 @@ output:
           type: file
           description: (re)aligned BAM file
           pattern: "*.paraphase.bam"
-  - bai:
-      - meta:
+          ontologies: []
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -78,8 +85,9 @@ output:
           type: file
           description: Index of (re)aligned BAM file
           pattern: "*.paraphase.bam.bai"
-  - vcf:
-      - meta:
+          ontologies: []
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +96,10 @@ output:
           type: file
           description: compressed VCF file(s) per gene
           pattern: "*.vcf.gz"
-  - vcf_index:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  vcf_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -98,11 +108,66 @@ output:
           type: file
           description: compressed VCF file index
           pattern: "*.vcf.gz.{tbi,csi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_minimap2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_paraphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphase:
+          type: string
+          description: The name of the tool
+      - paraphase --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minimap2:
+          type: string
+          description: The name of the tool
+      - minimap2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paraphase:
+          type: string
+          description: The name of the tool
+      - paraphase --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:

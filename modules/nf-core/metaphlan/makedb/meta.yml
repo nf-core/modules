@@ -15,16 +15,32 @@ tools:
       licence: ["MIT License"]
       identifier: biotools:metaphlan
 output:
-  - db:
-      - metaphlan_db_latest:
-          type: directory
-          description: Output directory containing the indexed METAPHLAN database
-          pattern: "*/"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  db:
+    - metaphlan_db_latest:
+        type: directory
+        description: Output directory containing the indexed METAPHLAN database
+        pattern: "*/"
+  versions_metaphlan:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@LilyAnderssonLee"
 maintainers:

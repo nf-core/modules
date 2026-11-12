@@ -12,7 +12,8 @@ tools:
       documentation: "https://bitbucket.org/genomicepidemiology/plasmidfinder"
       tool_dev_url: "https://bitbucket.org/genomicepidemiology/plasmidfinder"
       doi: "10.1128/AAC.02412-14"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:PlasmidFinder
 input:
   - - meta:
@@ -20,13 +21,14 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - seqs:
+    - fasta:
         type: file
         description: Input FASTA or FASTQ formatted genome sequences
         pattern: "*.{fastq.gz,fq.gz,fastq.gz,fna.gz,fa.gz}"
+        ontologies: []
 output:
-  - json:
-      - meta:
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +37,10 @@ output:
           type: file
           description: The results from analysis in JSON format
           pattern: "*.json"
-  - txt:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +49,9 @@ output:
           type: file
           description: The summary of results from analysis
           pattern: "*.txt"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +60,10 @@ output:
           type: file
           description: The results from analysis in TSV format
           pattern: "*.tsv"
-  - genome_seq:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  genome_seq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +72,9 @@ output:
           type: file
           description: FASTA of sequences in the input with a hit
           pattern: "*-hit_in_genome_seq.fsa"
-  - plasmid_seq:
-      - meta:
+          ontologies: []
+  plasmid_seq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,12 +83,30 @@ output:
           type: file
           description: FASTA of plasmid sequences with a hit against the input
           pattern: "*-plasmid_seqs.fsa"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_plasmidfinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidfinder:
+          type: string
+          description: The name of the tool
+      - 2.1.6:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidfinder:
+          type: string
+          description: The name of the tool
+      - 2.1.6:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
+  - "@eit-maxlcummins"
   - "@rpetit3"
 maintainers:
   - "@rpetit3"

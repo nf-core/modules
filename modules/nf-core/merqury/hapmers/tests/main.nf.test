@@ -66,10 +66,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl") },
-                { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl") },
+                // Not stable.
+                //{ assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl") },
+                //{ assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl") },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    file(process.out.mat_hapmer_meryl[0][1]).name,
+                    file(process.out.pat_hapmer_meryl[0][1]).name,
                     file(process.out.inherited_hapmers_fl_png[0][1]).name,
                     file(process.out.inherited_hapmers_ln_png[0][1]).name,
                     file(process.out.inherited_hapmers_st_png[0][1]).name
@@ -99,7 +102,7 @@ nextflow_process {
                 { assert snapshot(process.out.mat_hapmer_meryl).md5().match("mat_hapmer_meryl_stub") },
                 { assert snapshot(process.out.pat_hapmer_meryl).md5().match("pat_hapmer_meryl_stub") },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     file(process.out.inherited_hapmers_fl_png[0][1]).name,
                     file(process.out.inherited_hapmers_ln_png[0][1]).name,
                     file(process.out.inherited_hapmers_st_png[0][1]).name

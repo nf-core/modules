@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/genepi/haplocheck"
       tool_dev_url: "https://github.com/genepi/haplocheck"
       doi: 10.1101/gr.256545.119
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:haplocheck
 input:
   - - meta:
@@ -28,9 +29,10 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf.gz}"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -39,8 +41,9 @@ output:
           type: file
           description: Raw report in txt format
           pattern: "*.{txt}"
-  - html:
-      - meta:
+          ontologies: []
+  html:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,11 +52,28 @@ output:
           type: file
           description: Haplocheck HTML report
           pattern: "*.{html}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_haplocheck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplocheck:
+          type: string
+          description: The name of the tool
+      - haplocheck --version 2>&1 | sed -n 's/^haplocheck //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplocheck:
+          type: string
+          description: The name of the tool
+      - haplocheck --version 2>&1 | sed -n 's/^haplocheck //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lmtani"
 maintainers:

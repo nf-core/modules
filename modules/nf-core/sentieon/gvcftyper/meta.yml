@@ -24,16 +24,19 @@ input:
         description: |
           gVCF(.gz) file
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - tbis:
         type: file
         description: |
           index of gvcf file
         pattern: "*.tbi"
+        ontologies: []
     - intervals:
         type: file
-        description: Interval file with the genomic regions included in the library
-          (optional)
-  - - meta1:
+        description: Interval file with the genomic regions included in the
+          library (optional)
+        ontologies: []
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -42,7 +45,8 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.fasta"
-  - - meta2:
+        ontologies: []
+  - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
@@ -51,7 +55,8 @@ input:
         type: file
         description: Reference fasta index file
         pattern: "*.fai"
-  - - meta3:
+        ontologies: []
+  - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
@@ -60,7 +65,9 @@ input:
         type: file
         description: dbSNP VCF file
         pattern: "*.vcf.gz"
-  - - meta4:
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+  - - meta5:
         type: map
         description: |
           Groovy Map containing sample information
@@ -69,9 +76,10 @@ input:
         type: file
         description: dbSNP VCF index file
         pattern: "*.tbi"
+        ontologies: []
 output:
-  - vcf_gz:
-      - meta:
+  vcf_gz:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +88,10 @@ output:
           type: file
           description: VCF file
           pattern: "*.vcf.gz"
-  - vcf_gz_tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  vcf_gz_tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,12 +100,53 @@ output:
           type: file
           description: VCF index file
           pattern: "*.vcf.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@asp8200"
 maintainers:
   - "@asp8200"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c
+      build_id: bd-5e34aa16344b911c_1
+      scan_id: sc-8746dd39a4711178_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--493a9352fdfbacc5
+      build_id: bd-493a9352fdfbacc5_1
+      scan_id: sc-cb424814848a20d9_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--5a01457f1db078c1
+      build_id: bd-5a01457f1db078c1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/af478c78e4ddb4fc9c570e47f3d64d86bb02e5c5467c6c095f21f95f59a7c3ab/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--95eea6ffae22db3c
+      build_id: bd-95eea6ffae22db3c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sentieon/gvcftyper/.conda-lock/linux_amd64-bd-5e34aa16344b911c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sentieon/gvcftyper/.conda-lock/linux_arm64-bd-493a9352fdfbacc5_1.txt

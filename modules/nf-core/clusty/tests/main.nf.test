@@ -1,0 +1,92 @@
+nextflow_process {
+    name "Test Process CLUSTY"
+    script "../main.nf"
+    process "CLUSTY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clusty"
+
+    test("generic - only distances") {
+
+        when {
+            params {
+                clusty_args = '--id-cols id1 id2 --distance-col ani --similarity --min ani 0.70'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tsv/ani.tsv', checkIfExists: true),
+                ]
+                input[1] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("generic - distances - objects") {
+
+        when {
+            params {
+                clusty_args = '--id-cols name1 name2 --distance-col ani --similarity --min ani 0.70'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tsv/ani.tsv', checkIfExists: true),
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/txt/ani_ids.txt', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("generic - only distances - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                clusty_args = '--id-cols name1 name2 --distance-col ani --similarity --min ani 0.70'
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tsv/ani.tsv', checkIfExists: true),
+                ]
+                input[1] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

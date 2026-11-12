@@ -11,7 +11,8 @@ tools:
       homepage: https://github.com/Illumina/dragmap
       documentation: https://github.com/Illumina/dragmap
       tool_dev_url: https://github.com/Illumina/dragmap#basic-command-line-usage
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -22,23 +23,60 @@ input:
     - fasta:
         type: file
         description: Input genome fasta file
+        ontologies:
+          - edam: http://edamontology.org/format_1929
 output:
-  - hashmap:
-      - meta:
+  hashmap:
+    - - meta:
           type: map
           description: |
             Groovy Map containing reference information
             e.g. [ id:'test', single_end:false ]
       - dragmap:
-          type: file
+          type: string
           description: DRAGMAP hash table
           pattern: "*.{cmp,.bin,.txt}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_dragmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragmap:
+          type: string
+          description: DRAGMAP hash table
+          pattern: "*.{cmp,.bin,.txt}"
+          ontologies: []
+      - dragen-os --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dragmap:
+          type: string
+          description: DRAGMAP hash table
+          pattern: "*.{cmp,.bin,.txt}"
+          ontologies: []
+      - dragen-os --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:
   - "@edmundmiller"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/dragmap:1.2.1--5d9f1388ce4b8f33
+      build_id: bd-5d9f1388ce4b8f33_1
+      scan_id: sc-394a45324d872ec6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dragmap:1.2.1--8c88bfec3c70031a
+      build_id: bd-8c88bfec3c70031a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e2913ec4630c51abd5e520a2f6c512720d8615f553ad59edc88c90e58df5283/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dragmap/hashtable/.conda-lock/linux_amd64-bd-5d9f1388ce4b8f33_1.txt

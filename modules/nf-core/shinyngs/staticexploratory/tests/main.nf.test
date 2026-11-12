@@ -35,7 +35,7 @@ nextflow_process {
                     file(process.out.pca2d_png[0][1]).name,
                     file(process.out.pca3d_png[0][1]).name,
                     file(process.out.dendro[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -70,7 +70,7 @@ nextflow_process {
                     file(process.out.pca2d_png[0][1]).name,
                     file(process.out.pca3d_png[0][1]).name,
                     file(process.out.dendro[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -105,7 +105,7 @@ nextflow_process {
                     file(process.out.pca2d_png[0][1]).name,
                     file(process.out.pca3d_png[0][1]).name,
                     file(process.out.dendro[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -145,7 +145,7 @@ nextflow_process {
                     path(process.out.mad_html[0][1]).readLines().contains('0,-0.74295280067699376,0.67449075947659531,-0.6744907594765952'),
                     path(process.out.pca2d_html[0][1]).readLines().contains('SRX8042381","SRX8042382'),
                     path(process.out.pca3d_html[0][1]).readLines().contains('SRX8042381","SRX8042382'),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

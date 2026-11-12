@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "sentieon_coveragemetrics"
 description: Accelerated implementation of the GATK DepthOfCoverage tool.
 keywords:
@@ -12,9 +11,9 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-      licence: ["Commercial (requires license for use; redistribution allowed)"]
+      licence:
+        - "Commercial (requires license for use; redistribution allowed)"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,10 +24,12 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
+        ontologies: []
     - bai:
         type: file
         description: BAM/CRAM/SAM file index
         pattern: "*.{bai,crai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -38,6 +39,7 @@ input:
         type: file
         description: BED file of genome regions to draw coverage from
         pattern: "*.bed"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,6 +49,7 @@ input:
         type: file
         description: Genome fasta file
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -56,6 +59,7 @@ input:
         type: file
         description: Index of the genome fasta file
         pattern: "*.fai"
+        ontologies: []
   - - meta5:
         type: map
         description: |
@@ -65,9 +69,10 @@ input:
         type: file
         description: RefSeq file used to aggregate the results
         pattern: "*"
+        ontologies: []
 output:
-  - per_locus:
-      - meta:
+  per_locus:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -76,28 +81,33 @@ output:
           type: file
           description: The per locus coverage with no partition.
           pattern: "${sample_id}"
-  - sample_summary:
-      - meta:
+          ontologies: []
+  sample_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_summary:
           type: file
-          description: The summary for PARTITION_GROUP sample, aggregated over all bases.
+          description: The summary for PARTITION_GROUP sample, aggregated over all
+            bases.
           pattern: "${sample_id}.sample_summary"
-  - statistics:
-      - meta:
+          ontologies: []
+  statistics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_interval_statistics:
           type: file
-          description: The statistics for PARTITION_GROUP library, aggregated by interval.
+          description: The statistics for PARTITION_GROUP library, aggregated by
+            interval.
           pattern: "${sample_id}_interval_statistics"
-  - coverage_counts:
-      - meta:
+          ontologies: []
+  coverage_counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -106,32 +116,52 @@ output:
           type: file
           description: Contains the histogram of loci with depth larger than x.
           pattern: "${sample_id}_cumulative_coverage_counts"
-  - coverage_proportions:
-      - meta:
+          ontologies: []
+  coverage_proportions:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_cumulative_coverage_proportions:
           type: file
-          description: Contains the normalized histogram of loci with depth larger than
-            x.
+          description: Contains the normalized histogram of loci with depth larger
+            than x.
           pattern: "${sample_id}_cumulative_coverage_proportions"
-  - interval_summary:
-      - meta:
+          ontologies: []
+  interval_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_interval_summary:
           type: file
-          description: The summary for PARTITION_GROUP library, aggregated by interval.
+          description: The summary for PARTITION_GROUP library, aggregated by
+            interval.
           pattern: "${sample_id}_interval_summary"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - 'sentieon driver --version | sed "s/.*-//g"':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:

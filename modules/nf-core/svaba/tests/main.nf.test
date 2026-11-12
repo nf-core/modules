@@ -49,15 +49,13 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001")} ,
                 { assert snapshot(
                     process.out.raw_calls,
-                    path(process.out.log.get(0).get(1)).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("tumour_normal") {
@@ -84,17 +82,14 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert path(process.out.log[0][1]).readLines().contains("...assembled 1 contigs for c_1_1_25001")} ,
                 { assert snapshot(
                     process.out.raw_calls,
-                    path(process.out.log.get(0).get(1)).readLines().contains("...assembled 1 contigs for c_1_1_25001"),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
             )
         }
-
     }
-
 
     test("tumour_only -- stub") {
         options '-stub'
@@ -119,13 +114,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

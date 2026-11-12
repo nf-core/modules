@@ -1,0 +1,122 @@
+name: "quantmsutils_mzmlstatistics"
+description: "Generate statistics from mzML files using quantms-utils"
+keywords:
+  - "quantms-utils"
+  - "mzml"
+  - "statistics"
+  - "proteomics"
+  - "mass spectrometry"
+tools:
+  - "quantms-utils":
+      description: "A Python package for quantitative mass spectrometry data analysis"
+      homepage: "https://github.com/bigbio/quantms-utils"
+      documentation: "https://github.com/bigbio/quantms-utils"
+      tool_dev_url: "https://github.com/bigbio/quantms-utils"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', name:'test' ]
+    - ms_file:
+        type: file
+        description: "Input mzML file"
+        pattern: "*.{mzML,mzml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3244" # mzML
+output:
+  ms_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_ms_info.parquet":
+          type: file
+          description: "MS statistics in parquet format"
+          pattern: "*_ms_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  ms2_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_ms2_info.parquet":
+          type: file
+          description: "MS2 statistics in parquet format (optional)"
+          pattern: "*_ms2_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  feature_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*_feature_info.parquet":
+          type: file
+          description: "Feature statistics in parquet format (optional)"
+          pattern: "*_feature_info.parquet"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', name:'test' ]
+      - "*.log":
+          type: file
+          description: "Log file"
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Plain text
+  versions_quantmsutils:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quantms-utils:
+          type: string
+          description: The name of the tool
+      - quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quantms-utils:
+          type: string
+          description: The name of the tool
+      - quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@wanghong"
+  - "@daichengxin"
+  - "@pinin4fjords"
+maintainers:
+  - "@daichengxin"
+  - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_pandas_python_setuptools:c48b017900634b1e
+      build_id: bd-c48b017900634b1e_1
+      scan_id: sc-3e9b63c45ffabb84_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_pandas_python_setuptools:2031af659916e2fa
+      build_id: bd-2031af659916e2fa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f6b1fc16337b1024b203d734a5a5d33f95ed3f15c4a776e9b3de385156f491ad/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/quantmsutils/mzmlstatistics/.conda-lock/linux_amd64-bd-c48b017900634b1e_1.txt

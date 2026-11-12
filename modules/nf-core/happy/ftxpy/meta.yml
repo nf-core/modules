@@ -11,7 +11,8 @@ tools:
       homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
       documentation: "https://github.com/Illumina/hap.py"
       tool_dev_url: "https://github.com/Illumina/hap.py"
-      licence: ["BSD-2-clause"]
+      licence:
+        - "BSD-2-clause"
       identifier: biotools:happy
 input:
   - - meta:
@@ -23,18 +24,22 @@ input:
         type: file
         description: VCF file to process
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - regions_bed:
         type: file
         description: BED file. Restrict analysis to given (sparse) regions.
         pattern: "*.bed"
+        ontologies: []
     - targets_bed:
         type: file
         description: Restrict analysis to given (dense) regions.
         pattern: "*.bed"
+        ontologies: []
     - bam:
         type: file
         description: Pass one or more BAM files for feature table extraction
         pattern: "*.bam"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -44,6 +49,7 @@ input:
         type: file
         description: FASTA file of the reference genome
         pattern: "*.{fa,fasta}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -53,9 +59,10 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.fai"
+        ontologies: []
 output:
-  - features:
-      - meta:
+  features:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,11 +71,29 @@ output:
           type: file
           description: Fuature table
           pattern: "*.csv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions_happy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - happy:
+          type: string
+          description: The name of the tool
+      - 0.3.15:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - happy:
+          type: string
+          description: The name of the tool
+      - 0.3.15:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

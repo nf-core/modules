@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/mpieva/mapAD"
       documentation: "https://github.com/mpieva/mapAD"
       tool_dev_url: "https://github.com/mpieva/mapAD"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -23,9 +24,10 @@ input:
         type: file
         description: FASTA file
         pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - index:
-      - meta:
+  index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,11 +36,29 @@ output:
           type: directory
           description: mapAD genome index files
           pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_mapad:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mapad:
+          type: string
+          description: The name of the tool
+      - mapad --version | sed 's/^mapAD //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mapad:
+          type: string
+          description: The name of the tool
+      - mapad --version | sed 's/^mapAD //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jch-13"
 maintainers:

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ltrharvest"
 description: |
   Predicts LTR retrotransposons using the parallel version of GenomeTools gt-ltrharvest
@@ -16,7 +15,8 @@ tools:
       homepage: "https://github.com/oushujun/EDTA/tree/v2.2.0/bin/LTR_HARVEST_parallel"
       documentation: "https://github.com/oushujun/EDTA/tree/v2.2.0/bin/LTR_HARVEST_parallel"
       tool_dev_url: "https://github.com/oushujun/EDTA/tree/v2.2.0/bin/LTR_HARVEST_parallel"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
   - "gt":
       description: "The GenomeTools genome analysis system"
@@ -24,7 +24,8 @@ tools:
       documentation: "https://genometools.org/documentation.html"
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
-      licence: ["ISC"]
+      licence:
+        - "ISC"
       identifier: ""
 input:
   - - meta:
@@ -36,9 +37,10 @@ input:
         type: file
         description: Input genome fasta
         pattern: "*.{fsa,fa,fasta}"
+        ontologies: []
 output:
-  - gff3:
-      - meta:
+  gff3:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -47,8 +49,9 @@ output:
           type: file
           description: Predicted LTR candidates in gff3 format
           pattern: "*.gff3"
-  - scn:
-      - meta:
+          ontologies: []
+  scn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -57,11 +60,51 @@ output:
           type: file
           description: Predicted LTR candidates in scn format
           pattern: "*.scn"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_ltr_harvest_parallel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - LTR_HARVEST_parallel:
+          type: string
+          description: The name of the tool
+      - "LTR_HARVEST_parallel -h 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_genometools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed -n 's/gt (GenomeTools) //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - LTR_HARVEST_parallel:
+          type: string
+          description: The name of the tool
+      - "LTR_HARVEST_parallel -h 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed -n 's/gt (GenomeTools) //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

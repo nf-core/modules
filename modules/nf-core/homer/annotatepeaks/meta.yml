@@ -10,7 +10,8 @@ tools:
         HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
       documentation: http://homer.ucsd.edu/homer/
       doi: 10.1016/j.molcel.2010.05.004.
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:homer
 input:
   - - meta:
@@ -21,17 +22,20 @@ input:
     - peak:
         type: file
         description: Peak file to annotate
-  - - fasta:
-        type: file
-        description: Fasta file of reference genome
-        pattern: "*.fasta"
-  - - gtf:
-        type: file
-        description: GTF file of reference genome
-        pattern: "*.gtf"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Fasta file of reference genome
+      pattern: "*.fasta"
+      ontologies: []
+  - gtf:
+      type: file
+      description: GTF file of reference genome
+      pattern: "*.gtf"
+      ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,8 +44,9 @@ output:
           type: file
           description: Annotated peaks in txt file
           pattern: "*annotatePeaks.txt"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -50,11 +55,28 @@ output:
           type: file
           description: Annotation statistics in txt file
           pattern: "*annStats.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_homer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@kevinmenden"

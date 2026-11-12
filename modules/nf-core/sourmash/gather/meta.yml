@@ -1,6 +1,7 @@
 name: "sourmash_gather"
-description: Search a metagenome sourmash signature against one or many reference
-  databases and return the minimum set of genomes that contain the k-mers in the metagenome.
+description: Search a metagenome sourmash signature against one or many
+  reference databases and return the minimum set of genomes that contain the
+  k-mers in the metagenome.
 keywords:
   - FracMinHash sketch
   - signature
@@ -18,7 +19,8 @@ tools:
       documentation: https://sourmash.readthedocs.io/
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:sourmash
 input:
   - - meta:
@@ -30,28 +32,30 @@ input:
         type: file
         description: File containing signatures (hash sketches) of a sample
         pattern: "*.{sig}"
-  - - database:
-        type: file
-        description: database
-  - - save_unassigned:
-        type: boolean
-        description: |
-          If true, output will contain a file that is a sourmash signature containing the unassigned hashes from the query
-  - - save_matches_sig:
-        type: boolean
-        description: |
-          If true, output will contain a file that is a sourmash signature composed of the FracMinHash sketches that were matched in the database and that matched the query
-  - - save_prefetch:
-        type: boolean
-        description: |
-          If true, output will contain a file with all prefetch-matched signatures from the database
-  - - save_prefetch_csv:
-        type: boolean
-        description: |
-          If true, output will contain a csv file with the names of all prefetch-matched signatures
+        ontologies: []
+  - database:
+      type: file
+      description: database
+      ontologies: []
+  - save_unassigned:
+      type: boolean
+      description: |
+        If true, output will contain a file that is a sourmash signature containing the unassigned hashes from the query
+  - save_matches_sig:
+      type: boolean
+      description: |
+        If true, output will contain a file that is a sourmash signature composed of the FracMinHash sketches that were matched in the database and that matched the query
+  - save_prefetch:
+      type: boolean
+      description: |
+        If true, output will contain a file with all prefetch-matched signatures from the database
+  - save_prefetch_csv:
+      type: boolean
+      description: |
+        If true, output will contain a csv file with the names of all prefetch-matched signatures
 output:
-  - result:
-      - meta:
+  result:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +66,9 @@ output:
             Table with signatures classified as belonging to any of the genomes
             in the sourmash database(s).
           pattern: "*{csv.gz}"
-  - unassigned:
-      - meta:
+          ontologies: []
+  unassigned:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +79,9 @@ output:
             A FracMinHash sketch containing hashes (k-mers) that did not match to any of the genomes
             in the sourmash database(s).
           pattern: "*{sig.zip}"
-  - matches:
-      - meta:
+          ontologies: []
+  matches:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -86,8 +92,9 @@ output:
             A signature containing FracMinHash sketches of genomes
             in the sourmash database.
           pattern: "*{sig.zip}"
-  - prefetch:
-      - meta:
+          ontologies: []
+  prefetch:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -97,8 +104,9 @@ output:
           description: |
             All prefetch-matched signatures from the database.
           pattern: "*{sig.zip}"
-  - prefetchcsv:
-      - meta:
+          ontologies: []
+  prefetchcsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -108,11 +116,28 @@ output:
           description: |
             The names of all prefetch-matched signatures from the database in CSV format.
           pattern: "*{csv.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sourmash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmikk"
   - "@taylorreiter"

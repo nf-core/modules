@@ -4,17 +4,17 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_DNAMODELAPPLY"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
     tag "sentieon/dnascope"
     tag "sentieon/dnamodelapply"
-   
+
     setup {
         run("SENTIEON_DNASCOPE") {
             script "../../dnascope/main.nf"
-            
+
             process {
                 """
                 input[0] = [
@@ -35,9 +35,9 @@ nextflow_process {
             }
         }
     }
-    
+
     test("apply model") {
-        
+
         when {
             process {
                 """
@@ -54,13 +54,13 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
                     file(process.out.tbi[0][1]).name,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
-    
-    
+
+
     test("apply model -- stub") {
         options '-stub'
         when {
@@ -78,9 +78,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }

@@ -1,9 +1,5 @@
 name: "gatk4_printsvevidence"
-description: WARNING - this tool is still experimental and shouldn't be used in a
-  production setting. Gathers paired-end and split read evidence files for use in
-  the GATK-SV pipeline. Output files are a file containing the location of and orientation
-  of read pairs marked as discordant, and a file containing the clipping location
-  of all soft clipped reads and the orientation of the clipping.
+description: WARNING - this tool is still experimental and shouldn't be used in a production setting. Gathers paired-end and split read evidence files for use in the GATK-SV pipeline. Output files are a file containing the location of and orientation of read pairs marked as discordant, and a file containing the clipping location of all soft clipped reads and the orientation of the clipping.
 keywords:
   - gatk4
   - printsvevidence
@@ -16,7 +12,12 @@ tools:
         and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       licence: ["Apache-2.0"]
       identifier: ""
 input:
@@ -27,58 +28,93 @@ input:
           e.g. [ id:'test', single_end:false ]
     - evidence_files:
         type: file
-        description: The evidence files created by CollectSVEvidence. They all need
-          to be of the same type to print the SV evidence.
+        description: The evidence files created by CollectSVEvidence. They all need to be of the same type to print the SV evidence.
         pattern: "*.{pe,sr,baf,rd}.txt(.gz)"
+        ontologies: []
     - evidence_indices:
         type: file
         description: The indices of the evidence files created by CollectSVEvidence
         pattern: "*.{pe,sr,baf,rd}.txt(.gz).tbi"
-  - - bed:
-        type: file
-        description: An optional BED file
-        pattern: "*.bed"
-  - - fasta:
-        type: file
-        description: An optional reference FASTA file
-        pattern: "*.{fa,fasta}"
-  - - fasta_fai:
-        type: file
-        description: An optional reference FASTA file index
-        pattern: "*.fai"
-  - - dict:
-        type: file
-        description: The mandatory sequence dictionary file
-        pattern: "*.dict"
+        ontologies: []
+  - bed:
+      type: file
+      description: An optional BED file
+      pattern: "*.bed"
+      ontologies: []
+  - fasta:
+      type: file
+      description: An optional reference FASTA file
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - fasta_fai:
+      type: file
+      description: An optional reference FASTA file index
+      pattern: "*.fai"
+      ontologies: []
+  - dict:
+      type: file
+      description: The mandatory sequence dictionary file
+      pattern: "*.dict"
+      ontologies: []
 output:
-  - printed_evidence:
-      - meta:
+  printed_evidence:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt.gz":
           type: file
-          description: The output file containing the discordant read pairs or the soft
-            clipped reads
+          description: The output file containing the discordant read pairs or the soft clipped reads
           pattern: "*.{pe,sr,baf,rd}.txt.gz"
-  - printed_evidence_index:
-      - meta:
+          ontologies: []
+  printed_evidence_index:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.txt.gz.tbi":
           type: file
-          description: The index file of the output compressed text file containing the
-            discordant read pairs or the soft clipped reads
+          description: The index file of the output compressed text file containing the discordant read pairs or the soft clipped reads
           pattern: "*.{pe,sr,baf,rd}.txt.gz.tbi"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/printsvevidence/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

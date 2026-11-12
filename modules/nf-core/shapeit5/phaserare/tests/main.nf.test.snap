@@ -2,18 +2,6 @@
     "homo sapiens - vcf, scaffold, [] - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "input",
-                            "single_end": false
-                        },
-                        "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,c8092f58dd64199400ee9b9bfd96032e"
-                ],
                 "phased_variant": [
                     [
                         {
@@ -23,18 +11,22 @@
                         "input.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,c8092f58dd64199400ee9b9bfd96032e"
+                "versions_shapeit5": [
+                    [
+                        "SHAPEIT5_PHASERARE",
+                        "shapeit5",
+                        "5.1.1"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-11-22T18:11:56.868657182"
+        "timestamp": "2026-02-26T15:48:20.42190529"
     },
-    "homo sapiens - vcf, scaffold, []": {
+    "homo sapiens - vcf, scaffold, map": {
         "content": [
             [
                 [
@@ -42,17 +34,24 @@
                         "id": "input",
                         "single_end": false
                     },
-                    "input.vcf.gz"
+                    "input.vcf.gz",
+                    "VcfFile [chromosomes=[chr22], sampleCount=3202, variantCount=447, phased=true, phasedAutodetect=true]"
                 ]
             ],
-            [
-                "versions.yml:md5,c8092f58dd64199400ee9b9bfd96032e"
-            ]
+            {
+                "versions_shapeit5": [
+                    [
+                        "SHAPEIT5_PHASERARE",
+                        "shapeit5",
+                        "5.1.1"
+                    ]
+                ]
+            }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.1"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2024-11-22T18:35:35.056441054"
+        "timestamp": "2026-02-26T15:48:12.655244884"
     }
 }

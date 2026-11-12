@@ -1,0 +1,84 @@
+name: segul_aligntrim
+description: Trim multiple sequence alignments by filtering columns based on
+  missing data proportion or parsimony informative sites using SEGUL.
+keywords:
+  - alignment
+  - trimming
+  - phylogenomics
+tools:
+  - "segul":
+      description: "An ultrafast and memory efficient tool for phylogenomics"
+      homepage: "https://www.segul.app"
+      documentation: "https://www.segul.app/docs/cli-usage/align-trim"
+      tool_dev_url: "https://github.com/hhandika/segul"
+      doi: "10.1111/1755-0998.13964"
+      licence:
+        - "MIT"
+      identifier: "biotools:segul"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1' ]`
+    - aln:
+        type: file
+        description: |
+          One or more multiple sequence alignment files. Files with non-standard
+          extensions are automatically renamed to .fa for SEGUL compatibility.
+        pattern: "*.{fa,fas,fasta,nex,nexus,phy,phylip,aln,alnfaa,clipkit,trimal,msa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1912 # NEXUS
+          - edam: http://edamontology.org/format_1997 # PHYLIP
+output:
+  trimmed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/trimmed_alignments/*:
+          type: file
+          description: Trimmed alignment files.
+          pattern: "*.{fas,nex,phy}"
+          ontologies:
+            - edam: http://edamontology.org/format_1921
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/trimming_summary.csv:
+          type: file
+          description: CSV summary with per-alignment trimming statistics.
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  versions_segul:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - segul:
+          type: string
+          description: The name of the tool
+      - "segul --version | sed 's/segul //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - segul:
+          type: string
+          description: The name of the tool
+      - "segul --version | sed 's/segul //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eparisis"
+maintainers:
+  - "@eparisis"

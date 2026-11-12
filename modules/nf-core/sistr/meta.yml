@@ -6,8 +6,8 @@ keywords:
   - salmonella
 tools:
   - sistr:
-      description: Salmonella In Silico Typing Resource (SISTR) commandline tool for
-        serovar prediction
+      description: Salmonella In Silico Typing Resource (SISTR) commandline tool
+        for serovar prediction
       homepage: https://github.com/phac-nml/sistr_cmd
       documentation: https://github.com/phac-nml/sistr_cmd
       tool_dev_url: https://github.com/phac-nml/sistr_cmd
@@ -24,9 +24,10 @@ input:
         type: file
         description: Nucleotide or protein sequences in FASTA format
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -35,8 +36,10 @@ output:
           type: file
           description: SISTR serovar prediction
           pattern: "*.{tsv}"
-  - allele_fasta:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  allele_fasta:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -45,8 +48,9 @@ output:
           type: file
           description: FASTA file destination of novel cgMLST alleles
           pattern: "*.{fasta}"
-  - allele_json:
-      - meta:
+          ontologies: []
+  allele_json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,8 +59,10 @@ output:
           type: file
           description: Allele sequences and info to JSON
           pattern: "*.{json}"
-  - cgmlst_csv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  cgmlst_csv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,11 +71,29 @@ output:
           type: file
           description: CSV file destination for cgMLST allelic profiles
           pattern: "*.{csv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions_sistr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sistr:
+          type: string
+          description: The name of the tool
+      - sistr --version 2>&1 | sed "s/^.*sistr_cmd //; s/ .*\$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sistr:
+          type: string
+          description: The name of the tool
+      - sistr --version 2>&1 | sed "s/^.*sistr_cmd //; s/ .*\$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

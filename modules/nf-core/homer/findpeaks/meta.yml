@@ -12,7 +12,8 @@ tools:
       documentation: "http://homer.ucsd.edu/homer/"
       tool_dev_url: "http://homer.ucsd.edu/homer/ngs/peaks.html"
       doi: 10.1016/j.molcel.2010.05.004.
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:homer
 input:
   - - meta:
@@ -24,14 +25,14 @@ input:
         type: directory
         description: "The 'Tag Directory'"
         pattern: "tagDir"
-  - - uniqmap:
-        type: directory
-        description: "(directory of binary files specifying uniquely mappable locations)
-          Download from http://biowhat.ucsd.edu/homer/groseq/"
-        pattern: "uniqmap/"
+  - uniqmap:
+      type: directory
+      description: "(directory of binary files specifying uniquely mappable locations)
+        Download from http://biowhat.ucsd.edu/homer/groseq/"
+      pattern: "uniqmap/"
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -40,11 +41,28 @@ output:
           type: file
           description: "Peaks in txt file"
           pattern: "*.peaks.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_homer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

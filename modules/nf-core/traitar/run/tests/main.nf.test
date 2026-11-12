@@ -1,0 +1,110 @@
+// nf-core modules test traitar
+nextflow_process {
+
+    name "Test Process TRAITAR"
+    script "../main.nf"
+    process "TRAITAR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "traitar"
+    tag "traitar/run"
+    tag "traitar/pfamget"
+    tag "gunzip"
+
+    setup {
+        run("TRAITAR_PFAMGET") {
+            script "../../pfamget/main.nf"
+        }
+    }
+
+    // Real data test
+    test("traitar - genome - fna.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                input[1] = 'from_nucleotides'
+                input[2] = TRAITAR_PFAMGET.out.pfam_db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.versions_traitar,
+                    process.out.predictions_combined.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.predictions_single.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.predictions_flat.collect { meta, filepaths -> [ meta, filepaths.collect { file(it).name } ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("traitar - unzipped input - stub") {
+
+        options "-stub"
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_sample_unzipped' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'from_nucleotides'
+                input[2] = file("pfam_data")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("traitar - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                ]
+                input[1] = 'from_nucleotides'
+                input[2] = file("pfam_data")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

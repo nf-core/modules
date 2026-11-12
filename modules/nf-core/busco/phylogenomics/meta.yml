@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "busco_phylogenomics"
 description: Construct species phylogenies using BUSCO proteins
 keywords:
@@ -13,7 +11,8 @@ tools:
       documentation: "https://github.com/jamiemcg/BUSCO_phylogenomics"
       tool_dev_url: "https://github.com/jamiemcg/BUSCO_phylogenomics"
       doi: "10.1371/journal.pgen.1011512"
-      licence: ['MIT']
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -26,32 +25,74 @@ input:
         description: BUSCO lineage specific output
         pattern: "*"
 output:
-  - gene_trees:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - ${prefix}/gene_trees_single_copy/:
+  gene_trees:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/gene_trees_single_copy/:
           type: directory
           description: Gene trees of BUSCO families
           pattern: "${prefix}/gene_trees_single_copy"
-  - supermatrix:
-    - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - ${prefix}/supermatrix/:
+  supermatrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/supermatrix/:
           type: directory
           description: Concatenated supermatrix alignments of BUSCO families
           pattern: "${prefix}/supermatrix"
-  - versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_buscophylogenomics:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco_phylogenomics:
+          type: string
+          description: The name of the tool
+      - "20240919":
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - busco_phylogenomics:
+          type: string
+          description: The name of the tool
+      - "20240919":
+          type: string
+          description: The version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/busco_phylogenomics:20240919--7d0684e0b59f34cb
+      build_id: bd-7d0684e0b59f34cb_1
+      scan_id: sc-65f8e6d315fd3c52_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/busco_phylogenomics:20240919--1ac5c165c01ef4d1
+      build_id: bd-1ac5c165c01ef4d1_1
+      scan_id: sc-1193258602180f23_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/busco_phylogenomics:20240919--f92183aef3860b5f
+      build_id: bd-f92183aef3860b5f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88a27490f77e976da1d78ca0e1948a9daaa49e39bf1f50c44a1205b262320662/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/busco_phylogenomics:20240919--368644dad9091943
+      build_id: bd-368644dad9091943_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2d5ed55fe7ba6e2d8b01cf4cb5b9495dfdfddf7d461de7238e300005025456c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/busco/phylogenomics/.conda-lock/linux_amd64-bd-1ac5c165c01ef4d1_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/busco/phylogenomics/.conda-lock/linux_arm64-bd-7d0684e0b59f34cb_1.txt

@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_index_methylseq"
+description: Generate index files from reference fasta for bismark, bwameth, bwamem and bwamem3 aligners
+keywords:
+  - bismark
+  - bwameth
+  - bwamem
+  - bwamem3
+  - prepare genome
+  - index
+components:
+  - untar
+  - gunzip
+  - bismark/genomepreparation
+  - bwameth/index
+  - bwa/index
+  - bwamem3/index
+  - samtools/faidx
+input:
+  - fasta:
+      type: file
+      description: |
+        Reference genome
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fa/fa.gz}"
+  - fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fai"
+  - bismark_index:
+      type: file
+      description: |
+        Bismark genome index files
+        Structure: [ val(meta), path(bismark_index) ]
+  - bwameth_index:
+      type: file
+      description: |
+        Bwameth genome index files
+        Structure: [ val(meta), path(bwameth_index) ]
+  - bwamem_index:
+      type: file
+      description: |
+        Bwamem genome index files, or a bwa-mem3 methylation index (`bwa-mem3 index --meth`) when the aligner is bwamem3
+        Structure: [ val(meta), path(bwamem_index) ]
+  - aligner:
+      type: string
+      description: |
+        Aligner name (bismark, bismark_hisat, bwameth, bwamem or bwamem3).
+        For bwamem3, set `ext.args = '--meth'` on `BWAMEM3_INDEX` so the generated index supports `bwa-mem3 mem --meth`.
+  - collecthsmetrics:
+      type: boolean
+      description: |
+        Whether to run picard collecthsmetrics tool
+  - use_mem2:
+      type: boolean
+      description: |
+        Build a mem2 index when bwameth is chosen as an aligner, and an index path is not supplied
+output:
+  - fasta:
+      type: file
+      description: |
+        Reference genome
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fa"
+  - fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.fai"
+  - bismark_index:
+      type: file
+      description: |
+        Bismark genome index files
+        Structure: [ val(meta), path(bismark_index) ]
+        pattern: "BismarkIndex"
+  - bwameth_index:
+      type: file
+      description: |
+        Bwameth genome index files
+        Structure: [ val(meta), path(bwameth_index) ]
+        pattern: "index"
+  - bwamem_index:
+      type: file
+      description: |
+        Bwamem genome index files, or the bwa-mem3 methylation index when the aligner is bwamem3
+        Structure: [ val(meta), path(bwamem_index) ]
+        pattern: "index"
+authors:
+  - "@sateeshperi"
+  - "@dcarrillox"
+  - "@eduard.watchmaker"
+maintainers:
+  - "@sateeshperi"
+  - "@dcarrillox"
+  - "@eduard.watchmaker"

@@ -7,13 +7,13 @@ keywords:
   - serotype
 tools:
   - "shigeifinder":
-      description: "Cluster informed Shigella and EIEC serotyping tool from Illumina
-        reads and assemblies"
+      description: "Cluster informed Shigella and EIEC serotyping tool from Illumina reads and assemblies"
       homepage: "https://mgtdb.unsw.edu.au/ShigEiFinder/"
       documentation: "https://github.com/LanLab/ShigEiFinder"
       tool_dev_url: "https://github.com/LanLab/ShigEiFinder"
       doi: "10.1099/mgen.0.000704"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:shigeifinder
 input:
   - - meta:
@@ -25,9 +25,10 @@ input:
         type: file
         description: Assembly or paired-end Illumina reads
         pattern: "*.{fasta,fasta.gz,fastq.gz}"
+        ontologies: []
 output:
-  - tsv:
-      - meta:
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +37,31 @@ output:
           type: file
           description: A TSV formatted file with ShigEiFinder results
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_shigapass:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shigapass:
+          type: string
+          description: The name of the tool
+      - 1.3.5:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shigapass:
+          type: string
+          description: The name of the tool
+      - 1.3.5:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

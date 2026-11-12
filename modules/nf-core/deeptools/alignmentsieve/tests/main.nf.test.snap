@@ -5,15 +5,28 @@
                 "test_log.txt:md5,39f97a6a2ff83330d5c93411113df63a"
             ],
             "463ac3b905fbf4ddf113a94dbfa8d69f",
-            [
-                "versions.yml:md5,baf8080ab016b89a27483809252bc803"
-            ]
+            {
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "deeptools",
+                        "3.5.6"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "samtools",
+                        "1.20"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-02-17T08:51:37.051958",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-26T12:59:06.183167"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "homo_sampiens - bam - stub": {
         "content": [
@@ -28,9 +41,20 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,baf8080ab016b89a27483809252bc803"
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "deeptools",
+                        "3.5.6"
+                    ]
                 ],
                 "2": [
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "samtools",
+                        "1.20"
+                    ]
+                ],
+                "3": [
                     "test_log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "bam": [
@@ -45,15 +69,26 @@
                 "logs": [
                     "test_log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
-                "versions": [
-                    "versions.yml:md5,baf8080ab016b89a27483809252bc803"
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "deeptools",
+                        "3.5.6"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "DEEPTOOLS_ALIGNMENTSIEVE",
+                        "samtools",
+                        "1.20"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-02-17T08:51:46.655621",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-26T12:59:10.273315"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

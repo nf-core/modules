@@ -1,8 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rundbcan_easysubstrate"
-description: Substrate annotation module for the dbcan pipeline. This module is used
-  to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the dbCAN
-  annotation tool.
+description: Substrate annotation module for the dbcan pipeline. This module is used to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the dbCAN annotation tool.
 keywords:
   - dbCAN
   - download
@@ -11,15 +8,14 @@ keywords:
   - genomes
 tools:
   - "dbcan":
-      description: "Standalone version of dbCAN annotation tool for automated CAZyme
-        annotation."
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme annotation."
       homepage: "https://bcb.unl.edu/dbCAN2/"
       documentation: "https://run-dbcan.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
       doi: "10.1093/nar/gkad328"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:dbcan
-
 input:
   - - meta:
         type: map
@@ -31,8 +27,8 @@ input:
         description: FASTA file for protein sequences.
         pattern: "*.{fasta,fa,faa}"
         ontologies:
-          - edam: "http://edamontology.org/data_2044" # Sequence
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
   - - meta2:
         type: map
         description: |
@@ -41,17 +37,17 @@ input:
     - input_gff:
         type: file
         description: GFF file for protein sequences.
+        ontologies: []
     - gff_type:
         type: string
         description: |
           Type of GFF file. Options are `NCBI_prok`, `JGI`, `NCBI_euk`, and `prodigal`. This is used to parse the GFF file correctly.
-  - - dbcan_db:
-        type: directory
-        description: Path to the dbCAN database directory.
-
+  - dbcan_db:
+      type: directory
+      description: Path to the dbCAN database directory.
 output:
-  - cazyme_annotation:
-      - meta:
+  cazyme_annotation:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -60,8 +56,9 @@ output:
           type: file
           description: |
             TSV file containing the results of dbCAN CAZyme annotation.
-  - dbcanhmm_results:
-      - meta:
+          ontologies: []
+  dbcanhmm_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -70,8 +67,9 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN HMM results for CAZyme annotation.
-  - dbcansub_results:
-      - meta:
+          ontologies: []
+  dbcansub_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,8 +78,9 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN subfamily results for CAZyme annotation.
-  - dbcandiamond_results:
-      - meta:
+          ontologies: []
+  dbcandiamond_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -90,8 +89,9 @@ output:
           type: file
           description: |
             TSV file containing the detailed dbCAN diamond results for CAZyme annotation.
-  - cgc_gff:
-      - meta:
+          ontologies: []
+  cgc_gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +100,9 @@ output:
           type: file
           description: |
             GFF file containing the CAZyme gene clusters (CGC) identified by dbCAN. This file is generated from the dbCAN annotation and contains the locations of CAZyme gene clusters in the genome.
-  - cgc_standard_out:
-      - meta:
+          ontologies: []
+  cgc_standard_out:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +111,9 @@ output:
           type: file
           description: |
             Standard output file from dbCAN for CAZyme gene clusters (CGC) in a tabular format. This file summarizes the CAZyme gene clusters identified in the genome.
-  - diamond_out_tc:
-      - meta:
+          ontologies: []
+  diamond_out_tc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +122,49 @@ output:
           type: file
           description: |
             TSV file containing the diamond output for transporter annotation.
-  - tf_hmm_results:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_tf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.tf:
+          type: file
+          description: |
+            TSV file containing the diamond output for prokaryotic transcription factor annotation. Not written with `--no-prokaryotic`.
+          pattern: "*_diamond.out.tf"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_peptidase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.peptidase:
+          type: file
+          description: |
+            TSV file containing the diamond output for peptidase annotation.
+          pattern: "*_diamond.out.peptidase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_sulfatase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.sulfatase:
+          type: file
+          description: |
+            TSV file containing the diamond output for sulfatase annotation.
+          pattern: "*_diamond.out.sulfatase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tf_hmm_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +173,9 @@ output:
           type: file
           description: |
             TSV file containing the results of Transcription factor.
-  - stp_hmm_results:
-      - meta:
+          ontologies: []
+  stp_hmm_results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +184,9 @@ output:
           type: file
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
-  - total_cgc_info:
-      - meta:
+          ontologies: []
+  total_cgc_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -149,9 +194,37 @@ output:
       - ${prefix}_total_cgc_info.tsv:
           type: file
           description: |
-            TSV file summarizing the total additional genes in the genome.
-  - substrate_prediction:
-      - meta:
+            TSV file summarising the total additional genes in the genome.
+          pattern: "*_total_cgc_info.tsv"
+          ontologies: []
+  cgc_faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_CGC.faa:
+          type: file
+          description: |
+            Protein sequences of the genes in the CAZyme gene clusters (CGC), the query for the dbCAN-PUL DIAMOND search.
+          pattern: "*_CGC.faa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  pul_blast:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_PUL_blast.out:
+          type: file
+          description: |
+            DIAMOND tabular output of the CGC proteins searched against dbCAN-PUL.
+          pattern: "*_PUL_blast.out"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  substrate_prediction:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -160,8 +233,9 @@ output:
           type: file
           description: |
             TSV file containing the substrate predictions based on the CGC annotations from dbCAN.
-  - synteny_pdf:
-      - meta:
+          ontologies: []
+  synteny_pdf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -170,12 +244,52 @@ output:
           type: directory
           description: |
             Directory containing the synteny plots in PDF format for the CAZyme gene clusters (CGC) identified by dbCAN. This directory will contain one or more PDF files showing the syntenic regions of the CGC in the genome.
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_rundbcan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Xinpeng021001"
 maintainers:
   - "@Xinpeng021001"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/dbcan:5.2.9--fb040f67fa175a9b
+      build_id: bd-fb040f67fa175a9b_1
+      scan_id: sc-5ebe2ef678e20741_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/dbcan:5.2.9--5f47bf92f005c6f6
+      build_id: bd-5f47bf92f005c6f6_1
+      scan_id: sc-4c5672485828c233_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/dbcan:5.2.9--ecce1257239bf13c
+      build_id: bd-ecce1257239bf13c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10df02c860e2db9e642939d4ef6c77f10935d313db636d11ec02e0b70cc66e70/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dbcan:5.2.9--86dadb241c5b4ee6
+      build_id: bd-86dadb241c5b4ee6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e843a691d1c9be41394116f30ee3cf3f7bd042e0d59cb2f6a0a34b2b0a308e30/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rundbcan/easysubstrate/.conda-lock/linux_amd64-bd-fb040f67fa175a9b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rundbcan/easysubstrate/.conda-lock/linux_arm64-bd-5f47bf92f005c6f6_1.txt

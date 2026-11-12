@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASHLAR {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ashlar:1.18.0--pyhdfd78af_0' :
-        'biocontainers/ashlar:1.18.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f9a902bb541dc2abba28e73c4bac2ee14d28373abe2e14b444a5096f4919cb7/data'
+        : 'community.wave.seqera.io/library/ashlar_tifffile:6466db6f351397ba'}"
 
     input:
     tuple val(meta), path(images, stageAs: 'image*/*')
@@ -14,7 +17,7 @@ process ASHLAR {
 
     output:
     tuple val(meta), path("*.ome.tif"), emit: tif
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ashlar'), eval("ashlar --version | sed 's/^.*ashlar //'"), emit: versions_ashlar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +37,9 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
+    export XDG_CACHE_HOME=.cache
+    export MPLCONFIGDIR=.matplotlib
 
     ashlar \\
         -o ${prefix}.ome.tif \\
@@ -43,11 +49,6 @@ process ASHLAR {
         ${ffp}
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
     """
 
     stub:
@@ -62,11 +63,8 @@ process ASHLAR {
     if ( !ffp_validated ) { error "Please input only zero, one, or N ffp files, where N is the number of input images" }
 
     """
-    touch ${prefix}.ome.tif
+    export JAVA_TOOL_OPTIONS='-XX:+PerfDisableSharedMem'
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ashlar: \$(ashlar --version | sed 's/^.*ashlar //' )
-    END_VERSIONS
+    touch ${prefix}.ome.tif
     """
 }

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rtn_tni"
 description: Uses the RTN R package for transcriptional regulatory network inference
   (TNI).
@@ -14,9 +13,9 @@ tools:
       documentation: "https://www.bioconductor.org/packages/release/bioc/vignettes/RTN/inst/doc/RTN.html"
       tool_dev_url: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
       doi: "10.1038/ncomms3464"
-      licence: ["Artistic-2.0"]
+      licence:
+        - "Artistic-2.0"
       identifier: biotools:rtn
-
 input:
   - - meta:
         type: map
@@ -27,50 +26,66 @@ input:
         type: file
         description: expression matrix in TSV format
         pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - tni:
-      - meta:
+  tni:
+    - - meta:
           type: file
           description: RDS R Object with the TNI object
           pattern: "tni.rds"
+          ontologies: []
       - tni.rds:
           type: file
           description: RDS R Object with the TNI object
           pattern: "tni.rds"
-  - tni_perm:
-      - meta:
+          ontologies: []
+  tni_perm:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation
-          pattern: "tni_permutated.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_permutated.rds:
           type: file
           description: RDS R Object with the TNI object after permutation
           pattern: "tni_permutated.rds"
-  - tni_bootstrap:
-      - meta:
+          ontologies: []
+  tni_bootstrap:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation and bootstrap
-          pattern: "tni_bootstrapped.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_bootstrapped.rds:
           type: file
           description: RDS R Object with the TNI object after permutation and bootstrap
           pattern: "tni_bootstrapped.rds"
-  - tni_filtered:
-      - meta:
+          ontologies: []
+  tni_filtered:
+    - - meta:
           type: file
-          description: RDS R Object with the TNI object after permutation, bootstrap and
-            filtering
-          pattern: "tni_filtered.rds"
+          description: RDS R Object with the TNI object
+          pattern: "tni.rds"
+          ontologies: []
       - tni_filtered.rds:
           type: file
-          description: RDS R Object with the TNI object after permutation, bootstrap and
-            filtering
+          description: RDS R Object with the TNI object after permutation, bootstrap
+            and filtering
           pattern: "tni_filtered.rds"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@mribeirodantas"
 maintainers:

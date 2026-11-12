@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMTOFASTQ10X {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/10x_bamtofastq:1.4.1--hdbdd923_2':
-        'biocontainers/10x_bamtofastq:1.4.1--hdbdd923_2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95e369e8e54b4d483c85a1584cf0874f5d2efd547928223557e3d8da2f7ee5ec/data'
+        : 'community.wave.seqera.io/library/10x_bamtofastq:1.4.1--a7cbf7b60c2c3fd7' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("**/*.fastq.gz"), emit: fastq
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('bamtofastq10x'), eval('bamtofastq --version |& sed "1!d ; s/bamtofastq //"'), emit: versions_bamtofastq10x, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,22 +28,12 @@ process BAMTOFASTQ10X {
         $args \\
         $bam \\
         $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/bamtofastq10x
-    touch ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bamtofastq10x: \$(bamtofastq --version |& sed '1!d ; s/bamtofastq //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}/bamtofastq10x/bamtofastq.fastq.gz
     """
 }

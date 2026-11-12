@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ELPREP_SPLIT {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
-        'biocontainers/elprep:5.1.3--he881be0_1' }"
+        'quay.io/biocontainers/elprep:5.1.3--he881be0_1' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("output/**.{bam,sam}"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('elprep'), eval('elprep 2>&1 | sed -n \'2s/^.*version //;s/ compiled.*$//p\''), emit: versions_elprep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +41,6 @@ process ELPREP_SPLIT {
         --nr-of-threads $task.cpus \\
         --log-path ./logs \\
         --output-prefix $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +52,5 @@ process ELPREP_SPLIT {
     mkdir -p output
 
     touch output/${prefix}-group00001.${out_type}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        elprep: \$(elprep 2>&1 | head -n2 | tail -n1 |sed 's/^.*version //;s/ compiled.*\$//')
-    END_VERSIONS
     """
 }

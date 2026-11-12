@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "gem2_gem2bedmappability"
 description: Convert a mappability file to bedgraph format
 keywords:
@@ -10,10 +9,9 @@ tools:
   - "gem2":
       description: "GEM2 is a high-performance mapping tool. It also provide a unique
         tool to evaluate mappability."
-      homepage:
-        "https://paoloribeca.science/gem"
-        # This is not a valid link because all documentation is gone for this tool (it's here because the linter isn't happy otherwise)
-      licence: ["Custom"]
+      homepage: "https://paoloribeca.science/gem"
+      licence:
+        - "Custom"
       identifier: ""
 input:
   - - meta:
@@ -25,6 +23,7 @@ input:
         type: file
         description: The mappability file created from the index
         pattern: "*.mappability"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -33,9 +32,10 @@ input:
         type: file
         description: The index of the reference FASTA
         pattern: "*.gem"
+        ontologies: []
 output:
-  - bedgraph:
-      - meta:
+  bedgraph:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +44,9 @@ output:
           type: file
           description: The resulting bedgraph file
           pattern: "*.bg"
-  - sizes:
-      - meta:
+          ontologies: []
+  sizes:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,11 +55,28 @@ output:
           type: file
           description: The chromosome sizes
           pattern: "*.sizes"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_gem2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

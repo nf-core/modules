@@ -13,7 +13,8 @@ tools:
       documentation: https://instrain.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:instrain
 input:
   - - meta:
@@ -25,17 +26,19 @@ input:
         type: file
         description: Path to .bam files that were profiled
         pattern: "*.{bam,sam}"
+        ontologies: []
     - profiles:
         type: directory
         description: InStrain profile folders
         pattern: "*.IS/"
-  - - stb_file:
-        type: file
-        description: Path to .stb (scaffold to bin) file that was profiled
-        pattern: "*.stb"
+  - stb_file:
+      type: file
+      description: Path to .stb (scaffold to bin) file that was profiled
+      pattern: "*.stb"
+      ontologies: []
 output:
-  - compare:
-      - meta:
+  compare:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,8 +47,8 @@ output:
           type: directory
           description: inStrain compare folders
           pattern: "*.IS_compare/"
-  - comparisons_table:
-      - meta:
+  comparisons_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +57,10 @@ output:
           type: file
           description: Comparisons table
           pattern: "*.tsv"
-  - pooled_snv:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  pooled_snv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -64,8 +69,10 @@ output:
           type: file
           description: Pooled SNV
           pattern: "*.tsv"
-  - snv_keys:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  snv_keys:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -74,8 +81,10 @@ output:
           type: file
           description: SNV keys
           pattern: "*.tsv"
-  - snv_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  snv_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,11 +93,29 @@ output:
           type: file
           description: SNV information
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_instrain:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - instrain:
+          type: string
+          description: The name of the tool
+      - inStrain compare --version 2>&1 | sed -n 's/.*inStrain version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - instrain:
+          type: string
+          description: The name of the tool
+      - inStrain compare --version 2>&1 | sed -n 's/.*inStrain version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@margotl9"
   - "@CarsonJM"

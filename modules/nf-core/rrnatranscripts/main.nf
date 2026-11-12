@@ -1,40 +1,34 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RRNATRANSCRIPTS {
-    tag "$gtf"
+    tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/python:3.12' :
-        'biocontainers/python:3.12' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca12480e865de90051752075ee6b31c83559fa37775901622ca685b776912bb0/data'
+        : 'community.wave.seqera.io/library/python:3.12.2--37a94ef16a29fce0'}"
 
     input:
-    path(gtf)
+    tuple val(meta), path(gtf)
 
     output:
-    path("*rrna_intervals.gtf") , emit: rrna_gtf, optional: true
-    path "versions.yml"         , emit: versions
+    tuple val(meta), path('*_rrna_intervals.gtf'), emit: rrna_gtf
+    path "versions.yml"                          , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
-    """
-    grep -E '^#|rRNA' ${gtf} > ${prefix}_rrna_intervals.gtf || true
-    if [ !  -s ${prefix}_rrna_intervals.gtf ]; then
-        rm ${prefix}_rrna_intervals.gtf
-    fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python --version | sed -e "s/Python //g")
-    END_VERSIONS
-    """
+    prefix = task.ext.prefix ?: "${meta.id}"
+    template 'get_rrna_transcripts.py'
 
     stub:
-    def prefix = task.ext.prefix ?: "${gtf.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_rrna_intervals.gtf
+
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         python: \$(python --version | sed -e "s/Python //g")

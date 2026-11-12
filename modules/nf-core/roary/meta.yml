@@ -11,7 +11,8 @@ tools:
       documentation: http://sanger-pathogens.github.io/Roary/
       tool_dev_url: https://github.com/sanger-pathogens/Roary/
       doi: "10.1093/bioinformatics/btv421"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:roary
 input:
   - - meta:
@@ -23,33 +24,77 @@ input:
         type: file
         description: A set of GFF3 formatted files
         pattern: "*.{gff}"
+        ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*:
+      - ${prefix}/*:
           type: directory
           description: Directory containing Roary result files
           pattern: "*/*"
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*.aln:
+      - ${prefix}/*.aln:
           type: file
           description: Core-genome alignment produced by Roary (Optional)
           pattern: "*.{aln}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_roary:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/roary:3.13.0--238d9eb955a999cb
+      build_id: bd-238d9eb955a999cb_3
+      scan_id: sc-0c2e3a1afb658bf3_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/roary:3.13.0--9c2c5e26c77577d4
+      build_id: bd-9c2c5e26c77577d4_3
+      scan_id: sc-50032311f1ddcaa1_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/roary:3.13.0--a8d95ce0f2f1f9c4
+      build_id: bd-a8d95ce0f2f1f9c4_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50bfcc1b77f232d82233d35d4f1fc0d5ffd7c01aab3c82aa12ae044950941a24/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/roary:3.13.0--ac030d16868abf9c
+      build_id: bd-ac030d16868abf9c_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbc5af41408da134fa3fa6709a68fd3124741b3034c77fabdacb853c663befc8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/roary/.conda-lock/linux_amd64-bd-9c2c5e26c77577d4_3.txt
+    linux/arm64:
+      lock_file: modules/nf-core/roary/.conda-lock/linux_arm64-bd-238d9eb955a999cb_3.txt

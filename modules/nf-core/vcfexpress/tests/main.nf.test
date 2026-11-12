@@ -1,0 +1,122 @@
+nextflow_process {
+
+    name "Test Process VCFEXPRESS"
+    script "../main.nf"
+    process "VCFEXPRESS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcfexpress"
+
+    test("vcfexpress - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+
+                input[1] = []
+                input[2] = 'vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("vcfexpress - prelude - vcf ") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+
+                input[1] = channel.of('header:add_filter({ID="LowQual", Description="Qual less than 1000"})')
+                    .collectFile(name: 'prelude_test.lua')
+                input[2] = 'vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("vcfexpress - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+
+                input[1] = []
+                input[2] = 'vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+
+
+    test("vcfexpress - prelude - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                ]
+
+                input[1] = []
+                input[2] = 'vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}

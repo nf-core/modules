@@ -1,0 +1,104 @@
+name: "cramino"
+description: Quality assessment of long-read bam files using cramino.
+keywords:
+  - quality assessment
+  - bam
+  - long-read
+  - genomics
+tools:
+  - "cramino":
+      description: A tool for very fast quality assessment of long read cram/bam files.
+      homepage: https://github.com/wdecoster/cramino
+      documentation: https://github.com/wdecoster/cramino#readme
+      tool_dev_url: https://github.com/wdecoster/cramino
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+output:
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Text file containing summary statistics of the long-read data
+          pattern: "*.txt"
+          ontologies: []
+  arrow:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.arrow":
+          type: file
+          description: Arrow file containing summary statistics of the long-read data
+          pattern: "*.arrow"
+          ontologies: []
+  versions_cramino:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cramino":
+          type: string
+          description: The name of the tool
+      - "cramino -V | sed 's/cramino //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cramino":
+          type: string
+          description: The name of the tool
+      - "cramino -V | sed 's/cramino //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@inemesb"
+maintainers:
+  - "@inemesb"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cramino:2.0.0--9dc31ae276d5fec3
+      build_id: bd-9dc31ae276d5fec3_1
+      scan_id: sc-3436165d099d4f64_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/cramino:2.0.0--7e8383603fdee333
+      build_id: bd-7e8383603fdee333_1
+      scan_id: sc-174bed8714fb3c0e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cramino:2.0.0--6080e45312ebd593
+      build_id: bd-6080e45312ebd593_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be887dcf9450435fff08e18a8f0080652560defbaf9af027fc2a034531f682dc/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cramino:2.0.0--b66a3ae97105d5af
+      build_id: bd-b66a3ae97105d5af_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a1e9861d7c3ac6fd4290bb369746f68fa3cf773196be01e986f59228892d8d16/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cramino/.conda-lock/linux_amd64-bd-9dc31ae276d5fec3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cramino/.conda-lock/linux_arm64-bd-7e8383603fdee333_1.txt

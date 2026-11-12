@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_TNFILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ccb05eb4f1a193a3bd99c4da90f55f74ea6556c25f154e53e1ff5a6caa372d/data' :
-        'community.wave.seqera.io/library/sentieon:202503--5e378058d837c58c' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(contamination), path(segments), path(orientation_priors)
@@ -14,53 +17,43 @@ process SENTIEON_TNFILTER {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz")      , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")  , emit: tbi
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args                       = task.ext.args      ?: '' // options for the driver
-    def args2                      = task.ext.args2     ?: '' // options for --algo TNfilter
-    def prefix                     = task.ext.prefix    ?: "${meta.id}_filtered"
-    def contamination_command      = contamination      ? " --contamination ${contamination} "                             : ''
-    def segments_command           = segments           ? segments.collect{"--tumor_segments $it"}.join(' ')               : ''
-    def orientation_priors_command = orientation_priors ? orientation_priors.collect{"--orientation_priors $it"}.join(' ') : ''
-    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64 ?
-        "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; " :
-        ""
+    def args = task.ext.args ?: '' // options for the driver
+    def args2 = task.ext.args2 ?: '' // options for --algo TNfilter
+    def prefix = task.ext.prefix ?: "${meta.id}_filtered"
+    def contamination_command = contamination ? " --contamination ${contamination} " : ''
+    def segments_command = segments ? segments.collect {in -> "--tumor_segments ${in}" }.join(' ') : ''
+    def orientation_priors_command = orientation_priors ? orientation_priors.collect {in -> "--orientation_priors ${in}" }.join(' ') : ''
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
-    $sentieonLicense
+    ${sentieonLicense}
 
-    sentieon driver -r $fasta \\
-    $args \\
+    sentieon driver -r ${fasta} \\
+    ${args} \\
     --algo TNfilter \\
-    $args2 \\
-    -v $vcf \\
-    $contamination_command \\
-    $segments_command \\
-    $orientation_priors_command \\
+    ${args2} \\
+    -v ${vcf} \\
+    ${contamination_command} \\
+    ${segments_command} \\
+    ${orientation_priors_command} \\
     ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_filtered"
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

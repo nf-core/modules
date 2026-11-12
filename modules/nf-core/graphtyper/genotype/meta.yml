@@ -8,13 +8,15 @@ keywords:
   - pangenome
 tools:
   - "graphtyper":
-      description: A graph-based variant caller capable of genotyping population-scale
-        short read data sets while incorporating previously discovered variants.
+      description: A graph-based variant caller capable of genotyping
+        population-scale short read data sets while incorporating previously
+        discovered variants.
       homepage: "https://github.com/DecodeGenetics/graphtyper"
       documentation: "https://github.com/DecodeGenetics/graphtyper/wiki/User-guide"
       tool_dev_url: "https://github.com/DecodeGenetics/graphtyper"
       doi: "10.1038/ng.3964"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:Graphtyper
 input:
   - - meta:
@@ -26,11 +28,13 @@ input:
         type: file
         description: BAM/CRAM file
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
-        description: BAM index file. This is automatically found base on BAM input file
-          name
+        description: BAM index file. This is automatically found base on BAM input
+          file name
         pattern: "*.{bai}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -40,6 +44,7 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.{fa, fasta, fas}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -47,18 +52,20 @@ input:
           e.g. [ id:'genome' ]
     - ref_fai:
         type: file
-        description: Reference index file. This is automatically found based on reference
-          input file name.
+        description: Reference index file. This is automatically found based on
+          reference input file name.
         pattern: "*.{.fai}"
-  - - region_file:
-        type: file
-        description: File with a list of chromosome/locations in reference genome to
-          genotype. One region per line in the format <chr>:<start>-<stop>. This or
-          `--region` (in ext.args) must be specified.
-        pattern: "*"
+        ontologies: []
+  - region_file:
+      type: file
+      description: File with a list of chromosome/locations in reference genome to
+        genotype. One region per line in the format <chr>:<start>-<stop>. This or
+        `--region` (in ext.args) must be specified.
+      pattern: "*"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -67,8 +74,9 @@ output:
           type: file
           description: VCF file with genotyped variants
           pattern: "*.{vcf.gz}"
-  - tbi:
-      - meta:
+          ontologies: []
+  tbi:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -77,11 +85,28 @@ output:
           type: file
           description: VCF index file
           pattern: "*.{vcf.gz.tbi}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_graphtyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphtyper:
+          type: string
+          description: The name of the tool
+      - graphtyper --help | tail -1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - graphtyper:
+          type: string
+          description: The name of the tool
+      - graphtyper --help | tail -1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@zachary-foster"
 maintainers:

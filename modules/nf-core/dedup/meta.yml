@@ -28,52 +28,75 @@ input:
         type: file
         description: BAM/SAM file
         pattern: "*.{bam,sam}"
+        ontologies: []
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_rmdup.bam":
+      - "${prefix}.bam":
           type: file
           description: Deduplicated BAM file
-          pattern: "*_rmdup.bam"
-  - json:
-      - meta:
+          pattern: "${prefix}.bam"
+          ontologies: []
+  json:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.json":
+      - "${prefix}.json":
           type: file
           description: JSON file for MultiQC
-          pattern: "*.json"
-  - hist:
-      - meta:
+          pattern: "${prefix}.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  hist:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.hist":
+      - "${prefix}.hist":
           type: file
           description: Histogram data of amount of deduplication
-          pattern: "*.hist"
-  - log:
-      - meta:
+          pattern: "${prefix}.hist"
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*log":
+      - "${prefix}.log":
           type: file
           description: Dedup log information
-          pattern: "*log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          pattern: "${prefix}.log"
+          ontologies: []
+  versions_dedup:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dedup:
+          type: string
+          description: The name of the tool
+      - "dedup --version | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dedup:
+          type: string
+          description: The name of the tool
+      - "dedup --version | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

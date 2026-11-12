@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GANON_CLASSIFY {
     tag "${meta.id}"
     label 'process_high'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/ganon:2.1.0--py310hab1bfa5_1'
-        : 'biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
+        : 'quay.io/biocontainers/ganon:2.1.0--py310hab1bfa5_1'}"
 
     input:
     tuple val(meta), path(fastqs)
@@ -17,7 +20,7 @@ process GANON_CLASSIFY {
     tuple val(meta), path("*.all"), emit: all, optional: true
     tuple val(meta), path("*.unc"), emit: unc, optional: true
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('ganon'), eval("ganon --version 2>1 | sed 's/.*ganon //g'"), emit: versions_ganon, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,16 +41,10 @@ process GANON_CLASSIFY {
         ${input} \
         2>&1 | tee ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = meta.single_end ? "--single-reads ${fastqs}" : "--paired-reads ${fastqs}"
     """
     touch ${prefix}.tre
     touch ${prefix}.rep
@@ -56,9 +53,5 @@ process GANON_CLASSIFY {
     touch ${prefix}.unc
     touch ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ganon: \$(echo \$(ganon --version 2>1) | sed 's/.*ganon //g')
-    END_VERSIONS
     """
 }

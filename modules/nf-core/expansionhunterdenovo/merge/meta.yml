@@ -26,6 +26,8 @@ input:
           and the paths to the corresponding STR profiles.
           See here for an example: https://github.com/Illumina/ExpansionHunterDenovo/blob/master/documentation/06_Merging_profiles.md#manifest-files
         pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
         description: |
@@ -35,18 +37,15 @@ input:
         type: file
         description: The reference FASTA file
         pattern: "*.{fasta,fa}"
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'test' ]
+        ontologies: []
     - fasta_fai:
         type: file
         description: The index of the reference FASTA file
         pattern: "*.fai"
+        ontologies: []
 output:
-  - merged_profiles:
-      - meta:
+  merged_profiles:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -55,11 +54,29 @@ output:
           type: file
           description: The merged STR profiles
           pattern: "*.multisample_profile.json"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_expansionhunterdenovo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - expansionhunterdenovo:
+          type: string
+          description: The name of the tool
+      - ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - expansionhunterdenovo:
+          type: string
+          description: The name of the tool
+      - ExpansionHunterDenovo --help |& sed '1!d;s/ExpansionHunter Denovo v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

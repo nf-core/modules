@@ -1,6 +1,7 @@
 name: cobrameta
-description: A tool to raise the quality of viral genomes assembled from short-read
-  metagenomes via resolving and joining of contigs fragmented during de novo assembly.
+description: A tool to raise the quality of viral genomes assembled from
+  short-read metagenomes via resolving and joining of contigs fragmented during
+  de novo assembly.
 keywords:
   - cobra
   - contig
@@ -11,15 +12,15 @@ keywords:
   - phage
 tools:
   - cobra-meta:
-      description: COBRA is a tool to get higher quality viral genomes assembled from
-        metagenomes.
+      description: COBRA is a tool to get higher quality viral genomes assembled
+        from metagenomes.
       homepage: https://github.com/linxingchen/cobra
       documentation: https://github.com/linxingchen/cobra
       tool_dev_url: https://github.com/linxingchen/cobra
       doi: 10.1038/s41564-023-01598-2
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -31,6 +32,7 @@ input:
         description: |
           Assembly file (contigs/scaffolds) in FASTA format
         pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -42,6 +44,8 @@ input:
           TSV file with 2 columns containing 1) the contig/scaffold id and
           2) the coverage depth of the sequence specified in column 1
         pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta3:
         type: map
         description: |
@@ -54,6 +58,7 @@ input:
           can be provided in one-column TXT or FASTA format. (The IDs must match the IDs
           in the `--fasta` file exactly)
         pattern: "*.{txt,fasta}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -65,21 +70,22 @@ input:
           Sorted BAM/CRAM/SAM file resulting from mapping reads used in assembly
           to the resulting assembly FASTA
         pattern: "*.{bam,cram,sam}"
-  - - assembler:
-        type: string
-        description: The name of the tool used to assemble contigs
-        pattern: "{metaspades,megahit,idba}"
-  - - mink:
-        type: integer
-        description: The minimum kmer size used to assemble contigs
-        pattern: "[0-9]+"
-  - - maxk:
-        type: integer
-        description: The maximum kmer size used to assemble contigs
-        pattern: "[0-9]+"
+        ontologies: []
+  - assembler:
+      type: string
+      description: The name of the tool used to assemble contigs
+      pattern: "{metaspades,megahit,idba}"
+  - mink:
+      type: integer
+      description: The minimum kmer size used to assemble contigs
+      pattern: "[0-9]+"
+  - maxk:
+      type: integer
+      description: The maximum kmer size used to assemble contigs
+      pattern: "[0-9]+"
 output:
-  - self_circular:
-      - meta:
+  self_circular:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -88,8 +94,10 @@ output:
           type: file
           description: fasta file
           pattern: "*/COBRA_category_i_self_circular.fasta.gz"
-  - extended_circular:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
+  extended_circular:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -100,8 +108,9 @@ output:
             Gzipped FASTA file containing query contigs that were joined and extended
             into a circular genome
           pattern: "${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz"
-  - extended_partial:
-      - meta:
+          ontologies: []
+  extended_partial:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -112,8 +121,9 @@ output:
             Gzipped FASTA file containing query contigs were joined and extended, but
             not into circular sequences
           pattern: "${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz"
-  - extended_failed:
-      - meta:
+          ontologies: []
+  extended_failed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -124,8 +134,9 @@ output:
             Gzipped FASTA file containing query contigs that could not be extended due
             to COBRA rules
           pattern: "${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz"
-  - orphan_end:
-      - meta:
+          ontologies: []
+  orphan_end:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -136,18 +147,22 @@ output:
             Gzipped FASTA file containing query contigs that do not shared the
             "expected overlap length" with other contigs
           pattern: "${prefix}/COBRA_category_iii_orphan_end.fasta.gz"
-  - all_cobra_assemblies:
-      - meta:
+          ontologies: []
+  all_cobra_assemblies:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}/COBRA_all_assemblies.fasta.gz:
           type: file
-          description: Gzipped FASTA file containing all the assemblies generated by COBRA
+          description: Gzipped FASTA file containing all the assemblies generated
+            by COBRA
           pattern: "*/COBRA_all_assemblies.fasta.gz"
-  - joining_summary:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
+  joining_summary:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -157,8 +172,9 @@ output:
           description: |
             TSV file containing information regarding COBRA's extension results
           pattern: "${prefix}/COBRA_joining_summary.txt"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -168,11 +184,28 @@ output:
           description: |
             Log file containing the contents of each processing
           pattern: "${prefix}/log"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_cobra:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cobra:
+          type: string
+          description: The name of the tool
+      - cobra-meta --version 2>&1 | sed 's/^.*cobra v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cobra:
+          type: string
+          description: The name of the tool
+      - cobra-meta --version 2>&1 | sed 's/^.*cobra v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:

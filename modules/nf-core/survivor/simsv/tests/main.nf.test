@@ -83,7 +83,7 @@ INV_dup_number: 2'''
                     file(process.out.vcf[0][1]).name, // unstable
                     file(process.out.insertions[0][1]).name, // unstable
                     file(process.out.fasta[0][1]).name, // unstable
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

@@ -25,29 +25,38 @@ input:
         type: file
         description: compressed vcf file from tnhaplotyper2
         pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
     - vcf_tbi:
         type: file
         description: Tabix index of vcf file
         pattern: "*vcf.gz.tbi"
+        ontologies: []
     - stats:
         type: file
         description: Stats file that pairs with output vcf file
         pattern: "*vcf.gz.stats"
+        ontologies: []
     - contamination:
         type: file
-        description: the location and file name of the file containing the contamination
-          information produced by ContaminationModel.
+        description: the location and file name of the file containing the
+          contamination information produced by ContaminationModel.
         pattern: "*.contamination_data.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
     - segments:
         type: file
-        description: the location and file name of the file containing the tumor segments
-          information produced by ContaminationModel.
+        description: the location and file name of the file containing the tumor
+          segments information produced by ContaminationModel.
         pattern: "*.segments"
+        ontologies: []
     - orientation_priors:
         type: file
-        description: the location and file name of the file containing the orientation
-          bias information produced by OrientationBias.
+        description: the location and file name of the file containing the
+          orientation bias information produced by OrientationBias.
         pattern: "*.orientation_data.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
   - - meta2:
         type: map
         description: |
@@ -57,6 +66,7 @@ input:
         type: file
         description: The reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -66,38 +76,89 @@ input:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz":
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
           type: file
-          description: tbi file that pairs with vcf.
-          pattern: "*.vcf.gz.tbi"
+          description: file containing filtered tnhaplotyper2 calls.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz.tbi":
           type: file
           description: tbi file that pairs with vcf.
           pattern: "*.vcf.gz.tbi"
-  - stats:
-      - meta:
+          ontologies: []
+  stats:
+    - - meta:
           type: file
-          description: file containing statistics of the tnfilter run.
-          pattern: "*.stats"
+          description: file containing filtered tnhaplotyper2 calls.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz.stats":
           type: file
           description: file containing statistics of the tnfilter run.
           pattern: "*.stats"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_sentieon:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - sentieon:
+          type: string
+          description: The tool name
+      - sentieon driver --version | sed "s/.*-//g":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@asp8200"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--493a9352fdfbacc5
+      build_id: bd-493a9352fdfbacc5_1
+      scan_id: sc-cb424814848a20d9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c
+      build_id: bd-5e34aa16344b911c_1
+      scan_id: sc-8746dd39a4711178_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--5a01457f1db078c1
+      build_id: bd-5a01457f1db078c1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/af478c78e4ddb4fc9c570e47f3d64d86bb02e5c5467c6c095f21f95f59a7c3ab/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--95eea6ffae22db3c
+      build_id: bd-95eea6ffae22db3c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sentieon/tnfilter/.conda-lock/linux_amd64-bd-5e34aa16344b911c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sentieon/tnfilter/.conda-lock/linux_arm64-bd-493a9352fdfbacc5_1.txt

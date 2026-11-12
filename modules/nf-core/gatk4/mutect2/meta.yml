@@ -15,7 +15,12 @@ tools:
         and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       licence: ["Apache-2.0"]
       identifier: ""
 input:
@@ -30,13 +35,13 @@ input:
         pattern: "*.{bam/cram}"
     - input_index:
         type: list
-        description: list of BAM file indexes, also able to take CRAM indexes as an
-          input
+        description: list of BAM file indexes, also able to take CRAM indexes as an input
         pattern: "*.{bam.bai/cram.crai}"
     - intervals:
         type: file
         description: Specify region the tools is run on.
         pattern: ".{bed,interval_list}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,7 +50,8 @@ input:
     - fasta:
         type: file
         description: The reference fasta file
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fasta.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -54,7 +60,13 @@ input:
     - fai:
         type: file
         description: Index of reference fasta file
-        pattern: "*.fasta.fai"
+        pattern: "*.{fasta.fai,fasta.fai.gz}"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Index of bgzipped reference fasta file
+        pattern: "*.fasta.gz.gzi"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -64,69 +76,117 @@ input:
         type: file
         description: GATK sequence dictionary
         pattern: "*.dict"
-  - - germline_resource:
-        type: file
-        description: Population vcf of germline sequencing, containing allele fractions.
-        pattern: "*.vcf.gz"
-  - - germline_resource_tbi:
-        type: file
-        description: Index file for the germline resource.
-        pattern: "*.vcf.gz.tbi"
-  - - panel_of_normals:
-        type: file
-        description: vcf file to be used as a panel of normals.
-        pattern: "*.vcf.gz"
-  - - panel_of_normals_tbi:
-        type: file
-        description: Index for the panel of normals.
-        pattern: "*.vcf.gz.tbi"
+        ontologies: []
+  - alleles:
+      type: file
+      description: vcf file to be used to force-call alleles.
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - alleles_tbi:
+      type: file
+      description: Index file for alleles to be force-called.
+      pattern: "*.vcf.gz.tbi"
+      ontologies: []
+  - germline_resource:
+      type: file
+      description: Population vcf of germline sequencing, containing allele fractions.
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - germline_resource_tbi:
+      type: file
+      description: Index file for the germline resource.
+      pattern: "*.vcf.gz.tbi"
+      ontologies: []
+  - panel_of_normals:
+      type: file
+      description: vcf file to be used as a panel of normals.
+      pattern: "*.vcf.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - panel_of_normals_tbi:
+      type: file
+      description: Index for the panel of normals.
+      pattern: "*.vcf.gz.tbi"
+      ontologies: []
 output:
-  - vcf:
-      - meta:
+  vcf:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "${prefix}.vcf.gz":
           type: file
           description: compressed vcf file
-          pattern: "*.vcf.gz"
-      - "*.vcf.gz":
-          type: file
-          description: compressed vcf file
-          pattern: "*.vcf.gz"
-  - tbi:
-      - meta:
-          type: file
-          description: Index of vcf file
-          pattern: "*vcf.gz.tbi"
-      - "*.tbi":
-          type: file
-          description: Index of vcf file
-          pattern: "*vcf.gz.tbi"
-  - stats:
-      - meta:
+          pattern: "${prefix}.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  stats:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "${prefix}.vcf.gz.stats":
           type: file
           description: Stats file that pairs with output vcf file
-          pattern: "*vcf.gz.stats"
-      - "*.stats":
+          pattern: "${prefix}.vcf.gz.stats"
+          ontologies: []
+  tbi:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "${prefix}.vcf.gz.tbi":
           type: file
-          description: Stats file that pairs with output vcf file
-          pattern: "*vcf.gz.stats"
-  - f1r2:
-      - meta:
+          description: Index of vcf file
+          pattern: "${prefix}.vcf.gz.tbi"
+          ontologies: []
+  f1r2:
+    - - meta:
+          type: map
+          description: A Groovy map containing sample information
+      - "${prefix}.f1r2.tar.gz":
           type: file
-          description: file containing information to be passed to LearnReadOrientationModel
-            (only outputted when tumor_normal_pair mode is run)
-          pattern: "*.f1r2.tar.gz"
-      - "*.f1r2.tar.gz":
-          type: file
-          description: file containing information to be passed to LearnReadOrientationModel
-            (only outputted when tumor_normal_pair mode is run)
-          pattern: "*.f1r2.tar.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: file containing information to be passed to LearnReadOrientationModel (only outputted when tumor_normal_pair mode is run)
+          pattern: "${prefix}.f1r2.tar.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GCJMackenzie"
   - "@ramprasadn"
 maintainers:
   - "@GCJMackenzie"
   - "@ramprasadn"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/mutect2/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

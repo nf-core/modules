@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process OPENMS_FEATUREFINDERIDENTIFICATION"
+    script "../main.nf"
+    process "OPENMS_FEATUREFINDERIDENTIFICATION"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/featurefinderidentification"
+    tag "openmsthirdparty/cometadapter"
+    tag "openms/decoydatabase"
+    tag "thermorawfileparser"
+
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("OPENMS_DECOYDATABASE") {
+            script "../../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("OPENMSTHIRDPARTY_COMETADAPTER") {
+            script "../../../openmsthirdparty/cometadapter/main.nf"
+            process {
+                """
+                input[0] =
+                    THERMORAWFILEPARSER.out.spectra.join(
+                    OPENMS_DECOYDATABASE.out.decoy_fasta
+                    )
+                """
+            }
+        }
+    }
+
+    test("proteomics - mzml - idxml") {
+
+        when {
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra
+                    .join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
+                    .map { meta, mzml, idxml -> [ meta, mzml, idxml, [], "featureXML" ] }
+                """
+            }
+        }
+
+        then {
+            def featureContent = file(process.out.features[0][1]).text
+            // featureXML byte content is not reproducible run-to-run; the feature counts below
+            // were observed stable across runs at a fixed thread count (cpus pinned in nextflow.config).
+            // Fallback: if these counts drift after an OpenMS or runner change, regenerate the snapshot and confirm the counts are still stable across two runs.
+            def countMatch = featureContent =~ /<featureList count="(\d+)"/
+            assertAll(
+                { assert process.success },
+                { assert process.out.features[0][0] == [id:'test'] },
+                { assert file(process.out.features[0][1]).name == 'test.featureXML' },
+                { assert countMatch.find() },
+                { assert (featureContent =~ /<feature id="/).count > 0 },
+                { assert snapshot(
+                    countMatch[0][1],
+                    (featureContent =~ /<feature id="/).count,
+                    process.out.findAll { key, val -> !(key in ['0', 'features']) }
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - mzml - idxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra
+                    .join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
+                    .map { meta, mzml, idxml -> [ meta, mzml, idxml, [], "featureXML" ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

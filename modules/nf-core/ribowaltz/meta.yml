@@ -1,20 +1,18 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ribowaltz"
-description: Calculation of optimal P-site offsets, diagnostic analysis and visual
-  inspection of ribosome profiling data
+description: Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data
 keywords:
-  - sort
-  - example
+  - riboseq
+  - psite
   - genomics
 tools:
   - "ribowaltz":
-      description: "Calculation of optimal P-site offsets, diagnostic analysis and visual
-        inspection of ribosome profiling data."
+      description: "Calculation of optimal P-site offsets, diagnostic analysis and visual inspection of ribosome profiling data."
       homepage: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       documentation: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       tool_dev_url: "https://github.com/LabTranslationalArchitectomics/riboWaltz"
       doi: "10.1371/journal.pcbi.1006169"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:ribowaltz
 
 input:
@@ -27,6 +25,7 @@ input:
         type: file
         description: Transcriptome BAM file
         pattern: "*.{bam}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -36,6 +35,7 @@ input:
         type: file
         description: GTF file of reference genome
         pattern: "*.{gtf.gz,gtf}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -45,33 +45,33 @@ input:
         type: file
         description: FASTA file of reference genome
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies: []
 output:
-  - best_offset:
-      - meta:
+  best_offset:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.best_offset.txt":
           type: file
-          description: Text file with the extremity used for the offset correction step
-            and the best offset for each sample (optional, in case no offsets could be
-            determined, usually because no reads pass filtering criteria)
+          description: Text file with the extremity used for the offset correction step and the best offset for each sample (optional, in case no offsets could be determined, usually because no reads pass filtering criteria)
           pattern: "*.best_offset.txt"
-  - offset:
-      - meta:
+          ontologies: []
+  offset:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.psite_offset.tsv{,.gz}":
           type: file
-          description: TSV file containing P-site offsets for each read length (optional,
-            in case no offsets could be determined, usually because no reads pass filtering
-            criteria)
+          description: TSV file containing P-site offsets for each read length (optional, in case no offsets could be determined, usually because no reads pass filtering criteria)
           pattern: "*.psite_offset.tsv.gz"
-  - offset_plot:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  offset_plot:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -80,19 +80,21 @@ output:
           type: file
           description: P-site offset plots for each read length (optional)
           pattern: "offset_plot/*"
-  - psites:
-      - meta:
+          ontologies: []
+  psites:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.psite.tsv{,.gz}":
           type: file
-          description: TSV file containing P-site transcriptomic coordinates and information
-            for each alignment (optional)
+          description: TSV file containing P-site transcriptomic coordinates and information for each alignment (optional)
           pattern: "*.psite.tsv.gz"
-  - codon_coverage_rpf:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  codon_coverage_rpf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -101,8 +103,10 @@ output:
           type: file
           description: TSV file with codon-level RPF coverage for each transcript (optional)
           pattern: "*.codon_coverage_rpf.tsv.gz"
-  - codon_coverage_psite:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  codon_coverage_psite:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -111,8 +115,10 @@ output:
           type: file
           description: TSV file with codon-level P-site coverage for each transcript (optional)
           pattern: "*.codon_coverage_psite.tsv.gz"
-  - cds_coverage:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cds_coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -121,20 +127,22 @@ output:
           type: file
           description: TSV file with CDS P-site in-frame counts for each transcript (optional)
           pattern: "*.cds_coverage_psite.tsv.gz"
-  - cds_window_coverage:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  cds_window_coverage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
       - "*nt_coverage_psite.tsv{,.gz}":
           type: file
-          description: TSV file with CDS P-site in-frame counts for each transcript, excluding
-            P-sites within defined distances to start and stop codons (defined by passing
-            --exclude_start and --exclude_stop with the number of nucleotides) (optional)
+          description: TSV file with CDS P-site in-frame counts for each transcript, excluding P-sites within defined distances to start and stop codons (defined by passing --exclude_start and --exclude_stop with the number of nucleotides) (optional)
           pattern: "*nt_coverage_psite.tsv.gz"
-  - ribowaltz_qc:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  ribowaltz_qc:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -143,12 +151,59 @@ output:
           type: file
           description: riboWaltz diagnostic plots (optional)
           pattern: "ribowaltz_qc/*"
-  - versions:
-      - versions.yml:
+          ontologies: []
+  ribowaltz_qc_data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ribowaltz_qc/*.tsv:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: TSV files containing data underlying riboWaltz QC plots including read length distribution, read length bins for P-site offset identification, ends heatmap, codon usage, P-site region distribution, frame distribution, frame distribution stratified by read length, and metaprofile P-site frequency around start/stop codons (optional)
+          pattern: "ribowaltz_qc/*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@iraiosub"
 maintainers:
   - "@iraiosub"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:51ff674deeb6ddb9
+      build_id: bd-51ff674deeb6ddb9_1
+      scan_id: sc-3f5d60d2bdefff88_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:3830914827b951ad
+      build_id: bd-3830914827b951ad_1
+      scan_id: sc-11f77c5e46657000_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:1576b4eed9763404
+      build_id: bd-1576b4eed9763404_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb99d1cc6aee41fa37d42cefa65ad9d8b741f9259c26ecbca9eab6b4748dbff7/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:3b85788cf40f01ba
+      build_id: bd-3b85788cf40f01ba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56049a13d022d8e63efc68add0d5ea5292dfafd389b7c37c9b1b97e89be71c71/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ribowaltz/.conda-lock/linux_amd64-bd-51ff674deeb6ddb9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ribowaltz/.conda-lock/linux_arm64-bd-3830914827b951ad_1.txt

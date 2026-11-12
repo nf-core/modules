@@ -1,6 +1,7 @@
 name: "parabricks_minimap2"
-description: NVIDIA Clara Parabricks GPU-accelerated minimap2 for aligning long read sequences
-  against a large reference database using an accelerated KSW2 to convert FASTQ to BAM/CRAM.
+description: NVIDIA Clara Parabricks GPU-accelerated minimap2 for aligning long read
+  sequences against a large reference database using an accelerated KSW2 to convert
+  FASTQ to BAM/CRAM.
 keywords:
   - align
   - sort
@@ -22,8 +23,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Input read file, supported formats - 'fastq', 'fastq.gz', 'fq', 'fq.gz', 'bam'
+        description: Input read file, supported formats - 'fastq', 'fastq.gz', 'fq',
+          'fq.gz', 'bam'
         pattern: "^.*\\.(fastq|fastq\\.gz|fq|fq\\.gz|bam)$"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3989" # GZIP
   - - meta2:
         type: map
         description: |
@@ -32,15 +37,18 @@ input:
         type: file
         description: reference fasta file - must be unzipped
         pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - meta3:
         type: map
         description: |
           Groovy Map containing index information
-    - interval_file:
+    - intervals:
         type: file
         description: (optional) file(s) containing genomic intervals for use in base
           quality score recalibration (BQSR)
         pattern: "*.{bed,interval_list,picard,list,intervals}"
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -50,13 +58,16 @@ input:
         description: (optional) known sites file(s) for calculating BQSR. markdups must
           be true to perform BQSR.
         pattern: "*.vcf.gz"
-  - - output_fmt:
-        type: string
-        description: Output format for the alignment. Options are 'bam' or 'cram'
-        pattern: "{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3989" # GZIP
+  - output_fmt:
+      type: string
+      description: Output format for the alignment. Options are 'bam' or 'cram'
+      pattern: "{bam,cram}"
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -65,8 +76,10 @@ output:
           type: file
           description: Sorted BAM file
           pattern: "*.bam"
-  - bai:
-      - meta:
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -75,8 +88,9 @@ output:
           type: file
           description: index corresponding to sorted BAM file
           pattern: "*.bai"
-  - cram:
-      - meta:
+          ontologies: []
+  cram:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +99,9 @@ output:
           type: file
           description: Sorted CRAM file
           pattern: "*.cram"
-  - crai:
-      - meta:
+          ontologies: []
+  crai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,41 +110,70 @@ output:
           type: file
           description: index corresponding to sorted CRAM file
           pattern: "*.crai"
-  - bqsr_table:
-      - meta:
+          ontologies: []
+  bqsr_table:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test']
+            e.g. [ id:'test', single_end:false ]
       - "*.table":
           type: file
           description: (optional) table from base quality score recalibration calculation,
             to be used with parabricks/applybqsr
           pattern: "*.table"
-  - qc_metrics:
-      - meta:
+          ontologies: []
+  qc_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*_qc_metrics":
           type: directory
           description: (optional) optional directory of qc metrics
           pattern: "*_qc_metrics"
-  - duplicate_metrics:
-      - meta:
+  duplicate_metrics:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.duplicate-metrics.txt":
           type: file
-          description: (optional) metrics calculated from marking duplicates in the bam
-            file
+          description: (optional) metrics calculated from marking duplicates in the
+            bam file
           pattern: "*.duplicate-metrics.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
+  compatible_versions:
+    - compatible_versions.yml:
+        type: file
+        description: File containing info on compatible CPU-based software versions.
+        pattern: "compatible_versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@haidyi"
 maintainers:

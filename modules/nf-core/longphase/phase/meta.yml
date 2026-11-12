@@ -1,23 +1,19 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "longphase_phase"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs,
-  small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
 keywords:
   - phase
   - long-read
   - genomics
 tools:
   - "longphase":
-      description: "LongPhase is an ultra-fast program for simultaneously co-phasing
-        SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
-        platforms."
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
       homepage: "https://github.com/twolinin/longphase"
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
       doi: "10.1093/bioinformatics/btac058"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -28,22 +24,27 @@ input:
         type: file
         description: Sorted BAM/CRAM file(s)
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: Index of sorted BAM/CRAM file(s)
         pattern: "*.{bai,crai,csi}"
-    - snps:
+        ontologies: []
+    - snvs:
         type: file
         description: VCF file with SNPs (and INDELs)
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - svs:
         type: file
         description: VCF file with SVs
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
     - mods:
         type: file
         description: modcall-generated VCF with modifications
         pattern: "*.{vcf,vcf.gz}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -53,6 +54,7 @@ input:
         type: file
         description: Reference fasta file
         pattern: "*.fasta"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -62,23 +64,90 @@ input:
         type: file
         description: Reference fai index
         pattern: "*.fai"
+        ontologies: []
 output:
-  - vcf:
-      - meta:
+  snv_vcf:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.vcf.gz":
+      - ${prefix}.vcf.gz:
           type: file
-          description: Compressed VCF file with phased variants
+          description: Compressed VCF file with phased SNVs and indels
           pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  sv_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_SV.vcf.gz:
           type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Compressed VCF file with phased SVs
+          pattern: "*_SV.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  mod_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_mod.vcf.gz:
+          type: file
+          description: Compressed VCF file with phased modifications
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_longphase:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/^LongPhase Ver //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - "longphase --version | head -n 1 | sed 's/^LongPhase Ver //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:
   - "@fellen31"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_longphase:3418df83ebc1fb9a
+      build_id: bd-3418df83ebc1fb9a_1
+      scan_id: sc-433dba9124c158e8_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_longphase:af28edaa0ad32c04
+      build_id: bd-af28edaa0ad32c04_1
+      scan_id: sc-1674b664ec9df99c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_longphase:2a80e3b482f47b34
+      build_id: bd-2a80e3b482f47b34_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/760ff81d5219ea953cdaa115ed70316afe201715c6e25fc8cc26c3d7cee57e1f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_longphase:6b715be86adb1018
+      build_id: bd-6b715be86adb1018_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4c81218238ecde517d907a53f2d54958779efdafd3aafd8d6948e2e678b5a86/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/longphase/phase/.conda-lock/linux_amd64-bd-3418df83ebc1fb9a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/longphase/phase/.conda-lock/linux_arm64-bd-af28edaa0ad32c04_1.txt

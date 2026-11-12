@@ -21,7 +21,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert path(process.out.database.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match() },
             )
         }
 
@@ -42,7 +44,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert path(process.out.database.get(0).get(1)).exists() },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match() },
             )
         }
 

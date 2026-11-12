@@ -10,9 +10,9 @@ tools:
       homepage: "https://github.com/dnil/rhocall"
       documentation: "https://github.com/dnil/rhocall"
       tool_dev_url: "https://github.com/dnil"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -23,6 +23,7 @@ input:
         type: file
         description: VCF file
         pattern: "*.{vcf}"
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -32,9 +33,10 @@ input:
         type: file
         description: Input RHO file produced from rhocall
         pattern: "*.{roh}"
+        ontologies: []
 output:
-  - bed:
-      - meta:
+  bed:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -43,8 +45,9 @@ output:
           type: file
           description: Bed file containing roh calls
           pattern: "*.{bed}"
-  - wig:
-      - meta:
+          ontologies: []
+  wig:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -53,11 +56,28 @@ output:
           type: file
           description: Wig file containing roh calls
           pattern: "*.{wig}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_rhocall:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rhocall:
+          type: string
+          description: The name of the tool
+      - rhocall --version | sed 's/rhocall, version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:

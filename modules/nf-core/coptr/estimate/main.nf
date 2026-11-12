@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COPTR_ESTIMATE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/coptr:1.1.4--pyhdfd78af_3':
-        'biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
+        'quay.io/biocontainers/coptr:1.1.4--pyhdfd78af_3' }"
 
     input:
     tuple val(meta), path(pkl, stageAs: "coverage_maps/*")
 
     output:
     tuple val(meta), path("*.csv"), emit: ptr
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('coptr'), eval("coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/'"), emit: versions_coptr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,23 +28,12 @@ process COPTR_ESTIMATE {
         estimate \\
         $args \\
         coverage_maps/ \\
-        ptrs.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
+        ${prefix}.csv
     """
 
     stub:
-    def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        coptr: \$(coptr |& sed -E '11!d ; s/CoPTR.*?\\(v(.*?)\\).*/\\1/')
-    END_VERSIONS
     """
 }

@@ -25,9 +25,10 @@ input:
         type: file
         description: List of per-sample MetaPhlAn3 taxonomic abundance tables
         pattern: "*"
+        ontologies: []
 output:
-  - txt:
-      - meta:
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -36,11 +37,28 @@ output:
           type: file
           description: Combined MetaPhlAn3 table
           pattern: "*.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_metaphlan3:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan3:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan3:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@jfy133"
 maintainers:

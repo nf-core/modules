@@ -15,7 +15,8 @@ tools:
       documentation: https://instrain.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/MrOlm/instrain
       doi: 10.1038/s41587-020-00797-0
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:instrain
 input:
   - - meta:
@@ -25,22 +26,26 @@ input:
         type: file
         description: Path to .bam file to be profiled
         pattern: "*.{bam,sam}"
-  - - genome_fasta:
-        type: file
-        description: Path to .fasta file to be profiled; MUST be the .fasta file that
-          was mapped to to create the .bam file
-        pattern: "*.{fasta,fna,fa}"
-  - - genes_fasta:
-        type: file
-        description: Path to .fna file of genes to be profiled (OPTIONAL)
-        pattern: "*.{fasta,fna,fa}"
-  - - stb_file:
-        type: file
-        description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
-        pattern: "*.stb"
+        ontologies: []
+  - genome_fasta:
+      type: file
+      description: Path to .fasta file to be profiled; MUST be the .fasta file that
+        was mapped to to create the .bam file
+      pattern: "*.{fasta,fna,fa}"
+      ontologies: []
+  - genes_fasta:
+      type: file
+      description: Path to .fna file of genes to be profiled (OPTIONAL)
+      pattern: "*.{fasta,fna,fa}"
+      ontologies: []
+  - stb_file:
+      type: file
+      description: Path to .stb (scaffold to bin) file to be profiled (OPTIONAL)
+      pattern: "*.stb"
+      ontologies: []
 output:
-  - profile:
-      - meta:
+  profile:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,8 +54,8 @@ output:
           type: directory
           description: InStrain profile folder
           pattern: "*.IS/"
-  - snvs:
-      - meta:
+  snvs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -59,8 +64,10 @@ output:
           type: file
           description: SNVs
           pattern: "*.tsv"
-  - gene_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  gene_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -69,8 +76,10 @@ output:
           type: file
           description: Gene information
           pattern: "*.tsv"
-  - genome_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  genome_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -79,8 +88,10 @@ output:
           type: file
           description: Genome information
           pattern: "*.tsv"
-  - linkage:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  linkage:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,8 +100,10 @@ output:
           type: file
           description: Linkage information
           pattern: "*.tsv"
-  - mapping_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  mapping_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -99,8 +112,10 @@ output:
           type: file
           description: Mapping information
           pattern: "*.tsv"
-  - scaffold_info:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  scaffold_info:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -109,11 +124,29 @@ output:
           type: file
           description: Scaffold information
           pattern: "*.tsv"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_instrain:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - instrain:
+          type: string
+          description: The name of the tool
+      - inStrain profile --version 2>&1 | sed -n 's/.*inStrain version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - instrain:
+          type: string
+          description: The name of the tool
+      - inStrain profile --version 2>&1 | sed -n 's/.*inStrain version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mrolm"
 maintainers:

@@ -6,16 +6,15 @@ keywords:
   - sequence
   - count
   - assembly
-
 tools:
   - "yak":
       description: "Yet another k-mer analyzer"
       homepage: "https://github.com/lh3/yak"
       documentation: "https://github.com/lh3/yak/blob/master/README.md"
       tool_dev_url: "https://github.com/lh3/yak"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -26,9 +25,10 @@ input:
         type: file
         description: reads fastq/fasta file
         pattern: "*.{fastq.gz,fq.gz,fasta.gz,fa.gz}"
+        ontologies: []
 output:
-  - yak:
-      - meta:
+  yak:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -37,12 +37,53 @@ output:
           type: file
           description: k-mer hash table of input
           pattern: "*.{yak}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_yak:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yak:
+          type: string
+          description: The name of the tool
+      - yak version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yak:
+          type: string
+          description: The name of the tool
+      - yak version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yumisims"
 maintainers:
   - "@yumisims"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/yak:0.1--67035d4a4a0b931a
+      build_id: bd-67035d4a4a0b931a_1
+      scan_id: sc-58bbba928ef5bc69_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/yak:0.1--3a5526a015428c21
+      build_id: bd-3a5526a015428c21_1
+      scan_id: sc-5e8f93f939c97365_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/yak:0.1--4125ea0c7b5be030
+      build_id: bd-4125ea0c7b5be030_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc0349f7b2bdd3d35e237ea545cb2523a91791cfa1246f4ac18c71aed303f2ab/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/yak:0.1--63ac6f7b71e3afd9
+      build_id: bd-63ac6f7b71e3afd9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89c5b362c34afda263dfc0b45cca02f1b6cf179171cca3996a27ce526a26cd10/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/yak/count/.conda-lock/linux_amd64-bd-3a5526a015428c21_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/yak/count/.conda-lock/linux_arm64-bd-67035d4a4a0b931a_1.txt

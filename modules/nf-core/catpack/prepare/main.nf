@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CATPACK_PREPARE {
     tag "${meta.id}"
     label 'process_medium'
@@ -5,9 +8,9 @@ process CATPACK_PREPARE {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(db_fasta)
@@ -18,7 +21,7 @@ process CATPACK_PREPARE {
     output:
     tuple val(meta), path("${prefix}/db/"), emit: db
     tuple val(meta), path("${prefix}/tax/"), emit: taxonomy
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +38,6 @@ process CATPACK_PREPARE {
         --acc2tax ${acc2tax} \\
         --db_dir ${prefix}/ \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +51,5 @@ process CATPACK_PREPARE {
     mkdir -p ${prefix}/tax
     touch ${prefix}/tax/nodes.dmp
     touch ${prefix}/tax/names.dmp
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

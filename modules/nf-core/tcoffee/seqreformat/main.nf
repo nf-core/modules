@@ -1,19 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TCOFFEE_SEQREFORMAT {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/t-coffee:13.46.0.919e8c6b--hfc96bf3_0':
-        'biocontainers/t-coffee:13.46.0.919e8c6b--hfc96bf3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f4aed8f78ff751f9682f7f17c0259de2dafc57cee4ac5bd1aa0b2af8ba8ad495/data'
+        : 'community.wave.seqera.io/library/t-coffee:13.46.0.919e8c6b--6242390d545250f1'}"
 
     input:
     tuple val(meta), path(infile)
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: formatted_file
-    path "versions.yml" , emit: versions
-
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | sed -n \'s/.*Version_\\([^ ]*\\).*/\\1/p\''), emit: versions_tcoffee, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,24 +29,13 @@ process TCOFFEE_SEQREFORMAT {
         -in ${infile} \
         $args \
         > "${prefix}.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Otherwise, tcoffee will crash when calling its version
     export TEMP='./'
     touch "${prefix}.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tcoffee: \$( t_coffee -version | awk '{gsub("Version_", ""); print \$3}')
-    END_VERSIONS
     """
 }

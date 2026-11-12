@@ -27,9 +27,10 @@ input:
         type: file
         description: FASTQ file
         pattern: "*.{fastq.gz}"
+        ontologies: []
 output:
-  - fastq:
-      - meta:
+  fastq:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,11 +39,28 @@ output:
           type: file
           description: FASTQ file
           pattern: "*.{fastq.gz}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_seqcluster:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqcluster:
+          type: string
+          description: The name of the tool
+      - "seqcluster --version 2>&1 | tail -n 1 | sed 's/^seqcluster //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqcluster:
+          type: string
+          description: The name of the tool
+      - "seqcluster --version 2>&1 | tail -n 1 | sed 's/^seqcluster //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:

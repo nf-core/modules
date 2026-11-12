@@ -1,6 +1,6 @@
 name: "mageck_count"
-description: mageck count for functional genomics, reads are usually mapped to a specific
-  sgRNA
+description: mageck count for functional genomics, reads are usually mapped to a
+  specific sgRNA
 keywords:
   - sort
   - functional genomics
@@ -13,7 +13,8 @@ tools:
       homepage: "https://sourceforge.net/p/mageck/wiki/Home/"
       documentation: "https://sourceforge.net/p/mageck/wiki/demo/#step-4-run-the-mageck-count-command"
       doi: "10.1186/s13059-014-0554-4"
-      licence: ["BSD License"]
+      licence:
+        - "BSD License"
       identifier: biotools:mageck
 input:
   - - meta:
@@ -23,16 +24,23 @@ input:
           e.g. [ id:'test', single_end:false ]
     - inputfile:
         type: file
-        description: library fastq file containing the sgRNA and gene name or count
-          table containing the sgRNA and number of reads to per sample
+        description: library fastq file containing the sgRNA and gene name or
+          count table containing the sgRNA and number of reads to per sample
         pattern: "*.{fq,fastq,fastq.gz,fq.gz,csv,txt,tsv}"
-  - - library:
-        type: file
-        description: library file containing the sgRNA and gene name
-        pattern: "*.{csv,txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
+  - library:
+      type: file
+      description: library file containing the sgRNA and gene name
+      pattern: "*.{csv,txt,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3752 # CSV
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
-  - count:
-      - meta:
+  count:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +49,9 @@ output:
           type: file
           description: File containing read counts
           pattern: "*.countsummary.txt"
-  - norm:
-      - meta:
+          ontologies: []
+  norm:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,11 +60,30 @@ output:
           type: file
           description: File containing normalized read counts
           pattern: "*.count_normalized.txt"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_mageck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mageck:
+          type: string
+          description: The name of the tool
+      - mageck -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mageck:
+          type: string
+          description: The name of the tool
+      - mageck -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@LaurenceKuhl"
 maintainers:

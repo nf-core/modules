@@ -1,6 +1,5 @@
 name: "angsd_docounts"
-description: Calculates base frequency statistics across reference positions from
-  BAM.
+description: Calculates base frequency statistics across reference positions from BAM.
 keywords:
   - angsd
   - population genetics
@@ -13,7 +12,8 @@ tools:
       documentation: "http://www.popgen.dk/angsd/"
       tool_dev_url: "https://github.com/ANGSD/angsd"
       doi: "10.1186/s12859-014-0356-4"
-      licence: ["GPL v3, MIT"]
+      licence:
+        - "GPL v3, MIT"
       identifier: biotools:angsd
 input:
   - - meta:
@@ -40,8 +40,8 @@ input:
         pattern: "*"
         ontologies: []
 output:
-  - depth_sample:
-      - meta:
+  depth_sample:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,8 +51,8 @@ output:
           description: Distribution of sequencing depths
           pattern: "*.depthSample"
           ontologies: []
-  - depth_global:
-      - meta:
+  depth_global:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -62,8 +62,8 @@ output:
           description: Distribution of sequencing depths
           pattern: "*.depthGlobal"
           ontologies: []
-  - qs:
-      - meta:
+  qs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -73,8 +73,8 @@ output:
           description: Distribution of scores
           pattern: "*.qs"
           ontologies: []
-  - pos:
-      - meta:
+  pos:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -85,8 +85,9 @@ output:
           pattern: "*.pos.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3675" # Compressed file
-  - counts:
-      - meta:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  counts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -95,27 +96,56 @@ output:
           type: file
           description: Various types of statistics (related to pos.gz)
           pattern: "*.counts.gz"
-          ontologies: []
-  - icounts:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  icounts:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.icnts.gz":
           type: file
-          description: Internal format for dumping binary single chrs. Useful for ANGSD
-            contamination
+          description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
           pattern: "*.icnts.gz"
-          ontologies: []
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
           ontologies:
-            - edam: "http://edamontology.org/format_3750" # YAML
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_angsd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05
+      build_id: bd-714d1c4bd0020e05_1
+      scan_id: sc-a46e932810557d21_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd_htslib:79bb9a1e1b583aa0
+      build_id: bd-79bb9a1e1b583aa0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/docounts/.conda-lock/linux_amd64-bd-714d1c4bd0020e05_1.txt

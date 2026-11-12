@@ -1,6 +1,5 @@
 name: "gatk4_postprocessgermlinecnvcalls"
-description: Postprocesses the output of GermlineCNVCaller and generates VCFs and
-  denoised copy ratios
+description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
 keywords:
   - copy number
   - gatk4
@@ -13,7 +12,12 @@ tools:
         and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037593411-PostprocessGermlineCNVCalls
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       licence: ["Apache-2.0"]
       identifier: ""
 input:
@@ -39,8 +43,8 @@ input:
           When a model is supplied to tool will run in CASE mode.
         pattern: "*-calls/"
 output:
-  - intervals:
-      - meta:
+  intervals:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -49,12 +53,10 @@ output:
           type: file
           description: Intervals VCF file
           pattern: "*.vcf.gz"
-      - s:
-          type: file
-          description: Intervals VCF file
-          pattern: "*.vcf.gz"
-  - segments:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  segments:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -63,22 +65,56 @@ output:
           type: file
           description: Segments VCF file
           pattern: "*.vcf.gz"
-  - denoised:
-      - meta:
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  denoised:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_denoised.vcf.gz":
+      - "*_denoised.tsv":
           type: file
-          description: Denoised copy ratio file
-          pattern: "*.vcf.gz"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          description: Denoised copy ratio file (tab-separated values)
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV format
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ryanjameskennedy"
 maintainers:
   - "@ryanjameskennedy"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739
+      build_id: bd-600cef9dfbee0739_1
+      scan_id: sc-40c20bbc31bf67e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-main_gcnvkernel:a98a8de6b0fd3804
+      build_id: bd-a98a8de6b0fd3804_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/postprocessgermlinecnvcalls/.conda-lock/linux_amd64-bd-600cef9dfbee0739_1.txt

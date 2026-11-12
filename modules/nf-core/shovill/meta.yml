@@ -9,7 +9,8 @@ tools:
       description: Microbial assembly pipeline for Illumina paired-end reads
       homepage: https://github.com/tseemann/shovill
       documentation: https://github.com/tseemann/shovill/blob/master/README.md
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:shovill
 input:
   - - meta:
@@ -20,9 +21,10 @@ input:
     - reads:
         type: file
         description: List of input paired-end FastQ files
+        ontologies: []
 output:
-  - contigs:
-      - meta:
+  contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -31,8 +33,9 @@ output:
           type: file
           description: The final assembly produced by Shovill
           pattern: "contigs.fa"
-  - corrections:
-      - meta:
+          ontologies: []
+  corrections:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -41,8 +44,9 @@ output:
           type: file
           description: List of post-assembly corrections made by Shovill
           pattern: "shovill.corrections"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -51,19 +55,21 @@ output:
           type: file
           description: Full log file for bug reporting
           pattern: "shovill.log"
-  - raw_contigs:
-      - meta:
+          ontologies: []
+  raw_contigs:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "{skesa,spades,megahit,velvet}.fasta":
           type: file
-          description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT,
-            or Velvet)
+          description: Raw assembly produced by the assembler (SKESA, SPAdes,
+            MEGAHIT, or Velvet)
           pattern: "{skesa,spades,megahit,velvet}.fasta"
-  - gfa:
-      - meta:
+          ontologies: []
+  gfa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -72,12 +78,31 @@ output:
           type: file
           description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
           pattern: "contigs.{fastg,gfa,LastGraph}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  versions_shovill:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - shovill:
+          type: string
+          description: The name of the tool
+      - shovill --version 2>&1 | sed "s/^.*shovill //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - shovill:
+          type: string
+          description: The name of the tool
+      - shovill --version 2>&1 | sed "s/^.*shovill //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
+  - "@eit-maxlcummins"
 maintainers:
   - "@rpetit3"

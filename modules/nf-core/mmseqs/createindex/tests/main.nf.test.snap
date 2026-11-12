@@ -2,14 +2,59 @@
     "versions": {
         "content": [
             [
-                "versions.yml:md5,9745ec52ea0356d97ef2f5c18c01d7e7"
+                "versions.yml:md5,35132b6bcef6fb9a674a5f346c57282d"
             ]
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2025-01-20T17:15:56.23597"
+        "timestamp": "2025-11-01T16:18:37.261481775"
+    },
+    "sars-cov-2 - mmseqs.tar.gz - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        "MMSEQS_CREATEINDEX",
+                        "mmseqs",
+                        "18.8cc5c"
+                    ]
+                ],
+                "db_indexed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            
+                        ]
+                    ]
+                ],
+                "versions_mmseqs": [
+                    [
+                        "MMSEQS_CREATEINDEX",
+                        "mmseqs",
+                        "18.8cc5c"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-02-12T11:23:13.922702457"
     },
     "createindex_filtered_files": {
         "content": [
@@ -18,7 +63,7 @@
                 "mmseqs.dbtype:md5,f1d3ff8443297732862df21dc4e57262",
                 "mmseqs.fasta:md5,b40600ad3be77f076df716e6cf99c64c",
                 "mmseqs.idx.dbtype:md5,9a198d4f48144e20661df7fd2dc41bf7",
-                "mmseqs.idx.index:md5,7c1dc5d8044ab7e0535d0ba4d7b7ab07",
+                "mmseqs.idx.index:md5,3451d87bd8a5a7182d36d53edd213c59",
                 "mmseqs.index:md5,c012bdab1c61eeafcb99d1b26650f3d0",
                 "mmseqs.lookup:md5,fa898551a6b303614ae6e29c237b7fc6",
                 "mmseqs.source:md5,16bef02c30aadbfa8d035596502f0aa2",
@@ -55,8 +100,65 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.3"
+            "nextflow": "25.10.0"
         },
-        "timestamp": "2025-01-20T17:15:56.186115"
+        "timestamp": "2025-11-01T16:18:37.253778342"
+    },
+    "sars-cov-2 - mmseqs.tar.gz": {
+        "content": [
+            [
+                "mmseqs:md5,a5ba5a88d2995da3522dddb4abca07ef",
+                "mmseqs.dbtype:md5,f1d3ff8443297732862df21dc4e57262",
+                "mmseqs.fasta:md5,b40600ad3be77f076df716e6cf99c64c",
+                "mmseqs.idx.dbtype:md5,9a198d4f48144e20661df7fd2dc41bf7",
+                "mmseqs.idx.index:md5,3451d87bd8a5a7182d36d53edd213c59",
+                "mmseqs.index:md5,c012bdab1c61eeafcb99d1b26650f3d0",
+                "mmseqs.lookup:md5,fa898551a6b303614ae6e29c237b7fc6",
+                "mmseqs.source:md5,16bef02c30aadbfa8d035596502f0aa2",
+                "mmseqs.tsv:md5,4e7ba50ce2879660dc6595286bf0d097",
+                "mmseqs_aln.0:md5,043e7e17756de6492a673c4b8c164892",
+                "mmseqs_aln.dbtype:md5,cbe23d9655fccd4311acdd6261c81bd8",
+                "mmseqs_aln.index:md5,9e17db59a56719569d20f72f0f48924d",
+                "mmseqs_aln.tsv:md5,e6fc24b66126dec818f89491edb79fec",
+                "mmseqs_clu.0:md5,86256b3bd5cd46a4ce865c477a381e08",
+                "mmseqs_clu.dbtype:md5,b9d9c6dbc098c97ae446f612efd8eafd",
+                "mmseqs_clu.index:md5,a0b78f31aee2c327d72f32919814baf1",
+                "mmseqs_h:md5,2b2cb13de706b3bb48a38942d851f452",
+                "mmseqs_h.dbtype:md5,740bab4f9ec8808aedb68d6b1281aeb2",
+                "mmseqs_h.index:md5,0040e6a02964914a87ef1efbe9011cbf",
+                "mmseqs_h.tsv:md5,8c733b4ef72b8c470ac30537cf6981bd",
+                "mmseqs_profile:md5,6c29ffea085c8c78e97533f9bcbedd98",
+                "mmseqs_profile.dbtype:md5,f2dd0dedb2c260419ece4a9e03b2e828",
+                "mmseqs_profile.index:md5,e09d927ca8d4779b7cfb937f435cf7d3",
+                "mmseqs_profile.lookup:md5,fa898551a6b303614ae6e29c237b7fc6",
+                "mmseqs_profile.source:md5,16bef02c30aadbfa8d035596502f0aa2",
+                "mmseqs_profile_h:md5,2b2cb13de706b3bb48a38942d851f452",
+                "mmseqs_profile_h.dbtype:md5,740bab4f9ec8808aedb68d6b1281aeb2",
+                "mmseqs_profile_h.index:md5,0040e6a02964914a87ef1efbe9011cbf",
+                "mmseqs_seq:md5,e6c2c906a7ced527a75c7b175776f0b1",
+                "mmseqs_seq.dbtype:md5,4352d88a78aa39750bf70cd6f27bcaa5",
+                "mmseqs_seq.index:md5,09f8cf12406b814198156e56f5acd8dc",
+                "mmseqs_seq.lookup:md5,fa898551a6b303614ae6e29c237b7fc6",
+                "mmseqs_seq.source:md5,16bef02c30aadbfa8d035596502f0aa2",
+                "mmseqs_seq.tsv:md5,fcc20038fa951bc085463bb49ffa5e25",
+                "mmseqs_seq_h:md5,2b2cb13de706b3bb48a38942d851f452",
+                "mmseqs_seq_h.dbtype:md5,740bab4f9ec8808aedb68d6b1281aeb2",
+                "mmseqs_seq_h.index:md5,0040e6a02964914a87ef1efbe9011cbf"
+            ],
+            {
+                "versions_mmseqs": [
+                    [
+                        "MMSEQS_CREATEINDEX",
+                        "mmseqs",
+                        "18.8cc5c"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.10.4"
+        },
+        "timestamp": "2026-02-12T11:23:05.989872955"
     }
 }

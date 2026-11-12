@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/SionBayliss/PIRATE/wiki
       tool_dev_url: https://github.com/SionBayliss/PIRATE
       doi: "10.1093/gigascience/giz119"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:PIRATE
 input:
   - - meta:
@@ -23,9 +24,10 @@ input:
         type: file
         description: A set of GFF3 formatted files
         pattern: "*.{gff}"
+        ontologies: []
 output:
-  - results:
-      - meta:
+  results:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -34,8 +36,8 @@ output:
           type: directory
           description: Directory containing PIRATE result files
           pattern: "*/*"
-  - aln:
-      - meta:
+  aln:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -44,11 +46,30 @@ output:
           type: file
           description: Core-genome alignment produced by PIRATE (Optional)
           pattern: "*.{fasta}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies: []
+  versions_pirate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pirate:
+          type: string
+          description: The name of the tool
+      - PIRATE --version 2>&1 | sed 's/PIRATE //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pirate:
+          type: string
+          description: The name of the tool
+      - PIRATE --version 2>&1 | sed 's/PIRATE //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
   - "@zachary-foster"

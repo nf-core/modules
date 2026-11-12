@@ -1,0 +1,129 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_taps_conversion"
+description: Uses rastair to assess C->T conversion as a readout for methylation in
+  a genome-wide basis, with rastair 0.8 (default) or rastair version 2
+keywords:
+  - TAPS conversion
+  - Methylation analysis
+  - Molecular bias (MBIAS)
+  - mCtoT
+  - rastair
+  - 4-letter genome
+components:
+  - rastair/mbias
+  - rastair/call
+  - rastair/methylkit
+  - rastair/mbiasparser
+  - rastair2/mbias
+  - rastair2/call
+  - bcftools/stats
+input:
+  - ch_bam:
+      type: file
+      description: |
+        BAM alignment files
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - ch_bai:
+      type: file
+      description: |
+        BAM index files
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome fasta file
+        Structure: [ [:], path(fasta) ]
+      pattern: "*.{fa,fasta}"
+  - ch_fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fai) ]
+      pattern: "*.fai"
+  - use_rastair2:
+      type: boolean
+      description: |
+        Run rastair version 2 (`rastair2/mbias` for paired-end samples, then `rastair2/call`
+        with its cutoffs, and `bcftools/stats`) instead of rastair 0.8
+        (`rastair/mbias`, `rastair/mbiasparser`, `rastair/call`, `rastair/methylkit`).
+        rastair version 2 is free for non-commercial use only (University of Oxford licence);
+        the outputs of the caller that was not run are empty channels.
+  - trims:
+      type: list
+      description: |
+        Bases to ignore at read ends instead of the M-bias estimate, as
+        `[ nOT, nOB ]`, each `r1_start,r1_end,r2_start,r2_end` (for example
+        `[ '0,0,10,0', '0,0,10,0' ]`). With `[]`, rastair estimates them: rastair 0.8
+        with `rastair/mbias` and `rastair/mbiasparser`, rastair version 2 with
+        `rastair2/mbias` (paired-end samples; single-end samples are not trimmed).
+        When set, the M-bias steps are skipped for both callers.
+output:
+  - mbias:
+      type: file
+      description: |
+        File describing the molecular bias (MBIAS) of the TAPS conversion
+        Structure: [ val(meta), path(mbias) ]
+      pattern: "*.txt"
+  - call:
+      type: file
+      description: |
+        Rastair call output files (similar to bed format, genome-wide)
+        Structure: [ val(meta), path(call) ]
+      pattern: "*.txt"
+  - methylkit:
+      type: file
+      description: |
+        Rastair call output files in MethylKit format (similar to bed format, genome-wide)
+        Structure: [ val(meta), path(methylkit) ]
+      pattern: "*.gz"
+  - vcf:
+      type: file
+      description: |
+        rastair version 2 VCF with per-position methylation and genotype calls
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf.gz"
+  - vcf_tbi:
+      type: file
+      description: |
+        tabix index of the rastair version 2 VCF
+        Structure: [ val(meta), path(tbi) ]
+      pattern: "*.vcf.gz.tbi"
+  - bed:
+      type: file
+      description: |
+        rastair version 2 CpG methylation BED
+        Structure: [ val(meta), path(bed) ]
+      pattern: "*.bed.gz"
+  - bed_tbi:
+      type: file
+      description: |
+        tabix index of the rastair version 2 BED
+        Structure: [ val(meta), path(tbi) ]
+      pattern: "*.bed.gz.tbi"
+  - bcftools_stats:
+      type: file
+      description: |
+        bcftools stats of the rastair version 2 VCF (MultiQC input)
+        Structure: [ val(meta), path(stats) ]
+      pattern: "*stats.txt"
+  - mbias_html:
+      type: file
+      description: |
+        rastair version 2 M-bias report (paired-end samples only)
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.mbias.html"
+  - mbias_cutoffs:
+      type: file
+      description: |
+        Bases to ignore at read ends, as used by rastair version 2 call (paired-end
+        samples only): line 1 is `--nOT`, line 2 `--nOB`. When mbias reports several
+        contigs, the longest one is used; restrict it with `--region` in the
+        RASTAIR2_MBIAS `ext.args` to choose (and to keep memory down on large genomes).
+        Structure: [ val(meta), path(cutoffs) ]
+      pattern: "*.cutoffs.txt"
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"

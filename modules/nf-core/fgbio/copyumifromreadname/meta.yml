@@ -1,11 +1,11 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fgbio_copyumifromreadname"
 description: Copies the UMI at the end of a bam files read name to the RX tag.
 keywords:
-  - sort
-  - example
-  - genomics
+  - fgbio
+  - copy
+  - umi
+  - readname
 tools:
   - "fgbio":
       description: "A set of tools for working with genomic and high throughput sequencing
@@ -42,8 +42,8 @@ input:
           - edam: "http://edamontology.org/format_3462" # SAM
 
 output:
-  - bam:
-      - meta:
+  bam:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -54,8 +54,8 @@ output:
           pattern: "*.{bam}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  - bai:
-      - meta:
+  bai:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -66,12 +66,28 @@ output:
           pattern: "*.{bai}"
           ontologies:
             - edam: "http://edamontology.org/format_3327" # BAI
-  - versions:
-      - "versions.yml":
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sppearce"
 maintainers:

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_mkgtf"
-description: Module to build a filtered GTF needed by the 10x Genomics Space Ranger
-  tool. Uses the spaceranger mkgtf command.
+description: Module to build a filtered GTF needed by the 10x Genomics Space
+  Ranger tool. Uses the spaceranger mkgtf command.
 keywords:
   - reference
   - mkref
@@ -23,22 +22,42 @@ tools:
         - "10x Genomics EULA"
       identifier: ""
 input:
-  - - gtf:
-        type: file
-        description: The reference GTF transcriptome file
-        pattern: "*.gtf"
-output:
   - gtf:
-      - "*.gtf":
-          type: directory
-          description: The filtered GTF transcriptome file
-          pattern: "*.filtered.gtf"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software version
-          pattern: "versions.yml"
+      type: file
+      description: The reference GTF transcriptome file
+      pattern: "*.gtf"
+      ontologies: []
+output:
+  gtf:
+    - "*.gtf":
+        type: directory
+        description: The filtered GTF transcriptome file
+        pattern: "*.filtered.gtf"
+  versions_spaceranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed  "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed  "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+  - "@fasterius"

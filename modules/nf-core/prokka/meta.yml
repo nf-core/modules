@@ -9,7 +9,8 @@ tools:
       description: Rapid annotation of prokaryotic genomes
       homepage: https://github.com/tseemann/prokka
       doi: "10.1093/bioinformatics/btu153"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:prokka
 input:
   - - meta:
@@ -21,15 +22,18 @@ input:
         type: file
         description: |
           FASTA file to be annotated. Has to contain at least a non-empty string dummy value.
-  - - proteins:
-        type: file
-        description: FASTA file of trusted proteins to first annotate from (optional)
-  - - prodigal_tf:
-        type: file
-        description: Training file to use for Prodigal (optional)
+        ontologies: []
+  - proteins:
+      type: file
+      description: FASTA file of trusted proteins to first annotate from (optional)
+      ontologies: []
+  - prodigal_tf:
+      type: file
+      description: Training file to use for Prodigal (optional)
+      ontologies: []
 output:
-  - gff:
-      - meta:
+  gff:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -38,8 +42,9 @@ output:
           type: file
           description: annotation in GFF3 format, containing both sequences and annotations
           pattern: "*.{gff}"
-  - gbk:
-      - meta:
+          ontologies: []
+  gbk:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -48,8 +53,9 @@ output:
           type: file
           description: annotation in GenBank format, containing both sequences and annotations
           pattern: "*.{gbk}"
-  - fna:
-      - meta:
+          ontologies: []
+  fna:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -58,8 +64,9 @@ output:
           type: file
           description: nucleotide FASTA file of the input contig sequences
           pattern: "*.{fna}"
-  - faa:
-      - meta:
+          ontologies: []
+  faa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -68,19 +75,20 @@ output:
           type: file
           description: protein FASTA file of the translated CDS sequences
           pattern: "*.{faa}"
-  - ffn:
-      - meta:
+          ontologies: []
+  ffn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.ffn:
           type: file
-          description: nucleotide FASTA file of all the prediction transcripts (CDS, rRNA,
-            tRNA, tmRNA, misc_RNA)
+          description: nucleotide FASTA file of all the prediction transcripts (CDS, rRNA, tRNA, tmRNA, misc_RNA)
           pattern: "*.{ffn}"
-  - sqn:
-      - meta:
+          ontologies: []
+  sqn:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -89,19 +97,20 @@ output:
           type: file
           description: an ASN1 format "Sequin" file for submission to Genbank
           pattern: "*.{sqn}"
-  - fsa:
-      - meta:
+          ontologies: []
+  fsa:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.fsa:
           type: file
-          description: nucleotide FASTA file of the input contig sequences, used by "tbl2asn"
-            to create the .sqn file
+          description: nucleotide FASTA file of the input contig sequences, used by "tbl2asn" to create the .sqn file
           pattern: "*.{fsa}"
-  - tbl:
-      - meta:
+          ontologies: []
+  tbl:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -110,8 +119,9 @@ output:
           type: file
           description: feature Table file, used by "tbl2asn" to create the .sqn file
           pattern: "*.{tbl}"
-  - err:
-      - meta:
+          ontologies: []
+  err:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -120,8 +130,9 @@ output:
           type: file
           description: unacceptable annotations - the NCBI discrepancy report.
           pattern: "*.{err}"
-  - log:
-      - meta:
+          ontologies: []
+  log:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -130,8 +141,9 @@ output:
           type: file
           description: contains all the output that Prokka produced during its run
           pattern: "*.{log}"
-  - txt:
-      - meta:
+          ontologies: []
+  txt:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -140,8 +152,9 @@ output:
           type: file
           description: statistics relating to the annotated features found
           pattern: "*.{txt}"
-  - tsv:
-      - meta:
+          ontologies: []
+  tsv:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -150,12 +163,54 @@ output:
           type: file
           description: tab-separated file of all features (locus_tag,ftype,len_bp,gene,EC_number,COG,product)
           pattern: "*.{tsv}"
-  - versions:
-      - versions.yml:
-          type: file
-          description: File containing software versions
-          pattern: "versions.yml"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_prokka:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prokka:
+          type: string
+          description: The name of the tool
+      - prokka --version 2>&1 | sed 's/^.*prokka //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prokka:
+          type: string
+          description: The name of the tool
+      - prokka --version 2>&1 | sed 's/^.*prokka //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/prokka_openjdk_parallel:f21b98bcef4c3579
+      build_id: bd-f21b98bcef4c3579_1
+      scan_id: sc-f6c02317325ec0c7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/prokka_openjdk_parallel:2b8a3d67cd9e777a
+      build_id: bd-2b8a3d67cd9e777a_1
+      scan_id: sc-0457a5c5f64824d3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/prokka_openjdk_parallel:f9c80fd1fb3dcd19
+      build_id: bd-f9c80fd1fb3dcd19_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7bc89d4083c0a4baaaca0ef9ac0ba65e0feaebd8d88fe1c16c47041cbc67f360/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/prokka_openjdk_parallel:da4872acb14bdec7
+      build_id: bd-da4872acb14bdec7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9240123660eb1d166ae9919c463b77183a2dd63a4c43bbcecd73ffd7a5fa471/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/prokka/.conda-lock/linux_amd64-bd-f21b98bcef4c3579_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/prokka/.conda-lock/linux_arm64-bd-2b8a3d67cd9e777a_1.txt

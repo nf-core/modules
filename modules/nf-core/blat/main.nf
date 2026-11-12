@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLAT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
-        'biocontainers/ucsc-blat:472--h664eb37_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f1c01ef5544da297e213b49ad010a6de4bb152c1bd34881a8b65cb825192ed5/data'
+        : 'community.wave.seqera.io/library/ucsc-blat:472--3b87dacc9a173a42' }"
 
     input:
     tuple val(meta) , path(query)
@@ -13,7 +16,7 @@ process BLAT {
 
     output:
     tuple val(meta), path("*.psl"), emit: psl
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("blat"), eval("blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//'"), topic: versions, emit: versions_blat
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,22 +44,11 @@ process BLAT {
     then
         rm ${prefix}.fasta
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.psl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blat: \$(echo \$(blat 2>&1) | sed 's/^.*BLAT v. //; s/ fast.*\$//')
-    END_VERSIONS
     """
 }

@@ -10,7 +10,6 @@ import anndata as ad
 import doubletdetection
 import yaml
 
-
 adata = ad.read_h5ad("${h5ad}")
 
 clf = doubletdetection.BoostClassifier(n_jobs=int("${task.cpus}"))

@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STARE {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/131d4d3e84c3a947d60bcf833b714f0af91007e9532f7d8421eb52e5a006dcd2/data' :
         'community.wave.seqera.io/library/stare-abc:1.0.5--fd37836c16678a24' }"
 
@@ -17,7 +20,7 @@ process STARE {
 
     output:
     tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
-    path "versions.yml"                                                                    , emit: versions
+    tuple val("${task.process}"), val('stare'), eval('STARE.sh --version | cut -f3 -d" "'), topic: versions, emit: versions_stare
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,21 +49,11 @@ process STARE {
         ${path_existing_abc}
 
     gunzip -f ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stare: \$(STARE.sh --version | cut -f3 -d" ")
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir -p ${meta.id}/Gene_TF_matrices
     touch ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stare: \$(STARE.sh --version | cut -f3 -d" ")
-    END_VERSIONS
     """
 }

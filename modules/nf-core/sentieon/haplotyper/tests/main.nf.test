@@ -33,17 +33,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper GVCF") {
@@ -68,17 +67,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
-                        path(process.out.gvcf[0][1]).vcf.variantsMD5
+                        path(process.out.gvcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper BOTH") {
@@ -103,19 +101,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper Intervals BOTH") {
@@ -140,19 +137,18 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper DBSNP BOTH") {
@@ -177,14 +173,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.gvcf_tbi.get(0).get(1)).name,
                         path(process.out.gvcf[0][1]).vcf.variantsMD5,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -237,17 +233,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper multiple CRAMs") {
@@ -255,9 +250,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ 
+                input[0] = [
                     [ id:'test' ], // meta map
-                    [ 
+                    [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
                     ],
@@ -279,17 +274,16 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        process.out.versions,
                         file(process.out.vcf_tbi.get(0).get(1)).name,
-                        path(process.out.vcf[0][1]).vcf.variantsMD5
+                        path(process.out.vcf[0][1]).vcf.variantsMD5,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
         }
-
     }
 
     test("Sentieon Haplotyper - stub") {
@@ -315,13 +309,10 @@ nextflow_process {
         }
 
         then {
-
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
-
         }
     }
-
 }
