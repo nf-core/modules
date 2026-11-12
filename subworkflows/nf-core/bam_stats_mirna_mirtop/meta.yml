@@ -31,6 +31,12 @@ input:
         Structure: [ val(meta), path(gtf), val(species)]
       pattern: "*.{gtf}"
 output:
+  - gff:
+      type: file
+      description: |
+        Channel containing the mirGFF3 files with the annotated miRNAs and isomiRs
+        Structure: [ val(meta), path(gff) ]
+      pattern: "*.gff"
   - isomirs:
       type: file
       description: |
