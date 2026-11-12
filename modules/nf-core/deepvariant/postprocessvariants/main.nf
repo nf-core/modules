@@ -19,6 +19,8 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
     tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")   , emit: vcf_index
     tuple val(meta), path("${prefix}.g.vcf.gz")           , emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}") , emit: gvcf_index
+    tuple val(meta), path("${prefix}.phased_reads_switches.tsv") , optional: true, emit: phased_reads_switches
+    tuple val(meta), path("${prefix}.phased_reads_corrected.tsv"), optional: true, emit: phased_reads_corrected
     tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
@@ -69,9 +71,11 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         }
         phase_input_name = phase_inputs_matcher[0][1]
         phase_input_shardCount = phase_inputs_matcher[0][2]
-        // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
-        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.gz"
-        phased_inputs_arg = "--phased_reads_input_path ${phase_input_logical_name}"
+        // Reconstruct the logical name. Example: test-read-phasing_debug@12.tsv
+        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.tsv"
+        phased_inputs_arg = "--phased_reads_input_path ${phase_input_logical_name} " +
+            "--phased_reads_switches_output_path ${prefix}.phased_reads_switches.tsv " +
+            "--phased_reads_corrected_output_path ${prefix}.phased_reads_corrected.tsv"
     }
 
     """
@@ -98,11 +102,13 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         error "DEEPVARIANT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_phased = phase_inputs ? "touch ${prefix}.phased_reads_switches.tsv ${prefix}.phased_reads_corrected.tsv" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     echo "" | gzip > ${prefix}.g.vcf.gz
     touch ${prefix}.g.vcf.gz.tbi
+    ${touch_phased}
 
     """
 }

@@ -131,6 +131,34 @@ output:
           description: Index for GVCF
           pattern: "*.g.vcf.gz.{tbi,csi}"
           ontologies: []
+  phased_reads_switches:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_reads_switches.tsv:
+          type: file
+          description: |
+            Phase set stitching status for each shard and region, from the merge
+            of the phased read inputs. Only created when phase_inputs is given.
+          pattern: "*.phased_reads_switches.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  phased_reads_corrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_reads_corrected.tsv:
+          type: file
+          description: |
+            Corrected phase of each read after the merge of the phased read
+            inputs. Only created when phase_inputs is given.
+          pattern: "*.phased_reads_corrected.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   versions_deepvariant:
     - - ${task.process}:
           type: string
