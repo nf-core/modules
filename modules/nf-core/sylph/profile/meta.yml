@@ -7,8 +7,7 @@ keywords:
   - classification
 tools:
   - sylph:
-      description: Sylph quickly enables querying of genomes against even low-coverage
-        shotgun metagenomes to find nearest neighbour ANI.
+      description: Sylph quickly enables querying of genomes against even low-coverage shotgun metagenomes to find nearest neighbour ANI.
       homepage: https://github.com/bluenote-1577/sylph
       documentation: https://github.com/bluenote-1577/sylph
       tool_dev_url: https://github.com/bluenote-1577/sylph
@@ -33,8 +32,7 @@ input:
           - edam: http://edamontology.org/format_1930 # FASTQ
   - database:
       type: file
-      description: Pre-sketched *.syldb/*.sylsp files. Raw single-end fastq/fasta are
-        allowed and will be automatically sketched to .sylsp/.syldb.
+      description: Pre-sketched *.syldb/*.sylsp files. Raw single-end fastq/fasta are allowed and will be automatically sketched to .sylsp/.syldb.
       pattern: "*.{syldb,sylsp}"
 output:
   profile_out:
@@ -43,8 +41,7 @@ output:
           description: Groovy Map containing sample information
       - "*.tsv":
           type: file
-          description: Output file of species-level taxonomic profiling with abundances
-            and ANIs.
+          description: Output file of species-level taxonomic profiling with abundances and ANIs.
           pattern: "*tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -74,3 +71,27 @@ authors:
   - "@sofstam"
 maintainers:
   - "@sofstam"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sylph:1.0.0--a0d434ccf0cade48
+      build_id: bd-a0d434ccf0cade48_1
+      scan_id: sc-cf8ca25401c52951_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sylph:1.0.0--b822039f65b5f44e
+      build_id: bd-b822039f65b5f44e_1
+      scan_id: sc-2b0d1d6d8ae88805_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sylph:1.0.0--f8c5529cb5efd474
+      build_id: bd-f8c5529cb5efd474_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5a07e6ad9c72d029b6c034266c6dd3d713070ace82f19d98861f5dc647b935d/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sylph:1.0.0--1433a0e830739dfa
+      build_id: bd-1433a0e830739dfa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/510a6da0825fba0cd64787439d4c802509ca02547096c350202b8b0c27207a4d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sylph/profile/.conda-lock/linux_amd64-bd-b822039f65b5f44e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sylph/profile/.conda-lock/linux_arm64-bd-a0d434ccf0cade48_1.txt

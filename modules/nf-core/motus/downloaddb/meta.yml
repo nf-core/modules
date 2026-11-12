@@ -9,9 +9,7 @@ keywords:
   - download
 tools:
   - "motus":
-      description: "The mOTU profiler is a computational tool that estimates relative
-        taxonomic abundance of known and currently unknown microbial community members
-        using metagenomic shotgun sequencing data."
+      description: "The mOTU profiler is a computational tool that estimates relative taxonomic abundance of known and currently unknown microbial community members using metagenomic shotgun sequencing data."
       documentation: "https://github.com/motu-tool/mOTUs/wiki"
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
@@ -56,3 +54,17 @@ authors:
   - "@jianhong"
 maintainers:
   - "@jianhong"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/motus:3.1.0--af02b7d5df340f53
+      build_id: bd-af02b7d5df340f53_1
+      scan_id: sc-ad68d867671557d6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/motus:3.1.0--cb2ed5c982ac1aa5
+      build_id: bd-cb2ed5c982ac1aa5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/986400eff3919fa2fc6dd43d0226483fa932d3a315060b849cc750c966890499/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/motus/downloaddb/.conda-lock/linux_amd64-bd-af02b7d5df340f53_1.txt

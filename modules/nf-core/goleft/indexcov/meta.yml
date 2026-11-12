@@ -1,7 +1,5 @@
 name: "goleft_indexcov"
-description: Quickly estimate coverage from a whole-genome bam or cram index. A
-  bam index has 16KB resolution so that's what this gives, but it provides what
-  appears to be a high-quality coverage estimate in seconds per genome.
+description: Quickly estimate coverage from a whole-genome bam or cram index. A bam index has 16KB resolution so that's what this gives, but it provides what appears to be a high-quality coverage estimate in seconds per genome.
 keywords:
   - coverage
   - cnv
@@ -9,8 +7,7 @@ keywords:
   - depth
 tools:
   - "goleft":
-      description: "goleft is a collection of bioinformatics tools distributed under
-        MIT license in a single static binary"
+      description: "goleft is a collection of bioinformatics tools distributed under MIT license in a single static binary"
       homepage: "https://github.com/brentp/goleft"
       documentation: "https://github.com/brentp/goleft"
       tool_dev_url: "https://github.com/brentp/goleft"
@@ -166,3 +163,17 @@ authors:
   - "@lindenb"
 maintainers:
   - "@lindenb"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/goleft_htslib:f68a4f023ff8042a
+      build_id: bd-f68a4f023ff8042a_1
+      scan_id: sc-8bcfb98c10e96f47_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/goleft_htslib:0026e66a5e5391cf
+      build_id: bd-0026e66a5e5391cf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d1e3f3b3200ddd017a04f37038aa0af3b1948b55fb9e8393447f2463c98ffdb/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/goleft/indexcov/.conda-lock/linux_amd64-bd-f68a4f023ff8042a_1.txt
