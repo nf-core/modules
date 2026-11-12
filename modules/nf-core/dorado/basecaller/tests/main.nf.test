@@ -9,7 +9,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "dorado"
     tag "dorado/basecaller"
-    // every test runs on the GPU runners: the 9.4 GB vendor image does not fit on
+    // every test runs on the GPU runners: the 10 GB vendor image does not fit on
     // the standard ones. Only the test loading nextflow.gpu.config requests a GPU.
     tag "gpu"
 
@@ -50,7 +50,7 @@ nextflow_process {
         }
     }
 
-    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest - gpu") {
+    test("homo sapiens - pod5, hac@v6.0.0,5mCG_5hmCG@v1 - gpu") {
 
         config "./nextflow.gpu.config"
 
@@ -64,7 +64,7 @@ nextflow_process {
                     [ id: 'HG002' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5', checkIfExists: true)
                 ]
-                input[1] = "sup,5mCG_5hmCG@latest"
+                input[1] = "hac@v6.0.0,5mCG_5hmCG@v1"
                 input[2] = [[], []]
                 """
             }
@@ -81,7 +81,7 @@ nextflow_process {
         }
     }
 
-    test("homo sapiens - pod5, sup,5mCG_5hmCG@latest - stub") {
+    test("homo sapiens - pod5, hac@v6.0.0,5mCG_5hmCG@v1 - stub") {
 
         options "-stub"
 
@@ -95,7 +95,7 @@ nextflow_process {
                     [ id: 'HG002' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5', checkIfExists: true)
                 ]
-                input[1] = "sup,5mCG_5hmCG@latest"
+                input[1] = "hac@v6.0.0,5mCG_5hmCG@v1"
                 input[2] = [[], []]
                 """
             }
