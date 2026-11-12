@@ -300,4 +300,65 @@ nextflow_process {
 
     }
 
+    test("human - bam - gvcf - --gvcf in ext.args fails") {
+
+        when {
+            params {
+                 module_args = '--gvcf'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [], // bam.bai not needed unless using intervals
+                    []
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = 'g.vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Do not pass --gvcf in ext.args") }
+            )
+        }
+
+    }
+
+    test("human - bam - gvcf - --gvcf-gq-bands is allowed") {
+
+        when {
+            params {
+                 module_args = '--gvcf-gq-bands 20 --htvc-low-memory'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [], // bam.bai not needed unless using intervals
+                    []
+                ]
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = 'g.vcf.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+        }
+
+    }
+
 }
