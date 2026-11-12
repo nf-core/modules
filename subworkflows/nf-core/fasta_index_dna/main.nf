@@ -34,7 +34,7 @@ workflow FASTA_INDEX_DNA {
         BOWTIE2_BUILD(ch_fasta)
         ch_aligner_index = BOWTIE2_BUILD.out.index
     } else if (val_aligner == 'bwamem') {
-        BWAMEM1_INDEX(ch_fasta)
+        BWAMEM1_INDEX(ch_fasta, [])
         ch_aligner_index = BWAMEM1_INDEX.out.index
         // bwa/index uses a topic channel for versions
     } else if (val_aligner == 'bwamem2') {

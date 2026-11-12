@@ -60,7 +60,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     if (aligner == "bwa-mem") {
 
         if (!bwa_index) {
-            BWAMEM1_INDEX(fasta)
+            BWAMEM1_INDEX(fasta, [])
         }
 
         // sets bwaindex to correct input
