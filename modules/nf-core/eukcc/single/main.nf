@@ -4,7 +4,7 @@ process EUKCC_SINGLE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/eukcc:2.3.0--296d6eae73413214':
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4007a76cef091bbb1d959ad608d94fb5bac8fa7aea96bca9df83cb72445555de/data':
         'quay.io/biocontainers/eukcc:2.3.0--pyhdfd78af_0' }"
 
     input:
