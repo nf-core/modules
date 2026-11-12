@@ -14,7 +14,7 @@ process BWA_INDEX {
 
     input:
     tuple val(meta), path(fasta)
-    val input_dir
+    val index_dir_name
 
     output:
     tuple val(meta), path("${outdir}"), emit: index
@@ -24,7 +24,7 @@ process BWA_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    outdir = input_dir ?: 'bwa'
+    outdir = index_dir_name ?: 'bwa'
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     def args   = task.ext.args ?: ''
     """
@@ -37,7 +37,7 @@ process BWA_INDEX {
     """
 
     stub:
-    outdir = input_dir ?: 'bwa'
+    outdir = index_dir_name ?: 'bwa'
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
     mkdir ${outdir}

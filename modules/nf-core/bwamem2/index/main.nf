@@ -15,7 +15,7 @@ process BWAMEM2_INDEX {
 
     input:
     tuple val(meta), path(fasta)
-    val input_dir
+    val index_dir_name
 
     output:
     tuple val(meta), path("${outdir}"), emit: index
@@ -25,7 +25,7 @@ process BWAMEM2_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    outdir = input_dir ?: 'bwamem2'
+    outdir = index_dir_name ?: 'bwamem2'
     def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
     """
@@ -38,7 +38,7 @@ process BWAMEM2_INDEX {
     """
 
     stub:
-    outdir = input_dir ?: 'bwamem2'
+    outdir = index_dir_name ?: 'bwamem2'
     def prefix = task.ext.prefix ?: "${fasta}"
 
     """
