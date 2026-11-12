@@ -11,32 +11,32 @@ nextflow_process {
     tag "metabinner"
     tag "metabinner/metabinner"
 
-    // Decompressed copies of the three inputs, for the "uncompressed" test
-    setup {
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = channel.of(
-                    [ [id:'contigs'],  file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true) ],
-                    [ [id:'kmer'],     file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/kmer_4_f1000.csv.gz', checkIfExists: true) ],
-                    [ [id:'depth'], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/depth.txt.gz', checkIfExists: true) ]
-                )
-                """
+    test("MetaBinner") {
+        // Decompressed copies of depth, to test the module can take decompressed files
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = channel.of(
+                        [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/depth.txt.gz', checkIfExists: true) ]
+                    )
+                    """
+                }
             }
         }
-    }
 
-    test("MetaBinner with compressed inputs") {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/kmer_4_f1000.csv.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/depth.txt.gz', checkIfExists: true)
-                ]
+                input[0] = GUNZIP.out.gunzip.map { meta, depth ->
+                    [
+                        meta,
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/metabinner/kmer_4_f1000.csv.gz', checkIfExists: true),
+                        depth
+                    ]
+                }
                 """
             }
         }
@@ -52,32 +52,7 @@ nextflow_process {
         }
     }
 
-    test("MetaBinner with uncompressed inputs") {
-
-        when {
-            process {
-                """
-                input[0] = GUNZIP.out.gunzip
-                    .map { meta, f -> [ meta.id, f ] }
-                    .toList()
-                    .map { pairs ->
-                        def files = pairs.collectEntries()
-                        [ [ id:'test' ], files.contigs, files.kmer, files.depth ]
-                    }
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert path(process.out.binning_results.get(0).get(1)).linesGzip.size() > 0 },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
-            )
-        }
-    }
-
-    test("MetaBinner stub") {
+    test("MetaBinner - stub") {
 
         options "-stub"
 
