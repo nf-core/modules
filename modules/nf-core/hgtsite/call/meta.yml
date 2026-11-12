@@ -48,7 +48,8 @@ input:
         description: Per-read taxonomic calls for the unmapped reads, from Kraken2, KrakenUniq,
           Kaiju, Centrifuge, DIAMOND or BLAST, or a two-column file of read name and taxid
         pattern: "*.{txt,tsv,gz}"
-        ontologies: []
+        ontologies:
+            - edam: http://edamontology.org/data_2526 # Text data
   - host_taxid:
       type: integer
       description: NCBI taxid of the host, for example 9606 for human
