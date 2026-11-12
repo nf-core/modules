@@ -67,8 +67,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*.polished.gff3":
           type: file
-          description: Polished lifted annotations for the target assembly in gff3
-            format
+          description: Polished lifted annotations for the target assembly in gff3 format
           pattern: "*.polished.gff3"
           ontologies: []
   unmapped_txt:
@@ -107,3 +106,27 @@ authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/liftoff:1.6.3--db47142ceeb98fef
+      build_id: bd-db47142ceeb98fef_1
+      scan_id: sc-db8a0fd3f03fe105_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/liftoff:1.6.3--ef367fab3c5cff4f
+      build_id: bd-ef367fab3c5cff4f_1
+      scan_id: sc-4268b8219d33b43a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/liftoff:1.6.3--c7f7f3bba280146f
+      build_id: bd-c7f7f3bba280146f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/400986069bb08c0d1c17bd89600ea2a1bd3834ae5e268cb643ddce6bc038e513/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/liftoff:1.6.3--de09388869affa51
+      build_id: bd-de09388869affa51_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9c8cba12873d7403b0fcc1f70e9f734ff4228bae5ee5041b33cae95c3b70952/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/liftoff/.conda-lock/linux_amd64-bd-ef367fab3c5cff4f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/liftoff/.conda-lock/linux_arm64-bd-db47142ceeb98fef_1.txt

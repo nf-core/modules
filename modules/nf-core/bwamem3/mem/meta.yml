@@ -21,6 +21,11 @@ tools:
       homepage: "http://www.htslib.org"
       documentation: "http://www.htslib.org/doc/samtools.html"
       doi: "10.1093/bioinformatics/btp352"
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
       licence: ["MIT"]
       identifier: "biotools:samtools"
 input:
@@ -44,8 +49,13 @@ input:
           e.g. [ id:'test' ]
     - index:
         type: file
-        description: bwa-mem3 genome index files
-        pattern: "Directory containing bwa-mem3 index *.{0123,amb,ann,bwt.2bit.64,pac}"
+        description: |
+          bwa-mem3 genome index files. Methylation-aware alignment (`ext.args = '--meth=taps'`
+          for TAPS; the `=` is required) needs an index built with `bwa-mem3 index --meth`,
+          which adds the `*.meth.*` seed index. Aligning against a `--meth` index needs about
+          1.7x the memory of a plain index (measured on human chr21 with bwa-mem3 0.16.0);
+          for a human genome that is tens of GB.
+        pattern: "Directory containing bwa-mem3 index *.{amb,ann,bwt.2bit.64,pac}"
         ontologies:
           - edam: "http://edamontology.org/data_3210"
   - - meta3:
@@ -63,6 +73,12 @@ input:
   - sort_bam:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
+  - index_format:
+      type: string
+      description: |
+        Index to write alongside the sorted output: `bai` or `csi` for BAM, `crai` for CRAM.
+        Leave empty (`''`) to write no index. Requires `sort_bam = true`.
+      pattern: "bai|csi|crai"
 output:
   aligned:
     - - meta:
@@ -136,24 +152,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:74a941381d73ca36
-      build_id: bd-74a941381d73ca36_1
-      scan_id: sc-c076e2fb7bf41c80_1
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:e73cbc14b9a6cced
+      build_id: bd-e73cbc14b9a6cced_1
+      scan_id: sc-88dd26a648f84e35_1
     linux/amd64:
-      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:b08ae21c54a338c8
-      build_id: bd-b08ae21c54a338c8_1
-      scan_id: sc-97ad8a07dfa520df_1
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:f271e572b6aa004b
+      build_id: bd-f271e572b6aa004b_1
+      scan_id: sc-f2ead31ae29e9b64_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:fb293a77182e2fe6
-      build_id: bd-fb293a77182e2fe6_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/040dc4151df127b1cd36d1b3455ab712fe1a57fbfbee26385e8f7293f7e47ead/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:cc773b6ad4db0ed6
-      build_id: bd-cc773b6ad4db0ed6_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47c08a3167d5c6e2c6fb9ba1be8f98471bfb9cd6e1b8896edbc4a9a84830b55e/data
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:6b077b9587af43f7
+      build_id: bd-6b077b9587af43f7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f32caea810da83646cb7c62800d7952f4246ca68799f53fa6b0e1a02e19009b5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:9ae3c28116c5de4c
+      build_id: bd-9ae3c28116c5de4c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffd9362ddd396e0eb431def1812e02a274552b162355b242d974af65fcf83167/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-b08ae21c54a338c8_1.txt
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-f271e572b6aa004b_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-74a941381d73ca36_1.txt
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-e73cbc14b9a6cced_1.txt

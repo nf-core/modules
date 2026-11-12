@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLASMIDID {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plasmidid:1.6.5--hdfd78af_0' :
-        'quay.io/biocontainers/plasmidid:1.6.5--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/654d6253835ad4cbc59d48e862b1dc1c990cfd31e956b77013f9709eb6e09145/data'
+        : 'community.wave.seqera.io/library/blast_circos_mash_plasmidid_pruned:5ccfacf97162cdbc'}"
 
     input:
     tuple val(meta), path(scaffold)

@@ -7,9 +7,7 @@ keywords:
   - variants
 tools:
   - lofreq:
-      description: Lofreq is a fast and sensitive variant-caller for inferring SNVs
-        and indels from next-generation sequencing data. It's call-parallel programme
-        predicts variants using multiple processors
+      description: Lofreq is a fast and sensitive variant-caller for inferring SNVs and indels from next-generation sequencing data. It's call-parallel programme predicts variants using multiple processors
       homepage: https://csb5.github.io/lofreq/
       documentation: https://csb5.github.io/lofreq/
       doi: "10.1093/nar/gks918"
@@ -108,3 +106,27 @@ maintainers:
   - "@bjohnnyd"
   - "@nevinwu"
   - "@AitorPeseta"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/lofreq:2.1.5--44a1389d857c9d59
+      build_id: bd-44a1389d857c9d59_1
+      scan_id: sc-abea82e9cd31e5a0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/lofreq:2.1.5--876b9aca7bceb642
+      build_id: bd-876b9aca7bceb642_1
+      scan_id: sc-dba2c0dc1440f92e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/lofreq:2.1.5--8883c0f17caf5e60
+      build_id: bd-8883c0f17caf5e60_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be2b4817a82a0a139163ce96e73a87fbacb2e01b9a9bc2bb320b1d24dff22fd6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/lofreq:2.1.5--5131a20b78011aa9
+      build_id: bd-5131a20b78011aa9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2cd1dac32f1c03342433f388953cd7e1ceb75e530cb1e619a1bffef2f3cc5a0c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/lofreq/callparallel/.conda-lock/linux_amd64-bd-876b9aca7bceb642_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/lofreq/callparallel/.conda-lock/linux_arm64-bd-44a1389d857c9d59_1.txt

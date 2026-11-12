@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process RAXMLNG_EVALUATE"
+    script "../main.nf"
+    process "RAXMLNG_EVALUATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raxmlng"
+    tag "raxmlng/evaluate"
+
+    // Bipartitions of a tree, each as the sorted tip names on the side without the first tip.
+    def splits = { String nwk ->
+        def tips = []
+        def result = [] as Set
+        def stack = []
+        (nwk.replaceAll(/:[0-9.eE+-]+/, '') =~ /[(),;]|[A-Za-z0-9_]+/).each { t ->
+            if (t == '(') { stack << [] }
+            else if (t == ')') {
+                def leaves = stack.remove(stack.size() - 1)
+                result << leaves.sort()
+                if (stack) { stack[-1].addAll(leaves) }
+            }
+            else if (t ==~ /[A-Za-z0-9_]+/) { tips << t; stack[-1] << t }
+        }
+        def all = tips.sort()
+        result.findAll { it.size() > 1 && it.size() < all.size() - 1 }
+              .collect { it.contains(all[0]) ? (all - it) : it }
+              .collect { it.join(',') } as Set
+    }
+    def logl = { log -> (path(log).text =~ /Final LogLikelihood: (-[0-9.]+)/)[0][1] as double }
+
+    test("mammals - fixed tree and model") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                    'GTR+G'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.best_model[0][1]).text.startsWith('GTR') },
+                { assert Math.abs(logl(process.out.log[0][1]) - (-3498.23)) < 0.5 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("two clades - the topology is kept, only branch lengths and model are optimised") {
+
+        when {
+            process {
+                """
+                // Two clades of four tips, 300 sites, built inline. Clade sequences differ from the root in
+                // 15% of the sites, tips from their clade sequence in 3%, so the maximum likelihood topology is
+                // the one in good. bad pairs tips across the clades.
+                def rnd = new Random(1)
+                def bases = ['A', 'C', 'G', 'T']
+                def root = (1..300).collect { bases[rnd.nextInt(4)] }
+                def seqs = [:]
+                ['a', 'b'].each { clade ->
+                    def cs = root.collect { c -> rnd.nextDouble() < 0.15 ? bases[rnd.nextInt(4)] : c }
+                    (1..4).each { i -> seqs[clade + i] = cs.collect { c -> rnd.nextDouble() < 0.03 ? bases[rnd.nextInt(4)] : c }.join() }
+                }
+                def dir = java.nio.file.Files.createTempDirectory('evaluate').toFile()
+                def aln = new File(dir, 'aln.fasta')
+                aln.text = seqs.collect { name, s -> '>' + name + '\\n' + s + '\\n' }.join()
+                def good = new File(dir, 'good.nwk')
+                good.text = '(((a1:0.1,a2:0.1):0.1,(a3:0.1,a4:0.1):0.1):0.1,((b1:0.1,b2:0.1):0.1,(b3:0.1,b4:0.1):0.1):0.1);\\n'
+                def bad = new File(dir, 'bad.nwk')
+                bad.text = '(((a1:0.1,b1:0.1):0.1,(a2:0.1,b2:0.1):0.1):0.1,((a3:0.1,b3:0.1):0.1,(a4:0.1,b4:0.1):0.1):0.1);\\n'
+                input[0] = channel.of(
+                    [ [ id:'good' ], file(aln.toString()), file(good.toString()), 'GTR+G' ],
+                    [ [ id:'bad'  ], file(aln.toString()), file(bad.toString()),  'GTR+G' ]
+                )
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def goodNwk = '(((a1:0.1,a2:0.1):0.1,(a3:0.1,a4:0.1):0.1):0.1,((b1:0.1,b2:0.1):0.1,(b3:0.1,b4:0.1):0.1):0.1);'
+            def badNwk  = '(((a1:0.1,b1:0.1):0.1,(a2:0.1,b2:0.1):0.1):0.1,((a3:0.1,b3:0.1):0.1,(a4:0.1,b4:0.1):0.1):0.1);'
+            def trees = process.out.phylogeny.collectEntries { meta, tree -> [ meta.id, path(tree).text ] }
+            def logls = process.out.log.collectEntries { meta, log -> [ meta.id, logl(log) ] }
+
+            assertAll(
+                { assert splits(trees.good) == splits(goodNwk) },
+                // A search would move this tree to the maximum likelihood topology; an evaluation leaves it as it is.
+                { assert splits(trees.bad) == splits(badNwk) },
+                { assert splits(badNwk) != splits(goodNwk) },
+                { assert logls.good > logls.bad + 10 },
+                { assert process.out.best_model.every { meta, model -> path(model).text.startsWith('GTR') } }
+            )
+        }
+    }
+
+    test("mammals - fixed tree and model - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                    'GTR+G'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

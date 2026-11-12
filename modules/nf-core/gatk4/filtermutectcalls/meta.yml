@@ -15,7 +15,12 @@ tools:
         and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       identifier: ""
 input:
   - - meta:
@@ -36,7 +41,7 @@ input:
         ontologies: []
     - stats:
         type: file
-        description: Stats file that pairs with output vcf file
+        description: Stats file that pairs with the input vcf file (Mutect2 or MergeMutectStats output). Passed to FilterMutectCalls via --stats. If not provided, GATK looks for <vcf>.stats next to the input vcf.
         pattern: "*vcf.gz.stats"
         ontologies: []
     - orientationbias:
@@ -68,21 +73,11 @@ input:
         description: The reference fasta file
         pattern: "*.fasta"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - fai:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - dict:
         type: file
         description: GATK sequence dictionary

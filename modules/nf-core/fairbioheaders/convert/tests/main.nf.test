@@ -1,0 +1,362 @@
+nextflow_process {
+
+    name "Test Process FAIRBIOHEADERS_CONVERT"
+    script "../main.nf"
+    process "FAIRBIOHEADERS_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fairbioheaders"
+    tag "fairbioheaders/convert"
+    tag "fairbioheaders/combine"
+
+    test("sarscov2 - fasta - fhr - yaml") {
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.metadata[0][1]).readLines().contains('checksum: y9Z0ZrzbkFheJkGACktCGI8+ZgD/tNbq56C3MbOEWyI=') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta.gz - fhr - yaml") {
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.metadata[0][1]).readLines().contains('checksum: y9Z0ZrzbkFheJkGACktCGI8+ZgD/tNbq56C3MbOEWyI=') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gfa - fhr - json") {
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - faa - fhp - jsonld") {
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/proteome_test.fhp.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'jsonld'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - gff3 - fhgff3 - yaml") {
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/fairbioheaders/test1.fhgff3.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - json") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr json - yaml - ext.args --to overridden") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--to json'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.json', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.metadata[0][1].endsWith('/test_converted.yaml') },
+                { assert !path(process.out.metadata[0][1]).text.trim().startsWith('{') },
+                { assert path(process.out.metadata[0][1]).readLines().contains('genome: SARS-CoV-2 test genome') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - no header - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains('No ;~ FHR metadata header found') } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - yaml - same input and output names - fails") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_prefix = 'genome.fhr'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - yaml - stub") {
+
+        options "-stub"
+
+        setup {
+            run("FAIRBIOHEADERS_COMBINE") {
+                script "../../combine/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - yaml - same input and output names - fails - stub") {
+
+        options "-stub"
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_prefix = 'genome.fhr'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+}

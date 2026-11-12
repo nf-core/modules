@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Safely quote a Groovy value as a single-quoted R string literal. Used everywhere
 // below that a sample ID or other user-controlled value gets embedded into generated
 // R source -- without this, a value containing a quote could break the generated R

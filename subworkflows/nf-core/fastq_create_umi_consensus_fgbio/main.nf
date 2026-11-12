@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Runs FGBIO tools to remove UMI tags from FASTQ reads
 // Convert them to unmapped BAM file, map them to the reference genome,
@@ -57,7 +60,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     if (aligner == "bwa-mem") {
 
         if (!bwa_index) {
-            BWAMEM1_INDEX(fasta)
+            BWAMEM1_INDEX(fasta, [])
         }
 
         // sets bwaindex to correct input
@@ -71,7 +74,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     else {
 
         if (!bwa_index) {
-            BWAMEM2_INDEX(fasta)
+            BWAMEM2_INDEX(fasta, [])
         }
 
         // sets bwaindex to correct input
