@@ -10,7 +10,8 @@ nextflow_process {
 
     test("test_maltextract") {
         setup {
-            extract("${TestData.modulesBase()}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip", extractDir: "${launchDir}/ncbi_taxmap")
+            def testdata_base = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            extract("${testdata_base}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip", extractDir: "${launchDir}/ncbi_taxmap")
         }
 
         when {
