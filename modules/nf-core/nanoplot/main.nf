@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NANOPLOT {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanoplot:1.48.0--pyhdfd78af_1' :
-        'quay.io/biocontainers/nanoplot:1.48.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee7f882a297dba3dad24681a2df6aa4c111ea2c31c5fb2be4db7275adcdc4508/data'
+        : 'community.wave.seqera.io/library/nanoplot:1.48.0--ec07a019f2ec14a8'}"
 
     input:
     tuple val(meta), path(ontfile)
