@@ -1,0 +1,119 @@
+name: "fairbioheaders_convert"
+description: |
+  Convert FAIR-bioHeaders metadata (FHR, FHP or FHGFF3) to JSON, YAML, JSON-LD or HTML,
+  for example to extract the header of a FASTA, GFA or GFF3 file written by
+  fairbioheaders/combine as a sidecar YAML file that carries the file's checksum.
+  The metadata is validated against its schema; the task fails when it is invalid,
+  when a sequence file has no header, or when the output name would overwrite the input
+  (choose a different `ext.prefix` in that case). The output is named
+  `<prefix>.<format>`, where the prefix defaults to `<meta.id>_converted`.
+  FHGFF3 metadata cannot be written as JSON-LD or HTML.
+keywords:
+  - metadata
+  - provenance
+  - fair
+  - conversion
+  - json
+  - yaml
+  - json-ld
+tools:
+  - "fair-bioheaders":
+      description: "Toolkit to validate, convert, combine, strip and verify FAIR-bioHeaders (FHR, FHP, FHGFF3) provenance metadata embedded in FASTA, GFA and GFF3 headers"
+      homepage: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
+      documentation: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools#readme"
+      tool_dev_url: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
+      doi: "10.1093/bib/bbae122"
+      licence: ["MPL-2.0"]
+      identifier: biotools:fair-bioheaders
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: |
+          FASTA, protein FASTA, GFA or GFF3 file with a FAIR-bioHeaders header (plain or
+          gzip/BGZF-compressed, `.gz` or `.bgz`), or standalone metadata as JSON, YAML,
+          JSON-LD or HTML
+        pattern: "*.{fa,fasta,fna,fas,faa,ffn,frn,fsa,mpfa,gfa,gff,gff3,json,yaml,yml,jsonld,html}{,.gz,.bgz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_3975" # GFA 1
+          - edam: "http://edamontology.org/format_1975" # GFF3
+          - edam: "http://edamontology.org/format_3464" # JSON
+          - edam: "http://edamontology.org/format_3750" # YAML
+          - edam: "http://edamontology.org/format_3749" # JSON-LD
+          - edam: "http://edamontology.org/format_2331" # HTML
+  - format:
+      type: string
+      description: Output format and file extension, one of `json`, `yaml`, `jsonld` or `html`
+output:
+  metadata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${format}:
+          type: file
+          description: The metadata in the requested format, named `<prefix>.<format>`
+            (prefix defaults to `<meta.id>_converted`)
+          pattern: "*.{json,yaml,jsonld,html}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_3750" # YAML
+            - edam: "http://edamontology.org/format_3749" # JSON-LD
+            - edam: "http://edamontology.org/format_2331" # HTML
+  versions_fairbioheaders:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fair-bioheaders:
+          type: string
+          description: The name of the tool
+      - bioheaders --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fair-bioheaders:
+          type: string
+          description: The name of the tool
+      - bioheaders --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@adamjohnwright"
+maintainers:
+  - "@adamjohnwright"
+  - "@molikd"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--71029206d3ce1119
+      build_id: bd-71029206d3ce1119_1
+      scan_id: sc-96639927185509c4_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--1ff11621d7e9a7c8
+      build_id: bd-1ff11621d7e9a7c8_1
+      scan_id: sc-94d51cd9641c2d5a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--bd870dcf0291b69f
+      build_id: bd-bd870dcf0291b69f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/862c484484f878e5a99c0ee038f1e03206cac16d3f1763ae65a0663762a19f93/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--85ff19c0d1de6e1f
+      build_id: bd-85ff19c0d1de6e1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a69700529d3e088166672547fbd632315145414a75ee81a1686e1208038a937/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fairbioheaders/convert/.conda-lock/linux_amd64-bd-71029206d3ce1119_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fairbioheaders/convert/.conda-lock/linux_arm64-bd-1ff11621d7e9a7c8_1.txt

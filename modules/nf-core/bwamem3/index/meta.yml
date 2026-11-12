@@ -36,8 +36,10 @@ output:
           type: directory
           description: |
             bwa-mem3 genome index files. When built with `ext.args = '--meth'`,
-            also contains the methylation seed index (`*.meth.{amb,ann,bwt.2bit.64,pac}`)
-            required by `bwa-mem3 mem --meth` (e.g. `--meth=taps`).
+            contains the methylation seed index (`*.meth.{amb,ann,bwt.2bit.64,pac}`)
+            required by `bwa-mem3 mem --meth` (e.g. `--meth=taps`) and the plain
+            `*.{amb,ann,pac}`, but not the plain `*.bwt.2bit.64`, so it can only be
+            used for methylation-aware alignment.
           pattern: "*.{amb,ann,bwt.2bit.64,pac}"
           ontologies:
             - edam: "http://edamontology.org/data_3210"
