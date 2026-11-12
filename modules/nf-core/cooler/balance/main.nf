@@ -27,7 +27,7 @@ process COOLER_BALANCE {
     extension = cool.getExtension()
     if ("$cool" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    ln -s ${cool} ${prefix}.${extension}
+    cp ${cool} ${prefix}.${extension}
 
     cooler balance \\
         $args \\

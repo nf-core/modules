@@ -38,17 +38,22 @@ process MIRTRACE_QC {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // Mirror the real output names: miRTrace names the collapsed FASTA files after the input
+    // read files (without the FASTQ extension) and always writes 7 statistics TSV files
+    def fasta_names = [reads].flatten().collect { read -> read.name.replaceFirst(/\.(fastq|fq)(\.gz)?$/, '') + '.fasta' }
     """
-    touch ${prefix}.fa
-    touch ${prefix}.html
-    touch ${prefix}.json
-    touch ${prefix}.tsv
+    touch mirtrace-report.html
+    touch mirtrace-results.json
+    for stats in contamination_basic contamination_detailed length mirna-complexity phred qcstatus rnatype; do
+        touch mirtrace-stats-\${stats}.tsv
+    done
 
     mkdir -p qc_passed_reads.all.collapsed
     mkdir -p qc_passed_reads.rnatype_unknown.collapsed
 
-    touch qc_passed_reads.all.collapsed/${prefix}.fa
-    touch qc_passed_reads.rnatype_unknown.collapsed/${prefix}.fa
+    for fasta in ${fasta_names.join(' ')}; do
+        touch qc_passed_reads.all.collapsed/\${fasta}
+        touch qc_passed_reads.rnatype_unknown.collapsed/\${fasta}
+    done
     """
 }
