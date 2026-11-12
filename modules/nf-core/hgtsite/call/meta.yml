@@ -38,7 +38,8 @@ input:
         description: Index for the alignment. Optional, but without it the exact junctions from
           split reads are not searched for
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
   - - meta2:
         type: map
         description: |
