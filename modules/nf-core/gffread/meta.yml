@@ -1,14 +1,12 @@
 name: gffread
-description: Validate, filter, convert and perform various other operations on GFF
-  files
+description: Validate, filter, convert and perform various other operations on GFF files
 keywords:
   - gff
   - conversion
   - validation
 tools:
   - gffread:
-      description: GFF/GTF utility providing format conversions, region filtering, FASTA
-        sequence extraction and more.
+      description: GFF/GTF utility providing format conversions, region filtering, FASTA sequence extraction and more.
       homepage: http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread
       documentation: http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread
       tool_dev_url: https://github.com/gpertea/gffread
@@ -28,14 +26,12 @@ input:
           e.g. [ id:'test' ]
     - gff:
         type: file
-        description: A reference file in either the GFF3, GFF2 or GTF format,
-          optionally gzipped.
+        description: A reference file in either the GFF3, GFF2 or GTF format, optionally gzipped.
         pattern: "*.{gff,gff3,gtf}{,.gz}"
         ontologies: []
   - fasta:
       type: file
-      description: A multi-fasta file with the genomic sequences, optionally
-        gzipped
+      description: A multi-fasta file with the genomic sequences, optionally gzipped
       pattern: "*.{fasta,fa,faa,fas,fsa}{,.gz}"
       ontologies: []
 output:
@@ -47,8 +43,7 @@ output:
             e.g. [ id:'test' ]
       - "*.gtf":
           type: file
-          description: GTF file resulting from the conversion of the GFF input file
-            if '-T' argument is present
+          description: GTF file resulting from the conversion of the GFF input file if '-T' argument is present
           pattern: "*.{gtf}"
           ontologies: []
   gffread_gff:
@@ -59,8 +54,7 @@ output:
             e.g. [ id:'test' ]
       - "*.gff3":
           type: file
-          description: GFF3 file resulting from the conversion of the GFF input file
-            if '-T' argument is absent
+          description: GFF3 file resulting from the conversion of the GFF input file if '-T' argument is absent
           pattern: "*.gff3"
           ontologies: []
   gffread_fasta:
@@ -71,8 +65,7 @@ output:
             e.g. [ id:'test' ]
       - "*.fasta":
           type: file
-          description: Fasta file produced when either of '-w', '-x', '-y' parameters
-            is present
+          description: Fasta file produced when either of '-w', '-x', '-y' parameters is present
           pattern: "*.fasta"
           ontologies: []
   bed:
@@ -83,8 +76,7 @@ output:
             e.g. [ id:'test' ]
       - "*.bed":
           type: file
-          description: BED file resulting from the conversion of the GFF input file
-            when the '--bed' argument is present
+          description: BED file resulting from the conversion of the GFF input file when the '--bed' argument is present
           pattern: "*.bed"
           ontologies: []
   versions_gffread:
@@ -115,3 +107,27 @@ authors:
 maintainers:
   - "@edmundmiller"
   - "@gallvp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gffread:0.12.9--fde1489f7e69618e
+      build_id: bd-fde1489f7e69618e_1
+      scan_id: sc-68a96d919ee265c6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/gffread:0.12.9--09577fef8a4d5cda
+      build_id: bd-09577fef8a4d5cda_1
+      scan_id: sc-626192c1fb8f4bdd_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gffread:0.12.9--376ebf5ed1051a30
+      build_id: bd-376ebf5ed1051a30_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a7d8473c5fd94e12aee376eab48a1cf1fc703153133c0ded5de373f3eef0de7e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gffread:0.12.9--e625e7bc986aa65d
+      build_id: bd-e625e7bc986aa65d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/28/289df0627a0c0dbe84732c9c358a2d51783e58fe5fcb3d82bfb7ab93cd0ecf1d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gffread/.conda-lock/linux_amd64-bd-fde1489f7e69618e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gffread/.conda-lock/linux_arm64-bd-09577fef8a4d5cda_1.txt
