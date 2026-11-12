@@ -15,6 +15,7 @@ process BWAMEM2_INDEX {
 
     input:
     tuple val(meta), path(fasta)
+    val index_name
 
     output:
     tuple val(meta), path("${prefix}"), emit: index
@@ -24,27 +25,27 @@ process BWAMEM2_INDEX {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix = task.ext.prefix ?: meta.id ? "${meta.id}" : "${fasta.baseName}"
+    def name = index_name ?: fasta.name.replaceAll(/\.(fa|fasta|fna)(\.gz)?$/, '')
+    prefix = task.ext.prefix ?: meta.id ?: name
     def args = task.ext.args ?: ''
-    def suffix = task.ext.suffix ?: "${fasta.baseName}"
     """
     mkdir ${prefix}
     bwa-mem2 \\
         index \\
         ${args} \\
-        -p ${prefix}/${suffix} \\
+        -p ${prefix}/${name} \\
         ${fasta}
     """
 
     stub:
-    prefix = task.ext.prefix ?: meta.id ? "${meta.id}" : "${fasta.baseName}"
-    def suffix = task.ext.suffix ?: "${fasta.baseName}"
+    def name = index_name ?: fasta.name.replaceAll(/\.(fa|fasta|fna)(\.gz)?$/, '')
+    prefix = task.ext.prefix ?: meta.id ?: name
     """
     mkdir ${prefix}
-    touch ${prefix}/${suffix}.0123
-    touch ${prefix}/${suffix}.ann
-    touch ${prefix}/${suffix}.pac
-    touch ${prefix}/${suffix}.amb
-    touch ${prefix}/${suffix}.bwt.2bit.64
+    touch ${prefix}/${name}.0123
+    touch ${prefix}/${name}.ann
+    touch ${prefix}/${name}.pac
+    touch ${prefix}/${name}.amb
+    touch ${prefix}/${name}.bwt.2bit.64
     """
 }

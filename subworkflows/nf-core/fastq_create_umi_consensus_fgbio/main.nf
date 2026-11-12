@@ -74,7 +74,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     else {
 
         if (!bwa_index) {
-            BWAMEM2_INDEX(fasta)
+            BWAMEM2_INDEX(fasta, [])
         }
 
         // sets bwaindex to correct input

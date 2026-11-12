@@ -33,6 +33,11 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044"
           - edam: "http://edamontology.org/format_1929"
+  - index_name:
+      type: string
+      description: |
+        Basename of the index files.
+        Defaults to the fasta file name without its .fa, .fasta or .fna (and .gz) extension.
 output:
   index:
     - - meta:
@@ -42,7 +47,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: directory
-          description: BWA genome index files
+          description: |
+            Directory containing the BWA-mem2 index files.
+            Named after task.ext.prefix, meta.id or index_name, in that order.
           pattern: "*.{0123,amb,ann,bwt.2bit.64,pac}"
           ontologies:
             - edam: "http://edamontology.org/data_3210"
