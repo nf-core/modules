@@ -7,8 +7,8 @@ process ICOUNTMINI_METAGENE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:4.0.2--pyh106432d_0':
-        'quay.io/biocontainers/icount-mini:4.0.2--pyh106432d_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/0905aab0a42e3ebef7c4300c7d8fdf054c63e805cf2a1cae45027658a5c4a88a/data':
+        'community.wave.seqera.io/library/icount-mini:4.0.2--4fff630fa45c91ab' }"
 
     input:
     tuple val(meta), path(bed)
