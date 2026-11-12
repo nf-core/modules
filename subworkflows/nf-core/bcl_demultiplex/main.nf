@@ -22,6 +22,7 @@ workflow BCL_DEMULTIPLEX {
     ch_logs = channel.empty()
     ch_sav_files = channel.empty()
     ch_undetermined  = channel.empty()
+    ch_autodetect_samplesheet = channel.empty()
 
     // MODULE: bclconvert
     // Demultiplex the bcl files
@@ -32,6 +33,7 @@ workflow BCL_DEMULTIPLEX {
         ch_logs = ch_logs.mix(BCLCONVERT.out.logs)
         ch_undetermined = ch_undetermined.mix(BCLCONVERT.out.undetermined)
         ch_sav_files = ch_sav_files.mix(BCLCONVERT.out.reports)
+        ch_autodetect_samplesheet = ch_autodetect_samplesheet.mix(BCLCONVERT.out.autodetect_samplesheet)
         ch_fastq_with_meta = ch_fastq_with_meta.mix(
             generateReadgroupBCLCONVERT(
                 BCLCONVERT.out.reports.map { meta, reports ->
@@ -98,6 +100,7 @@ workflow BCL_DEMULTIPLEX {
     sav_report      = MULTIQCSAV.out.report
     sav_data        = MULTIQCSAV.out.data
     sav_plots       = MULTIQCSAV.out.plots
+    autodetect_samplesheet = ch_autodetect_samplesheet
 }
 
 def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
