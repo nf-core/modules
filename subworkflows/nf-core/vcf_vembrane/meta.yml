@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_vembrane"
+description: Filter and/or sort and optionally produce a TSV table for a VCF with vembrane.
+keywords:
+  - vcf
+  - filtering
+  - sorting
+  - indexing
+  - vembrane
+  - tabix
+  - table
+  - tsv
+components:
+  - vembrane/filter
+  - vembrane/sort
+  - vembrane/table
+  - tabix/bgziptabix
+input:
+  - ch_vcf:
+      type: channel
+      description: |
+        Channel containing sample metadata and VCF files
+        Structure: [ meta, vcf ]
+  - filter_expression:
+      type: string
+      description: Expression for vembrane filter (optional - can be empty string or null)
+      required: false
+  - sort_expression:
+      type: string
+      description: Expression for vembrane sort (optional - can be empty string or null)
+      required: false
+  - table_expression:
+      type: string
+      description: Expression for vembrane table generation (optional - can be empty string or null)
+      required: false
+output:
+  - vcf:
+      type: channel
+      description: |
+        Processed and sorted VCF files
+        Structure: [ meta, vcf, tbi ]
+      pattern: "*.{vcf,vcf.gz,bcf,bcf.gz,.tbi}"
+  - tsv:
+      type: channel
+      description: |
+        TSV table files generated from VCF (empty channel if table_expression not provided)
+        Structure: [ meta, tsv ]
+      pattern: "*.tsv"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+authors:
+  - "@dhtt"
+maintainers:
+  - "@dhtt"
