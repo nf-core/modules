@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process XENIUMRANGER_RESEGMENT"
     script "../main.nf"
     process "XENIUMRANGER_RESEGMENT"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -26,7 +27,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive.map {
-                    _, bundle ->
+                    _meta, bundle ->
                         [
                             [id: "test_xeniumranger_resegment"],
                             bundle
@@ -60,7 +61,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive.map {
-                    _, bundle ->
+                    _meta, bundle ->
                         [
                             [id: "test_xeniumranger_resegment"],
                             bundle

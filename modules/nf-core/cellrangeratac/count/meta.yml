@@ -25,7 +25,8 @@ input:
         type: file
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively, plus an additional FastQ for the barcodes
+          respectively, plus an additional FastQ for the barcodes. Files must be
+          named {sample}_S1_L001_R1_001.fastq.gz; the sample name is taken from this.
         ontologies: []
   - reference:
       type: directory
