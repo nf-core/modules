@@ -1,6 +1,5 @@
 name: "mgnifam_updatefamilies"
-description: Refreshes existing protein family HMM profiles against a new sequence
-  database, keeping each family's name stable across releases
+description: Refreshes existing protein family HMM profiles against a new sequence database, keeping each family's name stable across releases
 keywords:
   - protein families
   - family update
@@ -13,10 +12,7 @@ keywords:
   - protein sequences
 tools:
   - "mgnifam":
-      description: Python package for iterative HMM-based protein family generation
-        over large sequence databases, building an HMM from each cluster, recruiting
-        new members, re-aligning, and either converging on a family or discarding the
-        cluster
+      description: Iterative HMM-based protein family generation over large protein sequence databases
       homepage: "https://github.com/vagkaratzas/mgnifam"
       documentation: "https://vagkaratzas.github.io/mgnifam/"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
@@ -32,26 +28,19 @@ input:
           e.g. `[ id:'sample1' ]`
     - hmms:
         type: file
-        description: One or more gzipped profile HMM files (e.g. the `hmm` output of
-          mgnifam/generatefamilies) or a single gzipped multi-model HMM library,
-          staged under `hmm_input/`. Each model is searched against the new database
-          and re-emitted under its original name
+        description: One or more gzipped profile HMM files (e.g. the `hmm` output of mgnifam/generatefamilies) or a single gzipped multi-model HMM library, staged under `hmm_input/`. Each model is searched against the new database and re-emitted under its original name
         pattern: "*.{hmm,hmm.gz,hmm.lib.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1370 # HMMER format
     - fasta_file:
         type: file
-        description: Uncompressed FASTA file of the new protein sequence database to
-          search the stored HMMs against
+        description: Uncompressed FASTA file of the new protein sequence database to search the stored HMMs against
         pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - fasta_index:
         type: file
-        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g.
-          from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never
-          rebuilt, so parallel chunk tasks can share one read-only index. Built
-          automatically when omitted
+        description: Optional. Easel SSI index of the FASTA file (e.g. from hmmer/eslsfetchindex), built when omitted
         pattern: "*.ssi"
         ontologies: []
 output:
@@ -63,9 +52,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/seed_msa/*.sto.gz:
           type: file
-          description: Optional. Per-family seed multiple sequence alignment in gzipped
-            Stockholm format, named by family id (e.g. `1_7.sto.gz`). Not written
-            when the tool is run with `--skip_refine`
+          description: Optional. Per-family seed multiple sequence alignment in gzipped Stockholm format, named by family id (e.g. `1_7.sto.gz`). Not written when the tool is run with `--skip_refine`
           pattern: "*/seed_msa/*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -77,9 +64,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/full_msa/*.sto.gz:
           type: file
-          description: Optional. Per-family full multiple sequence alignment against
-            the new database, including recruited members, in gzipped Stockholm
-            format, named by family id (e.g. `1_7.sto.gz`)
+          description: Optional. Per-family full multiple sequence alignment against the new database, including recruited members, in gzipped Stockholm format, named by family id (e.g. `1_7.sto.gz`)
           pattern: "*/full_msa/*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -91,8 +76,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/hmm/*.hmm.gz:
           type: file
-          description: Optional. Updated per-family profile HMM model in gzipped
-            HMMER format, named by family id (e.g. `1_7.hmm.gz`)
+          description: Optional. Updated per-family profile HMM model in gzipped HMMER format, named by family id (e.g. `1_7.hmm.gz`)
           pattern: "*/hmm/*.hmm.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -104,9 +88,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/rf/*.txt:
           type: file
-          description: Optional. Per-family reference annotation (RF) line, marking
-            match-state columns of the seed alignment, named by family id (e.g.
-            `1_7.txt`). Not written when the tool is run with `--skip_refine`
+          description: Optional. Per-family reference annotation (RF) line, marking match-state columns of the seed alignment, named by family id (e.g. `1_7.txt`). Not written when the tool is run with `--skip_refine`
           pattern: "*/rf/*.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text format
@@ -154,8 +136,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_updated_reps.fasta.gz:
           type: file
-          description: Optional. Representative sequences of the updated families in
-            gzipped FASTA format
+          description: Optional. Representative sequences of the updated families in gzipped FASTA format
           pattern: "*/*_updated_reps.fasta.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -203,11 +184,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_updated_delta.csv:
           type: file
-          description: Optional. One row per input family describing the change
-            against the new database. Columns `family_id` (the model name, e.g.
-            `1_7`, not a rank), `model_length_before`, `model_length_after`,
-            `round1_recruits`, `full_msa_size`, `retention`, `rounds_run`,
-            `converged` (empty under `--skip_refine`), `outcome`
+          description: Optional. One row per input family describing the change against the new database. Columns `family_id` (the model name, e.g. `1_7`, not a rank), `model_length_before`, `model_length_after`, `round1_recruits`, `full_msa_size`, `retention`, `rounds_run`, `converged` (empty under `--skip_refine`), `outcome`
           pattern: "*/*_updated_delta.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -219,10 +196,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_updated_mgnifam_stats.json:
           type: file
-          description: Optional. MultiQC-ready summary of the run - family counts,
-            discard reasons, and histograms of seed and full MSA size, model length and
-            representative length, plus model length change, rounds run and
-            retention. Written only after a completed run
+          description: Optional. MultiQC-ready summary of the run - family counts, discard reasons, and histograms of seed and full MSA size, model length and representative length, plus model length change, rounds run and retention. Written only after a completed run
           pattern: "*/*_updated_mgnifam_stats.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
@@ -251,3 +225,25 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--f1cee804024a318d
+      build_id: bd-f1cee804024a318d_1
+      scan_id: sc-34dc30352b7bd368_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--818ca9d3b99bfbca
+      build_id: bd-818ca9d3b99bfbca_1
+      scan_id: sc-5aae2a00ae27a36a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--83ffd056fea9bea1
+      build_id: bd-83ffd056fea9bea1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d734ffff975d82e7381943964ea0b875606d69d7f3b3c35d1488833fff960b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--37584b95e8e4fe24
+      build_id: bd-37584b95e8e4fe24_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88cac83f189b2e51924e0917d9097bbb696509f11c5e1bab0072f6f8b7a4fd0e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mgnifam/updatefamilies/.conda-lock/linux_amd64-bd-818ca9d3b99bfbca_1.txt

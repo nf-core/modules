@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_RNAFQ2BAM {
     tag "${meta.id}"
     label 'process_high'
@@ -67,7 +70,7 @@ process PARABRICKS_RNAFQ2BAM {
         --output-dir . \\
         --genome-lib-dir ${index} \\
         --out-bam ${prefix}.bam \\
-        --logfile ${prefix}.Log.final.out \\
+        --logfile ${prefix}.pbrun.log \\
         --out-prefix ${prefix}. \\
         ${num_gpus} \\
         ${qc_metrics_command} \\
