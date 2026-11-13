@@ -8,8 +8,8 @@ process PARAPHASE {
     conda "${moduleDir}/environment.yml"
 
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4438b3091fe6cc6f4c5bc79c1722f359155539b5f657846d11a76cd36b1df729/data'
-        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:a2e6a25ed8d1a8e5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de44130118e18c30320d86f99095e5029b0df286554893c5406013276e4b8e45/data'
+        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:a8b6d83e5ede5c2a'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -23,7 +23,7 @@ process PARAPHASE {
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz"), emit: vcf, optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
     tuple val("${task.process}"), val('minimap2'), eval("minimap2 --version"), topic: versions, emit: versions_minimap2
-    tuple val("${task.process}"), val('paraphase'), eval("paraphase --version"), topic: versions, emit: versions_paraphase
+    tuple val("${task.process}"), val('paraphase'), eval("paraphase --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_paraphase
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:

@@ -125,6 +125,8 @@ process QUARTO_NOTEBOOK {
 
     touch ${prefix}.html
     touch params.yml
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}": stub
+    END_VERSIONS
     """
 }
