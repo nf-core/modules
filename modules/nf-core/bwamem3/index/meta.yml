@@ -71,24 +71,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/bwa-mem3:0.16.0--d9c39c7fb055095e
-      build_id: bd-d9c39c7fb055095e_1
-      scan_id: sc-2da9986395531902_1
+      name: community.wave.seqera.io/library/bwa-mem3:0.17.0--b1708a369edc0a4b
+      build_id: bd-b1708a369edc0a4b_1
+      scan_id: sc-31a62c0d7d3f953d_1
     linux/amd64:
-      name: community.wave.seqera.io/library/bwa-mem3:0.16.0--b56ccc800b165a7e
-      build_id: bd-b56ccc800b165a7e_1
-      scan_id: sc-57ddb57e00375a8c_1
+      name: community.wave.seqera.io/library/bwa-mem3:0.17.0--dfd4e361b022ff06
+      build_id: bd-dfd4e361b022ff06_1
+      scan_id: sc-1c1d837e52a8e73c_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3:0.16.0--17e1d29274d441bb
-      build_id: bd-17e1d29274d441bb_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98b0f53f5aed4a3743c17acf6fe59bb0587228a320a6bbe01b3ff3e9ccf85d43/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3:0.16.0--6b818219a81b827f
-      build_id: bd-6b818219a81b827f_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6c07549c04bd7c7c8fc6b1d63eed3707b98996ca5c9ac1a0a99c6ac9ca71f9ad/data
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.17.0--f0b577e015f4da29
+      build_id: bd-f0b577e015f4da29_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/197c726992576ee3cb8a1f5c1e7efc48884f355691176fd9beea1b0c63d90ff3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.17.0--81afc3b4105fd554
+      build_id: bd-81afc3b4105fd554_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa51b6d8b6924f5ccb76a0b6d5380899901edbe821bf1440a3517029f198593a/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_amd64-bd-b56ccc800b165a7e_1.txt
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_amd64-bd-dfd4e361b022ff06_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_arm64-bd-d9c39c7fb055095e_1.txt
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_arm64-bd-b1708a369edc0a4b_1.txt
