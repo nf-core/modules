@@ -11,9 +11,9 @@ process SPOLIGOTYPER {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}_spoligotyping.txt")    , emit: tsv
-    tuple val(meta), path("${prefix}_spoligotyping.json")   , emit: json
-    tuple val(meta), path("${prefix}_spoligotyping.pdf")    , emit: pdf, optional: true
+    tuple val(meta), path("${prefix}_spoligotyping.txt"), emit: tsv
+    tuple val(meta), path("${prefix}_spoligotyping.json"), emit: json
+    tuple val(meta), path("${prefix}_spoligotyping.pdf"), emit: pdf, optional: true
     tuple val(meta), path("${prefix}_spoligotyping_mqc.json"), emit: multiqc
     tuple val("${task.process}"), val('spoligotyper'), eval("spoligotyper --version | sed 's/spoligotyper //'"), emit: versions_spoligotyper, topic: versions
 
@@ -27,11 +27,11 @@ process SPOLIGOTYPER {
     def input = reads instanceof List && reads.size() == 2 ? "-r1 \"${reads[0]}\" -r2 \"${reads[1]}\"" : "-r1 \"${reads}\""
     """
     spoligotyper \\
-        $args \\
-        $input \\
+        ${args} \\
+        ${input} \\
         --sample "${prefix}" \\
         --output . \\
-        --threads $task.cpus
+        --threads ${task.cpus}
     """
 
     stub:
