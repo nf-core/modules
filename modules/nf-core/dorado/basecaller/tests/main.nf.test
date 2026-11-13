@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process DORADO_BASECALLER"
+    script "../main.nf"
+    process "DORADO_BASECALLER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dorado"
+    tag "dorado/basecaller"
+    // every test runs on the GPU runners: the 10 GB vendor image does not fit on
+    // the standard ones. Only the test loading nextflow.gpu.config requests a GPU.
+    tag "gpu"
+
+    // dorado's basecalled BAM is not byte-reproducible: the docker and singularity
+    // shards of one CI run, on the same g4dn.xlarge, emit different md5s for the
+    // same output. The real tests therefore snapshot file names and versions only
+    // and assert on the read count.
+    //
+    // The nft-bam calls need stringency: "silent" because dorado writes an @RG
+    // line with no SM tag, which htsjdk rejects at default stringency.
+
+    test("homo sapiens - pod5, fast@v5.0.0 - cpu") {
+
+        // no accelerator is requested, so the module runs with --device cpu
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5', checkIfExists: true)
+                ]
+                input[1] = "fast@v5.0.0"
+                input[2] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.log[0][1]).text.contains('"--device" "cpu"') },
+                { assert bam(process.out.bam[0][1], stringency: "silent").getStatistics(include: ["readCount"]).readCount == 10 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "log"])).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - pod5, hac@v6.0.0,5mCG_5hmCG@v1 - gpu") {
+
+        config "./nextflow.gpu.config"
+
+        when {
+            params {
+                module_args = '--emit-summary'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5', checkIfExists: true)
+                ]
+                input[1] = "hac@v6.0.0,5mCG_5hmCG@v1"
+                input[2] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.log[0][1]).text.contains('"--device" "cuda:all"') },
+                { assert bam(process.out.bam[0][1], stringency: "silent").getStatistics(include: ["readCount"]).readCount == 10 },
+                { assert path(process.out.summary[0][1]).readLines().size() == 11 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "log", "summary"])).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - pod5, hac@v6.0.0,5mCG_5hmCG@v1 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--emit-summary'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5', checkIfExists: true)
+                ]
+                input[1] = "hac@v6.0.0,5mCG_5hmCG@v1"
+                input[2] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

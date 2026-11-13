@@ -1,0 +1,134 @@
+name: dorado_basecaller
+description: |
+  Basecall Oxford Nanopore pod5 files with automatic model selection, optional
+  modified base calling (e.g. 5mCG_5hmCG, 5mC, m6A). Runs on the GPU when the
+  pipeline sets the `accelerator` directive and on the CPU otherwise. Use
+  dorado/aligner to align the reads.
+  Research use only: see the licensing note in the dorado tool description.
+keywords:
+  - basecalling
+  - ont
+  - long-read
+  - methylation
+  - modified-bases
+  - pod5
+  - nanopore
+tools:
+  - "dorado":
+      description: |
+        Oxford Nanopore's basecaller supporting automatic model selection
+        and modified base calling.
+        Licensing: dorado is released under the Oxford Nanopore Technologies PLC.
+        Public License Version 1.0, which permits use for research purposes only.
+      homepage: https://github.com/nanoporetech/dorado
+      documentation: https://software-docs.nanoporetech.com/dorado/latest/
+      tool_dev_url: https://github.com/nanoporetech/dorado
+      licence:
+        - "Oxford Nanopore Technologies PLC. Public License Version 1.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - pod5:
+        type: file
+        description: |
+          A single pod5 file or a directory of pod5 files to basecall.
+          Use --recursive in task.ext.args to scan directories recursively.
+        pattern: "*.pod5"
+        ontologies: []
+  - model:
+      type: string
+      description: |
+        Combined model string for automatic model resolution. Use the format
+        "{speed},{mod}@{version}" to basecall with modification calling in a
+        single argument, e.g. "sup,5mCG_5hmCG@latest", "hac,5mCG_5hmCG@v5.0.0".
+        For basecalling only (no mod calls) use "{speed}@{version}" e.g.
+        "sup@latest", "hac@v5.0.0". Can also be a path to an existing model
+        directory. Models are auto-downloaded if not found in models_dir.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing models directory information
+          e.g. `[ id:'dorado_models' ]`
+    - models_dir:
+        type: directory
+        description: |
+          Optional directory containing pre-downloaded dorado models.
+          If not provided (pass [[],[]]), models are downloaded automatically
+          into the task work directory. Pre-downloading is strongly recommended
+          for HPC environments without internet access on compute nodes.
+        pattern: "*/"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: |
+            Unaligned BAM file containing basecalled reads with base quality scores
+            and modification tags (MM/ML) when modified base calling is enabled.
+          pattern: "*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.log":
+          type: file
+          description: |
+            Standard error of dorado basecaller, which carries the resolved
+            models and the run statistics.
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.sequencing_summary.txt":
+          type: file
+          description: |
+            Per-read summary, present only when `--emit-summary` is set in
+            `ext.args`. dorado writes this as a fixed-name
+            `sequencing_summary.txt`; the module renames it to
+            `<prefix>.sequencing_summary.txt` so outputs stay per-sample.
+          pattern: "*.sequencing_summary.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_dorado:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dorado:
+          type: string
+          description: The name of the tool
+      - dorado --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
