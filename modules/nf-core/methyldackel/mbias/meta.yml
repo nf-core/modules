@@ -92,3 +92,27 @@ authors:
 maintainers:
   - "@phue"
   - "@eduard-watchmaker"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/methyldackel:0.6.1--aaf947cb078b2f30
+      build_id: bd-aaf947cb078b2f30_1
+      scan_id: sc-79f913ce2c0ac045_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/methyldackel:0.6.1--769ec54297040036
+      build_id: bd-769ec54297040036_1
+      scan_id: sc-72bbcd3d93e1d4af_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/methyldackel:0.6.1--5f840295e921e91c
+      build_id: bd-5f840295e921e91c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b6f0f4d9e822f6def26b6f69a27cddd59475192c57c4a51385ef9ed13dd8078/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/methyldackel:0.6.1--aaad445a705dbf21
+      build_id: bd-aaad445a705dbf21_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00913ecf35e56bec298575bde8acc4052b22e2620558ee3160681cefb20549c4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/methyldackel/mbias/.conda-lock/linux_amd64-bd-aaf947cb078b2f30_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/methyldackel/mbias/.conda-lock/linux_arm64-bd-769ec54297040036_1.txt
