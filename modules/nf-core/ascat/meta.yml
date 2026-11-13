@@ -5,7 +5,7 @@ keywords:
   - copy number
   - cram
 tools:
-  - bioconductor-ascat:
+  - ascat:
       description: ASCAT is a method to derive copy number profiles of tumour
         cells, accounting for normal cell admixture and tumour aneuploidy. ASCAT
         infers tumour purity (the fraction of tumour cells) and ploidy (the amount
@@ -176,7 +176,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bioconductor-ascat:
+      - ascat:
           type: string
           description: The name of the tool
       - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
@@ -197,7 +197,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bioconductor-ascat:
+      - ascat:
           type: string
           description: The name of the tool
       - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
