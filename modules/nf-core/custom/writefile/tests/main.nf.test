@@ -14,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = record(name: 'versions.yml', items: ['b: 2', 'a: 1'], newLine: true)
+                input[0] = record(id: 'versions', meta: record(id: 'test'), extension: 'yml', items: ['b: 2', 'a: 1'], newLine: true)
                 """
             }
         }
@@ -30,7 +30,41 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = record(name: 'methods_description_mqc.yaml', items: ['id: methods', 'section_name: Methods'])
+                input[0] = record(id: 'methods_description_mqc', extension: 'yaml', items: ['id: methods', 'section_name: Methods'])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+
+    test("items - output_prefix") {
+
+        when {
+            process {
+                """
+                input[0] = record(id: 'test', output_prefix: 'citations', extension: 'bib', items: ['@article{a}', '@article{b}'], newLine: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+
+    test("items - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = record(id: 'versions', meta: record(id: 'test'), extension: 'yml', items: ['b: 2', 'a: 1'], newLine: true)
                 """
             }
         }

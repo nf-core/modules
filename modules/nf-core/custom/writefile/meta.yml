@@ -14,9 +14,20 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - - name:
+  - - id:
         type: string
-        description: Name of the file to write
+        description: Identifier of the file, used as the tag and as the default output_prefix
+    - meta:
+        type: map
+        description: |
+          Optional; record containing sample information
+          e.g. `record(id: 'sample1')`
+    - output_prefix:
+        type: string
+        description: Optional; name of the file to write, without extension; defaults to id
+    - extension:
+        type: string
+        description: Extension of the file to write, without the leading dot
     - items:
         type: list
         description: Strings to write to the file, in order
@@ -25,9 +36,17 @@ input:
         description: Optional; add a newline after each item
 output:
   file:
-    - - ${name}:
+    - - id:
+          type: string
+          description: Identifier from the input record
+      - meta:
+          type: map
+          description: |
+            Optional; record containing sample information
+            e.g. `record(id: 'sample1')`
+      - ${prefix}.${extension}:
           type: file
-          description: File named after the record, holding its items in order
+          description: File named from output_prefix (or id) and extension, holding the items in order
           pattern: "*"
           ontologies: []
 authors:

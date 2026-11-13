@@ -1,20 +1,31 @@
 nextflow.enable.types = true
 
 process CUSTOM_WRITEFILE {
-    tag name
+    tag "${id}"
+
+    ext [
+        prefix: { output_prefix ?: "${id}" }
+    ]
 
     input:
     record(
-        name: String,
+        id: String,
+        meta: Record?,
+        output_prefix: String?,
+        extension: String,
         items: List<String>,
         newLine: Boolean?
     )
 
     output:
-    file(name)
+    record(
+        id: id,
+        meta: meta,
+        file: file("${task.ext.prefix}.${extension}")
+    )
 
     exec:
-    def path = task.workDir.resolve(name)
+    def path = task.workDir.resolve("${task.ext.prefix}.${extension}")
     path.delete()
     items.each { item ->
         path << item
