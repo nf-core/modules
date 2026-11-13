@@ -1,0 +1,58 @@
+name: "custom_writefile"
+description: Writes a list of strings to a file, one file per record, without a container.
+keywords:
+  - file
+  - write
+  - collect
+  - records
+tools:
+  - "custom":
+      description: |
+        Native Nextflow process that writes the items of a record to a file,
+        as a typed replacement for collectFile.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/writefile/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - id:
+        type: string
+        description: Identifier of the file, used as the tag and as the default output_prefix
+    - meta:
+        type: map
+        description: |
+          Optional; record containing sample information
+          e.g. `record(id: 'sample1')`
+    - output_prefix:
+        type: string
+        description: Optional; name of the file to write, without extension; defaults to id
+    - extension:
+        type: string
+        description: Extension of the file to write, without the leading dot
+    - items:
+        type: list
+        description: "Strings to write to the file, in the given order; sort them upstream (e.g. `collect(sort: true)`) for reproducible output"
+    - newLine:
+        type: boolean
+        description: Optional; add a newline after each item
+output:
+  file:
+    - - id:
+          type: string
+          description: Identifier from the input record
+      - meta:
+          type: map
+          description: |
+            Optional; record containing sample information
+            e.g. `record(id: 'sample1')`
+      - ${prefix}.${extension}:
+          type: file
+          description: File named from output_prefix (or id) and extension, holding the items in order
+          pattern: "*"
+          ontologies: []
+authors:
+  - "@maxulysse"
+  - "@bentsherman"
+  - "@prototaxites"
+maintainers:
+  - "@maxulysse"
+  - "@bentsherman"
