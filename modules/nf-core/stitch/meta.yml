@@ -1,8 +1,5 @@
 name: "stitch"
-description: "STITCH is an R program for reference panel free, read aware, low coverage
-  sequencing genotype imputation. STITCH runs on a set of samples with sequencing
-  reads in BAM format, as well as a list of positions to genotype, and outputs imputed
-  genotypes in VCF format."
+description: "STITCH is an R program for reference panel free, read aware, low coverage sequencing genotype imputation. STITCH runs on a set of samples with sequencing reads in BAM format, as well as a list of positions to genotype, and outputs imputed genotypes in VCF format."
 keywords:
   - imputation
   - genomics
@@ -45,8 +42,7 @@ input:
         ontologies: []
     - samplename:
         type: file
-        description: (Optional) File with list of samples names in the same order
-          as in bamlist to impute. One file per line.
+        description: (Optional) File with list of samples names in the same order as in bamlist to impute. One file per line.
         pattern: "*.{txt}"
         ontologies: []
     - posfile:
@@ -63,10 +59,7 @@ input:
         pattern: "input"
     - genetic_map:
         type: file
-        description: (Optional) File with genetic map information, a file with 3
-          white-space delimited entries giving position (1-based), genetic rate
-          map in cM/Mbp, and genetic map in cM. If no file included, rate is based
-          on physical distance and expected rate (expRate).
+        description: (Optional) File with genetic map information, a file with 3 white-space delimited entries giving position (1-based), genetic rate map in cM/Mbp, and genetic map in cM. If no file included, rate is based on physical distance and expected rate (expRate).
         pattern: "*.{txt,map}{,gz}"
         ontologies:
           - edam: http://edamontology.org/format_3989
@@ -77,8 +70,7 @@ input:
         pattern: "RData"
     - chromosome_name:
         type: string
-        description: Name of the chromosome to impute. Should match a chromosome
-          name in the reference genome.
+        description: Name of the chromosome to impute. Should match a chromosome name in the reference genome.
     - start:
         type: integer
         description: Start position of the region to impute.
@@ -90,14 +82,10 @@ input:
         description: Buffer, in base pairs, around the region to impute.
     - K:
         type: integer
-        description: Number of ancestral haplotypes to use for imputation. Refer
-          to the documentation for the `--K` argument of STITCH for more
-          information.
+        description: Number of ancestral haplotypes to use for imputation. Refer to the documentation for the `--K` argument of STITCH for more information.
     - nGen:
         type: integer
-        description: Number of generations since founding of the population to use
-          for imputation. Refer to the documentation for the `--nGen` argument of
-          STITCH for more information.
+        description: Number of generations since founding of the population to use for imputation. Refer to the documentation for the `--nGen` argument of STITCH for more information.
   - - meta2:
         type: map
         description: |
@@ -238,3 +226,27 @@ authors:
   - "@saulpierotti"
 maintainers:
   - "@saulpierotti"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_r-stitch_r-base_rsync:af2e4f36bb901ef3
+      build_id: bd-af2e4f36bb901ef3_1
+      scan_id: sc-5fd6ceadb796ebc7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_r-stitch_r-base_rsync:2285b98faf563e87
+      build_id: bd-2285b98faf563e87_1
+      scan_id: sc-907fafc19d44cb3d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_r-stitch_r-base_rsync:eb2caf3583cfd110
+      build_id: bd-eb2caf3583cfd110_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/beca89b9cb410ca3ec8b688b11b20e77e0b34c275b2c73c6e65487f6a8543809/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_r-stitch_r-base_rsync:43ab0a3f40733dda
+      build_id: bd-43ab0a3f40733dda_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5701e3df43ee9d7987215c66e9d39bca09e7e90f721c159aadf3f3be1bd1d699/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/stitch/.conda-lock/linux_amd64-bd-af2e4f36bb901ef3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/stitch/.conda-lock/linux_arm64-bd-2285b98faf563e87_1.txt
