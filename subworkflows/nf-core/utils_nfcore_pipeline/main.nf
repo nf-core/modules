@@ -82,7 +82,12 @@ def getWorkflowVersion() {
 //
 def processVersionsFromYAML(yaml_file) {
     def yaml = new org.yaml.snakeyaml.Yaml()
-    def versions = yaml.load(yaml_file).collectEntries { k, v -> [k.tokenize(':')[-1], v] }
+    def versions = yaml.compose(new StringReader(yaml_file.text)).value.collectEntries { process_tuple ->
+        def tools = process_tuple.valueNode.value.collectEntries { tool_tuple ->
+            [tool_tuple.keyNode.value, tool_tuple.valueNode.value]
+        }
+        [process_tuple.keyNode.value.tokenize(':')[-1], tools]
+    }
     return yaml.dumpAsMap(versions).trim()
 }
 
