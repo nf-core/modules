@@ -14,34 +14,37 @@ process BWA_INDEX {
 
     input:
     tuple val(meta), path(fasta)
+    val index_dir_name
 
     output:
-    tuple val(meta), path("bwa"), emit: index
+    tuple val(meta), path("${outdir}"), emit: index
     tuple val("${task.process}"), val('bwa'), eval('bwa 2>&1 | sed -n "s/^Version: //p"'), topic: versions, emit: versions_bwa
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    outdir = index_dir_name ?: 'bwa'
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     def args   = task.ext.args ?: ''
     """
-    mkdir bwa
+    mkdir ${outdir}
     bwa \\
         index \\
         $args \\
-        -p bwa/${prefix} \\
+        -p ${outdir}/${prefix} \\
         $fasta
     """
 
     stub:
+    outdir = index_dir_name ?: 'bwa'
     def prefix = task.ext.prefix ?: "${fasta.baseName}"
     """
-    mkdir bwa
-    touch bwa/${prefix}.amb
-    touch bwa/${prefix}.ann
-    touch bwa/${prefix}.bwt
-    touch bwa/${prefix}.pac
-    touch bwa/${prefix}.sa
+    mkdir ${outdir}
+    touch ${outdir}/${prefix}.amb
+    touch ${outdir}/${prefix}.ann
+    touch ${outdir}/${prefix}.bwt
+    touch ${outdir}/${prefix}.pac
+    touch ${outdir}/${prefix}.sa
     """
 }

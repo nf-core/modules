@@ -142,11 +142,11 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [fastq1, fastq2], meth index, fasta, true") {
+    test("sarscov2 - [fastq1, fastq2], meth index, fasta, true - bisulfite") {
 
         when {
             params {
-                module_args = ''
+                module_args = '--meth'
             }
             process {
                 """

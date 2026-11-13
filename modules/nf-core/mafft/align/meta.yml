@@ -6,8 +6,7 @@ keywords:
   - multiple sequence alignment
 tools:
   - "mafft":
-      description: Multiple alignment program for amino acid or nucleotide
-        sequences based on fast Fourier transform
+      description: Multiple alignment program for amino acid or nucleotide sequences based on fast Fourier transform
       homepage: https://mafft.cbrc.jp/alignment/software/
       documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
@@ -28,8 +27,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: FASTA file containing the sequences to align. May be gzipped
-          or uncompressed.
+        description: FASTA file containing the sequences to align. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -41,8 +39,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - add:
         type: file
-        description: FASTA file containing sequences to align to the sequences in
-          `fasta` using `--add`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in `fasta` using `--add`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -54,8 +51,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addfragments:
         type: file
-        description: FASTA file containing sequences to align to the sequences in
-          `fasta` using `--addfragments`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfragments`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -67,8 +63,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addfull:
         type: file
-        description: FASTA file containing sequences to align to the sequences in
-          `fasta` using `--addfull`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in `fasta` using `--addfull`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -80,8 +75,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addprofile:
         type: file
-        description: FASTA file containing sequences to align to the sequences in
-          `fasta` using `--addprofile`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in `fasta` using `--addprofile`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -93,17 +87,14 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addlong:
         type: file
-        description: FASTA file containing sequences to align to the sequences in
-          `fasta` using `--addlong`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in `fasta` using `--addlong`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed.
-        Set to true to enable/false to disable compression. Compression is done
-        using pigz, and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   fas:
     - - meta:
@@ -113,8 +104,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fas{.gz,}":
           type: file
-          description: Aligned sequences in FASTA format. May be gzipped or
-            uncompressed.
+          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
           pattern: "*.fas{.gz,}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
@@ -169,3 +159,17 @@ authors:
 maintainers:
   - "@MillironX"
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mafft_pigz:71bb76c5b24d4466
+      build_id: bd-71bb76c5b24d4466_1
+      scan_id: sc-c41cfe69230f57dc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mafft_pigz:fd0bf7a5f5721f73
+      build_id: bd-fd0bf7a5f5721f73_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8382f745a6a2e3e868d5484628be21113b921d8aedb60dc948af5aeb7d7ec079/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mafft/align/.conda-lock/linux_amd64-bd-71bb76c5b24d4466_1.txt

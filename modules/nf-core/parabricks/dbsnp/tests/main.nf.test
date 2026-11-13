@@ -8,7 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "parabricks"
     tag "parabricks/dbsnp"
-    tag "gpu"
 
     test("human - vcf") {
 
@@ -30,6 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }

@@ -7,8 +7,8 @@ process FREEBAYES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/freebayes:1.3.10--hbefcdb2_0'
-        : 'quay.io/biocontainers/freebayes:1.3.10--hbefcdb2_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/abb3d9c18900061a28746b4fc80fd65b0edf12545ae5f918f602a08bac8e7bc3/data'
+        : 'community.wave.seqera.io/library/freebayes:1.3.10--eb582c8d7a2fbaa4'}"
 
     input:
     tuple val(meta), path(input_1), path(input_1_index), path(input_2), path(input_2_index), path(target_bed)

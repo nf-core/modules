@@ -38,6 +38,7 @@ nextflow_process {
                     [ id:'sarscov2'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
