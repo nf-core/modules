@@ -1,7 +1,5 @@
 name: "vclust_prefilter"
-description: The prefilter command creates a pre-alignment filter that reduces
-  the number of genome pairs to be aligned by filtering out dissimilar sequences
-  before the alignment step.
+description: The prefilter command creates a pre-alignment filter that reduces the number of genome pairs to be aligned by filtering out dissimilar sequences before the alignment step.
 keywords:
   - cluster
   - virus
@@ -11,8 +9,7 @@ keywords:
   - phage
 tools:
   - "vclust":
-      description: "Fast and accurate tool for calculating ANI and clustering virus
-        genomes and metagenomes."
+      description: "Fast and accurate tool for calculating ANI and clustering virus genomes and metagenomes."
       homepage: "https://afproject.org/vclust/"
       documentation: "https://github.com/refresh-bio/vclust/wiki"
       tool_dev_url: "https://github.com/refresh-bio/vclust"
@@ -71,3 +68,27 @@ authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/vclust:1.3.1--fc49db6b6723c838
+      build_id: bd-fc49db6b6723c838_1
+      scan_id: sc-05777e8e7c35d650_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/vclust:1.3.1--039ae9c4872009ec
+      build_id: bd-039ae9c4872009ec_1
+      scan_id: sc-36a1485631433201_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vclust:1.3.1--3d44f310e3a4dbb3
+      build_id: bd-3d44f310e3a4dbb3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04cb9a3b37b513bfdabb8f0e87050c5573bb7be92926617294cb3de221d37301/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vclust:1.3.1--ce338a46497a7ee5
+      build_id: bd-ce338a46497a7ee5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6b/6be94f5ce851d2d04684510c7d95d9ba9204470533da10bf904c0496c33e2a86/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vclust/prefilter/.conda-lock/linux_amd64-bd-039ae9c4872009ec_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vclust/prefilter/.conda-lock/linux_arm64-bd-fc49db6b6723c838_1.txt
