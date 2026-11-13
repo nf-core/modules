@@ -1,0 +1,38 @@
+name: "custom_writefile"
+description: Writes a list of strings to a file, one file per record, without a container.
+keywords:
+  - file
+  - write
+  - collect
+  - records
+tools:
+  - "custom":
+      description: |
+        Native Nextflow process that writes the items of a record to a file,
+        as a typed replacement for collectFile.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/writefile/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - name:
+        type: string
+        description: Name of the file to write
+    - items:
+        type: list
+        description: Strings to write to the file, in order
+    - newLine:
+        type: boolean
+        description: Optional; add a newline after each item
+output:
+  file:
+    - - ${name}:
+          type: file
+          description: File named after the record, holding its items in order
+          pattern: "*"
+          ontologies: []
+authors:
+  - "@maxulysse"
+  - "@bentsherman"
+maintainers:
+  - "@maxulysse"
+  - "@bentsherman"

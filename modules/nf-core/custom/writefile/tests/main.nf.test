@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_WRITEFILE"
+    script "../main.nf"
+    process "CUSTOM_WRITEFILE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/writefile"
+
+    test("items - newLine") {
+
+        when {
+            process {
+                """
+                input[0] = record(name: 'versions.yml', items: ['b: 2', 'a: 1'], newLine: true)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+
+    test("items - no newLine") {
+
+        when {
+            process {
+                """
+                input[0] = record(name: 'methods_description_mqc.yaml', items: ['id: methods', 'section_name: Methods'])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+    }
+}
