@@ -11,6 +11,47 @@ nextflow_process {
     tag "annotsv"
     tag "annotsv/annotsv"
 
+    test("homo_sapiens - empty sv_vcf, annotations") {
+
+        when {
+            process {
+                """
+                // AnnotSV stops before it reads the annotations when the VCF has no records, so an empty directory is enough
+                def annotations = file("${workDir}/annotations")
+                annotations.mkdirs()
+                input[0] = Channel.of(
+                        '##fileformat=VCFv4.2',
+                        '##contig=<ID=chr1,length=10000>',
+                        '#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO'
+                    )
+                    .collectFile(name: 'empty.vcf', newLine: true, sort: false)
+                    .map { [[ id:'test' ], it, [], []] }
+                input[1] = [
+                    [ id:'annotations' ],
+                    annotations
+                ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                [
+                    tsv: file(process.out.tsv[0][1]).name,
+                    tsv_lines: path(process.out.tsv[0][1]).readLines().size(),
+                    unannotated_tsv: process.out.unannotated_tsv,
+                    vcf: process.out.vcf,
+                    versions: process.out.versions_annotsv
+                ]
+            ).match()
+        }
+
+    }
+
     test("homo_sapiens - sv_vcf, sv_tbi, snv_vcf, annotations - stub") {
 
         options "-stub"
