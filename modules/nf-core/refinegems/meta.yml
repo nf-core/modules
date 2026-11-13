@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "refinegems"
+description: Download a default refineGEMs configuration YAML file.
+keywords:
+  - config
+  - yaml
+  - metabolic model
+  - genome-scale metabolic model
+tools:
+  - refinegems:
+      description: A toolbox for fast curation and analysis of genome-scale metabolic models.
+      homepage: https://github.com/draeger-lab/refinegems
+      documentation: https://refinegems.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/draeger-lab/refinegems
+      licence: ["MIT"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - config_type:
+        type: string
+        description: Type of config file to download. One of `media` or `refinegems`.
+output:
+  yaml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.yaml":
+          type: file
+          description: A refineGEMs configuration YAML file.
+          pattern: "*.yaml"
+          ontologies:
+            - edam: http://edamontology.org/format_3750 # YAML
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
