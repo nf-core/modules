@@ -1,0 +1,213 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaproviz_poolestimation"
+description: >-
+  Quality-control check on pool (QC) samples. The coefficient of variation (CV) of each feature across the pool
+  samples shows the technical noise of the measurement. Features above the CV cutoff are flagged as high variance and
+  are removed from the output data by default, together with the pool samples.
+keywords:
+  - metabolomics
+  - quality control
+  - pool samples
+  - coefficient of variation
+  - MetaProViz
+tools:
+  - "metaproviz":
+      description: "MetaProViz — Metabolomics Processing, functional analysis and Visualization."
+      homepage: "https://saezlab.github.io/MetaProViz/"
+      documentation: "https://saezlab.github.io/MetaProViz/"
+      tool_dev_url: "https://github.com/saezlab/MetaProViz"
+      doi: "10.1038/s44320-026-00231-8"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - se_rds:
+        type: file
+        description: >-
+          A SummarizedExperiment saved as RDS. The assay holds the numerical values of the metabolites, the rowData the feature
+          metadata and the colData the sample metadata. Both NA and 0 count as not detected. The data must contain at least two pool samples. Use either this input or the three inputs
+          data_matrix, feature_matrix and sample_matrix, not both.
+        pattern: "*.rds"
+        optional: true
+        ontologies: []
+    - data_matrix:
+        type: file
+        description: >-
+          Numerical values of the metabolites as TSV or CSV file, with the features in rows and the samples in columns.
+          The first column holds the feature IDs. Empty cells, NA and 0 count as not detected. Required together with feature_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - feature_matrix:
+        type: file
+        description: >-
+          Feature metadata as TSV or CSV file. The first column holds the feature IDs, matching the rows of data_matrix.
+          Required together with data_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - sample_matrix:
+        type: file
+        description: >-
+          Sample metadata including the pool samples as TSV or CSV file. The first column holds the sample IDs, matching
+          the columns of data_matrix. Required together with data_matrix and feature_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+
+  - output_format:
+      type: string
+      description: >-
+        Format of the output without the pool samples and, by default, without the high-variance features. `se` (or an
+        empty value) writes the SummarizedExperiment as RDS, `tsv` or `csv` write it as three tables (data_matrix,
+        feature_matrix and sample_matrix).
+output:
+  se:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.pool_filtered.rds":
+          type: file
+          description: >-
+            SummarizedExperiment without the pool samples and, by default, without the high-variance features, written if output_format is `se` or empty.
+          pattern: "*.pool_filtered.rds"
+          optional: true
+          ontologies: []
+  filtered_matrices:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.pool_filtered.*_matrix.{tsv,csv}":
+          type: file
+          description: >-
+            Data without the pool samples and, by default, without the high-variance features as data_matrix, feature_matrix and sample_matrix tables, written if output_format is `tsv` or `csv`.
+          pattern: "*.pool_filtered.*_matrix.{tsv,csv}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+  pools:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.pools.txt":
+          type: file
+          description: Names of the removed pool samples, one per line.
+          pattern: "*.pools.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
+  cv_table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.cv.tsv":
+          type: file
+          description: >-
+            Table with one row per feature and the columns CV, HighVar and MissingValuepercentage. The CV is given in percent.
+          pattern: "*.cv.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.plots.rds":
+          type: file
+          description: >-
+            ggplot objects, the PCA, CV histogram and CV violin plots of MetaProViz.
+          pattern: "*.plots.rds"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.report.html":
+          type: file
+          description: >-
+            HTML report with the run summary, the CV table, the high-variance features and the plots.
+          pattern: "*.report.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: INFO/WARN log.
+          pattern: "*.log"
+          ontologies: []
+  versions_metaproviz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.0:
+          type: string
+          description: The version of MetaProViz
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.0:
+          type: string
+          description: The version of MetaProViz
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+authors:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+maintainers:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
