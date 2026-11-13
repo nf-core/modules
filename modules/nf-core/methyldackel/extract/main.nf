@@ -6,9 +6,9 @@ process METHYLDACKEL_EXTRACT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
-        'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b6f0f4d9e822f6def26b6f69a27cddd59475192c57c4a51385ef9ed13dd8078/data'
+        : 'community.wave.seqera.io/library/methyldackel:0.6.1--aaf947cb078b2f30'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

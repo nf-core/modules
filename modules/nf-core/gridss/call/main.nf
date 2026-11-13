@@ -27,12 +27,12 @@ process GRIDSS_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def arg_config = gridss_config ? "-c ${gridss_config}" : ""
     def bam_list = bam instanceof List ? bam : [bam]
-
-    def index_files = bwa_index instanceof List ? bwa_index : [bwa_index]
-	// GRIDSS requires all BWA index files to have the exact same basename as the reference fasta
-	def link_cmds = index_files.collect { idx -> "ln -sf ${idx} ./${fasta}.${idx.extension}" }.join('\n')
     """
-    ${link_cmds}
+    # GRIDSS requires the BWA index files to share the reference fasta basename
+    index_files=(\$(find -L "${bwa_index}" -regex '.*\\.\\(amb\\|ann\\|pac\\|gridsscache\\|sa\\|bwt\\|img\\|alt\\)\$'))
+    for index_file in "\${index_files[@]}"; do
+        ln -sf "\$index_file" "./${fasta}.\${index_file##*.}"
+    done
 
     gridss ${args} \\
         --jvmheap ${Math.round(task.memory.bytes * 0.95)} \\
