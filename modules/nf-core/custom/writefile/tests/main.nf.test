@@ -57,6 +57,25 @@ nextflow_process {
         }
     }
 
+    test("items - sorted upstream") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('c: 3', 'a: 1', 'b: 2')
+                    .collect(sort: true)
+                    .map { lines -> record(id: 'sorted', extension: 'yml', items: lines, newLine: true) }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out[0][0].file).readLines() == ['a: 1', 'b: 2', 'c: 3']
+            assert snapshot(process.out).match()
+        }
+    }
+
     test("items - stub") {
 
         options "-stub"

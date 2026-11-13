@@ -30,7 +30,7 @@ input:
         description: Extension of the file to write, without the leading dot
     - items:
         type: list
-        description: Strings to write to the file, in order
+        description: "Strings to write to the file, in the given order; sort them upstream (e.g. `collect(sort: true)`) for reproducible output"
     - newLine:
         type: boolean
         description: Optional; add a newline after each item
