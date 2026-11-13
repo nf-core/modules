@@ -16,6 +16,11 @@ tools:
       documentation: https://github.com/VanLoo-lab/ascat/tree/master/man
       tool_dev_url: https://github.com/VanLoo-lab/ascat
       doi: "10.1093/bioinformatics/btaa538"
+      publication:
+        author: "Ross, E. M., Haase, K., Van Loo, P. & Markowetz, F."
+        year: 2021
+        title: "Allele-specific multi-sample copy number segmentation in ASCAT"
+        source: "Bioinformatics"
       licence:
         - "GPL v3"
       identifier: biotools:ascat
@@ -171,7 +176,7 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bioconductor-ascat:
+      - ascat:
           type: string
           description: The name of the tool
       - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
@@ -192,7 +197,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - bioconductor-ascat:
+      - ascat:
           type: string
           description: The name of the tool
       - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
