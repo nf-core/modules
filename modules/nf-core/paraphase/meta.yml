@@ -50,7 +50,7 @@ input:
         description: Config file
         pattern: "*.yaml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
 output:
   json:
     - - meta:
@@ -63,7 +63,7 @@ output:
           description: Summary of haplotype and variant calls
           pattern: "*.paraphase.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3464 # JSON
   bam:
     - - meta:
           type: map
@@ -97,7 +97,7 @@ output:
           description: compressed VCF file(s) per gene
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   vcf_index:
     - - meta:
           type: map
@@ -126,7 +126,7 @@ output:
       - paraphase:
           type: string
           description: The name of the tool
-      - paraphase --version:
+      - paraphase --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
   versions_samtools:
@@ -156,7 +156,7 @@ topics:
       - paraphase:
           type: string
           description: The name of the tool
-      - paraphase --version:
+      - paraphase --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -172,3 +172,17 @@ authors:
   - "@fellen31"
 maintainers:
   - "@fellen31"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/minimap2_paraphase_samtools:a8b6d83e5ede5c2a
+      build_id: bd-a8b6d83e5ede5c2a_1
+      scan_id: sc-3ca699582aacc576_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/minimap2_paraphase_samtools:4ef9e51e203c4849
+      build_id: bd-4ef9e51e203c4849_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de44130118e18c30320d86f99095e5029b0df286554893c5406013276e4b8e45/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/paraphase/.conda-lock/linux_amd64-bd-a8b6d83e5ede5c2a_1.txt
