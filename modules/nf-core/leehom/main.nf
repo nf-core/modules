@@ -7,9 +7,9 @@ process LEEHOM {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
-        'quay.io/biocontainers/leehom:1.2.15--h29e30f7_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b994e0990be5d36a63ae74d04761f58bb23bedeaff4306564bcd7063e61ad2fa/data'
+        : 'community.wave.seqera.io/library/leehom:1.2.15--ba28dae98e359e7b'}"
 
     input:
     tuple val(meta), path(reads)

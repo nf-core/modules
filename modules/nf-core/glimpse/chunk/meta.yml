@@ -6,8 +6,7 @@ keywords:
   - low coverage
 tools:
   - "glimpse":
-      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage
-        sequencing studies."
+      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
@@ -46,8 +45,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Tab delimited output txt file containing buffer and
-            imputation regions.
+          description: Tab delimited output txt file containing buffer and imputation regions.
           pattern: "*.txt"
           ontologies: []
   versions_glimpse:
@@ -75,3 +73,17 @@ authors:
   - "@louislenezet"
 maintainers:
   - "@louislenezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/glimpse-bio:1.1.1--26d63752054f98c5
+      build_id: bd-26d63752054f98c5_1
+      scan_id: sc-7ad632fb69bc6b37_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/glimpse-bio:1.1.1--53a7702d43b45563
+      build_id: bd-53a7702d43b45563_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f722eb1dd56d995b28e1ec47f7808450bf6477e0b4ec28ec5f294c1a66fd479e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/glimpse/chunk/.conda-lock/linux_amd64-bd-26d63752054f98c5_1.txt

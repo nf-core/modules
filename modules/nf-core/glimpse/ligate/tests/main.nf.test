@@ -43,6 +43,7 @@ nextflow_process {
                     }
                     | combine(ref_panel)
                     | combine(ch_map)
+                input[1] = 'vcf.gz'
                 """
                 }
             }
@@ -63,6 +64,7 @@ nextflow_process {
                     .join(BCFTOOLS_INDEX.out.index)
                     .map{ meta, vcf, index -> [meta.subMap("id"), vcf, index]}
                     .groupTuple()
+                input[1] = 'vcf.gz'
                 """
             }
         }
@@ -91,6 +93,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true)
                 ]
+                input[1] = 'vcf.gz'
                 """
             }
         }

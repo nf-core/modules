@@ -150,3 +150,17 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/leehom:1.2.15--ba28dae98e359e7b
+      build_id: bd-ba28dae98e359e7b_1
+      scan_id: sc-f9f0a45ba9b678e9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/leehom:1.2.15--b13e315c2339684b
+      build_id: bd-b13e315c2339684b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b994e0990be5d36a63ae74d04761f58bb23bedeaff4306564bcd7063e61ad2fa/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/leehom/.conda-lock/linux_amd64-bd-ba28dae98e359e7b_1.txt

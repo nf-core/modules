@@ -69,7 +69,7 @@ workflow VCF_IMPUTE_GLIMPSE {
             ]
         }
 
-    GLIMPSE_PHASE(phase_input)
+    GLIMPSE_PHASE(phase_input, 'vcf.gz')
 
     BCFTOOLS_INDEX_PHASE(GLIMPSE_PHASE.out.phased_variants)
 
@@ -94,7 +94,7 @@ workflow VCF_IMPUTE_GLIMPSE {
             [meta, vcf, index]
         }
 
-    GLIMPSE_LIGATE(ligate_input)
+    GLIMPSE_LIGATE(ligate_input, 'vcf.gz')
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE_LIGATE.out.merged_variants)
 
