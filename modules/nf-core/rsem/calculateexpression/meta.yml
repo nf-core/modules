@@ -18,6 +18,20 @@ tools:
         source: "BMC Bioinformatics"
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:rsem
+  - star:
+      description: |
+        STAR is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: https://github.com/alexdobin/STAR
+      doi: "10.1093/bioinformatics/bts635"
+      publication:
+        author: "Dobin, A., Davis, C. A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M. & Gingeras, T. R."
+        year: 2012
+        title: "STAR: ultrafast universal RNA-seq aligner"
+        source: "Bioinformatics"
+      manual: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+      licence: ["MIT"]
+      identifier: biotools:star
 input:
   - - meta:
         type: map
