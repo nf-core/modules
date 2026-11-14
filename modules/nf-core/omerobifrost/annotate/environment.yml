@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - ome
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.8
+  - zeroc-ice36-python=3.6.5
+  - omero-py=5.13.1
+  - pip=23.2.1
+  - pip:
+    - typer==0.9.0
+    - rich==13.5.2
+    - omero-upload==0.4.0
+    - ezomero==2.1.0
+
