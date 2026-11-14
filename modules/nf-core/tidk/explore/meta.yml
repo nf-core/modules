@@ -8,8 +8,7 @@ keywords:
   - search
 tools:
   - "tidk":
-      description: tidk is a toolkit to identify and visualise telomeric repeats
-        in genomes
+      description: tidk is a toolkit to identify and visualise telomeric repeats in genomes
       homepage: "https://github.com/tolkit/telomeric-identifier"
       documentation: "https://github.com/tolkit/telomeric-identifier"
       tool_dev_url: "https://github.com/tolkit/telomeric-identifier"
@@ -79,3 +78,27 @@ authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tidk:0.2.7--e781b1e8244cc913
+      build_id: bd-e781b1e8244cc913_1
+      scan_id: sc-e66c90aa05894c3e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/tidk:0.2.7--3d7bdafb87347165
+      build_id: bd-3d7bdafb87347165_1
+      scan_id: sc-c6f12d5b53ac92ee_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tidk:0.2.7--742abc74d7986679
+      build_id: bd-742abc74d7986679_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9fc2352a02fcae6bc8ae7ba109692168150451bf188a98c1032545f85a0b21e2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tidk:0.2.7--378a18972c3d6c52
+      build_id: bd-378a18972c3d6c52_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5761df47d2a395ac289d20d7ab12988b5f84168fc6cc68f1d99e9d174ef14fe1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tidk/explore/.conda-lock/linux_amd64-bd-e781b1e8244cc913_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tidk/explore/.conda-lock/linux_arm64-bd-3d7bdafb87347165_1.txt

@@ -52,6 +52,12 @@ output:
         Channel containing aligned or deduplicated BAM files.
         Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
+  - bam_aligned:
+      type: file
+      description: |
+        Channel containing unsorted BAM files straight from Bismark alignment, before deduplication.
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
   - index:
       type: file
       description: |

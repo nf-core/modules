@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAVANA_CLASSIFY {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/savana:1.3.7--pyhdfd78af_0'
-        : 'quay.io/biocontainers/savana:1.3.7--pyhdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/savana:1.3.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/savana:1.3.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf)

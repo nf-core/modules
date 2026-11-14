@@ -33,6 +33,12 @@ input:
       description: File(s) containing lua(u) code to run once before any variants
         are processed. `header` is available here to access or modify the header
       pattern: "*.lua"
+  - extension:
+      type: string
+      description: |
+        File extension of the output file, which determines the output format.
+        Defaults to 'vcf.gz' if empty.
+      enum: ["vcf", "vcf.gz", "bcf", "bcf.gz"]
 output:
   vcf:
     - - meta:

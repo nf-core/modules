@@ -125,14 +125,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.corr_matrix,
-                    process.out.matched,
-                    process.out.all,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['pdf'])).match() }
             )
         }
 

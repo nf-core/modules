@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { FCS_FCSADAPTOR  } from '../../../modules/nf-core/fcs/fcsadaptor/main'
 include { FCSGX_RUNGX     } from '../../../modules/nf-core/fcsgx/rungx/main'
 

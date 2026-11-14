@@ -105,3 +105,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/biopython_python:1ed2958705acf8e6
+      build_id: bd-1ed2958705acf8e6_1
+      scan_id: sc-3679dd97ce412135_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/biopython_python:8c44a7c9b971de99
+      build_id: bd-8c44a7c9b971de99_1
+      scan_id: sc-2ad23822e8b9b3e9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/biopython_python:8bf95fc4e98620d5
+      build_id: bd-8bf95fc4e98620d5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d96b48e6ed9c1b07580549220facb20a0f01f0e135a7714954220d99b2588d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/biopython_python:d0b5e17ccbacd17e
+      build_id: bd-d0b5e17ccbacd17e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e81b4af83178477400fda7b527ddaefb8f7ef8e787fa7016ff39ae44a742f5b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/resolvetaxonomy/.conda-lock/linux_amd64-bd-1ed2958705acf8e6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/resolvetaxonomy/.conda-lock/linux_arm64-bd-8c44a7c9b971de99_1.txt

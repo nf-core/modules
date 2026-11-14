@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CLAME {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clame:1.0--he1b5a44_1':
-        'quay.io/biocontainers/clame:1.0--he1b5a44_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b4459c82bcfba35249d0db055fe5b8d37c15a703052b52e9c2bfeb2b7c1a724d/data'
+        : 'community.wave.seqera.io/library/clame:1.0--a3c510a4b70a1afd'}"
 
     input:
     tuple val(meta), path(fasta)

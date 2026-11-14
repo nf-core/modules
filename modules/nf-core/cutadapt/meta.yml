@@ -87,3 +87,27 @@ maintainers:
   - "@drpatelh"
   - "@kevinmenden"
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cutadapt:5.2--efafca34ac3f6c8a
+      build_id: bd-efafca34ac3f6c8a_1
+      scan_id: sc-6c58a604ce71df6c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/cutadapt:5.2--fc40a7a42722a5ae
+      build_id: bd-fc40a7a42722a5ae_1
+      scan_id: sc-4173e31b1e51d04c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cutadapt:5.2--5a760b6bb02b3c17
+      build_id: bd-5a760b6bb02b3c17_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f26f1ce0aac66b8f199594c1ed6bb39f256b5a08d524167e84176fb5799f776a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cutadapt:5.2--66a2f6447a569df3
+      build_id: bd-66a2f6447a569df3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e834489089a32c99935c61b0a0fcd0588d269361d0fe9c72817f6d644c9c831a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cutadapt/.conda-lock/linux_amd64-bd-efafca34ac3f6c8a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cutadapt/.conda-lock/linux_arm64-bd-fc40a7a42722a5ae_1.txt

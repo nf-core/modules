@@ -75,3 +75,27 @@ authors:
   - "@yuukiiwa"
 maintainers:
   - "@yuukiiwa"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/nanolyse:1.2.1--b47934bc562d4df6
+      build_id: bd-b47934bc562d4df6_1
+      scan_id: sc-ccee7c7879b1b114_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/nanolyse:1.2.1--a6fbb16ca1306d37
+      build_id: bd-a6fbb16ca1306d37_1
+      scan_id: sc-4670b72ce5cdf5d4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/nanolyse:1.2.1--cf7153488c209a95
+      build_id: bd-cf7153488c209a95_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e730b91d64f77fc2ff360b9ce777f741d6f13b7edf83c044938c59195c988d4/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/nanolyse:1.2.1--87fe348eecb622fe
+      build_id: bd-87fe348eecb622fe_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65a7fa811e03299a0566533a684ddcc5479911959d19c7d5a72bdf83baf1d48e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/nanolyse/.conda-lock/linux_amd64-bd-b47934bc562d4df6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/nanolyse/.conda-lock/linux_arm64-bd-a6fbb16ca1306d37_1.txt

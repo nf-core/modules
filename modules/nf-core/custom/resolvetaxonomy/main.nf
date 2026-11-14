@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // The resolved sequences keep the input's own extension, with any '.gz' stripped first so a
 // compressed input is not written as "*.resolved.gz". Falls back to 'fasta' when the input has
 // no extension at all (e.g. a download URL with no filename suffix), which would otherwise
@@ -12,9 +15,9 @@ process CUSTOM_RESOLVETAXONOMY {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biopython:1.84' :
-        'quay.io/biocontainers/biopython:1.84' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d96b48e6ed9c1b07580549220facb20a0f01f0e135a7714954220d99b2588d/data'
+        : 'community.wave.seqera.io/library/biopython_python:1ed2958705acf8e6'}"
 
     input:
     tuple val(meta), path(taxonomy), path(sequences), val(taxonomy_required)

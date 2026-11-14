@@ -129,3 +129,17 @@ authors:
   - "@LouisLeNezet"
 maintainers:
   - "@LouisLeNezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:d8b49a10459ef83c
+      build_id: bd-d8b49a10459ef83c_1
+      scan_id: sc-1f1048489364ae92_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:5b5a966c8089c543
+      build_id: bd-5b5a966c8089c543_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e625d9794fe4feb2e1126731121ca9750eb6f43d63e896730ad14e170421546/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/geneticmapconvert/.conda-lock/linux_amd64-bd-d8b49a10459ef83c_1.txt

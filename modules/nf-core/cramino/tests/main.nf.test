@@ -32,7 +32,7 @@ nextflow_process {
                     process.out.arrow,
                     process.out.stats.collect { meta, stats -> [
                         meta, file(stats).name,
-                        file(stats).text.split("\n")[0..-2] // Timestamps at the end
+                        file(stats).text.split("\n")[0..-2].findAll { it } // Drop timestamp line and blank lines
                     ]},
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -65,7 +65,7 @@ nextflow_process {
                     process.out.arrow,
                     process.out.stats.collect { meta, stats -> [
                         meta, file(stats).name,
-                        file(stats).text.split("\n")[0..-2]
+                        file(stats).text.split("\n")[0..-2].findAll { it }
                     ]},
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }

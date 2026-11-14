@@ -54,8 +54,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.{fmi,dmp}":
           type: file
-          description: Kaiju FM-index file, and input {names,nodes}.dmp NCBI taxonomy
-            files required for downstream Kaiju commands
+          description: Kaiju FM-index file, and input {names,nodes}.dmp NCBI taxonomy files required for downstream Kaiju commands
           pattern: "*.{fmi,dmp}"
           ontologies: []
   bwt:
@@ -104,3 +103,27 @@ topics:
 authors:
   - "@alxndrdiaz"
   - "@jfy133"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/kaiju:1.10.3--47fcff356cad6412
+      build_id: bd-47fcff356cad6412_1
+      scan_id: sc-beb914d4ce0d30d9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/kaiju:1.10.3--8b4a2069cc29ac7a
+      build_id: bd-8b4a2069cc29ac7a_1
+      scan_id: sc-55a97698dd23bdfa_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/kaiju:1.10.3--f24f31b315cf8038
+      build_id: bd-f24f31b315cf8038_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/2645f08391d48e1594c3830ffc69bcce055e5a09b1706de4cae3508b82b1426e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kaiju:1.10.3--d4d45c6b258f1f61
+      build_id: bd-d4d45c6b258f1f61_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40cd79a6bb3b5feabe877bef8498d63a3b91fed44b30556af4c7e6554c4310f2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kaiju/mkfmi/.conda-lock/linux_amd64-bd-8b4a2069cc29ac7a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/kaiju/mkfmi/.conda-lock/linux_arm64-bd-47fcff356cad6412_1.txt

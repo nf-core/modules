@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAPHLAN_METAPHLAN {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0'
-        : 'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59f3aa387903d5b87b6e2d3c0172f462f701c662e73cb2e26066d4ec6fd3e8c6/data'
+        : 'community.wave.seqera.io/library/metaphlan_numpy_python:59796ca881a8bb02'}"
 
     input:
     tuple val(meta), path(input)

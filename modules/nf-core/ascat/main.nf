@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASCAT {
     tag "${meta.id}"
     label 'process_medium'
@@ -25,7 +28,7 @@ process ASCAT {
     tuple val(meta), path("*png"),                        emit: png
     tuple val(meta), path("*purityploidy.txt"),           emit: purityploidy
     tuple val(meta), path("*segments.txt"),               emit: segments
-    tuple val("${task.process}"), val('bioconductor-ascat'), eval('Rscript -e "library(ASCAT); cat(as.character(packageVersion(\'ASCAT\')))"'), topic: versions, emit: versions_ascat
+    tuple val("${task.process}"), val('ascat'), eval('Rscript -e "library(ASCAT); cat(as.character(packageVersion(\'ASCAT\')))"'), topic: versions, emit: versions_ascat
     tuple val("${task.process}"), val('alleleCounter'), eval("alleleCounter --version"), topic: versions, emit: versions_allelecounter
 
     when:
@@ -38,6 +41,7 @@ process ASCAT {
     def gender        = args.gender        ? "${args.gender}"        : "NULL"
     def genomeVersion = args.genomeVersion ? "${args.genomeVersion}" : "NULL"
     def purity        = args.purity        ? "${args.purity}"        : "NULL"
+    def penalty       = args.penalty       ? "${args.penalty}"       : "NULL"
     def ploidy        = args.ploidy        ? "${args.ploidy}"        : "NULL"
     def gc_input      = gc_file            ? "${gc_file}"            : "NULL"
     def rt_input      = rt_file            ? "${rt_file}"            : "NULL"
@@ -178,7 +182,7 @@ process ASCAT {
     }
 
     # Segment the data
-    ascat.bc = ascat.aspcf(ascat.bc, seed=42)
+    ascat.bc = ascat.aspcf(ascat.bc, penalty=${penalty}, seed=42)
 
     # Plot the segmented data
     ascat.plotSegmentedData(ascat.bc)

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LLAMACPPPYTHON_RUN {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'oras://community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d44fd00c4d90dbdb' : 'oras://community.wave.seqera.io/library/llama-cpp-python:0.3.28--50ab38de95fd7615') :
-        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:d81eb47f02f98bad' : 'community.wave.seqera.io/library/llama-cpp-python:0.3.28--d6b1d777bf1649d9') }"
+        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c3240996011a266ad1bf60a9591b995f72e17d80d28827f319ae8f4059c720c3/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/18/185e274b6759747466cb5b0a1f7c0c7a462e790c2b783b225d260bbd8526644c/data') :
+        (task.accelerator ? 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp_cuda-version:8eda7e45fafc0673' : 'community.wave.seqera.io/library/llama-cpp-python_llama.cpp:211706178075740f') }"
 
     input:
     tuple val(meta), path(prompt_file), path(gguf_model)
@@ -20,6 +23,11 @@ process LLAMACPPPYTHON_RUN {
     script:
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template('llama-cpp-python.py')
 
     stub:

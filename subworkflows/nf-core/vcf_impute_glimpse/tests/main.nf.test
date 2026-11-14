@@ -7,12 +7,14 @@ nextflow_workflow {
     config "./nextflow.config"
 
     tag "subworkflows"
-    tag "bcftools/index"
+
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_impute_glimpse"
-    tag "glimpse/phase"
-    tag "glimpse/ligate"
+    tag "bcftools"
+    tag "bcftools/index"
     tag "glimpse/chunk"
+    tag "glimpse/ligate"
+    tag "glimpse/phase"
 
     test("homo_sapiens - vcf no sample, panel vcf region, no chunks, no map, chunking") {
         when {

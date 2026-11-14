@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_TRIMHEADER"
+    script "../main.nf"
+    process "SAMTOOLS_TRIMHEADER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/trimheader"
+
+    // The plasmid NZ_CP069564.1 has no reads, and 47038 reads are unplaced.
+    test("bacteroides_fragilis - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def out = process.out.bam[0][1]
+            assertAll(
+                { assert process.success },
+                { assert bam(out).getHeader().findAll { l -> l.startsWith('@SQ') } == [ '@SQ\tSN:NZ_CP069563.1\tLN:5150703' ] },
+                { assert bam(out).getStatistics().readCount == 100000 },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/bam/test1.sorted.bam.bai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

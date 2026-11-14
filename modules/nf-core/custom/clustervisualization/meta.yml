@@ -101,3 +101,27 @@ authors:
   - "@dbaku42"
 maintainers:
   - "@dbaku42"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:50b5361fb7d660c6
+      build_id: bd-50b5361fb7d660c6_1
+      scan_id: sc-57e72452171626af_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:bd2a11c7ed873f18
+      build_id: bd-bd2a11c7ed873f18_1
+      scan_id: sc-fe5176f75d7dcf9e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:529d7f648174c90c
+      build_id: bd-529d7f648174c90c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/839269dbd58a370d88ecbee81f1d43e61c3f890b583aebedcb7569c928b4bba4/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:f9a2d8fb7bde43e2
+      build_id: bd-f9a2d8fb7bde43e2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f737b1218446bfbe82d230793b01b7e173aa63ba768ec167a553f4d583e09297/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/clustervisualization/.conda-lock/linux_amd64-bd-bd2a11c7ed873f18_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/clustervisualization/.conda-lock/linux_arm64-bd-50b5361fb7d660c6_1.txt

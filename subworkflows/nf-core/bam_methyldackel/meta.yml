@@ -26,19 +26,19 @@ input:
         Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa,fa.gz}"
 output:
-  - methydackel_extract_bedgraph:
+  - methyldackel_extract_bedgraph:
       type: file
       description: |
         bedGraph file, containing per-base methylation metrics
         Structure: [ val(meta), path(bedgraph) ]
       pattern: "*.bedGraph"
-  - methydackel_extract_methylkit:
+  - methyldackel_extract_methylkit:
       type: file
       description: |
         methylKit file, containing per-base methylation metrics
         Structure: [ val(meta), path(methylKit) ]
       pattern: "*.methylKit"
-  - methydackel_mbias:
+  - methyldackel_mbias:
       type: file
       description: |
         Text file containing methylation bias

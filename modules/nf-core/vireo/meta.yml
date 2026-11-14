@@ -1,6 +1,5 @@
 name: "vireo"
-description: Use vireo to perform donor deconvolution for multiplexed scRNA-seq
-  data
+description: Use vireo to perform donor deconvolution for multiplexed scRNA-seq data
 keywords:
   - genotype-based demultiplexing
   - donor deconvolution
@@ -24,8 +23,7 @@ input:
           e.g. `[ id:'sample1']`
     - cell_data:
         type: file
-        description: The cell genotype file in VCF format or cellSNP folder with
-          sparse matrices.
+        description: The cell genotype file in VCF format or cellSNP folder with sparse matrices.
         pattern: "*.vcf|*/"
         ontologies: []
     - n_donor:
@@ -97,8 +95,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_GT_donors.vireo.vcf.gz":
           type: file
-          description: contains vireo’s inferred donor genotypes at each SNP (only
-            created if `--forceLearnGT` is set in `ext.args`, see n)
+          description: contains vireo’s inferred donor genotypes at each SNP (only created if `--forceLearnGT` is set in `ext.args`, see n)
           pattern: "*_GT_donors.vireo.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
@@ -111,10 +108,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_filtered_variants.tsv":
           type: file
-          description: contains the minimal set of discriminatory variants created
-            by `GTbarcode` (only created if `--forceLearnGT` is set in `ext.args`,
-            see the hadge pipeline as an example, and only shows consistent
-            results if `--randSeed` is set)
+          description: contains the minimal set of discriminatory variants created by `GTbarcode` (only created if `--forceLearnGT` is set in `ext.args`, see the hadge pipeline as an example, and only shows consistent results if `--randSeed` is set)
           pattern: "*_filtered_variants.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -151,3 +145,27 @@ maintainers:
   - "@maxozo"
   - "@wxicu"
   - "@Zethson"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/vireosnp:0.5.8--2cdc8283c8068165
+      build_id: bd-2cdc8283c8068165_1
+      scan_id: sc-aabed5294d84508c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/vireosnp:0.5.8--376a9219dbddd077
+      build_id: bd-376a9219dbddd077_1
+      scan_id: sc-948bb7042ed62c48_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vireosnp:0.5.8--39eb18fff530d8f9
+      build_id: bd-39eb18fff530d8f9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eac294d6de9fdecf7b2bede5798788af111ac10ad6f3abc72a45fb7f317af92/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vireosnp:0.5.8--591c44530106908e
+      build_id: bd-591c44530106908e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3a7c7c461ee906967d8e14afb559e35100c7aca4835ad194a6fabf1ddf33cb0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vireo/.conda-lock/linux_amd64-bd-376a9219dbddd077_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vireo/.conda-lock/linux_arm64-bd-2cdc8283c8068165_1.txt

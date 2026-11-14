@@ -140,3 +140,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/raxml-ng:2.0.3--7c3d062d4e9f4b23
+      build_id: bd-7c3d062d4e9f4b23_1
+      scan_id: sc-511cd4d2ab680035_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/raxml-ng:2.0.3--118aed1d80be33ec
+      build_id: bd-118aed1d80be33ec_1
+      scan_id: sc-8af58e555843411c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/raxml-ng:2.0.3--e7d863e2fc851e42
+      build_id: bd-e7d863e2fc851e42_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cf/cf82498c2a4b360539fbb6989843d0302e5a3048769db3f0fb843e6ab060962c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/raxml-ng:2.0.3--b377306810ae5f1a
+      build_id: bd-b377306810ae5f1a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d092af5536b6d3c787024fe2936c1fc86d3e8da02f74d78bea389381d7a21f3f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/raxmlng/search/.conda-lock/linux_amd64-bd-118aed1d80be33ec_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/raxmlng/search/.conda-lock/linux_arm64-bd-7c3d062d4e9f4b23_1.txt

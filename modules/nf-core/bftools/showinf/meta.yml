@@ -62,3 +62,27 @@ authors:
   - "@AlexBarbera"
 maintainers:
   - "@AlexBarbera"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bftools:8.0.0--31ed5b2cbccf5764
+      build_id: bd-31ed5b2cbccf5764_1
+      scan_id: sc-c82744253c516d6b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bftools:8.0.0--3d36406c00785003
+      build_id: bd-3d36406c00785003_1
+      scan_id: sc-a017fd0b0b170372_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bftools:8.0.0--36fb441cb57506d6
+      build_id: bd-36fb441cb57506d6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a90f8b3bac6d2c2412e7f6a285b099c2425bf56ae6de3daec8e31670d3009cf/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bftools:8.0.0--8bd619137f732441
+      build_id: bd-8bd619137f732441_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3f18a7262bb2d6c2f64b1e09c65bb1b0b315baabb9bded73678a33c5fcb55ac/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bftools/showinf/.conda-lock/linux_amd64-bd-3d36406c00785003_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bftools/showinf/.conda-lock/linux_arm64-bd-31ed5b2cbccf5764_1.txt

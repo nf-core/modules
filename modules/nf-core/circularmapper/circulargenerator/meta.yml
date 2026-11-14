@@ -1,6 +1,5 @@
 name: "circularmapper_circulargenerator"
-description: A method to improve mappings on circular genomes, using the BWA
-  mapper.
+description: A method to improve mappings on circular genomes, using the BWA mapper.
 keywords:
   - bwa
   - circular
@@ -8,8 +7,7 @@ keywords:
   - genomics
 tools:
   - "circulargenerator":
-      description: "Creating a modified reference genome, with an elongation of the
-        an specified amount of bases"
+      description: "Creating a modified reference genome, with an elongation of the an specified amount of bases"
       homepage: "https://github.com/apeltzer/CircularMapper"
       documentation: "https://github.com/apeltzer/CircularMapper/blob/master/docs/contents/userguide.rst"
       tool_dev_url: "https://github.com/apeltzer/CircularMapper"
@@ -35,8 +33,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - elongation_factor:
         type: integer
-        description: The number of bases that the ends of the target chromosome in
-          the reference genome should be elongated by
+        description: The number of bases that the ends of the target chromosome in the reference genome should be elongated by
   - - meta3:
         type: map
         description: |
@@ -44,8 +41,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - target:
         type: string
-        description: The name of the chromosome in the reference genome that
-          should be elongated
+        description: The name of the chromosome in the reference genome that should be elongated
 output:
   fasta:
     - - meta:
@@ -95,3 +91,27 @@ authors:
   - "@TCLamnidis"
 maintainers:
   - ""
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/circularmapper:1.93.5--971f1a9d9b285bbc
+      build_id: bd-971f1a9d9b285bbc_1
+      scan_id: sc-25f970459c479e99_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/circularmapper:1.93.5--fa8dc996a2cc506e
+      build_id: bd-fa8dc996a2cc506e_1
+      scan_id: sc-9c15454bc7e48ca5_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/circularmapper:1.93.5--00063696cf512e2f
+      build_id: bd-00063696cf512e2f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1ca0215b892820b9bd4a4252d206045f25ce54d43bbe9c11db6c866df2e18ff3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/circularmapper:1.93.5--733d16a048633a87
+      build_id: bd-733d16a048633a87_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8be5342445021f1804a5772fabfbd401b8a0dea39616a2f3dbe746792f78384/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/circularmapper/circulargenerator/.conda-lock/linux_amd64-bd-971f1a9d9b285bbc_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/circularmapper/circulargenerator/.conda-lock/linux_arm64-bd-fa8dc996a2cc506e_1.txt

@@ -1,0 +1,472 @@
+nextflow_process {
+
+    name "Test Process FASTVEP_ANNOTATE"
+    script "../main.nf"
+    process "FASTVEP_ANNOTATE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastvep"
+    tag "fastvep/annotate"
+
+    test("caenorhabditis_elegans - vcf.gz") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [ [:], [] ]
+                input[5] = 'vcf'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                    process.out,
+                    variantsMD5Keys: ["vcf"],
+                    unstableKeys:    ["transcript_cache"]
+                    )
+                ).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - tab") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [ [:], [] ]
+                input[5] = 'tab'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        tableMD5Keys: ["tab"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
+                ).match() }
+            )
+        }
+    }
+
+
+    test("caenorhabditis_elegans - vcf.gz - json") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [ [:], [] ]
+                input[5] = 'json'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["transcript_cache"]
+                    )
+                ).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - no_fasta") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [ [:], [], [] ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [ [:], [] ]
+                input[5] = 'vcf'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        variantsMD5Keys: ["vcf"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
+                ).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - tab - explicit_alleles") {
+
+        when {
+            params {
+                module_args = '--explicit-alleles'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [ [:], [] ]
+                input[5] = 'tab'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        tableMD5Keys: ["tab"],
+                        unstableKeys: ["transcript_cache"]
+                        )
+                ).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - vep_cache") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/sa/worm.osa2', checkIfExists: true)
+                input[4] = [
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/caenorhabditis_elegans/115_WBcel235/')
+                ]
+                input[5] = 'vcf'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        variantsMD5Keys: ["vcf"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
+                ).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = [ [:], [] ]
+                input[5] = 'vcf'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - tab - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = [ [:], [] ]
+                input[5] = 'tab'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - json - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = [ [:], [] ]
+                input[5] = 'json'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - tab - explicit_alleles - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--explicit-alleles'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = [ [:], [] ]
+                input[5] = 'tab'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("caenorhabditis_elegans - vcf.gz - invalid output_format - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/illumina/vcf/c_elegans_caendr_X.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.gff3', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/caenorhabditis_elegans/genome/c_elegans_X1-58063.fa.fai', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = [ [:], [] ]
+                input[5] = 'bcf'
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+        }
+
+    }
+
+}

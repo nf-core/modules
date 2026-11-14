@@ -20,6 +20,12 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_cp
+      doi: "10.1038/ncomms14049"
+      publication:
+        author: "Zheng, G. X. Y., Terry, J. M., Belgrader, P., Ryvkin, P., Bent, Z. W., Wilson, R., Ziraldo, S. B., Wheeler, T. D., McDermott, G. P., Zhu, J., Gregory, M. T., Shuga, J., Montesclaros, L., Underwood, J. G., Masquelier, D. A., Nishimura, S. Y., Schnall-Levin, M., Wyatt, P. W., Hindson, C. M., Bharadwaj, R., Wong, A., Ness, K. D., Beppu, L. W., Deeg, H. J., McFarland, C., Loeb, K. R., Valente, W. J., Ericson, N. G., Stevens, E. A., Radich, J. P., Mikkelsen, T. S., Hindson, B. J. & Bielas, J. H."
+        year: 2017
+        title: "Massively parallel digital transcriptional profiling of single cells"
+        source: "Nature Communications"
       licence:
         - 10X Genomics EULA
       identifier: ""
@@ -52,7 +58,7 @@ input:
           Groovy Map containing sample information
     - vdj_fastqs:
         type: file
-        description: FASTQ files
+        description: V(D)J FASTQ files, with the chain type auto-detected by Cell Ranger (feature type VDJ)
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989
@@ -61,6 +67,8 @@ input:
         description: |
           Optional Cell Ranger VDJ section options as a Map.
           Supported keys: r1-length, r2-length.
+          All V(D)J libraries share a single [vdj] section, so only the options of the
+          first V(D)J library present (in the order vdj, vdj_t, vdj_t_gd, vdj_b) are used.
   - - meta4:
         type: map
         description: |
@@ -127,10 +135,58 @@ input:
           e.g. [ id:'genome' ]
     - gex_reference:
         type: directory
-        description: Folder containing Cellranger gene expression reference
+        description: |
+          Folder containing Cellranger gene expression reference.
+          Also required for feature barcode libraries without GEX FASTQs.
+  - - meta9:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_t_fastqs:
+        type: file
+        description: T cell receptor (alpha/beta) V(D)J FASTQ files (feature type VDJ-T)
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_t_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
+  - - meta10:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_t_gd_fastqs:
+        type: file
+        description: |
+          T cell receptor (gamma/delta) V(D)J FASTQ files (feature type VDJ-T-GD).
+          Cell Ranger requires custom inner enrichment primers (vdj_primer_index) for this library type.
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_t_gd_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
+  - - meta11:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_b_fastqs:
+        type: file
+        description: B cell receptor V(D)J FASTQ files (feature type VDJ-B)
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_b_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
   - gex_frna_probeset:
       type: file
-      description: Fixed RNA profiling information containing custom probes in CSV format
+      description: |
+        Fixed RNA profiling information containing custom probes in CSV format.
+        Ignored when CMO or OCM barcodes or V(D)J libraries are present, as Flex is incompatible with them.
       pattern: "*.csv"
       ontologies:
         - edam: http://edamontology.org/format_3752
@@ -145,7 +201,7 @@ input:
       description: Folder containing Cellranger V(D)J reference
   - vdj_primer_index:
       type: file
-      description: List of custom V(D)J inner enrichment primers
+      description: List of custom V(D)J inner enrichment primers; required for VDJ-T-GD libraries
       pattern: "*.csv"
       ontologies:
         - edam: http://edamontology.org/format_3752
