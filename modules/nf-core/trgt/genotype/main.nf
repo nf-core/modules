@@ -11,7 +11,7 @@ process TRGT_GENOTYPE {
         'community.wave.seqera.io/library/trgt:5.1.0--66e3b26326e566e7' }"
 
     input:
-    tuple val(meta) , path(bam), path(bai), val(karyotype)
+    tuple val(meta), path(bam), path(bai), path(fail_reads_bam), path(fail_reads_bai), val(karyotype)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(repeats)
@@ -28,11 +28,13 @@ process TRGT_GENOTYPE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def karyo = karyotype ? "--karyotype ${karyotype}" : ""
+    def fail_reads = fail_reads_bam ? "--fail-reads ${fail_reads_bam}" : ""
     """
     trgt genotype \\
         $args \\
         --genome ${fasta} \\
         --reads ${bam} \\
+        ${fail_reads} \\
         --repeats ${repeats} \\
         ${karyo} \\
         --threads ${task.cpus} \\

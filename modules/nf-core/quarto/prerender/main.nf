@@ -118,6 +118,8 @@ process QUARTO_PRERENDER {
 
     touch ${prefix}.md
     touch ${prefix}-params.yml
-    touch versions.yml
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}": stub
+    END_VERSIONS
     """
 }

@@ -1,0 +1,149 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "hgtsite_call"
+description: Call candidate horizontal gene transfer sites from a host alignment and per-read taxonomic classifications
+keywords:
+  - horizontal gene transfer
+  - integration site
+  - metagenomics
+  - contamination
+  - structural variant
+tools:
+  - "hgtsite":
+      description: "Calls candidate horizontal gene transfer and integration sites from paired-end
+        reads aligned to a host genome and per-read taxonomic classifications of the reads that did
+        not align, testing each candidate against the number of chimeric pairs chance alone would
+        place there."
+      homepage: "https://github.com/iraajgangavaram/hgt-site"
+      documentation: "https://iraajgangavaram.github.io/hgt-site/"
+      tool_dev_url: "https://github.com/iraajgangavaram/hgt-site"
+      doi: "10.5281/zenodo.23842712"
+      licence: ["MIT"]
+      identifier: "biotools:hgt-site"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Paired-end reads aligned to the host genome, keeping the pairs where one mate
+          did not align
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - index:
+        type: file
+        description: Index for the alignment. Optional, but without it the exact junctions from
+          split reads are not searched for
+        pattern: "*.{bai,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information about the classifications, e.g. `[ id:'sample1' ]`
+    - classifications:
+        type: file
+        description: Per-read taxonomic calls for the unmapped reads, from Kraken2, KrakenUniq,
+          Kaiju, Centrifuge, DIAMOND or BLAST, or a two-column file of read name and taxid
+        pattern: "*.{txt,tsv,gz}"
+        ontologies:
+          - edam: http://edamontology.org/data_2526 # Text data
+  - host_taxid:
+      type: integer
+      description: NCBI taxid of the host, for example 9606 for human
+  - save_bed:
+      type: boolean
+      description: Write the sites that passed every filter as a BED file
+  - save_vcf:
+      type: boolean
+      description: Write every candidate site as a block compressed, tabix indexed VCF
+  - save_multiqc:
+      type: boolean
+      description: Write a summary table for MultiQC
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.tsv":
+          type: file
+          description: Every candidate site, with the reason each one failed in the filter column
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.bed":
+          type: file
+          description: The sites that passed every filter, written when save_bed is true
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz":
+          type: file
+          description: Every candidate site as a VCF insertion record, written when save_vcf is true
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the VCF, written when save_vcf is true
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3616 # TBI
+  multiqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_mqc.json":
+          type: file
+          description: Summary table for MultiQC, written when save_multiqc is true
+          pattern: "*_mqc.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  versions_hgtsite:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hgtsite:
+          type: string
+          description: The tool name
+      - hgt-site --version | sed "s/^hgt-site //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hgtsite:
+          type: string
+          description: The tool name
+      - hgt-site --version | sed "s/^hgt-site //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@iraajgangavaram"
+maintainers:
+  - "@iraajgangavaram"

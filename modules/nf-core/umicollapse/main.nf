@@ -8,8 +8,8 @@ process UMICOLLAPSE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/umicollapse:1.1.0--hdfd78af_0'
-        : 'quay.io/biocontainers/umicollapse:1.1.0--hdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/05696e308cb4debe91dde77b5f9525c267044ae6bc71b85ae1ac6ac2f8203a47/data'
+        : 'community.wave.seqera.io/library/umicollapse:1.1.0--b477e0da15c79404'}"
 
     input:
     tuple val(meta), path(input), path(bai)

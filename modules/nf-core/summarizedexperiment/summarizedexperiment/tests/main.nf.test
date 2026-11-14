@@ -76,8 +76,8 @@ nextflow_process {
         }
 
         then {
-            // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0][1]).readLines()[0..14]
+            // Citation lines with quotes or accented names render differently under C and UTF-8 locales
+            def loglines = path(process.out.log[0][1]).readLines()[3..12]
 
             assertAll(
                 { assert process.success },
@@ -105,8 +105,8 @@ nextflow_process {
         }
 
         then {
-            // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0][1]).readLines()[0..14]
+            // Citation lines with quotes or accented names render differently under C and UTF-8 locales
+            def loglines = path(process.out.log[0][1]).readLines()[3..12]
 
             assertAll(
                 { assert process.success },
@@ -131,8 +131,8 @@ nextflow_process {
         }
 
         then {
-            // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0][1]).readLines()[0..14]
+            // Citation lines with quotes or accented names render differently under C and UTF-8 locales
+            def loglines = path(process.out.log[0][1]).readLines()[3..12]
 
             assertAll(
                 { assert process.success },
@@ -157,8 +157,8 @@ nextflow_process {
         }
 
         then {
-            // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0][1]).readLines()[0..14]
+            // Citation lines with quotes or accented names render differently under C and UTF-8 locales
+            def loglines = path(process.out.log[0][1]).readLines()[3..12]
 
             assertAll(
                 { assert process.success },
@@ -183,8 +183,8 @@ nextflow_process {
         }
 
         then {
-            // Some of the log will vary between conda runs- but top bit should be fine
-            def loglines = path(process.out.log[0][1]).readLines()[0..14]
+            // Citation lines with quotes or accented names render differently under C and UTF-8 locales
+            def loglines = path(process.out.log[0][1]).readLines()[3..12]
 
             assertAll(
                 { assert process.success },

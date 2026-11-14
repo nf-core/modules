@@ -6,9 +6,9 @@ process MOTUS_PREPLONG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
-        'quay.io/biocontainers/motus:3.1.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/580145dd529afb23666d3e79ed2dfffce058ab73b55785a23023c104b74cb52b/data'
+        : 'community.wave.seqera.io/library/bwa_motus_metasnv_htslib_pruned:813ab30f1d170975'}"
 
     input:
     tuple val(meta), path(reads)

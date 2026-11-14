@@ -1,0 +1,105 @@
+name: "fairbioheaders_validate"
+description: |
+  Validate standalone FAIR-bioHeaders metadata (FHR, FHP or FHGFF3, as JSON, YAML or
+  JSON-LD) against the schema its schema URL selects, without a sequence file, for example
+  to check user-supplied metadata before a long run. The task fails when the metadata does
+  not validate or cites a schema version the toolkit does not bundle. Use
+  fairbioheaders/verify for a FASTA, GFA or GFF3 file that carries a header.
+keywords:
+  - metadata
+  - provenance
+  - fair
+  - validation
+  - schema
+  - json
+  - yaml
+tools:
+  - "fair-bioheaders":
+      description: "Toolkit to validate, convert, combine, strip and verify FAIR-bioHeaders (FHR, FHP, FHGFF3) provenance metadata embedded in FASTA, GFA and GFF3 headers"
+      homepage: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
+      documentation: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools#readme"
+      tool_dev_url: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
+      doi: "10.1093/bib/bbae122"
+      licence: ["MPL-2.0"]
+      identifier: biotools:fair-bioheaders
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - metadata:
+        type: file
+        description: |
+          Standalone FHR, FHP or FHGFF3 metadata. The format comes from the extension;
+          `ext.args` can pass `--from`
+        pattern: "*.{json,yaml,yml,jsonld}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464" # JSON
+          - edam: "http://edamontology.org/format_3750" # YAML
+          - edam: "http://edamontology.org/format_3749" # JSON-LD
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.validate.txt:
+          type: file
+          description: Text report naming the validated file and the result
+          pattern: "*.validate.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_fairbioheaders:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fair-bioheaders:
+          type: string
+          description: The name of the tool
+      - bioheaders --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fair-bioheaders:
+          type: string
+          description: The name of the tool
+      - bioheaders --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@molikd"
+  - "@adamjohnwright"
+maintainers:
+  - "@molikd"
+  - "@adamjohnwright"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--1ff11621d7e9a7c8
+      build_id: bd-1ff11621d7e9a7c8_1
+      scan_id: sc-94d51cd9641c2d5a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--71029206d3ce1119
+      build_id: bd-71029206d3ce1119_1
+      scan_id: sc-96639927185509c4_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--85ff19c0d1de6e1f
+      build_id: bd-85ff19c0d1de6e1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a69700529d3e088166672547fbd632315145414a75ee81a1686e1208038a937/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--bd870dcf0291b69f
+      build_id: bd-bd870dcf0291b69f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/862c484484f878e5a99c0ee038f1e03206cac16d3f1763ae65a0663762a19f93/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_amd64-bd-71029206d3ce1119_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_arm64-bd-1ff11621d7e9a7c8_1.txt

@@ -38,7 +38,7 @@ process STAR_STARSOLO {
     tuple val(meta), path("${prefix}.Chimeric.out.junction")            , emit: chimeric_junction, optional: true
     tuple val(meta), path('*.wig')                                      , emit: wig              , optional: true
     tuple val(meta), path('*.bg')                                       , emit: bedgraph         , optional: true
-    tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
+    tuple val("${task.process}"), val('starsolo'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_starsolo
 
     when:
     task.ext.when == null || task.ext.when

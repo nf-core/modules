@@ -8,8 +8,8 @@ process STRELKA_SOMATIC {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/strelka:2.9.10--h9ee0642_1'
-        : 'quay.io/biocontainers/strelka:2.9.10--h9ee0642_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3c08a68a21f70b5e49b4d90eae72e229e2b4e5c1493d2a3291600b067192ff7/data'
+        : 'community.wave.seqera.io/library/strelka_python:7cdcec936f624371'}"
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor), path(manta_candidate_small_indels), path(manta_candidate_small_indels_tbi), path(target_bed), path(target_bed_index)

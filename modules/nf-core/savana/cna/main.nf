@@ -42,14 +42,12 @@ process SAVANA_CNA {
             ? "--g1000_vcf ${g1000_vcf}"
             : allele_counts_het_snps ? "--allele_counts_het_snps ${allele_counts_het_snps}" : ""
     def blacklist_arg = blacklist ? "--blacklist ${blacklist}" : ""
-    def ref_index_arg = ref_index ? "--ref_index ${ref_index}" : ""
     def breakpoints_arg = breakpoints ? "--breakpoints ${breakpoints}" : ""
     """
     savana cna \\
       --tumour ${tumour} \\
       ${normal_arg} \\
       --ref ${ref} \\
-      ${ref_index_arg} \\
       --outdir "./outdir" \\
       --sample ${prefix} \\
       --cna_threads ${task.cpus} \\

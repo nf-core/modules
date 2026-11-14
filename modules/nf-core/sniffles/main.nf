@@ -11,7 +11,7 @@ process SNIFFLES {
 :         'community.wave.seqera.io/library/htslib_sniffles:14a95caca8d8452b' }"
 
     input:
-    tuple val(meta), path(input), path(index), path(genotype_vcf)
+    tuple val(meta), path(input), path(index), path(genotype_vcf), path(regions)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(tandem_file)
     val(vcf_output)
@@ -32,6 +32,7 @@ process SNIFFLES {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
     def tandem_repeats = tandem_file ? "--tandem-repeats ${tandem_file}" : ''
+    def regions_bed = regions ? "--regions ${regions}" : ''
     def vcf = vcf_output ? "--vcf ${prefix}.vcf.gz": ''
     def snf = snf_output ? "--snf ${prefix}.snf": ''
     // Sniffles reads the sites file as plain text, so a compressed one is decompressed first (fritzsedlazeck/Sniffles#613)
@@ -45,6 +46,7 @@ process SNIFFLES {
         $reference \\
         -t $task.cpus \\
         $tandem_repeats \\
+        $regions_bed \\
         $genotype \\
         $vcf \\
         $snf \\

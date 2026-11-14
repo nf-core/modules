@@ -7,8 +7,8 @@ process SYLPH_PROFILE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sylph:0.9.0--ha6fb395_0'
-        : 'quay.io/biocontainers/sylph:0.9.0--ha6fb395_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/510a6da0825fba0cd64787439d4c802509ca02547096c350202b8b0c27207a4d/data'
+        : 'community.wave.seqera.io/library/sylph:1.0.0--b822039f65b5f44e'}"
 
     input:
     tuple val(meta), path(reads)
