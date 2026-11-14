@@ -67,7 +67,7 @@ process BCL2FASTQ {
         --sample-sheet ${samplesheet} \\
         --processing-threads ${task.cpus}
 
-    cp -r ${input_dir}/InterOp .
+    # cp -r keeps source modes, and InterOp can be read-only (e.g. 0005), breaking downstream steps
     #make sure that the user has permission to read and write the copied folder
     chmod -R u+rwX InterOp
     """
