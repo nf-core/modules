@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process SVDSS_SEARCH"
+    script "../main.nf"
+    process "SVDSS_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svdss"
+    tag "svdss/search"
+    tag "svdss/index"
+
+    setup {
+        run("SVDSS_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+                input[1] = 'fmd'
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - pacbio - bam, fmd") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = SVDSS_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - bam, fmd - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = SVDSS_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
