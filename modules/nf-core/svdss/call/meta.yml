@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "svdss_call"
+description: Call structural variants with SVDSS from sample-specific strings (SFS) and the reads they were extracted from
+keywords:
+  - structural variants
+  - sv calling
+  - sample-specific strings
+  - long reads
+  - vcf
+tools:
+  - svdss:
+      description: "Structural Variant Discovery from Sample-specific Strings."
+      homepage: "https://github.com/Parsoa/SVDSS"
+      documentation: "https://github.com/Parsoa/SVDSS/blob/v2.1.1/README.md"
+      tool_dev_url: "https://github.com/Parsoa/SVDSS"
+      doi: "10.1038/s41592-022-01674-1"
+      licence:
+        - "MIT"
+      identifier: biotools:svdss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file, ideally smoothed with SVDSS smooth, from which the SFS were extracted
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Index of the BAM file
+        pattern: "*.bai"
+        ontologies: []
+    - sfs:
+        type: file
+        description: Sample-specific strings produced by SVDSS search
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome the reads were aligned to, plain or gzip-compressed
+        pattern: "*.{fasta,fa,fna}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.vcf.gz:
+          type: file
+          description: Bgzip-compressed VCF of structural variant calls
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  versions_svdss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@krannich479"
+maintainers:
+  - "@krannich479"
