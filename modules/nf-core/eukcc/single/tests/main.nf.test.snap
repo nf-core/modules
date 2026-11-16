@@ -1,4 +1,54 @@
 {
+    "fungi - faa - extra": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.log"
+                    ]
+                ],
+                "marker_table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "scmg_marker_table.csv.gz:md5,5d4e9b09ce1a682adb5d269c617f8839"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.tsv"
+                    ]
+                ],
+                "versions_eukcc": [
+                    [
+                        "EUKCC_SINGLE",
+                        "eukcc",
+                        "2.3.0"
+                    ]
+                ],
+                "workdir": [
+                    
+                ]
+            },
+            [
+                "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
+                "95.83\t20.83\t1-131567-2759-33154-4751-112252\troot;cellular organisms;Eukaryota;Opisthokonta;Fungi;Fungi incertae sedis"
+            ],
+            true
+        ],
+        "timestamp": "2026-11-16T11:20:18.65714",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
     "fungi - fasta - stub": {
         "content": [
             {
@@ -22,6 +72,9 @@
                     
                 ],
                 "3": [
+                    
+                ],
+                "4": [
                     [
                         "EUKCC_SINGLE",
                         "eukcc",
@@ -53,65 +106,78 @@
                         "eukcc",
                         "2.3.0"
                     ]
+                ],
+                "workdir": [
+                    
                 ]
             }
         ],
+        "timestamp": "2026-11-16T11:20:27.530114",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        },
-        "timestamp": "2026-11-12T15:10:27.01096"
+            "nextflow": "26.04.0"
+        }
     },
-    "fungi - faa - extra": {
+    "fungi - fasta": {
         "content": [
-            [
-                "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
-                "95.83\t20.83\t1-131567-2759-33154-4751-112252\troot;cellular organisms;Eukaryota;Opisthokonta;Fungi;Fungi incertae sedis"
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "scmg_marker_table.csv.gz:md5,5d4e9b09ce1a682adb5d269c617f8839"
-                ]
-            ],
             {
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.log"
+                    ]
+                ],
+                "marker_table": [
+                    
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.tsv"
+                    ]
+                ],
                 "versions_eukcc": [
                     [
                         "EUKCC_SINGLE",
                         "eukcc",
                         "2.3.0"
                     ]
+                ],
+                "workdir": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            [
+                                [
+                                    [
+                                        "found_markers.tbl"
+                                    ]
+                                ]
+                            ],
+                            [
+                                "genome_metaeuk.fas",
+                                "genome_metaeuk_cleaned.faa"
+                            ]
+                        ]
+                    ]
                 ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "26.04.3"
-        },
-        "timestamp": "2026-11-16T10:41:22.393102"
-    },
-    "fungi - fasta": {
-        "content": [
+            },
             [
                 "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
                 "NA\tNA\tNA\tNA"
             ],
-            {
-                "versions_eukcc": [
-                    [
-                        "EUKCC_SINGLE",
-                        "eukcc",
-                        "2.3.0"
-                    ]
-                ]
-            }
+            true
         ],
+        "timestamp": "2026-11-16T11:20:01.609866",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "26.04.3"
-        },
-        "timestamp": "2026-11-16T10:36:33.90619"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

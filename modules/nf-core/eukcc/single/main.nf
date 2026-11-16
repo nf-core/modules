@@ -9,12 +9,14 @@ process EUKCC_SINGLE {
 
     input:
     tuple val(meta), path(fasta)
-    path db
+    tuple val(meta2), path(db)
+    path(genomes, stageAs: 'genomes/*')
 
     output:
     tuple val(meta), path("${prefix}/eukcc.tsv")                , emit: tsv
     tuple val(meta), path("${prefix}/eukcc.log")                , emit: log
     tuple val(meta), path("${prefix}/scmg_marker_table.csv.gz") , emit: marker_table, optional: true
+    tuple val(meta), path("${prefix}/workdir")                  , emit: workdir, optional: true
     tuple val("${task.process}"), val('eukcc'), eval("eukcc --version | sed 's/^EukCC version //'"), topic: versions, emit: versions_eukcc
 
     when:
@@ -23,10 +25,12 @@ process EUKCC_SINGLE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def genomes_arg = genomes ? [genomes].flatten().collect { genome -> "--genomes ${genome}" }.join(' ') : ''
     """
     eukcc \\
         single \\
         ${args} \\
+        ${genomes_arg} \\
         --db ${db} \\
         --threads ${task.cpus} \\
         --out ${prefix} \\
@@ -34,10 +38,12 @@ process EUKCC_SINGLE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     printf "fasta\\tcompleteness\\tcontamination\\tncbi_lng\\tncbi_lng_names\\n" > ${prefix}/eukcc.tsv
     touch ${prefix}/eukcc.log
+    ${args.contains('--keep') ? "mkdir ${prefix}/workdir" : ''}
     """
 }

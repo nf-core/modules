@@ -37,7 +37,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map { meta, db -> db }
+                input[1] = UNTAR.out.untar
+                input[2] = []
                 """
             }
         }
@@ -46,10 +47,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.tsv[0][1]).readLines().collect { it.split('\t').drop(1).join('\t') },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert path(process.out.log[0][1]).text.contains('Wrote output to') }
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'workdir']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.log[0][1]).text.contains('Wrote output to')
+                ).match() }
             )
         }
 
@@ -67,7 +68,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map { meta, db -> db }
+                input[1] = UNTAR.out.untar
+                input[2] = []
                 """
             }
         }
@@ -76,11 +78,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    path(process.out.tsv[0][1]).readLines().collect { it.split('\t').drop(1).join('\t') },
-                    process.out.marker_table,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert path(process.out.log[0][1]).text.contains('Wrote output to') }
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'workdir']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.log[0][1]).text.contains('Wrote output to')
+                ).match() }
             )
         }
 
@@ -100,7 +101,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map { meta, db -> db }
+                input[1] = UNTAR.out.untar
+                input[2] = []
                 """
             }
         }

@@ -27,9 +27,18 @@ input:
         pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
-  - db:
-      type: directory
-      description: EukCC database directory (e.g. from `eukcc download_db`)
+  - - meta2:
+        type: map
+        description: Groovy Map containing database information. e.g. `[ id:'eukcc_db' ]`
+    - db:
+        type: directory
+        description: EukCC database directory (e.g. from `eukcc download_db`)
+  - genomes:
+      type: file
+      description: Optional reference genomes or proteomes in FASTA format to define the marker gene set from (`--genomes`), instead of the tree placement; requires `--ignore_tree` in `ext.args`
+      pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
 output:
   tsv:
     - - meta:
@@ -59,6 +68,14 @@ output:
           pattern: "scmg_marker_table.csv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  workdir:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/workdir:
+          type: directory
+          description: Optional EukCC working directory, kept with `--keep` or when no estimate could be made
+          pattern: "workdir"
   versions_eukcc:
     - - ${task.process}:
           type: string
