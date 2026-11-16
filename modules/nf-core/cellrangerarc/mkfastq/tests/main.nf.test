@@ -8,18 +8,28 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "untar"
     tag "cellrangerarc"
     tag "cellrangerarc/mkfastq"
 
     test("cellrangerarc_mkfastq - simple atac") {
-        def bcl_dir
         setup {
-            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz').resolve('cellranger-arc-tiny-bcl-atac-1.0.0')
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
         }
         when {
             process {
                 """
-                input[0] = [ [id: "test"], file('${bcl_dir}') ]
+                input[0] = UNTAR.out.untar
                 input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-simple-1.0.0.csv", checkIfExists:true)
                 """
             }
@@ -36,14 +46,23 @@ nextflow_process {
     }
 
     test("cellrangerarc_mkfastq - simple gex") {
-        def bcl_dir
         setup {
-            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz').resolve('cellranger-arc-tiny-bcl-gex-1.0.0')
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
         }
         when {
             process {
                 """
-                input[0] = [ [id: "test"], file('${bcl_dir}') ]
+                input[0] = UNTAR.out.untar
                 input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-simple-1.0.0.csv", checkIfExists:true)
                 """
             }
@@ -60,14 +79,23 @@ nextflow_process {
     }
 
     test("cellrangerarc_mkfastq - illumina atac") {
-        def bcl_dir
         setup {
-            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz').resolve('cellranger-arc-tiny-bcl-atac-1.0.0')
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-1.0.0.tar.gz", checkIfExists:true)
+                    ]
+                    """
+                }
+            }
         }
         when {
             process {
                 """
-                input[0] = [ [id: "test"], file('${bcl_dir}') ]
+                input[0] = UNTAR.out.untar
                 input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-atac-samplesheet-1.0.0.csv", checkIfExists:true)
                 """
             }
@@ -84,14 +112,23 @@ nextflow_process {
     }
 
     test("cellrangerarc_mkfastq - illumina gex") {
-        def bcl_dir
         setup {
-            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz').resolve('cellranger-arc-tiny-bcl-gex-1.0.0')
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-1.0.0.tar.gz", checkIfExists: true)
+                    ]
+                    """
+                }
+            }
         }
         when {
             process {
                 """
-                input[0] = [ [id: "test"], file('${bcl_dir}') ]
+                input[0] = UNTAR.out.untar
                 input[1] = file("https://cf.10xgenomics.com/supp/cell-arc/cellranger-arc-tiny-bcl-gex-samplesheet-1.0.0.csv", checkIfExists:true)
                 """
             }
