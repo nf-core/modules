@@ -25,11 +25,31 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.tsv[0][1]).name, // TODO: It's an empty file. An appropriate test file is needed.
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["tsv"])).match() } // TODO: It's an empty file. An appropriate test file is needed.
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pangenome - pangenome_smoothxg_gfa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

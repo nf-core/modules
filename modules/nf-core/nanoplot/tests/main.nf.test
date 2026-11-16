@@ -31,7 +31,7 @@ nextflow_process {
                     file(process.out.txt[0][1]).name,
                     // file(process.out.png[0][1]).name, optional
                     // file(process.out.log[0][1]).name, name contains date
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -62,7 +62,7 @@ nextflow_process {
                     file(process.out.txt[0][1]).name,
                     // file(process.out.png[0][1]).name, optional
                     // file(process.out.log[0][1]).name, name contains date
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

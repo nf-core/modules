@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MINIMAC4_COMPRESSREF                    } from '../../../modules/nf-core/minimac4/compressref'
 include { MINIMAC4_IMPUTE                         } from '../../../modules/nf-core/minimac4/impute'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate'
@@ -8,7 +11,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
     take:
     ch_input   // channel (mandatory): [ [id, chr], vcf, tbi ]
     ch_panel   // channel (mandatory): [ [panel, chr], vcf, tbi ]
-    ch_posfile // channel (optional) : [ [panel, chr], sites_vcf, sites_index ]
     ch_chunks  // channel (optional) : [ [panel, chr], regionout ]
     ch_map     // channel (optional) : [ [panel, chr], map]
 
@@ -34,10 +36,16 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Channel with all reference and chunks informations
     // [ meta, reference panel msav, sites to impute vcf, sites index, region to impute, genetic map ]
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, regionouts ->
+            [metaPC, regionouts.size()]
+        }
+
     ch_panel_impute = ch_panel_msav
-        .combine(ch_posfile, by: 0)
         .combine(ch_chunks, by: 0)
         .combine(ch_map, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
     ch_panel_impute.ifEmpty {
         error("ERROR: join operation resulted in an empty channel. Please provide a valid ch_posfile, ch_chunks and ch_map channel as input.")
@@ -46,18 +54,31 @@ workflow VCF_IMPUTE_MINIMAC4 {
     // Prepare input channels for MINIMAC4
     ch_minimac4_input = ch_input
         .combine(ch_panel_impute)
-        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, sites_vcf, sites_index, regionout, map ->
+        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, regionout, map, region_size ->
+            def regionoutPadded
+            if (regionout.contains(':')) {
+                // Handle format like "chr22:1000-2000"
+                def chr = regionout.tokenize(':')[0]
+                def region = regionout.tokenize(':')[1]
+                def start = region.tokenize('-')[0]
+                def end = region.tokenize('-')[1]
+                def paddedStart = String.format('%010d', start as long)
+                def paddedEnd = String.format('%010d', end as long)
+                regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            } else {
+                // Handle format like "chr22" (no coordinates)
+                regionoutPadded = regionout
+            }
             [
-                metaPC + metaI + ["regionout": regionout],
+                metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
                 target_vcf, target_tbi,
                 ref_msav,
-                sites_vcf, sites_index,
                 map,
                 regionout,
             ]
         }
     // Perform imputation
-    MINIMAC4_IMPUTE(ch_minimac4_input)
+    MINIMAC4_IMPUTE(ch_minimac4_input, false)
 
     // Index the output VCF file
     BCFTOOLS_INDEX_PHASE(MINIMAC4_IMPUTE.out.vcf)
@@ -65,15 +86,23 @@ workflow VCF_IMPUTE_MINIMAC4 {
     // Ligate all phased files in one and index it
     ligate_input = MINIMAC4_IMPUTE.out.vcf
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch: true,
             failOnDuplicate: true,
         )
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout']
-            [meta.subMap(keysToKeep), vcf, index]
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     GLIMPSE2_LIGATE(ligate_input)
 
@@ -81,7 +110,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+        BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )

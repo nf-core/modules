@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HHSUITE_HHBLITS {
     tag "$meta.id"
     label 'process_medium'
@@ -13,7 +16,7 @@ process HHSUITE_HHBLITS {
 
     output:
     tuple val(meta), path("*.hhr"), emit: hhr
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed '1!d;s/^HHblits //;s/://'"), topic: versions, emit: versions_hhsuite
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,26 +36,16 @@ process HHSUITE_HHBLITS {
     db_name=\${base%_cs219.ffdata}
 
     hhblits \\
-        $args \\
-        -cpu $task.cpus \\
+        ${args} \\
+        -cpu ${task.cpus} \\
         -i ${aln_name} \\
         -d ${hh_db}/\$db_name \\
         -o ${prefix}.hhr
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hh-suite: \$(hhblits -h | grep 'HHblits' | sed -n -e 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.hhr
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hh-suite: \$(hhblits -h | grep 'HHblits' | sed -n -e 's/.*\\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 }

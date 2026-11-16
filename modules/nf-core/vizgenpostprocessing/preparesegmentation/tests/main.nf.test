@@ -48,9 +48,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.segmentation_files[0][1]).name, // Algorithm JSON file is not stable as it contains a timestamp
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out, unstableKeys: ["segmentation_files"])
                 ).match() }
             )
         }
@@ -83,10 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

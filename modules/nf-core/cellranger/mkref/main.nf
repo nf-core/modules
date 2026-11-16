@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKREF {
-    tag "$fasta"
+    tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.1.0"
 
     input:
-    path fasta
-    path gtf
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(gtf)
     val reference_name
 
     output:
-    path "${reference_name}", emit: reference
+    tuple val(meta), path("${reference_name}"), emit: reference
     tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:

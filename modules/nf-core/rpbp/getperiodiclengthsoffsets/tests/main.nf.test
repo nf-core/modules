@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process RPBP_GETPERIODICLENGTHSOFFSETS"
+    script "../main.nf"
+    process "RPBP_GETPERIODICLENGTHSOFFSETS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rpbp"
+    tag "rpbp/getperiodiclengthsoffsets"
+
+    test("homo_sapiens chr20 - get periodic lengths offsets") {
+
+        when {
+            params {
+                module_args = "--min-count 10 --min-bf-mean 1 --min-bf-likelihood 0.0"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic-offsets.csv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_rpbp[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - get periodic lengths offsets - loose thresholds") {
+        when {
+            params {
+                module_args = "--min-count 5"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic-offsets.csv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_rpbp[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - get periodic lengths offsets - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.periodic-offsets.csv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_rpbp[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

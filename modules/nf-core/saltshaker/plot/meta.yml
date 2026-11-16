@@ -7,10 +7,11 @@ keywords:
   - structural-variant calling
 tools:
   - "saltshaker":
-      description: "A Python package for classifying and visualizing mitochondrial structural variants from MitoSAlt pipeline output."
-      homepage: "https://github.com/aksenia/saltshaker"
-      documentation: "https://github.com/aksenia/saltshaker/tree/main/saltshaker/docs"
-
+      description: "A Python package for classifying and visualizing mitochondrial structural
+        variants from MitoSAlt pipeline output."
+      homepage: "https://pypi.org/project/saltshaker"
+      documentation: "https://pypi.org/project/saltshaker"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -24,7 +25,6 @@ input:
         ontologies:
           - edam: http://edamontology.org/operation_3225 #classification
           - edam: http://edamontology.org/format_3475 #tsv
-
 output:
   plot:
     - - meta:
@@ -46,19 +46,18 @@ output:
       - "saltshaker":
           type: string
           description: The name of the tool
-      - "1.0.0":
+      - "1.1.1":
           type: string
           description: Hardcoded version of saltshaker used in the module
-
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - saltshaker:
+      - "saltshaker":
           type: string
           description: The name of the tool
-      - 1.0.0:
+      - "1.1.1":
           type: string
           description: Hardcoded version of saltshaker used in the module
 authors:

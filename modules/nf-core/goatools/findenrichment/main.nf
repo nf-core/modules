@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GOATOOLS_FINDENRICHMENT {
     tag "$meta.id"
     label 'process_single'
@@ -13,7 +16,7 @@ process GOATOOLS_FINDENRICHMENT {
     path(goslim)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     tuple val("${task.process}"), val('goatools'), eval("goatools --version"), topic: versions, emit: versions_goatools
 
     when:

@@ -1,0 +1,112 @@
+name: "arcane_index"
+description: Build a k-mer hash index from a filtered reference for alignment-free single-cell RNA-seq quantification with Arcane
+keywords:
+  - single-cell
+  - rnaseq
+  - index
+  - kmer
+  - hash
+  - transcriptomics
+tools:
+  - "arcane":
+      description: "Arcane: Alignment-free single cell RNA-seq gene expression estimation"
+      homepage: "https://arcane-95885d.gitlab.io/"
+      documentation: "https://arcane-95885d.gitlab.io/"
+      tool_dev_url: "https://gitlab.com/rahmannlab/arcane"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: Filtered sequence reference FASTA file produced by the arcane filter step
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_1929"
+    - genes:
+        type: file
+        description: |
+          Gene IDs file (one per line, in gene_number order) produced by the arcane filter
+          step. Must be staged alongside `reference` — arcane index locates it implicitly
+          by filename convention relative to `--ref`.
+        pattern: "*_genes.txt"
+  - n_objects:
+      type: integer
+      description: Number of k-mers to be stored in the hash table (passed to `--nobjects`)
+
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.hash":
+          type: file
+          description: Binary hash table file containing the built k-mer index
+          pattern: "*.hash"
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.info":
+          type: file
+          description: Index metadata file accompanying the hash table
+          pattern: "*.info"
+  versions_arcane:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcane":
+          type: string
+          description: The name of the tool
+      - "arcane --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arcane:
+          type: string
+          description: The name of the tool
+      - arcane --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--752a60e8ee27a43e
+      build_id: bd-752a60e8ee27a43e_1
+      scan_id: sc-a1ae7e8ee4a9bd42_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--d2e66a3ae9fa2825
+      build_id: bd-d2e66a3ae9fa2825_1
+      scan_id: sc-ae1380a072a5413f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--637a22ae50dea3c2
+      build_id: bd-637a22ae50dea3c2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6d1b38ce02081f5481cdf0e4efe51db15ec77e1982196f01c58b66b544e1740/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--70426d4b7f8c5f2d
+      build_id: bd-70426d4b7f8c5f2d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/0253df676409f725ec17f768adfb6bb906cfe371557751703964be159372c290/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/arcane/index/.conda-lock/linux_amd64-bd-d2e66a3ae9fa2825_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/arcane/index/.conda-lock/linux_arm64-bd-752a60e8ee27a43e_1.txt

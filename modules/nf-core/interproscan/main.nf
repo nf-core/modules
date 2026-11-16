@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process INTERPROSCAN {
     tag "$meta.id"
     // will throw NullPointer exceptions and crush with more than 1 cpu
@@ -27,8 +30,11 @@ process INTERPROSCAN {
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def is_compressed    = fasta.getExtension() == "gz"
-    def fasta_name       = is_compressed ? fasta.getBaseName() : fasta
-    def uncompress_input = is_compressed ? "gzip -c -d ${fasta} > ${fasta_name}" : ''
+    def fasta_name       = is_compressed ? fasta.getBaseName() : "stripped_${fasta}"
+    // InterProScan rejects '*': drop the trailing stop, mask internal ones as X so coordinates still match the input.
+    def uncompress_input = is_compressed ?
+        "gzip -c -d ${fasta} | sed '/^>/!{s/\\*\$//; s/\\*/X/g}' > ${fasta_name}" :
+        "sed '/^>/!{s/\\*\$//; s/\\*/X/g}' ${fasta} > ${fasta_name}"
     """
     $uncompress_input
 
@@ -37,8 +43,12 @@ process INTERPROSCAN {
         INTERPROSCAN_DIR="\$( dirname "\$( dirname "\$( which interproscan.sh )" )" )"
         INTERPROSCAN_PROPERTIES="\$( find "\$INTERPROSCAN_DIR/share" -name "interproscan.properties" )"
         cp "\$INTERPROSCAN_PROPERTIES" .
-        sed -i "/^bin\\.directory=/ s|.*|bin.directory=\$INTERPROSCAN_DIR/bin|" interproscan.properties
-        export INTERPROSCAN_CONF=interproscan.properties
+        sed -i \\
+            -e "s|^bin\\.directory=.*|bin.directory=\$( dirname "\$INTERPROSCAN_PROPERTIES" )/bin|" \\
+            -e "s|^data\\.directory=.*|data.directory=\$PWD/data|" \\
+            interproscan.properties
+        # must be absolute: interproscan.sh cd's into its install dir before reading it
+        export INTERPROSCAN_CONF=\$PWD/interproscan.properties
     fi # else use sample DB included with conda ( testing only! )
 
     interproscan.sh \\

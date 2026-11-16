@@ -1,0 +1,354 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "savana_to"
+description: "Tumour-only somatic SV calling with optional copy-number analysis in SAVANA"
+keywords:
+  - structural variants
+  - somatic variants
+  - copy number analysis
+  - long-read sequencing
+  - genomics
+tools:
+  - "savana":
+      description: "SAVANA: a somatic structural variant and copy-number caller for
+        long-read data."
+      homepage: "https://github.com/cortes-ciriano-lab/savana"
+      documentation: "https://github.com/cortes-ciriano-lab/savana"
+      tool_dev_url: "https://github.com/cortes-ciriano-lab/savana"
+      doi: "10.1038/s41592-025-02708-0"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tumour:
+        type: file
+        description: Tumour BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - tumour_index:
+        type: file
+        description: Tumour BAM/CRAM index
+        pattern: "*.{bai,crai}"
+    - snp_vcf:
+        type: file
+        description: Optional SNP VCF for allele counting (mutually exclusive with g1000_vcf and allele_counts_het_snps)
+        pattern: "*.{vcf,vcf.gz}"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3615" # BGZIP
+    - allele_counts_het_snps:
+        type: file
+        description: Optional precomputed allele counts of heterozygous SNPs
+        pattern: "*.bed"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - breakpoints:
+        type: file
+        description: SAVANA breakpoints VCF to be included in CNA analysis
+        pattern: "*.{vcf,vcf.gz}"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3615" # BGZIP
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference information
+          e.g. `[ id:'GRCh38' ]`
+    - ref:
+        type: file
+        description: Reference FASTA
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - ref_index:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.fai"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing contigs file information
+          e.g. `[ id:'contigs' ]`
+    - contigs:
+        type: file
+        description: Optional contigs list file for SAVANA to restrict analysis to specific contigs
+        pattern: "*.txt"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # TXT
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing blacklist file information
+          e.g. `[ id:'blacklist' ]`
+    - blacklist:
+        type: file
+        description: Optional blacklist BED for CNA analysis
+        pattern: "*.bed"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing 1000G preset information
+          e.g. `[ id:'1000g_hg38' ]`
+    - g1000_vcf:
+        type: string
+        description: Optional 1000G preset for allele counting (mutually exclusive with snp_vcf and allele_counts_het_snps)
+        optional: true
+
+output:
+  sv_breakpoints_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.sv_breakpoints.vcf:
+          type: file
+          description: VCF file containing raw SV breakpoints
+          pattern: "*.sv_breakpoints.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  sv_breakpoints_bedpe:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.sv_breakpoints.bedpe:
+          type: file
+          description: Raw SV breakpoints BEDPE
+          pattern: "*.sv_breakpoints.bedpe"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  sv_breakpoints_read_support:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.sv_breakpoints_read_support.tsv:
+          type: file
+          description: TSV file containing read support information for each SV breakpoint
+          pattern: "*.sv_breakpoints_read_support.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  inserted_sequences:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.inserted_sequences.fa:
+          type: file
+          description: FASTA file containing inserted sequences
+          pattern: "*.inserted_sequences.fa"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  classified_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified.vcf:
+          type: file
+          description: VCF containing information about variant classification in the INFO field
+          pattern: "*.classified.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  somatic_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified.somatic.vcf:
+          type: file
+          optional: true
+          description: VCF containing variants classified as somatic
+          pattern: "*.classified.somatic.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  somatic_bedpe:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified.somatic.bedpe:
+          type: file
+          optional: true
+          description: Somatic BEDPE
+          pattern: "*.classified.somatic.bedpe"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  germline_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified.germline.vcf:
+          type: file
+          optional: true
+          description: VCF containing variants classified as germline
+          pattern: "*.classified.germline.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  legacy_vcfs:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified.{strict,lenient}.vcf:
+          type: file
+          optional: true
+          description: Legacy strict/lenient VCFs
+          pattern: "*.classified.{strict,lenient}.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  cna_rescue_vcfs:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.classified*.cna_rescue.vcf:
+          type: file
+          optional: true
+          description: CNA rescue VCFs
+          pattern: "*.cna_rescue.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  labelled_vcf:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.somatic.labelled.vcf:
+          type: file
+          optional: true
+          description: Labelled VCF from evaluation
+          pattern: "*.somatic.labelled.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  evaluation_stats:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}.somatic.evaluation.stats:
+          type: file
+          optional: true
+          description: Summary of the SAVANA evaluation results
+          pattern: "*.somatic.evaluation.stats"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # TXT
+  allele_counts:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_allele_counts_hetSNPs.bed:
+          type: file
+          optional: true
+          description: Allele counts for heterozygous SNPs (optional)
+          pattern: "*_allele_counts_hetSNPs.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  raw_read_counts:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_raw_read_counts.tsv:
+          type: file
+          optional: true
+          description: Raw binned read counts
+          pattern: "*_raw_read_counts.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  segmented_log2r:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_read_counts_*_log2r_segmented.tsv:
+          type: file
+          optional: true
+          description: Segmented log2R copy numbers
+          pattern: "*_read_counts_*_log2r_segmented.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  ranked_solutions:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_ranked_solutions.tsv:
+          type: file
+          optional: true
+          description: Ranked purity/ploidy solutions
+          pattern: "*_ranked_solutions.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  fitted_purity_ploidy:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_fitted_purity_ploidy.tsv:
+          type: file
+          optional: true
+          description: Final purity/ploidy fit
+          pattern: "*_fitted_purity_ploidy.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  cna:
+    - - meta:
+          type: map
+          description: Sample information
+      - ${prefix}_segmented_absolute_copy_number.tsv:
+          type: file
+          optional: true
+          description: Segmented absolute copy numbers
+          pattern: "*_segmented_absolute_copy_number.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  binned_ref:
+    - - meta:
+          type: map
+          description: Sample information
+      - "*kbp_bin_ref_*_${prefix}*.bed":
+          type: file
+          optional: true
+          description: Binned reference BED (with or without SV breakpoint integration)
+          pattern: "*kbp_bin_ref_*_*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  no_fit:
+    - - meta:
+          type: map
+          description: Sample information
+      - No_fit_found_PARAMS.tsv:
+          type: file
+          optional: true
+          description: Report containing rejected candidate purity/ploidy solutions if no fit is found
+          pattern: "No_fit_found_PARAMS.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_savana:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - savana:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - savana:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('savana'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

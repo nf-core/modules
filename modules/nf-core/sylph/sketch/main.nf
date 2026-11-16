@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SYLPH_SKETCH {
     tag "${meta.id}"
     label 'process_high'
@@ -13,7 +16,7 @@ process SYLPH_SKETCH {
 
     output:
     tuple val(meta), path('my_sketches/*.sylsp'), path('database.syldb'), emit: sketch_fastq_genome
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sylph'), eval('sylph -V | sed "s/sylph //g"'), topic: versions, emit: versions_sylph
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +33,6 @@ process SYLPH_SKETCH {
         -S ${prefix} \\
         -d my_sketches \\
         -t ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V|awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +41,5 @@ process SYLPH_SKETCH {
     mkdir -p my_sketches
     touch my_sketches/${prefix}.sylsp
     touch database.syldb
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sylph: \$(sylph -V|awk '{print \$2}')
-    END_VERSIONS
     """
 }

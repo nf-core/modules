@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/phac-nml/ecoli_serotyping
       documentation: https://github.com/phac-nml/ecoli_serotyping
       tool_dev_url: https://github.com/phac-nml/ecoli_serotyping
-      licence: ["Apache 2"]
+      licence:
+        - "Apache 2"
       identifier: biotools:ectyper
 input:
   - - meta:
@@ -56,15 +57,29 @@ output:
       - "*.txt":
           type: file
           description: Allele report generated from BLAST results
-          pattern: "*.tst"
+          pattern: "*.txt"
           ontologies: []
+  versions_ectyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ectyper:
+          type: string
+          description: The name of the tool
+      - ectyper --version 2>&1 | sed 's/.*ectyper //; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ectyper:
+          type: string
+          description: The name of the tool
+      - ectyper --version 2>&1 | sed 's/.*ectyper //; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

@@ -1,69 +1,140 @@
 {
     "test-sickle-single-end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.se.trimmed.fastq.gz:md5,178f1d603b2910f93a7816d4af7a470d"
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sickle.log"
+                    ]
+                ],
+                "paired_trimmed": [
+                    
+                ],
+                "single_trimmed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.se.trimmed.fastq.gz:md5,178f1d603b2910f93a7816d4af7a470d"
+                    ]
+                ],
+                "singleton_trimmed": [
+                    
+                ],
+                "versions_sickle": [
+                    [
+                        "SICKLE",
+                        "sickle",
+                        "1.33"
+                    ]
                 ]
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            "test.sickle.log",
-            [
-                "versions.yml:md5,d3fbaf4c4fde2b2d775aaed2c1b842b4"
-            ]
+            }
         ],
+        "timestamp": "2026-04-30T14:15:15.69206",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-29T14:35:48.445471"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "test-sickle-paired-end": {
         "content": [
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "qual": "sanger"
-                    },
+            {
+                "log": [
                     [
-                        "test.pe1.trimmed.fastq.gz:md5,6f813a3c59ec1e69c6d52226f9bc856a",
-                        "test.pe2.trimmed.fastq.gz:md5,199c1e6a6a4969f3ea3756b02747c322"
+                        {
+                            "id": "test",
+                            "qual": "sanger",
+                            "single_end": false
+                        },
+                        "test.sickle.log"
+                    ]
+                ],
+                "paired_trimmed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "qual": "sanger"
+                        },
+                        [
+                            "test.pe1.trimmed.fastq.gz:md5,6f813a3c59ec1e69c6d52226f9bc856a",
+                            "test.pe2.trimmed.fastq.gz:md5,199c1e6a6a4969f3ea3756b02747c322"
+                        ]
+                    ]
+                ],
+                "single_trimmed": [
+                    
+                ],
+                "singleton_trimmed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false,
+                            "qual": "sanger"
+                        },
+                        "test.singleton.trimmed.fastq.gz:md5,d49620645b052b07dffc389ad95a2674"
+                    ]
+                ],
+                "versions_sickle": [
+                    [
+                        "SICKLE",
+                        "sickle",
+                        "1.33"
                     ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "qual": "sanger"
-                    },
-                    "test.singleton.trimmed.fastq.gz:md5,d49620645b052b07dffc389ad95a2674"
-                ]
-            ],
-            "test.sickle.log",
-            [
-                "versions.yml:md5,d3fbaf4c4fde2b2d775aaed2c1b842b4"
-            ]
+            }
         ],
+        "timestamp": "2026-04-30T14:15:20.600953",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-29T14:35:53.055126"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "test-sickle-stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.sickle.log"
+                    ]
+                ],
+                "paired_trimmed": [
+                    
+                ],
+                "single_trimmed": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.se.trimmed.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "singleton_trimmed": [
+                    
+                ],
+                "versions_sickle": [
+                    [
+                        "SICKLE",
+                        "sickle",
+                        "1.33"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-30T14:15:25.552497",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

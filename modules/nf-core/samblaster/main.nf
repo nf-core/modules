@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMBLASTER {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,8 @@ process SAMBLASTER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('samblaster'), eval("samblaster -h 2>&1 | head -n 1 | sed 's/^samblaster: Version //'"), topic: versions, emit: versions_samblaster
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,12 +31,6 @@ process SAMBLASTER {
     samtools view -h $args2 $bam | \\
     samblaster $args | \\
     samtools view $args3 -Sb - >${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samblaster: \$( samblaster -h 2>&1 | head -n 1 | sed 's/^samblaster: Version //' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -40,11 +38,5 @@ process SAMBLASTER {
     if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch "${prefix}.bam"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samblaster: \$( samblaster -h 2>&1 | head -n 1 | sed 's/^samblaster: Version //' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

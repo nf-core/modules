@@ -1,22 +1,24 @@
 {
     "homo_sapiens - cram": {
         "content": [
-            "test.replaced.cram",
+            [
+                "test.replaced.cram:readsMD5,2f11e4fe3390b8ad0a1852616fd1da04"
+            ],
             {
                 "versions_picard": [
                     [
                         "PICARD_ADDORREPLACEREADGROUPS",
                         "picard",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-19T15:27:33.985055",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-02T09:36:16.966842212"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - bam - stub": {
         "content": [
@@ -27,9 +29,9 @@
                 "bam": [
                     [
                         {
-                            
+                            "id": "test"
                         },
-                        "null.replaced.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.replaced.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "cram": [
@@ -39,35 +41,37 @@
                     [
                         "PICARD_ADDORREPLACEREADGROUPS",
                         "picard",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-20T09:32:59.890631",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-02-19T17:34:40.3572859"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            "null.replaced.bam",
-            "null.replaced.bai",
+            [
+                "test.replaced.bam:readsMD5,894549ee3ced6b5ca2eed2563a985217"
+            ],
+            "test.replaced.bai",
             {
                 "versions_picard": [
                     [
                         "PICARD_ADDORREPLACEREADGROUPS",
                         "picard",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-20T09:32:27.740178",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-02-02T09:36:00.935196996"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

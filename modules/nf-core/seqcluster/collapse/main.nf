@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQCLUSTER_COLLAPSE {
     tag "$meta.id"
     label 'process_single'
@@ -12,7 +15,7 @@ process SEQCLUSTER_COLLAPSE {
 
     output:
     tuple val(meta), path("*.fastq.gz") , emit: fastq
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('seqcluster'), eval("seqcluster --version 2>&1 | tail -n 1 | sed 's/^seqcluster //'"), topic: versions, emit: versions_seqcluster
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +33,11 @@ process SEQCLUSTER_COLLAPSE {
 
     gzip collapsed/*_trimmed.fastq
     mv collapsed/*_trimmed.fastq.gz ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqcluster: \$(echo \$(seqcluster --version 2>&1) | sed 's/^.*seqcluster //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqcluster: \$(echo \$(seqcluster --version 2>&1) | sed 's/^.*seqcluster //')
-    END_VERSIONS
     """
 }

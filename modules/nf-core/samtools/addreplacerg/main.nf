@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_ADDREPLACERG {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87660348a4d032cc08d6ac8101ff9d4d27164300d39c9472043bb5001f9ba801/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.25--704fb80d75745bd4'}"
 
     input:
     tuple val(meta), path(input), path(index), val(read_group)
@@ -15,9 +18,7 @@ process SAMTOOLS_ADDREPLACERG {
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-    tuple val(meta), path("${prefix}.bam.bai"), emit: bai, optional: true
-    tuple val(meta), path("${prefix}.bam.csi"), emit: csi, optional: true
-    tuple val(meta), path("${prefix}.cram.crai"), emit: crai, optional: true
+    tuple val(meta), path("${prefix}.${file_type}.{crai,csi,bai}"), emit: index, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -27,7 +28,7 @@ process SAMTOOLS_ADDREPLACERG {
     def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ''
     def read_group_arg = read_group ? "-r ${read_group}" : ''
-    def file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
+    file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
         ? "sam"
         : args =~ /--output-fmt\s+bam|-O\s+bam/
             ? "bam"

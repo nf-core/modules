@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process SPATIALCONTINUUM_CRICALC"
+    script "../main.nf"
+    process "SPATIALCONTINUUM_CRICALC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spatialcontinuum"
+    tag "spatialcontinuum/cricalc"
+
+    test("clinical - sample") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    'solid',
+                    'mutated',
+                    'mutated',
+                    'dense'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("clinical - sample - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    'solid',
+                    'mutated',
+                    'mutated',
+                    'dense'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

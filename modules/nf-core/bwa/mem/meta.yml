@@ -15,10 +15,31 @@ tools:
         a large reference genome, such as the human genome.
       homepage: http://bio-bwa.sourceforge.net/
       documentation: https://bio-bwa.sourceforge.net/bwa.shtml
+      doi: "10.1093/bioinformatics/btp324"
+      publication:
+        author: "Li, H. & Durbin, R."
+        year: 2009
+        title: "Fast and accurate short read alignment with Burrows–Wheeler transform"
+        source: "Bioinformatics"
       arxiv: arXiv:1303.3997
       licence:
         - "GPL-3.0-or-later"
       identifier: "biotools:bwa"
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   - - meta:
         type: map
@@ -81,6 +102,16 @@ output:
           pattern: "*.{cram}"
           ontologies:
             - edam: "http://edamontology.org/format_3462"
+  sam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.{sam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
   csi:
     - - meta:
           type: map

@@ -91,7 +91,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf.collect{ it[1].collect { file(it).name } },
-                    process.out.tbi.collect{ it[1].collect { file(it).name } },
+                    process.out.index.collect{ it[1].collect { file(it).name } },
                 ).match() }
             )
         }

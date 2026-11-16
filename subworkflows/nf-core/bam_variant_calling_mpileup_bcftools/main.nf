@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_MPILEUP                 } from '../../../modules/nf-core/bcftools/mpileup'
 include { BCFTOOLS_MERGE                   } from '../../../modules/nf-core/bcftools/merge'
 include { BCFTOOLS_ANNOTATE                } from '../../../modules/nf-core/bcftools/annotate'
@@ -38,11 +41,11 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
 
     // Branch depending on number of files
     ch_all_vcf = BCFTOOLS_MPILEUP.out.vcf
-        .join(BCFTOOLS_MPILEUP.out.tbi)
-        .map{ meta, vcf, tbi -> // Get all keys except merge_key
+        .join(BCFTOOLS_MPILEUP.out.index)
+        .map{ meta, vcf, index -> // Get all keys except merge_key
             def groupKeys = meta.keySet().findAll { key -> key != meta_sample_merge_key }
             def groupMeta = meta.subMap(groupKeys)
-            [groupMeta, [meta, vcf, tbi]]
+            [groupMeta, [meta, vcf, index]]
         }
         .groupTuple()
         .map{ meta_group, filestups ->
@@ -98,9 +101,7 @@ workflow BAM_VARIANT_CALLING_MPILEUP_BCFTOOLS {
         )
         // Output
         ch_output = BCFTOOLS_ANNOTATE.out.vcf
-            .join(BCFTOOLS_ANNOTATE.out.tbi.mix(
-                BCFTOOLS_ANNOTATE.out.csi
-            ))
+            .join(BCFTOOLS_ANNOTATE.out.index)
     } else {
         // Output without annotation
         ch_output = VCF_GATHER_BCFTOOLS.out.vcf_index

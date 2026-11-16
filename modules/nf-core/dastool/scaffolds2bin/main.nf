@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DASTOOL_SCAFFOLDS2BIN {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +17,7 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     output:
     tuple val(meta), path("*.tsv"), emit: scaffolds2bin
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('dastool'), val("1.1.3"), emit: versions_dastool, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

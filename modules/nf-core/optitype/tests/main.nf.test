@@ -31,7 +31,7 @@ nextflow_process {
                     .split('\t')[3..7])
                     .match("bam_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_coverage_plot") },
-                { assert snapshot(process.out.versions).match("bam_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("bam_versions") }
             )
         }
     }
@@ -59,7 +59,29 @@ nextflow_process {
                     .split('\t')[3..7])
                     .match("bam_cbc_hla_type") },
                 { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cbc_coverage_plot") },
-                { assert snapshot(process.out.versions).match("bam_cbc_versions") }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("bam_cbc_versions") }
+            )
+        }
+    }
+
+    test("hla - bam - stub") {
+        options "-stub"
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
+                       file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -63,7 +63,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.phased_variants.collect{ meta, vcf -> [meta, file(vcf).name]},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -93,8 +93,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions.get(0)).yaml
+                    sanitizeOutput(process.out),
                 ).match() }
             )
         }

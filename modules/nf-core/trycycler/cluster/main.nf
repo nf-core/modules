@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRYCYCLER_CLUSTER {
     tag "$meta.id"
     label 'process_medium'
@@ -12,7 +15,7 @@ process TRYCYCLER_CLUSTER {
 
     output:
     tuple val(meta), path("*") , emit: cluster_dir
-    path "versions.yml"        , emit: versions
+    tuple val("${task.process}"), val('trycycler'), eval("trycycler --version | sed 's/Trycycler v//'"), emit: versions_trycycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,18 +28,13 @@ process TRYCYCLER_CLUSTER {
     """
     trycycler \\
         cluster \\
-        $args \\
+        ${args} \\
         --assemblies ${contigs} \\
         --reads ${reads} \\
         --threads $task.cpus \\
         --out_dir ${prefix}
 
-    gzip $args2 ${prefix}/cluster_*/*/*.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
+    gzip ${args2} ${prefix}/cluster_*/*/*.fasta
     """
 
     stub:
@@ -46,10 +44,5 @@ process TRYCYCLER_CLUSTER {
     echo "" | gzip > ${prefix}/cluster_001/1_contigs/A_contig_2a.fasta.gz
     touch ${prefix}/contigs.newick
     touch ${prefix}/contigs.phylip
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
     """
 }

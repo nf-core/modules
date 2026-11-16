@@ -1,22 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RUNDBCAN_CAZYMEANNOTATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.2.6--pyhdfd78af_0' :
-        'quay.io/biocontainers/dbcan:5.2.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e843a691d1c9be41394116f30ee3cf3f7bd042e0d59cb2f6a0a34b2b0a308e30/data'
+        : 'community.wave.seqera.io/library/dbcan:5.2.9--fb040f67fa175a9b'}"
 
     input:
     tuple val(meta), path(input_raw_data)
     path dbcan_db
 
     output:
-    tuple val(meta), path("${prefix}_overview.tsv")            , emit: cazyme_annotation
-    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv")   , emit: dbcanhmm_results
+    tuple val(meta), path("${prefix}_overview.tsv"), emit: cazyme_annotation
+    tuple val(meta), path("${prefix}_dbCAN_hmm_results.tsv"), emit: dbcanhmm_results
     tuple val(meta), path("${prefix}_dbCANsub_hmm_results.tsv"), emit: dbcansub_results
-    tuple val(meta), path("${prefix}_diamond.out")             , emit: dbcandiamond_results
-    path  "versions.yml"                                       , emit: versions
+    tuple val(meta), path("${prefix}_diamond.out"), emit: dbcandiamond_results
+    tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,17 +33,13 @@ process RUNDBCAN_CAZYMEANNOTATION {
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
         --output_dir . \\
+        --threads ${task.cpus} \\
         ${args}
 
     mv overview.tsv ${prefix}_overview.tsv
     mv dbCAN_hmm_results.tsv ${prefix}_dbCAN_hmm_results.tsv
     mv dbCANsub_hmm_results.tsv ${prefix}_dbCANsub_hmm_results.tsv
     mv diamond.out ${prefix}_diamond.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +49,5 @@ process RUNDBCAN_CAZYMEANNOTATION {
     touch ${prefix}_dbCAN_hmm_results.tsv
     touch ${prefix}_dbCANsub_hmm_results.tsv
     touch ${prefix}_diamond.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dbcan: \$(echo \$(run_dbcan version) | cut -f2 -d':' | cut -f2 -d' ')
-    END_VERSIONS
     """
 }

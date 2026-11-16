@@ -1,6 +1,5 @@
 name: bamtools_convert
-description: BamTools provides both a programmer's API and an end-user's toolkit for
-  handling BAM files.
+description: BamTools provides both a programmer's API and an end-user's toolkit for handling BAM files.
 keywords:
   - bamtools
   - bamtools/convert
@@ -57,10 +56,6 @@ output:
       - "bamtools --version | sed '2!d;s/bamtools //g'":
           type: eval
           description: The expression to obtain the version of the tool
-authors:
-  - "@sguizard"
-maintainers:
-  - "@sguizard"
 topics:
   versions:
     - - "${task.process}":
@@ -72,3 +67,31 @@ topics:
       - "bamtools --version | sed '2!d;s/bamtools //g'":
           type: eval
           description: The expression to obtain the version of the tool
+authors:
+  - "@sguizard"
+maintainers:
+  - "@sguizard"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bamtools:2.5.2--b804fdcee08dfdd6
+      build_id: bd-b804fdcee08dfdd6_1
+      scan_id: sc-79611b0edf36e036_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bamtools:2.5.2--96c6f02db43d050f
+      build_id: bd-96c6f02db43d050f_1
+      scan_id: sc-04ae2aaf8a78d4a7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bamtools:2.5.2--5869abe3f9394272
+      build_id: bd-5869abe3f9394272_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c1fde4cd562bddffee839570552212cbc3e01bb253ae8af6954a069106d518ba/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bamtools:2.5.2--e0ec78289d77bf8f
+      build_id: bd-e0ec78289d77bf8f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1ab8c6658453eb6941efca64aa8666db1c48236fa598fe929ea5d523893bb44/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamtools/convert/.conda-lock/linux_amd64-bd-b804fdcee08dfdd6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bamtools/convert/.conda-lock/linux_arm64-bd-96c6f02db43d050f_1.txt

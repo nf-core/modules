@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BWAMETH_ALIGN                                 } from '../../../modules/nf-core/bwameth/align/main'
 include { PARABRICKS_FQ2BAMMETH                         } from '../../../modules/nf-core/parabricks/fq2bammeth/main'
 include { SAMTOOLS_SORT                                 } from '../../../modules/nf-core/samtools/sort/main'
@@ -32,7 +35,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         */
         PARABRICKS_FQ2BAMMETH(
             ch_reads,
-            ch_fasta_fai,
+            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
             ch_bwameth_index,
             [],
         )

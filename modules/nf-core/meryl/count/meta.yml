@@ -46,9 +46,9 @@ output:
       - meryl:
           type: string
           description: The name of the tool
-      - meryl --version |& sed 's/meryl //':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.4.1:
+          type: string
+          description: The version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -57,11 +57,35 @@ topics:
       - meryl:
           type: string
           description: The name of the tool
-      - meryl --version |& sed 's/meryl //':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.4.1:
+          type: string
+          description: The version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
   - "@gallvp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/meryl:1.4.1--2481ef1dd13fafa3
+      build_id: bd-2481ef1dd13fafa3_1
+      scan_id: sc-760b8c2f25e6bece_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/meryl:1.4.1--f8285daf44585b1a
+      build_id: bd-f8285daf44585b1a_1
+      scan_id: sc-cce256fea780b9a0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/meryl:1.4.1--d02619bc43206ada
+      build_id: bd-d02619bc43206ada_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ec81612fbb2f77bcb10975aa2e84d61b80959ab379824aa02b2508bac3cf8ac/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/meryl:1.4.1--ae4c26e57436f4a4
+      build_id: bd-ae4c26e57436f4a4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7df6a8db5e64dc18ecc1aa31b12308fc9d5e07ddefcc64f5ffffa1716c029da8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/meryl/count/.conda-lock/linux_amd64-bd-2481ef1dd13fafa3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/meryl/count/.conda-lock/linux_arm64-bd-f8285daf44585b1a_1.txt

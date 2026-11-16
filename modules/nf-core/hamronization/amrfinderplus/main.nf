@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAMRONIZATION_AMRFINDERPLUS {
     tag "${meta.id}"
     label 'process_single'
@@ -16,7 +19,7 @@ process HAMRONIZATION_AMRFINDERPLUS {
     output:
     tuple val(meta), path("*.json"), optional: true, emit: json
     tuple val(meta), path("*.tsv"), optional: true, emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,21 +37,11 @@ process HAMRONIZATION_AMRFINDERPLUS {
         --reference_database_version ${reference_db_version} \\
         --input_file_name ${prefix} \\
         > ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }

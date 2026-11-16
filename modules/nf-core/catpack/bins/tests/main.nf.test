@@ -106,6 +106,39 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - genome - fasta - gz") {
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)  ] ]
+                input[1] = CATPACK_PREPARE.out.db
+                input[2] = CATPACK_PREPARE.out.taxonomy
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = '.fasta.gz'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                        process.out.orf2lca,
+                        process.out.bin2classification,
+                        process.out.diamond,
+                        process.out.faa,
+                        process.out.gff,
+                        process.out.versions_catpack,
+                        path(process.out.log.get(0).get(1)).readLines().last().contains("CAT is done!")
+                    ).match()
+                }
+            )
+        }
+
+    }
+
     test("sarscov2 - genome - fasta - stub") {
 
         options "-stub"
@@ -127,7 +160,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                        process.out
+                        sanitizeOutput(process.out)
                     ).match()
                 }
             )

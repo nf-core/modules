@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCLUST_ALIGN {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0':
-        'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04cb9a3b37b513bfdabb8f0e87050c5573bb7be92926617294cb3de221d37301/data'
+        : 'community.wave.seqera.io/library/vclust:1.3.1--039ae9c4872009ec'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -16,7 +19,7 @@ process VCLUST_ALIGN {
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("*.ids.tsv")    , emit: ids
     tuple val(meta), path("*.aln.tsv")    , emit: aln, optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +38,6 @@ process VCLUST_ALIGN {
         -t $task.cpus \\
         -i ${fasta} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +46,5 @@ process VCLUST_ALIGN {
     touch ${prefix}.tsv
     touch ${prefix}.ids.tsv
     touch ${prefix}.aln.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 }

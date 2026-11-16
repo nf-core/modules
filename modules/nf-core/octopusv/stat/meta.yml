@@ -1,0 +1,114 @@
+name: "octopusv_stat"
+description: Summarize structural variant statistics from octopusv SVCF files
+keywords:
+  - vcf summary
+  - structural variant
+  - statistics
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge, compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcf:
+        type: file
+        description: SVCF file from octopusv
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: A JSON file containing the statistics of the structural variants in the input VCF
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Legacy text file containing structural variant statistics
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.html":
+          type: file
+          description: An HTML report with SV statistics
+          pattern: "*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331"
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/octopusv:1.0.0--a30223bd1e3377c0
+      build_id: bd-a30223bd1e3377c0_1
+      scan_id: sc-b83e03ac781cbcab_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/octopusv:1.0.0--5a8c89c65098e801
+      build_id: bd-5a8c89c65098e801_1
+      scan_id: sc-1b32c77c056cf15a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/octopusv:1.0.0--9e3e373a368b3fad
+      build_id: bd-9e3e373a368b3fad_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8378c503810508764badf4504647ea1791fa1f585dc5b77ad5710237609b15ff/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/octopusv:1.0.0--5eb882e6dbbca795
+      build_id: bd-5eb882e6dbbca795_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d85dc6e11e14188ae9dac5daddf1303bcaa6264b56f10f0a54d20e253f049cc/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/octopusv/stat/.conda-lock/linux_amd64-bd-5a8c89c65098e801_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/octopusv/stat/.conda-lock/linux_arm64-bd-a30223bd1e3377c0_1.txt

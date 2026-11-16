@@ -15,20 +15,20 @@ components:
   - samtools/flagstat
   - bam_sort_stats_samtools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - ch_reads:
       type: file
       description: |
-        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-        respectively.
+        Channel containing a list of input FastQ files of size 1 and 2 for single-end
+        and paired-end data, respectively.
+
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.fastq.gz"
   - ch_index:
       type: file
-      description: Bowtie2 genome index files
-      pattern: "*.ebwt"
+      description: |
+        Channel containing the Bowtie2 genome index directory.
+
+        Structure: [ val(meta2), path(index) ]
   - save_unaligned:
       type: boolean
       description: |
@@ -41,22 +41,67 @@ input:
       default: false
   - ch_fasta_fai:
       type: file
-      description: Reference fasta file and index
-      pattern: "*.{fasta,fa},*.{fai,fai}"
-# TODO Update when we decide on a standard for subworkflow docs
+      description: |
+        Channel containing the reference fasta file and its index.
+
+        Structure: [ val(meta3), path(fasta), path(fai) ]
 output:
-  - bam:
+  - bam_orig:
       type: file
-      description: Output BAM file containing read alignments
-      pattern: "*.{bam}"
+      description: |
+        BAM file straight out of Bowtie2, before sorting.
+
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - log_out:
+      type: file
+      description: |
+        Bowtie2 alignment log.
+
+        Structure: [ val(meta), path(log) ]
+      pattern: "*.log"
   - fastq:
       type: file
-      description: Unaligned FastQ files
+      description: |
+        Unaligned FastQ files, emitted when `save_unaligned` is true.
+
+        Structure: [ val(meta), [ path(fastq) ] ]
       pattern: "*.fastq.gz"
-  - log:
+  - bam:
       type: file
-      description: Alignment log
-      pattern: "*.log"
+      description: |
+        Sorted BAM file containing read alignments.
+
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - index:
+      type: file
+      description: |
+        Index for the sorted BAM file.
+
+        Structure: [ val(meta), path(index) ]
+      pattern: "*.{bai,csi,crai}"
+  - stats:
+      type: file
+      description: |
+        File containing samtools stats output.
+
+        Structure: [ val(meta), path(stats) ]
+      pattern: "*.stats"
+  - flagstat:
+      type: file
+      description: |
+        File containing samtools flagstat output.
+
+        Structure: [ val(meta), path(flagstat) ]
+      pattern: "*.flagstat"
+  - idxstats:
+      type: file
+      description: |
+        File containing samtools idxstats output.
+
+        Structure: [ val(meta), path(idxstats) ]
+      pattern: "*.idxstats"
 authors:
   - "@drpatelh"
 maintainers:

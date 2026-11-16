@@ -1,0 +1,102 @@
+nextflow_process {
+
+    name "Test Process HIFIADAPTERFILT_HIFIADAPTERFILT"
+    script "../main.nf"
+    process "HIFIADAPTERFILT_HIFIADAPTERFILT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hifiadapterfilt"
+    tag "hifiadapterfilt/downloaddb"
+    tag "hifiadapterfilt/hifiadapterfilt"
+
+    setup {
+        run("HIFIADAPTERFILT_DOWNLOADDB") {
+            script "../../downloaddb/main.nf"
+        }
+    }
+
+    test("homo_sapiens - pacbio ccs bam - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                    db
+                ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.blastout,
+                    path(process.out.blocklist[0][1]).exists(),
+                    path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("gallus_gallus - pacbio hifi fastq.gz - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/gallus_gallus/pacbio_metagenome.fastq.gz', checkIfExists: true),
+                    db
+                ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.fastq,
+                    process.out.blastout,
+                    process.out.blocklist,
+                    path(process.out.stats[0][1]).readLines().findAll { !it.startsWith("Started") && !it.startsWith("Finished") },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio ccs bam - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = HIFIADAPTERFILT_DOWNLOADDB.out.db.map { db -> [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.bam', checkIfExists: true),
+                    db
+                ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

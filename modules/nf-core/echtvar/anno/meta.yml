@@ -1,0 +1,84 @@
+name: "echtvar_anno"
+description: Annotate a decomposed (and normalized) VCF with an echtvar file
+keywords:
+  - echtvar
+  - vcf
+  - annotate
+  - filter
+  - genomics
+tools:
+  - "echtvar":
+      description: "Using all the bits for echt rapid variant annotation and filtering."
+      homepage: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      documentation: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      tool_dev_url: "https://github.com/brentp/echtvar"
+      doi: "10.1093/nar/gkac931"
+      licence:
+        - "MIT"
+      identifier: biotools:echtvar
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF input file
+        pattern: "*.{vcf,bcf}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3020"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - annotation_files:
+        type: file
+        description: List of echtvar annotation files to be used for annotation
+        pattern: "*.{zip}"
+        ontologies:
+          - edam: http://edamontology.org/format_3987
+  - output_suffix:
+      type: string
+      description: The suffix for the output file, e.g. "vcf.gz" or "bcf"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{vcf.gz,bcf,bcf.gz}":
+          type: file
+          description: Compressed VCF file
+          pattern: "*.{vcf.gz,bcf,bcf.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3020"
+  versions_echtvar:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "echtvar":
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "echtvar":
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"

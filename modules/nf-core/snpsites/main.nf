@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPSITES {
     label 'process_medium'
 
@@ -12,8 +15,8 @@ process SNPSITES {
     output:
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
-    path "versions.yml" , emit: versions
     env 'CONSTANT_SITES', emit: constant_sites_string
+    tuple val("${task.process}"), val('snpsites'), eval("snp-sites -V 2>&1 | sed 's/snp-sites //'"), emit: versions_snpsites, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +32,12 @@ process SNPSITES {
     echo \$(snp-sites -C $alignment) > constant.sites.txt
 
     export CONSTANT_SITES=\$(cat constant.sites.txt)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
-    END_VERSIONS
     """
     stub:
     """
     touch filtered_alignment.fas
     touch constant.sites.txt
     export CONSTANT_SITES=\$(cat constant.sites.txt)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
-    END_VERSIONS
     """
 
 }

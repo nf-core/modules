@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCFTOOLS {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcftools:0.1.16--he513fc3_4' :
-        'quay.io/biocontainers/vcftools:0.1.16--he513fc3_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d04e1d94838f8b4cdf76671ef2f9be07368d330e3ef29526a7c0a279151f117/data'
+        : 'community.wave.seqera.io/library/vcftools:0.1.17--d3b3d9a2cf73a43c'}"
 
     input:
     // Owing to the nature of vcftools we here provide solutions to working with optional bed files and optional
@@ -79,7 +82,7 @@ process VCFTOOLS {
     tuple val(meta), path("*.diff.indv")              , optional:true, emit: diff_indv
     tuple val(meta), path("*.diff.discordance.matrix"), optional:true, emit: diff_discd_matrix
     tuple val(meta), path("*.diff.switch")            , optional:true, emit: diff_switch_error
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('vcftools'), eval('vcftools --version 2>&1 | sed "s/^.*VCFtools (//;s/).*//"'), emit: versions_vcftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -118,11 +121,6 @@ process VCFTOOLS {
         ${args_list.join(' ')} \\
         $bed_arg \\
         $diff_variant_arg
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
-    END_VERSIONS
     """
 
     stub:
@@ -190,10 +188,5 @@ process VCFTOOLS {
     touch ${prefix}.diff.indv
     touch ${prefix}.diff.discordance.matrix
     touch ${prefix}.diff.switch
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcftools: \$(echo \$(vcftools --version 2>&1) | sed 's/^.*VCFtools (//;s/).*//')
-    END_VERSIONS
     """
 }

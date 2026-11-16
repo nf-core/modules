@@ -11,6 +11,11 @@ tools:
         Fast BAM/CRAM depth calculation for WGS, exome, or targeted sequencing.
       documentation: https://github.com/brentp/mosdepth
       doi: 10.1093/bioinformatics/btx699
+      publication:
+        author: "Pedersen, B. S. & Quinlan, A. R."
+        year: 2018
+        title: "Mosdepth: quick coverage calculation for genomes and exomes"
+        source: "Bioinformatics"
       licence:
         - "MIT"
       identifier: biotools:mosdepth
@@ -193,9 +198,19 @@ output:
       - mosdepth:
           type: string
           description: The tool name
-      - "mosdepth --version | sed 's/mosdepth //g'":
+      - mosdepth --version | sed 's/mosdepth //g':
           type: eval
           description: The command used to generate the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip -V 2>&1 | sed 's/gzip \([0-9.]*\).*/\1/;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -204,9 +219,18 @@ topics:
       - mosdepth:
           type: string
           description: The tool name
-      - "mosdepth --version | sed 's/mosdepth //g'":
+      - mosdepth --version | sed 's/mosdepth //g':
           type: eval
           description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip -V 2>&1 | sed 's/gzip \([0-9.]*\).*/\1/;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

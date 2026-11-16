@@ -14,7 +14,8 @@ tools:
       homepage: "https://taxpasta.readthedocs.io/"
       documentation: "https://taxpasta.readthedocs.io/"
       tool_dev_url: "https://github.com/taxprofiler/taxpasta"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:taxpasta
 input:
   - - meta:
@@ -37,7 +38,8 @@ input:
       pattern: "tsv|csv|ods|xlsx|arrow|parquet|biom"
   - taxonomy:
       type: directory
-      description: Directory containing at a minimum nodes.dmp and names.dmp files (optional)
+      description: Directory containing at a minimum nodes.dmp and names.dmp files
+        (optional)
       pattern: "*/"
 output:
   standardised_profile:
@@ -54,13 +56,30 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
             - edam: http://edamontology.org/format_3752 # CSV
             - edam: http://edamontology.org/format_3746 # BIOM format
+
+  versions_taxpasta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxpasta:
+          type: string
+          description: The name of the tool
+      - taxpasta --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxpasta:
+          type: string
+          description: The name of the tool
+      - taxpasta --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@Midnighter"
 maintainers:

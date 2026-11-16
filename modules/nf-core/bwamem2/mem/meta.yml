@@ -9,16 +9,36 @@ keywords:
   - bam
   - sam
 tools:
-  - bwa:
+  - bwamem2:
       description: |
         BWA-mem2 is a software package for mapping DNA sequences against
         a large reference genome, such as the human genome.
       homepage: https://github.com/bwa-mem2/bwa-mem2
-      documentation: http://www.htslib.org/doc/samtools.html
-      arxiv: arXiv:1303.3997
+      documentation: https://github.com/bwa-mem2/bwa-mem2#usage
+      doi: "10.1109/IPDPS.2019.00041"
+      publication:
+        author: "Vasimuddin, M., Misra, S., Li, H. & Aluru, S."
+        year: 2018
+        source: "IEEE International Parallel and Distributed Processing Symposium (IPDPS)"
+        title: "Efficient Architecture-Aware Acceleration of BWA-MEM for Multicore Systems"
       licence:
         - "MIT"
       identifier: "biotools:bwa-mem2"
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   - - meta:
         type: map

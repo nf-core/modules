@@ -1,6 +1,5 @@
 name: "khmer_uniquekmers"
-description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal
-  and more
+description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal and more
 keywords:
   - khmer
   - k-mer
@@ -52,14 +51,52 @@ output:
           description: Text file containing number of kmers
           pattern: "*.kmers.txt"
           ontologies: []
+  versions_khmer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@JoseEspinosa"
 maintainers:
   - "@JoseEspinosa"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/khmer:3.0.0a3--ad96a7538919c2bb
+      build_id: bd-ad96a7538919c2bb_1
+      scan_id: sc-c9bb27526762be2e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/khmer:3.0.0a3--bc4c4db113de6be7
+      build_id: bd-bc4c4db113de6be7_1
+      scan_id: sc-398dd1e669eacc4d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/khmer:3.0.0a3--ccb921509ac5c939
+      build_id: bd-ccb921509ac5c939_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/35543c7038cc90d4184c460043191a5b6f571aea873dd56c6a7bc7eae21f5d4f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/khmer:3.0.0a3--d6b8d0162e6ea9dc
+      build_id: bd-d6b8d0162e6ea9dc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/36678b9530d1bf8c9541b42ca2f6dc1a7cf18b06257e876ab47a0afe9a63a97c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/khmer/uniquekmers/.conda-lock/linux_amd64-bd-ad96a7538919c2bb_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/khmer/uniquekmers/.conda-lock/linux_arm64-bd-bc4c4db113de6be7_1.txt

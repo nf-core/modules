@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQUENZAUTILS_BAM2SEQZ {
     tag "$meta.id"
     label 'process_medium'
@@ -14,7 +17,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
 
     output:
     tuple val(meta), path("*.gz"), emit: seqz
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val("sequenzautils"), eval("sequenza-utils 2>&1 | sed '/version/!d;s/.*version //;s/ .*//'"), topic: versions, emit: versions_sequenzautils
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,27 +28,17 @@ process SEQUENZAUTILS_BAM2SEQZ {
     """
     sequenza-utils \\
         bam2seqz \\
-        $args \\
-        -n $normalbam \\
-        -t $tumourbam \\
-        --fasta $fasta \\
-        -gc $wigfile \\
+        ${args} \\
+        -n ${normalbam} \\
+        -t ${tumourbam} \\
+        --fasta ${fasta} \\
+        -gc ${wigfile} \\
         -o ${prefix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequenzautils: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequenzautils: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.gz
     """
 }

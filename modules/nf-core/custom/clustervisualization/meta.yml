@@ -1,0 +1,127 @@
+name: "CUSTOM_CLUSTERVISUALIZATION"
+description: "Generates UMAP and t-SNE visualizations colored by cluster"
+keywords:
+  - clustering
+  - visualization
+  - pca
+  - umap
+  - tsne
+  - dimension-reduction
+tools:
+  - scikit-learn:
+      description: "Machine learning library for dimension reduction (PCA, t-SNE)"
+      homepage: "https://scikit-learn.org/"
+      documentation: "https://scikit-learn.org/stable/modules/clustering.html"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+  - umap-learn:
+      description: "Uniform Manifold Approximation and Projection for dimension reduction"
+      homepage: "https://umap-learn.readthedocs.io/"
+      documentation: "https://umap-learn.readthedocs.io/en/latest/"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: "Groovy Map containing sample information"
+    - features:
+        type: file
+        description: |
+          Sample-by-feature matrix: TSV with a `sample_id` column, or a
+          PLINK2 `.eigenvec` file (`#FID IID PC1 ...` or `#IID PC1 ...`).
+          Family/source ID columns are dropped; remaining columns are
+          numeric features (e.g. PCA scores).
+        pattern: "*.{tsv,txt,eigenvec}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - clusters:
+        type: file
+        description: |
+          Comma-separated cluster assignments with `sample_id` and integer
+          `cluster` columns. Label -1 is treated as DBSCAN noise.
+        pattern: "*.csv"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+output:
+  umap_tsv:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample information"
+      - "*.umap.tsv":
+          type: file
+          description: "UMAP coordinates per sample"
+          pattern: "*.umap.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/operation_2432"
+            - edam: http://edamontology.org/format_3475
+  tsne_tsv:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample information"
+      - "*.tsne.tsv":
+          type: file
+          description: "t-SNE coordinates per sample"
+          pattern: "*.tsne.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/operation_2432"
+            - edam: http://edamontology.org/format_3475
+  umap_png:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample information"
+      - "*.umap.png":
+          type: file
+          description: "UMAP visualization coloured by cluster"
+          pattern: "*.umap.png"
+          ontologies: []
+  tsne_png:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample information"
+      - "*.tsne.png":
+          type: file
+          description: "t-SNE visualization coloured by cluster"
+          pattern: "*.tsne.png"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: "Software versions used in the module"
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@dbaku42"
+maintainers:
+  - "@dbaku42"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:50b5361fb7d660c6
+      build_id: bd-50b5361fb7d660c6_1
+      scan_id: sc-57e72452171626af_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:bd2a11c7ed873f18
+      build_id: bd-bd2a11c7ed873f18_1
+      scan_id: sc-fe5176f75d7dcf9e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:529d7f648174c90c
+      build_id: bd-529d7f648174c90c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/839269dbd58a370d88ecbee81f1d43e61c3f890b583aebedcb7569c928b4bba4/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:f9a2d8fb7bde43e2
+      build_id: bd-f9a2d8fb7bde43e2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f737b1218446bfbe82d230793b01b7e173aa63ba768ec167a553f4d583e09297/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/clustervisualization/.conda-lock/linux_amd64-bd-bd2a11c7ed873f18_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/clustervisualization/.conda-lock/linux_arm64-bd-50b5361fb7d660c6_1.txt

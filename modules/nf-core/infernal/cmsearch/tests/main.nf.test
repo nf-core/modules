@@ -54,7 +54,7 @@ nextflow_process {
                     txtout.toPath(),
                     tblout.toPath(),
                     process.out.alignments,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )
@@ -92,7 +92,7 @@ nextflow_process {
                     txtout.toPath(),
                     tblout.toPath(),
                     process.out.alignments,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith("versions")}
                     ).match()
                 }
             )

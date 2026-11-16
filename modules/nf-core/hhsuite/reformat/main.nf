@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HHSUITE_REFORMAT {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +17,7 @@ process HHSUITE_REFORMAT {
 
     output:
     tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
-    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed -n '1s/^HHblits \\([0-9.]\\+\\):/\\1/p'"), topic: versions, emit: versions_hhsuite
+    tuple val("${task.process}"), val("hhsuite"), eval("hhblits -h 2>&1 | sed '1!d;s/^HHblits //;s/://'"), topic: versions, emit: versions_hhsuite
 
     when:
     task.ext.when == null || task.ext.when

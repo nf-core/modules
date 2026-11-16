@@ -1,0 +1,97 @@
+name: "fastaguard"
+description: FASTA preflight QC for assembly pipelines
+keywords:
+  - fasta
+  - assembly
+  - qc
+tools:
+  - "fastaguard":
+      description: FASTA preflight QC for assembly pipelines
+      homepage: "https://github.com/ehsanestaji/FastaGuard"
+      documentation: "https://github.com/ehsanestaji/FastaGuard"
+      tool_dev_url: "https://github.com/ehsanestaji/FastaGuard"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample' ]
+    - fasta:
+        type: file
+        description: Assembly FASTA file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+output:
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "*.fastaguard.html":
+          type: file
+          description: FastaGuard HTML report
+          pattern: "*.fastaguard.html"
+          ontologies: []
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "*.fastaguard.json":
+          type: file
+          description: FastaGuard JSON report
+          pattern: "*.fastaguard.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "*.fastaguard.tsv":
+          type: file
+          description: FastaGuard TSV summary
+          pattern: "*.fastaguard.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  mqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample' ]
+      - "*.fastaguard_mqc.json":
+          type: file
+          description: MultiQC custom-content JSON
+          pattern: "*.fastaguard_mqc.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  versions_fastaguard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastaguard:
+          type: string
+          description: The tool name
+      - fastaguard --version | cut -d " " -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fastaguard:
+          type: string
+          description: The tool name
+      - fastaguard --version | cut -d " " -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ehsanestaji"

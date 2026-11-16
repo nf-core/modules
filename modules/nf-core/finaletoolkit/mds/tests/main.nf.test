@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process FINALETOOLKIT_MDS"
+    script "../main.nf"
+    process "FINALETOOLKIT_MDS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "finaletoolkit"
+    tag "finaletoolkit/endmotifs"
+    tag "finaletoolkit/mds"
+
+    test("homo_sapiens - bam") {
+
+        setup {
+
+            run("FINALETOOLKIT_ENDMOTIFS") {
+                script("../../endmotifs/main.nf")
+                process {
+
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                    ]
+                    input[1] = [
+                        [id: 'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+
+            process {
+
+                """
+                input[0] = FINALETOOLKIT_ENDMOTIFS.out.tsv
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+}

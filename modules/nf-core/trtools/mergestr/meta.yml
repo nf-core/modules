@@ -1,0 +1,90 @@
+name: "trtools_mergestr"
+description: MergeSTR merges multiple VCF files produced by the same TR
+  genotyper into a single VCF file.
+keywords:
+  - tandem repeats
+  - str
+  - vcf
+  - merge
+  - trtools
+tools:
+  - "trtools":
+      description: "Toolkit for genome-wide analysis of tandem repeats"
+      homepage: "https://trtools.readthedocs.io/"
+      documentation: "https://trtools.readthedocs.io/"
+      tool_dev_url: "https://github.com/gymrek-lab/TRTools"
+      doi: "10.1093/bioinformatics/btaa736"
+      licence:
+        - "MIT"
+      identifier: biotools:trtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcfs:
+        type: file
+        description: List containing 2 or more bgzipped tandem repeat VCF files
+          e.g. [ 'file1.vcf.gz', 'file2.vcf.gz' ]
+        pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - tbis:
+        type: file
+        description: List containing the tbi index files corresponding to the vcfs
+          input files e.g. [ 'file1.vcf.gz.tbi', 'file2.vcf.gz.tbi' ]
+        pattern: "*.{vcf.gz.tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3700"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: Merged VCF file with the merged genotypes
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3989"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the merged VCF file
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3700"
+  versions_trtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trtools:
+          type: string
+          description: The name of the tool
+      - mergeSTR --version | sed 's/mergeSTR //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trtools:
+          type: string
+          description: The name of the tool
+      - mergeSTR --version | sed 's/mergeSTR //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@KondratievaOlesya"
+maintainers:
+  - "@KondratievaOlesya"

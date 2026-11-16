@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARAPHASE {
     tag "${meta.id}"
     label 'process_medium'
@@ -5,8 +8,8 @@ process PARAPHASE {
     conda "${moduleDir}/environment.yml"
 
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2f7e7ef6dd6def56bef5252c28a65f279d5fcef09a832510d0de1d6dab09194/data'
-        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:2c52f03fe994efa6'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de44130118e18c30320d86f99095e5029b0df286554893c5406013276e4b8e45/data'
+        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:a8b6d83e5ede5c2a'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -20,7 +23,7 @@ process PARAPHASE {
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz"), emit: vcf, optional: true
     tuple val(meta), path("${prefix}_paraphase_vcfs/*.vcf.gz.{csi,tbi}"), emit: vcf_index, optional: true
     tuple val("${task.process}"), val('minimap2'), eval("minimap2 --version"), topic: versions, emit: versions_minimap2
-    tuple val("${task.process}"), val('paraphase'), eval("paraphase --version"), topic: versions, emit: versions_paraphase
+    tuple val("${task.process}"), val('paraphase'), eval("paraphase --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_paraphase
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -68,7 +71,7 @@ process PARAPHASE {
     touch ${prefix}.paraphase.json
     touch ${prefix}.paraphase.bam
     touch ${prefix}.paraphase.bam.bai
-    echo '' | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
+    echo "" | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
     touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz.${index}
     """
 }

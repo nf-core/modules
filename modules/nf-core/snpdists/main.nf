@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPDISTS {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process SNPDISTS {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('snpdists'), eval('snp-dists -v 2>&1 | sed "s/snp-dists //;"'), emit: versions_snpdists, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +27,11 @@ process SNPDISTS {
     snp-dists \\
         $args \\
         $alignment > ${prefix}.tsv
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpdists: \$(snp-dists -v 2>&1 | sed 's/snp-dists //;')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
     """
 }

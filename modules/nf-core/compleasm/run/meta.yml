@@ -1,0 +1,140 @@
+name: "compleasm_run"
+description: Assess genome assembly completeness against BUSCO lineages using miniprot alignments
+keywords:
+  - quality control
+  - completeness
+  - genome
+  - busco
+tools:
+  - "compleasm":
+      description: "Compleasm: a faster and more accurate reimplementation of BUSCO"
+      homepage: "https://github.com/huangnengCSU/compleasm"
+      documentation: "https://github.com/huangnengCSU/compleasm"
+      tool_dev_url: "https://github.com/huangnengCSU/compleasm"
+      doi: "10.1093/bioinformatics/btad595"
+      licence: ["Apache-2.0"]
+      identifier: biotools:compleasm
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Genome assembly in FASTA format, optionally gzipped
+        pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - lineage:
+      type: string
+      description: BUSCO lineage to check against, e.g. "bacteria", or "auto" to automatically select the lineage
+  - library_path:
+      type: directory
+      description: Directory holding downloaded BUSCO lineages. Lineages are downloaded if not set.
+output:
+  summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/summary.txt":
+          type: file
+          description: Completeness summary with the proportion of single copy, duplicated, fragmented and missing genes
+          pattern: "*/summary.txt"
+          ontologies: []
+  full_table:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/*/full_table.tsv":
+          type: file
+          description: Status and alignment details of every BUSCO gene
+          pattern: "*/*/full_table.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  full_table_busco_format:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/*/full_table_busco_format.tsv":
+          type: file
+          description: Status of every BUSCO gene, in the BUSCO full table format
+          pattern: "*/*/full_table_busco_format.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gff:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/*/detected_genes.gff":
+          type: file
+          description: Annotation of the detected BUSCO genes
+          pattern: "*/*/detected_genes.gff"
+          ontologies:
+            - edam: http://edamontology.org/format_2305 # GFF
+  gene_marker:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/*/gene_marker.fasta":
+          type: file
+          description: Protein sequences of the single copy complete BUSCO genes
+          pattern: "*/*/gene_marker.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  translated_protein:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*/*/translated_protein.fasta":
+          type: file
+          description: Protein sequences translated from the miniprot alignments
+          pattern: "*/*/translated_protein.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  library:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "mb_downloads":
+          type: directory
+          description: Lineage library downloaded by compleasm when running the analysis, reusable as `library_path`
+          pattern: "mb_downloads"
+  versions_compleasm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - compleasm:
+          type: string
+          description: The name of the tool
+      - compleasm --version | sed 's/compleasm //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - compleasm:
+          type: string
+          description: The name of the tool
+      - compleasm --version | sed 's/compleasm //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dialvarezs"
+maintainers:
+  - "@dialvarezs"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/compleasm:0.2.9--52aa1279fc8cbd91
+      build_id: bd-52aa1279fc8cbd91_1
+      scan_id: sc-3c61eb84ff6a4b2e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/compleasm:0.2.9--bf5f9483c85269f8
+      build_id: bd-bf5f9483c85269f8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/9392dd488f3f8f78d5567bccb09a0dcf43e9b9ce301321014ba236f7a3c533a2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/compleasm/run/.conda-lock/linux_amd64-bd-52aa1279fc8cbd91_1.txt

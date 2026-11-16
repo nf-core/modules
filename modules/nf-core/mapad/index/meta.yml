@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/mpieva/mapAD"
       documentation: "https://github.com/mpieva/mapAD"
       tool_dev_url: "https://github.com/mpieva/mapAD"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -35,13 +36,29 @@ output:
           type: directory
           description: mapAD genome index files
           pattern: "*.{tbw,tle,toc,tos,tpi,trt,tsa}"
+  versions_mapad:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mapad:
+          type: string
+          description: The name of the tool
+      - mapad --version | sed 's/^mapAD //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mapad:
+          type: string
+          description: The name of the tool
+      - mapad --version | sed 's/^mapAD //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jch-13"
 maintainers:

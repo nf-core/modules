@@ -1,0 +1,82 @@
+{
+    "PacBio isoseq cluster2 - CCS clustering test - stub": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcripts.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cluster_report": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcripts.cluster_report.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcripts.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_CLUSTER2",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T15:55:07.836237",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "PacBio isoseq cluster2 - CCS clustering test": {
+        "content": [
+            [
+                "@HD\tVN:1.6\tSO:unknown\tpb:3.0.1",
+                "@RG\tID:e4927d21\tPL:PACBIO\tDS:READTYPE=TRANSCRIPT;BINDINGKIT=101-717-300;SEQUENCINGKIT=101-644-500;BASECALLERVERSION=5.0.0;FRAMERATEHZ=100.000000\tPU:transcript\tSM:BioSample_1\tPM:SEQUELII",
+                "@PG\tID:ccs-6.0.0\tPN:ccs\tVN:6.0.0\tDS:Generate circular consensus sequences (ccs) from subreads.\tCL:ccs ccs alz.1perc.subreads.100000.bam alz.1perc.subreads.100000.1.ccs.bam --report-file alz.1perc.subreads.100000.1.ccs_report.txt --report-json alz.1perc.subreads.100000.1.ccs_report.json --metrics-json alz.1perc.subreads.100000.1.zmw_metrics.json.gz --chunk 1/1 -j 2 --min-rq 0.9",
+                "@PG\tID:lima\tVN:2.2.0 (commit v2.2.0)\tCL:lima alz.1perc.subreads.100000.1.ccs.bam primers.fasta alz.1perc.subreads.100000.1.ccs.fl.bam -j 2 --isoseq --peek-guess",
+                "@PG\tID:refine\tVN:3.4.0 (commit v3.4.0)\tCL:refine -j 2 alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.bam primers.fasta alz.1perc.subreads.100000.1.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam",
+                "@PG\tID:cluster2\tVN:26.2.0 (commit v26.2.0)\tCL:cluster2 -j 1 alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam test.transcripts.bam"
+            ],
+            "cc543b489e9dd63e9237078969a02489",
+            [
+                "test.transcripts.bam.pbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcripts.cluster_report.csv:md5,617101d0be21a242f07176b810390ffa"
+                ]
+            ],
+            {
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_CLUSTER2",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T17:21:40.20267",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

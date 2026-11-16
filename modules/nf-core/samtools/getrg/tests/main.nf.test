@@ -25,8 +25,9 @@ nextflow_process {
         }
 
         then {
-            assert process.failed
+            assertAll(
+                { assert process.failed }
+            )
         }
     }
-
 }

@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "refsolver_identify"
+description: Identify which reference genome a BAM/SAM/CRAM was aligned to using ref-solver
+keywords:
+  - reference
+  - genome
+  - identify
+  - bam
+  - qc
+tools:
+  - "refsolver":
+      description: "Identify which human reference genome was used to align a BAM/SAM/CRAM file."
+      homepage: "https://github.com/fulcrumgenomics/ref-solver"
+      documentation: "https://github.com/fulcrumgenomics/ref-solver"
+      tool_dev_url: "https://github.com/fulcrumgenomics/ref-solver"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: |
+          Input file whose sequence dictionary is matched against the catalog.
+          Accepts BAM, SAM, CRAM, FASTA, FAI, VCF, .dict, TSV, or CSV.
+        pattern: "*.{bam,sam,cram,fa,fasta,fai,vcf,dict,tsv,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.${suffix}":
+          type: file
+          description: Identification report (text, JSON, or TSV depending on --format)
+          pattern: "*.{txt,json,tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+            - edam: "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_refsolver:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "refsolver":
+          type: string
+          description: The name of the tool
+      - "ref-solver --version | sed 's/^ref-solver //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - refsolver:
+          type: string
+          description: The name of the tool
+      - ref-solver --version | sed 's/^ref-solver //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

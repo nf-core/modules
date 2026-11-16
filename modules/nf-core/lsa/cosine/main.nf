@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LSA_COSINE {
     tag "$meta.id"
     label 'process_medium'
@@ -13,7 +16,7 @@ process LSA_COSINE {
     output:
     tuple val(meta), path("*_matrix.csv") , emit: matrix
     tuple val(meta), path("*_heatmap.png"), emit: heatmap
-    path "versions.yml"                   , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

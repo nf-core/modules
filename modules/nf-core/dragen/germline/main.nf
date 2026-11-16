@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DRAGEN {
     tag "$meta.id"
     label 'process_dragen'
@@ -398,7 +401,6 @@ process DRAGEN {
     """
 
     stub:
-    def VERSION = "stub"
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch 20251120_usage.txt

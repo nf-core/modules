@@ -1,10 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process DEEPVARIANT_CALLVARIANTS {
     tag "$meta.id"
     label 'process_high'
 
     //Conda is not supported at the moment
-    container "docker.io/google/deepvariant:1.9.0"
+    container "docker.io/google/deepvariant:1.10.0"
 
     input:
     tuple val(meta), path(make_examples_tfrecords)
@@ -34,6 +36,9 @@ process DEEPVARIANT_CALLVARIANTS {
     def examples_tfrecords_logical_name = "${examples_tfrecord_name}@${shardCount}.gz"
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/call_variants \\
         ${args} \\
         --outfile "${prefix}.call.tfrecord.gz" \\

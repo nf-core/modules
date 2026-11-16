@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MUSE_SUMP {
     tag "${meta.id}"
     label 'process_high'
@@ -25,9 +28,10 @@ process MUSE_SUMP {
     // args for bgzip
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // MuSE complains if the timestamp of the dbsnp VCF index is older than the timestamp of the VCF itself, so we need to touch it here
+    // MuSE complains if the timestamp of the dbsnp VCF index is older than the timestamp of the VCF itself
+    // we check whether that is the case and if its not then we run touch
     """
-    touch ${ref_vcf_tbi}
+    [ "${ref_vcf_tbi}" -ot "${ref_vcf}" ] && touch "${ref_vcf_tbi}"
 
     MuSE \\
         sump \\

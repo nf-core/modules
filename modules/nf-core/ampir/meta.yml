@@ -1,15 +1,12 @@
 name: "ampir"
-description: A fast and user-friendly method to predict antimicrobial peptides (AMPs)
-  from any given size protein dataset. ampir uses a supervised statistical machine
-  learning approach to predict AMPs.
+description: A fast and user-friendly method to predict antimicrobial peptides (AMPs) from any given size protein dataset. ampir uses a supervised statistical machine learning approach to predict AMPs.
 keywords:
   - ampir
   - amp
   - antimicrobial peptide prediction
 tools:
   - "ampir":
-      description: "A toolkit to predict antimicrobial peptides from protein sequences
-        on a genome-wide scale."
+      description: "A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale."
       homepage: "https://github.com/Legana/ampir"
       documentation: "https://cran.r-project.org/web/packages/ampir/index.html"
       tool_dev_url: "https://github.com/Legana/ampir"
@@ -91,3 +88,27 @@ authors:
   - "@jasmezz"
 maintainers:
   - "@jasmezz"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-ampir:1.1.0--6d5903523e6728bc
+      build_id: bd-6d5903523e6728bc_1
+      scan_id: sc-691fc9acc9fe026d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-ampir:1.1.0--ca348627ef1cc90a
+      build_id: bd-ca348627ef1cc90a_1
+      scan_id: sc-ce077c5b3a421345_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-ampir:1.1.0--8fd076ed788d8a80
+      build_id: bd-8fd076ed788d8a80_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e56d240df5c60669d29794e6d11b0c67a0016df02a443ff4f2745af34ce25fd/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-ampir:1.1.0--86bfbce400d9b81f
+      build_id: bd-86bfbce400d9b81f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07981b5cb7c70a21802b5c4015cddcef7744c43846582b025bf9758cda02bea5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ampir/.conda-lock/linux_amd64-bd-6d5903523e6728bc_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ampir/.conda-lock/linux_arm64-bd-ca348627ef1cc90a_1.txt

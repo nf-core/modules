@@ -12,9 +12,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =
-                [
-                    [ id:'test-single', single_end:true ], // meta map
+                input[0] = [
+                    [ id:'test-single', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 ]
                 """
@@ -23,7 +22,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -32,9 +31,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =
-                [
-                    [ id:'test-paired', single_end:false ], // meta map
+                input[0] =[
+                    [ id:'test-paired', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
@@ -46,7 +44,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -58,7 +56,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test-single-stub', single_end:true ], // meta map
+                    [ id:'test-single-stub', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true)
                 ]
                 """
@@ -67,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -78,9 +76,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] =
-                [
-                    [ id:'test-paired-stub', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test-paired-stub', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1_corrupted_10kb.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists: true)
@@ -92,7 +89,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

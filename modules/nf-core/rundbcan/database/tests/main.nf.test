@@ -21,11 +21,15 @@ nextflow_process {
         then {
             assert process.success
             assert path(process.out.dbcan_db.get(0)).exists()
-            assert path(process.out.versions[0]).exists()
+            // Keep in sync with the mini database the annotation module tests untar
+            assert new File(process.out.dbcan_db.get(0).toString()).list().toList().sort() == [
+                'CAZy.dmnd', 'PUL.dmnd', 'STP.hmm', 'TCDB.dmnd', 'TF.dmnd', 'TF.hmm',
+                'dbCAN-PUL', 'dbCAN-PUL.xlsx', 'dbCAN-sub.hmm', 'dbCAN.hmm',
+                'fam-substrate-mapping.tsv', 'peptidase_db.dmnd', 'sulfatlas_db.dmnd'
+            ]
             assertAll(
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -47,8 +51,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     file(process.out.dbcan_db.get(0)).name,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

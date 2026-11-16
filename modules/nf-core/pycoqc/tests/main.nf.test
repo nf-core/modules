@@ -28,13 +28,41 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") },
                 { assert process.out.html.get(0).get(1) ==~ ".*/test.html" },
                 {
                     with (process.out.json.get(0)) {
                         assert snapshot(path(get(1)).json['All Reads']).match("all_reads")
                     }
-                }
+                },
+                { assert snapshot(process.out.versions_pycoqc).match("versions") }
+            )
+        }
+
+    }
+
+    test("sarscov2 nanopore [sequencing_summary.txt] - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test' ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true)
+                            ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

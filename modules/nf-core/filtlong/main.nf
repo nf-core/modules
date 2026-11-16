@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FILTLONG {
     tag "$meta.id"
     label 'process_low'
@@ -30,5 +33,12 @@ process FILTLONG {
         $longreads \\
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.log
     """
 }

@@ -8,7 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "idemux"
 
-
     test("idemux - fastq") {
         when {
             process {
@@ -20,7 +19,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
                     ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
-                    ]
+                ]
                 """
             }
         }
@@ -28,11 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.stats,
-                    process.out.versions,
-                    process.out.fastq,
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["undetermined"])).match() } // Empty files
             )
         }
 
@@ -52,7 +47,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_read_2.fastq.gz', checkIfExists: true)
                     ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/lexogen/idemux/i7_i5_i1_sample_sheet.csv', checkIfExists: true)
-                    ]
+                ]
                 """
             }
         }
@@ -60,11 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.stats,
-                    process.out.versions,
-                    process.out.fastq,
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

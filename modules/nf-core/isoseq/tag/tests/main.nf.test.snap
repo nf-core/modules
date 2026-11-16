@@ -1,0 +1,91 @@
+{
+    "isoseq tag - bam": {
+        "content": [
+            [
+                "@HD\tVN:1.6\tSO:unknown\tpb:5.0.0",
+                "@RG\tID:4d03a4f8/0--1\tPL:PACBIO\tDS:READTYPE=SEGMENT;SOURCE=CCS;Ipd:CodecV1=ip;PulseWidth:CodecV1=pw;BINDINGKIT=102-194-100;SEQUENCINGKIT=101-826-100;BASECALLERVERSION=5.0.0;FRAMERATEHZ=100.000000;BarcodeFile=primers.fasta;BarcodeHash=435ca80f87bdba1261a4bbd4b6c75f98;BarcodeCount=2;BarcodeMode=None;BarcodeQuality=Score\tLB:220602-6_noPEG\tPU:m64476e_220618_014917\tSM:220602-6_noPEG\tPM:SEQUELII\tBC:AAGCAGTGGTATCAACGCAGAGTACATGGG-AGATCGGAAGAGCGTCGTGTAG\tCM:S/P5-C2/5.0-8M",
+                "@PG\tID:ccs\tPN:ccs\tVN:6.3.0\tDS:Generate circular consensus sequences (ccs) from subreads.\tCL:/opt/pacbio/pa-ccs/current/bin/ccs --streamed --suppress-reports --num-threads 200 --log-level INFO --log-file m64476e_220618_014917.ccs.log --report-json m64476e_220618_014917.ccs_reports.json --report-file m64476e_220618_014917.ccs_reports.txt --metrics-json m64476e_220618_014917.zmw_metrics.json.gz --hifi-summary-json m64476e_220618_014917.hifi_summary.json --stderr-json-log --bam m64476e_220618_014917.hifi_reads.ccs.bam --hifi-kinetics m64476e_220618_014917.ccs.consensusreadset.xml",
+                "@PG\tID:primrose\tVN:1.2.0 (commit v1.1.0-3-g88e37f5)\tCL:/opt/pacbio/pa-pbprimrose/current/bin/primrose --log-level INFO --stderr-json-log --log-file m64476e_220618_014917.primrose.log --reuse-source-uuid --qv-histogram-report m64476e_220618_014917.5mc_report.json --bam m64476e_220618_014917.hifi_reads.bam m64476e_220618_014917.ccs.consensusreadset.xml /data/pa/m64476e_220618_014917.consensusreadset.xml",
+                "@PG\tID:skera-split\tVN:0.1.0 (commit v0.1.0-7-gfdd0334)\tCL:skera split --log-level INFO --log-file skera.log --alarms alarms.json -j 16 /pbi/dept/secondary/siv/smrtlink/smrtlink-develop/jobs-root/cromwell-executions/pb_segment_reads_and_sc_isoseq/013fc9fa-28fa-451f-85ec-d187329e5c0c/call-pb_segment_reads/pb_segment_reads/7113f555-d26d-4f87-81d8-bd0dcc741982/call-prepare_inputs/execution/chunk.1.consensusreadset.xml /pbi/dept/secondary/siv/smrtlink/smrtlink-develop/jobs-root/cromwell-executions/pb_segment_reads_and_sc_isoseq/013fc9fa-28fa-451f-85ec-d187329e5c0c/call-pb_segment_reads/pb_segment_reads/7113f555-d26d-4f87-81d8-bd0dcc741982/call-skera/shard-0/inputs/-1679907619/adapters.fasta segmented.consensusreadset.xml",
+                "@PG\tID:lima\tVN:2.9.0 (commit v2.9.0)\tCL:/usr/local/bin/lima --per-read --isoseq ccs.bam primers.fasta output.bam",
+                "@PG\tID:samtools\tPN:samtools\tVN:1.13\tPP:lima\tCL:samtools view --subsample 0.01 --subsample-seed 42 -b output.5p--3p.bam",
+                "@PG\tID:tag\tVN:26.2.0 (commit v26.2.0)\tCL:tag -j 4 --design T-12U-16B mini.5p--3p.bam mini.flt.bam"
+            ],
+            "d74fe619c13fea599070510c52936c3e",
+            [
+                "mini.flt.bam.pbi"
+            ],
+            {
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_TAG",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T16:22:09.265298",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "isoseq tag - bam - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.flt.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.flt.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        "ISOSEQ_TAG",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.flt.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pbi": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.flt.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_TAG",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T15:23:27.006129",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

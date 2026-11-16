@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALLISTOBUSTOOLS_COUNT {
     tag "$meta.id"
     label 'process_medium'
@@ -9,7 +12,7 @@ process KALLISTOBUSTOOLS_COUNT {
 
     input:
     tuple val(meta), path(reads)
-    path  index
+    tuple val(meta2), path(index)
     path  t2g
     path  t1c
     path  t2c
@@ -18,8 +21,8 @@ process KALLISTOBUSTOOLS_COUNT {
 
     output:
     tuple val(meta), path ("*.count")   , emit: count
-    path "versions.yml"                 , emit: versions
     path "*.count/*/*.mtx"              , emit: matrix //Ensure that kallisto finished and produced outputs
+    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | sed -n 's/kb_python //p'"), emit: versions_kallistobustools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,11 +47,6 @@ process KALLISTOBUSTOOLS_COUNT {
         -o ${prefix}.count \\
         -m ${memory}G \\
         ${reads.join( " " )}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +54,5 @@ process KALLISTOBUSTOOLS_COUNT {
     """
     mkdir -p ${prefix}.count/counts_unfiltered/
     touch ${prefix}.count/counts_unfiltered/cells_x_genes.mtx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallistobustools: \$(echo \$(kb --version 2>&1) | sed 's/^.*kb_python //;s/positional arguments.*\$//')
-    END_VERSIONS
     """
 }

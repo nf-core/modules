@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process YARA_MAPPER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:de7982183b85634270540ac760c2644f16e0b6d1-0' :
-        'quay.io/biocontainers/mulled-v2-f13549097a0d1ca36f9d4f017636fb3609f6c083:de7982183b85634270540ac760c2644f16e0b6d1-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21df5aecbc3e3436691d4f5eb55235968e2027ad478c77621ae7d9a73353534c/data'
+:         'community.wave.seqera.io/library/samtools_yara:0fff9114c59346aa' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +17,8 @@ process YARA_MAPPER {
     output:
     tuple val(meta), path("*.mapped.bam")    , emit: bam
     tuple val(meta), path("*.mapped.bam.bai"), emit: bai
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('yara'), eval("yara_mapper --version 2>&1 | grep 'yara_mapper version' | sed 's/^.*yara_mapper version: //; s/ .*\$//'"), topic: versions, emit: versions_yara
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,12 +37,6 @@ process YARA_MAPPER {
             $reads | samtools view -@ $task.cpus -hb -F4 | samtools sort -@ $task.cpus > ${prefix}.mapped.bam
 
         samtools index -@ $task.cpus ${prefix}.mapped.bam
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            yara: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     } else {
         """
@@ -55,12 +53,6 @@ process YARA_MAPPER {
 
         samtools index -@ $task.cpus ${prefix}_1.mapped.bam
         samtools index -@ $task.cpus ${prefix}_2.mapped.bam
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            yara: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     }
 
@@ -70,23 +62,11 @@ process YARA_MAPPER {
         """
         touch ${prefix}.mapped.bam
         touch ${prefix}.mapped.bam.bai
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            yara: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     } else {
         """
         touch ${prefix}_1.mapped.bam
         touch ${prefix}_2.mapped.bam.bai
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            yara: \$(echo \$(yara_mapper --version 2>&1) | sed 's/^.*yara_mapper version: //; s/ .*\$//')
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-        END_VERSIONS
         """
     }
 

@@ -29,9 +29,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
     test("sarscov2 - bam - fastq") {
         when {
@@ -51,9 +52,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
     test("sarscov2 - bam - pileup") {
 
@@ -74,9 +76,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("sarscov2 - bam - stub") {
@@ -100,7 +103,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 }

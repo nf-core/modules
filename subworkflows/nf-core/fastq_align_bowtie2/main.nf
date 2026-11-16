@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Alignment with Bowtie2
 //
@@ -16,9 +19,13 @@ workflow FASTQ_ALIGN_BOWTIE2 {
     main:
 
     //
+    // Remap ch_fasta_fai to ch_fasta
+    ch_fasta = ch_fasta_fai.map{ meta, fasta, _fai -> [ meta, fasta] }
+
+    //
     // Map reads with Bowtie2
     //
-    BOWTIE2_ALIGN(ch_reads, ch_index, ch_fasta_fai, save_unaligned, sort_bam)
+    BOWTIE2_ALIGN(ch_reads, ch_index, ch_fasta, save_unaligned, sort_bam)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats

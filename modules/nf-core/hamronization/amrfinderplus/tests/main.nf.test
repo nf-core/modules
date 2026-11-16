@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/amrfinderplus/test_output_prot.tsv', checkIfExists: true)
                 ]
                 input[1] = 'tsv'
                 input[2] = '4.0.23'
@@ -28,10 +28,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("hamronization/amrfinderplus - delete_me/amrfinderplus - tsv - stub") {
@@ -42,7 +41,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/amrfinderplus/test_output_prot.tsv", checkIfExists: true)
                 ]
                 input[1] = 'tsv'
@@ -55,10 +54,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }

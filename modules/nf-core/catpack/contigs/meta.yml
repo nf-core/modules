@@ -28,8 +28,10 @@ input:
 
     - contigs:
         type: file
-        description: A nucleotide FASTA file containing long DNA sequences such as contigs.
-        pattern: "*.{fasta,fna,fa,fas}"
+        description: A nucleotide FASTA file containing long DNA sequences such as
+          contigs. May be optionally gzipped (the module decompresses it before
+          running CAT_pack).
+        pattern: "*.{fasta,fna,fa,fas}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
 

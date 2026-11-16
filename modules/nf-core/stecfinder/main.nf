@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STECFINDER {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process STECFINDER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('stecfinder'), eval("stecfinder --version 2>&1 | sed 's/^.*STECFinder version: //;'"), topic: versions, emit: versions_stecfinder
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,25 +25,15 @@ process STECFINDER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     stecfinder \\
-        -i $seqs \\
-        $args \\
-        -t $task.cpus > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stecfinder: \$(echo \$(stecfinder --version 2>&1) | sed 's/^.*STECFinder version: //;' )
-    END_VERSIONS
+        -i ${seqs} \\
+        ${args} \\
+        -t ${task.cpus} > ${prefix}.tsv
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stecfinder: \$(echo \$(stecfinder --version 2>&1) | sed 's/^.*STECFinder version: //;' )
-    END_VERSIONS
     """
 
 }

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EAGLE2 {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process EAGLE2 {
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf}"), emit: phased_variants
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('eagle2'), eval("eagle --help | sed -n 's/.*Eagle v\\([0-9.]\\+\\).*/\\1/p'"), emit: versions_eagle2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,12 +32,7 @@ process EAGLE2 {
         --geneticMapFile $map \\
         $args \\
         --numThreads $task.cpus \\
-        --outPrefix ${prefix} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eagle2: \$(eagle --help | sed -n 's/.*Eagle v\\([0-9.]\\+\\).*/\\1/p')
-    END_VERSIONS
+        --outPrefix ${prefix}
     """
 
     stub:
@@ -48,10 +46,5 @@ process EAGLE2 {
     def create_cmd = extension.endsWith("gz") ? "echo '' | bgzip >" : "touch"
     """
     ${create_cmd} ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        eagle2: \$(eagle --help | sed -n 's/.*Eagle v\\([0-9.]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 }

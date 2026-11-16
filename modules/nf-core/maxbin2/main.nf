@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAXBIN2 {
     tag "$meta.id"
     label 'process_medium'
@@ -20,7 +23,7 @@ process MAXBIN2 {
     tuple val(meta), path("*.tooshort.gz"), emit: tooshort_fasta
     tuple val(meta), path("*_bin.tar.gz") , emit: marker_bins , optional: true
     tuple val(meta), path("*_gene.tar.gz"), emit: marker_genes, optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('maxbin2'), eval('run_MaxBin.pl -v | sed "1!d;s/MaxBin //"'), topic: versions, emit: versions_maxbin2
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +53,6 @@ process MAXBIN2 {
         -out $prefix
 
     gzip *.fasta *.noclass *.tooshort *log *.marker
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
-    END_VERSIONS
     """
 
     stub:
@@ -68,10 +66,5 @@ process MAXBIN2 {
     touch ${prefix}.summary
     echo "" | gzip > ${prefix}.tooshort.gz
     echo "" | gzip > ${prefix}.001.fasta.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        maxbin2: \$( run_MaxBin.pl -v | head -n 1 | sed 's/MaxBin //' )
-    END_VERSIONS
     """
 }

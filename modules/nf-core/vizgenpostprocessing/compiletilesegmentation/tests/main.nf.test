@@ -114,10 +114,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.mosaic_space[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
-                    file(process.out.micron_space[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out, unstableKeys: ["mosaic_space", "micron_space"])
                 ).match() }
             )
         }
@@ -151,7 +148,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -45,7 +45,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
-                    .join(BCFTOOLS_INDEX.out.csi)
+                    .join(BCFTOOLS_INDEX.out.index)
                     .combine(channel.of([
                     "chr22", [],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz",checkIfExists:true),

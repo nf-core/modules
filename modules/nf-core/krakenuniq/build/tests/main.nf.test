@@ -12,12 +12,12 @@ nextflow_process {
     tag "krakenuniq/download"
 
     setup {
-        run("KRAKENUNIQ_DOWNLOAD"){
+        run("KRAKENUNIQ_DOWNLOAD") {
             script "../../download/main.nf"
             process {
-            """
-            input[0] = 'taxonomy'
-            """
+                """
+                input[0] = 'taxonomy'
+                """
             }
         }
     }
@@ -31,13 +31,9 @@ nextflow_process {
                 ch_seqid2mapid = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/seqid2taxid.map', checkIfExists: true)
 
                 ch_input = ch_fastas
-                            .combine(KRAKENUNIQ_DOWNLOAD.out.output)
-                            .combine(ch_seqid2mapid)
-                            .map {
-                                fna, tax, map ->
-
-                                [ [id:'test'] , fna, tax, map ]
-                            }
+                    .combine(KRAKENUNIQ_DOWNLOAD.out.output.map{ dir -> [ dir.listFiles().toList() ] })
+                    .combine(ch_seqid2mapid)
+                    .map { fna, tax, map -> [ [id:'test'], fna, tax, map ] }
 
                 input[0] = ch_input
                 input[1] = false
@@ -46,24 +42,34 @@ nextflow_process {
         }
 
         then {
-            def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
-            def unstablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def unstableOutputs = [
+                "database-build.log",  // Every line has a timestamp
+                "database.report.tsv", // Timestamp and test filepath on first line
+                "taxDB"                // Present species and species labels change: Probably because of KRAKENUNIQ_DOWNLOAD which fetches from NCBI.
+            ]
+
+            def dbDir    = file(process.out.db.get(0).get(1))
+            def allFiles = []
+            dbDir.eachFileRecurse { f -> if (!f.isDirectory()) allFiles << f }
+
+            def stableFiles   = allFiles.findAll { f -> !unstableOutputs.any { f.name.endsWith(it) } }
+            def unstableFiles = allFiles.findAll { f ->  unstableOutputs.any { f.name.endsWith(it) } }
+                                        .collect { it.name }
+
             assertAll(
                 { assert process.success },
+                { assert !allFiles.any { it.name in inputs } },
                 { assert snapshot(
-                        stablefiles.sort(),
-                        unstablefiles.sort(),
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                    stableFiles.sort(),
+                    unstableFiles.sort(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
-
     }
 
-test("sarscov2 - fasta - nocleanup") {
+    test("sarscov2 - fasta - nocleanup") {
 
         when {
             process {
@@ -72,13 +78,9 @@ test("sarscov2 - fasta - nocleanup") {
                 ch_seqid2mapid = Channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/seqid2taxid.map', checkIfExists: true)
 
                 ch_input = ch_fastas
-                            .combine(KRAKENUNIQ_DOWNLOAD.out.output)
-                            .combine(ch_seqid2mapid)
-                            .map {
-                                fna, tax, map ->
-
-                                [ [id:'test'] , fna, tax, map ]
-                            }
+                    .combine(KRAKENUNIQ_DOWNLOAD.out.output.map{ dir -> [ dir.listFiles().toList() ] })
+                    .combine(ch_seqid2mapid)
+                    .map { fna, tax, map -> [ [id:'test'], fna, tax, map ] }
 
                 input[0] = ch_input
                 input[1] = true
@@ -87,21 +89,31 @@ test("sarscov2 - fasta - nocleanup") {
         }
 
         then {
-            def stablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (!file.isDirectory() && !["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {stablefiles.add(file)} }
-            def unstablefiles = []
-            file(process.out.db.get(0).get(1)).eachFileRecurse{ file -> if (["database-build.log", "database.report.tsv", "timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"].find {file.toString().endsWith(it)}) {unstablefiles.add(file.getName().toString())} }
+            def inputs          = ["timestamp", "taxdump.tar.gz", "names.dmp", "nodes.dmp"]
+            def unstableOutputs = [
+                "database-build.log",  // Every line has a timestamp
+                "database.report.tsv", // Timestamp and test filepath on first line
+                "taxDB"                // Present species and species labels change: Probably because of KRAKENUNIQ_DOWNLOAD which fetches from NCBI.
+            ]
+
+            def dbDir    = file(process.out.db.get(0).get(1))
+            def allFiles = []
+            dbDir.eachFileRecurse { f -> if (!f.isDirectory()) allFiles << f }
+
+            def stableFiles   = allFiles.findAll { f -> !unstableOutputs.any { f.name.endsWith(it) } }
+            def unstableFiles = allFiles.findAll { f ->  unstableOutputs.any { f.name.endsWith(it) } }
+                                        .collect { it.name }
+
             assertAll(
                 { assert process.success },
+                { assert !allFiles.any { it.name in inputs } },
                 { assert snapshot(
-                        stablefiles.sort(),
-                        unstablefiles.sort(),
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                    stableFiles.sort(),
+                    unstableFiles.sort(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
-
     }
 
     test("sarscov2 - fasta - stub") {
@@ -110,7 +122,7 @@ test("sarscov2 - fasta - nocleanup") {
         when {
             process {
                 """
-                input[0] = [[id:'test'], [] , [] , []]
+                input[0] = [[id:'test'], [], [], []]
                 input[1] = false
                 """
             }
@@ -120,7 +132,7 @@ test("sarscov2 - fasta - nocleanup") {
             assertAll(
                 { assert process.success },
                 { assert snapshot(process.out).match() }
-                )
+            )
         }
     }
 }

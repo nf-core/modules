@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_REQUESTDB"
+    script "../main.nf"
+    process "GAPSEQ_REQUESTDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/requestdb"
+
+    test("bacteria - download database") {
+
+        when {
+            process {
+                """
+                input[0] = 'Bacteria'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.db[0]).exists() }
+            )
+        }
+
+    }
+
+    test("bacteria - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'Bacteria'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

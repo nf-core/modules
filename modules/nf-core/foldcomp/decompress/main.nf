@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FOLDCOMP_DECOMPRESS {
     tag "$meta.id"
     label 'process_low'
@@ -11,8 +14,8 @@ process FOLDCOMP_DECOMPRESS {
     tuple val(meta), path(fcz)
 
     output:
-    tuple val(meta), path("{*pdb,*.cif}"), emit: pdb
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("{*pdb,*.cif}")                                                    , emit: pdb
+    tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,10 +29,6 @@ process FOLDCOMP_DECOMPRESS {
         -t ${task.cpus} \\
         ${fcz}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 
     stub:
@@ -37,9 +36,5 @@ process FOLDCOMP_DECOMPRESS {
     """
     touch ${prefix}.pdb
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 }

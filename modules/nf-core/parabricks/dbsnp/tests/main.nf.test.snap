@@ -2,21 +2,22 @@
     "human - vcf": {
         "content": [
             "242dbff8325d7f958c95b34598146a0d",
+            "test.vcf.gz.tbi",
             {
                 "versions_parabricks": [
                     [
                         "PARABRICKS_DBSNP",
                         "parabricks",
-                        "4.6.0-1"
+                        "4.8.0-1"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-11-12T13:39:31.308612881",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T12:10:52.820159909"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
     },
     "human - vcf - stub": {
         "content": [
@@ -27,21 +28,39 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
-                    "compatible_versions.yml:md5,a9c1bf2bcf9b5fef44bf582d2b41cbca"
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
+                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
+                ],
+                "3": [
                     [
                         "PARABRICKS_DBSNP",
                         "parabricks",
-                        "4.6.0-1"
+                        "4.8.0-1"
                     ]
                 ],
                 "compatible_versions": [
-                    "compatible_versions.yml:md5,a9c1bf2bcf9b5fef44bf582d2b41cbca"
+                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
+                ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "vcf": [
                     [
@@ -49,30 +68,30 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions_parabricks": [
                     [
                         "PARABRICKS_DBSNP",
                         "parabricks",
-                        "4.6.0-1"
+                        "4.8.0-1"
                     ]
                 ]
             },
             {
                 "PARABRICKS_DBSNP": {
-                    "pbrun_version": "4.6.0-1",
+                    "pbrun_version": "4.8.0-1",
                     "compatible_with": {
                         "GATK:": "4.3.0.0"
                     }
                 }
             }
         ],
+        "timestamp": "2026-11-12T13:39:44.86524702",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-21T12:11:03.990675221"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
     }
 }

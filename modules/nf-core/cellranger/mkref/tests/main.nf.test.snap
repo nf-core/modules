@@ -1,6 +1,15 @@
 {
     "homo_sapiens - reference": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MKREF",
+                        "cellranger",
+                        "cellranger 10.1.0"
+                    ]
+                ]
+            },
             [
                 "genome.fa:md5,f315020d899597c1b57e5fe9f60f4c3e",
                 "genome.fa.fai:md5,3520cd30e1b100e55f578db9c855f685"
@@ -8,72 +17,47 @@
             [
                 "genes.gtf.gz:md5,50fc877b1c53b36b3b413aff88bda48c"
             ],
-            "reference.json:md5,5a9c9db6804ec625d50a16ccc079a1eb",
+            "reference.json:md5,6f6c61f2b75b26d7b1f1b733f0dd1ebc",
             "SA:md5,bcf3e1a855783105150b46c905465333",
             "SAindex:md5,b93fb07d342e6c32a00ebc4311c0ad38",
             "Genome:md5,22102926fadf5890e905ca71b2da3f35",
             "geneInfo.tab:md5,8b608537307443ffaee4927d2b428805",
             "exonGeTrInfo.tab:md5,72d4dd88d25e3c5b0bb72b12b4ac99a8",
             "exonInfo.tab:md5,0d560290fab688b7268d88d5494bf9fe",
-            "sjdbList.out.tab:md5,9e4f991abbbfeb3935a2bb21b9e258f1",
-            {
-                "versions_cellranger": [
-                    [
-                        "CELLRANGER_MKREF",
-                        "cellranger",
-                        "cellranger 10.0.0"
-                    ]
-                ]
-            }
+            "sjdbList.out.tab:md5,9e4f991abbbfeb3935a2bb21b9e258f1"
         ],
-        "timestamp": "2026-03-13T14:42:39.376185216",
+        "timestamp": "2026-10-01T09:14:20.857903635",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "homo_sapiens - reference - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        "empty_file:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        "CELLRANGER_MKREF",
-                        "cellranger",
-                        "cellranger 10.0.0"
-                    ]
-                ],
                 "reference": [
                     [
-                        "empty_file:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "homo_sapiens"
+                        },
+                        [
+                            "empty_file:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "versions_cellranger": [
                     [
                         "CELLRANGER_MKREF",
                         "cellranger",
-                        "cellranger 10.0.0"
-                    ]
-                ]
-            },
-            {
-                "versions_cellranger": [
-                    [
-                        "CELLRANGER_MKREF",
-                        "cellranger",
-                        "cellranger 10.0.0"
+                        "cellranger 10.1.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-03-13T14:42:46.270653804",
+        "timestamp": "2026-10-01T09:14:26.147678162",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

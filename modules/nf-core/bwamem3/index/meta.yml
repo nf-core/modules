@@ -1,0 +1,94 @@
+name: "bwamem3_index"
+description: Create bwa-mem3 index for reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - "bwamem3":
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
+      homepage: "https://github.com/fg-labs/bwa-mem3"
+      documentation: "https://github.com/fg-labs/bwa-mem3"
+      tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
+      licence: ["MIT AND Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - bwamem3:
+          type: directory
+          description: |
+            bwa-mem3 genome index files. When built with `ext.args = '--meth'`,
+            contains the methylation seed index (`*.meth.{amb,ann,bwt.2bit.64,pac}`)
+            required by `bwa-mem3 mem --meth` (e.g. `--meth=taps`) and the plain
+            `*.{amb,ann,pac}`, but not the plain `*.bwt.2bit.64`, so it can only be
+            used for methylation-aware alignment.
+          pattern: "*.{amb,ann,bwt.2bit.64,pac}"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210"
+  versions_bwamem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3:0.17.0--b1708a369edc0a4b
+      build_id: bd-b1708a369edc0a4b_1
+      scan_id: sc-31a62c0d7d3f953d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa-mem3:0.17.0--dfd4e361b022ff06
+      build_id: bd-dfd4e361b022ff06_1
+      scan_id: sc-1c1d837e52a8e73c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.17.0--f0b577e015f4da29
+      build_id: bd-f0b577e015f4da29_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/197c726992576ee3cb8a1f5c1e7efc48884f355691176fd9beea1b0c63d90ff3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.17.0--81afc3b4105fd554
+      build_id: bd-81afc3b4105fd554_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa51b6d8b6924f5ccb76a0b6d5380899901edbe821bf1440a3517029f198593a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_amd64-bd-dfd4e361b022ff06_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_arm64-bd-b1708a369edc0a4b_1.txt

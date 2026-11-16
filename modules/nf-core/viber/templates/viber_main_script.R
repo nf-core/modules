@@ -44,26 +44,53 @@ cli::cli_text("Patient $meta.patient with samples $tumour_samples.")
 cli::cli_text("Input file: $rds_join.")
 
 if ( grepl(".rds\$", tolower("$rds_join")) ) {
-    input_obj = readRDS("$rds_join")
+  input_obj = readRDS("$rds_join")
+  if (as.logical(opt[["qc_chr"]])){
+    chroms <- intersect(names(input_obj), paste0("chr", 1:22))
+    joint_table <- lapply(chroms,function(c){
+      shared = input_obj[[c]] %>% get_sample(sample=samples, which_obj="shared")
+      joint_table_chr = lapply(names(shared),
+                               function(sample_name) {
+                                 table_s = shared[[sample_name]] %>%
+                                   # CNAqc::subset_by_segment_karyotype("1:1") %>%
+                                   CNAqc::Mutations() %>%
+                                   dplyr::filter(karyotype=="1:1") %>%
+                                   dplyr::mutate(sample_id=sample_name) %>%
+                                   dplyr::filter(blacklisted==FALSE)
+                                 if (nrow(table_s) == 0) {
+                                   cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                                 }
+                                 return(table_s)
+                               }) %>% dplyr::bind_rows()
+    })  %>% dplyr::bind_rows()
+  } else {
     if (class(input_obj) == "m_cnaqc") {
-        shared = input_obj %>% get_sample(sample=samples, which_obj="shared")
-        joint_table = lapply(names(shared),
-                        function(sample_name) {
-                          table_s = shared[[sample_name]] %>%
-                              CNAqc::subset_by_segment_karyotype("1:1") %>%
-                              CNAqc::Mutations() %>%
-                              dplyr::mutate(sample_id=sample_name)
-                          if (nrow(table_s) == 0) {
-                            cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
-                          }
-                          return(table_s)
-                        }) %>% dplyr::bind_rows()
-        } else {
-          cli::cli_alert_warning("Object of class {class(input_obj)} not supported.")
-          return()
-        }
+      shared = input_obj %>% get_sample(sample=samples, which_obj="shared")
+      joint_table = lapply(names(shared),
+                           function(sample_name) {
+                             table_s = shared[[sample_name]] %>%
+                               CNAqc::subset_by_segment_karyotype("1:1") %>%
+                               CNAqc::Mutations() %>%
+                               dplyr::mutate(sample_id=sample_name) %>%
+                               dplyr::filter(chr %in% c(paste0('chr', 1:22), as.character(1:22))) %>%
+                               dplyr::filter(blacklisted==FALSE)
+
+                             if (nrow(table_s) == 0) {
+                               cli::cli_alert_warning("Sample {sample_name} has no diploid mutations!")
+                             }
+                             return(table_s)
+                           }) %>% dplyr::bind_rows()
+    } else {
+      cli::cli_alert_warning("Object of class {class(input_obj)} not supported.")
+      return()
+    }
+  }
 } else {
   joint_table = read.csv("$rds_join")
+  joint_table = joint_table %>%
+    dplyr::filter(karyotype=="1:1") %>%
+    dplyr::filter(chr %in% c(paste0('chr', 1:22), as.character(1:22))) %>%
+    dplyr::filter(blacklisted==FALSE)
 }
 
 if (nrow(joint_table) == 0) {

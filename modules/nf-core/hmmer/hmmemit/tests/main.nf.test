@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process HMMER_HMMEMIT"
+    script "../main.nf"
+    process "HMMER_HMMEMIT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmemit"
+
+    test("sarscov2 - proteome - hmm - consensus") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - proteome - hmm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

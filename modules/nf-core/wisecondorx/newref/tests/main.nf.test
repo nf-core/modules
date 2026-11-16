@@ -42,7 +42,7 @@ nextflow_process {
                 """
                 input[0] = WISECONDORX_CONVERT.out.npz
                     .map { meta, npz ->
-                        new_meta = meta + [id:"combined"]
+                        def new_meta = meta + [id:"combined"]
                         [new_meta, npz]
                     }
                     .groupTuple()

@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test FASTAGUARD"
+    script "../main.nf"
+    process "FASTAGUARD"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastaguard"
+    tag "fastaguard_single"
+
+    test("pass FASTA emits all reports") {
+        when {
+            process {
+                """
+                def fasta = file(workDir.resolve("pass.fa").toString())
+                fasta.text = [
+                    ">clean",
+                    ("ACGT" * 60)
+                ].join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'pass' ],
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
+            )
+        }
+    }
+
+    test("warn FASTA preserves reports") {
+        when {
+            process {
+                """
+                def fasta = file(workDir.resolve("warn.fa").toString())
+                fasta.text = [
+                    ">long",
+                    ("ACGT" * 60),
+                    ">tiny",
+                    "ACGT"
+                ].join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'warn' ],
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
+            )
+        }
+    }
+
+    test("fail FASTA preserves reports for gate review") {
+        when {
+            process {
+                """
+                def fasta = file(workDir.resolve("fail.fa").toString())
+                fasta.text = [
+                    ">dup",
+                    "ACGTACGT",
+                    ">dup",
+                    "ACGTACGT",
+                    ">bad",
+                    "ACGTXYZ"
+                ].join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'fail' ],
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
+            )
+        }
+    }
+
+    test("invalid FASTA is represented in the evidence path") {
+        when {
+            process {
+                """
+                def fasta = file(workDir.resolve("invalid.fa").toString())
+                fasta.text = [
+                    ">empty_record",
+                    ">next_record",
+                    "ACGT"
+                ].join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'invalid' ],
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "json", "tsv", "mqc"])).match() }
+            )
+        }
+    }
+}

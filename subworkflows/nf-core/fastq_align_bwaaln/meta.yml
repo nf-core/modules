@@ -34,18 +34,10 @@ output:
         Note: the subworkflow adds a new meta ID `meta.id_index` that _must_
         be used in `prefix` to ensure unique file names. See the associated
         nextflow.config file.
-  - bai:
+  - index:
       description: |
-        Structure: [ val(meta), path(bai) ]
-        BAM/CRAM/SAM samtools index file
-  - csi:
-      description: |
-        Structure: [ val(meta), path(csi) ]
-        BAM/CRAM/SAM samtools index file for larger references
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
+        Structure: [ val(meta), path(index) ]
+        BAM/CRAM/SAM samtools index file (.bai, or .csi for larger references)
 authors:
   - "@jfy133"
 maintainers:

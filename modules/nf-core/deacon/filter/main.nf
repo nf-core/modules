@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEACON_FILTER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.13.2--h7ef3eeb_1':
-        'quay.io/biocontainers/deacon:0.13.2--h7ef3eeb_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f628781900b19a962ce706a66d7b1d83c26acb5b08d5085947ae1bbea879b1f8/data'
+        : 'community.wave.seqera.io/library/deacon:0.15.0--ac1f965b3a6ea82e'}"
 
     input:
     tuple val(meta), path(index), path(reads)
@@ -22,6 +25,7 @@ process DEACON_FILTER {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq" // deacon's automatic compression does not work
+    if (!(reads instanceof List) && "${reads}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     deacon \\
         filter \\

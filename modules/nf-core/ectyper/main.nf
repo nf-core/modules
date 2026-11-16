@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ECTYPER {
     tag "$meta.id"
     label 'process_medium'
@@ -14,7 +17,7 @@ process ECTYPER {
     tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ectyper'), eval('ectyper --version 2>&1 | sed \'s/.*ectyper //; s/ .*$//\''), emit: versions_ectyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,10 +39,13 @@ process ECTYPER {
         --input $fasta_name
 
     mv output.tsv ${prefix}.tsv
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ectyper: \$(echo \$(ectyper --version 2>&1)  | sed 's/.*ectyper //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    touch ${prefix}.tsv
+    touch ${prefix}.txt
     """
 }

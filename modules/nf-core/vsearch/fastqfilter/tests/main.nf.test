@@ -28,7 +28,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.fasta,
-                    file(process.out.log[0]).readLines()[3..4],
+                    file(process.out.log[0]).readLines().findAll { line -> line.contains('sequences kept') },
                     process.out.findAll { key, val -> key.startsWith("versions") },
                     ).match() }
             )

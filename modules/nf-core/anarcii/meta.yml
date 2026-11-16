@@ -27,6 +27,11 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: http://edamontology.org/format_1929
+  - seq_type:
+      type: string
+      description: |
+        Receptor type to number, passed to ANARCII's `-t` flag. Selects the model used for alignment.
+      pattern: "antibody|tcr|vnar|vhh|shark|unknown"
 output:
   anarcii:
     - - meta:

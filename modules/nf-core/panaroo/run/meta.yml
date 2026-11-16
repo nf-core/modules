@@ -11,7 +11,8 @@ tools:
       documentation: "https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart"
       tool_dev_url: "https://github.com/gtonkinhill/panaroo"
       doi: "10.1186/s13059-020-02090-4"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:panaroo
 input:
   - - meta:
@@ -31,7 +32,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*:
+      - ${prefix}/*:
           type: directory
           description: Directory containing Panaroo result files
           pattern: "*/*"
@@ -41,18 +42,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/core_gene_alignment.aln:
+      - ${prefix}/core_gene_alignment.aln:
           type: file
           description: Core-genome alignment produced by Panaroo (Optional)
           pattern: "*.{fasta}"
           ontologies: []
+  versions_panaroo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panaroo:
+          type: string
+          description: The name of the tool
+      - panaroo --version 2>&1 | sed 's/^.*panaroo //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panaroo:
+          type: string
+          description: The name of the tool
+      - panaroo --version 2>&1 | sed 's/^.*panaroo //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

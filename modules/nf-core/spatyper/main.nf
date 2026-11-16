@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPATYPER {
     tag "$meta.id"
     label 'process_low'
@@ -14,7 +17,7 @@ process SPATYPER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('spatyper'), eval("spaTyper --version 2>&1 | sed 's/^.*spaTyper //'"), emit: versions_spatyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +32,6 @@ process SPATYPER {
         $input_args \\
         --fasta $fasta \\
         --output ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spatyper: \$( echo \$(spaTyper --version 2>&1) | sed 's/^.*spaTyper //' )
-    END_VERSIONS
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

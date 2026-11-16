@@ -1,7 +1,7 @@
 name: malt_run
-description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment and
-  analysis tool designed for processing high-throughput sequencing data, especially
-  in the context of metagenomics.
+description: MALT, an acronym for MEGAN alignment tool, is a sequence alignment
+  and analysis tool designed for processing high-throughput sequencing data,
+  especially in the context of metagenomics.
 keywords:
   - malt
   - alignment
@@ -17,7 +17,8 @@ tools:
       homepage: https://www.wsi.uni-tuebingen.de/lehrstuehle/algorithms-in-bioinformatics/software/malt/
       documentation: https://software-ab.cs.uni-tuebingen.de/download/malt/manual.pdf
       doi: "10.1038/s41559-017-0446-6"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -30,10 +31,15 @@ input:
         description: Input FASTQ files
         pattern: "*.{fastq.gz,fq.gz}"
         ontologies: []
-  - index:
-      type: directory
-      description: Index/database directory from malt-build
-      pattern: "*/"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Index/database directory from malt-build
+        pattern: "*/"
 output:
   rma6:
     - - meta:
@@ -69,13 +75,27 @@ output:
           description: Log of verbose MALT stdout
           pattern: "*-malt-run.log"
           ontologies: []
+  versions_malt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - malt:
+          type: string
+          description: The name of the tool
+      - malt-run --help |& sed '/version/!d;s/.*version //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - malt:
+          type: string
+          description: The name of the tool
+      - malt-run --help |& sed '/version/!d;s/.*version //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

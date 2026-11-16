@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
@@ -9,7 +12,7 @@ process CHROMAP_CHROMAP {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     path barcodes
     path whitelist

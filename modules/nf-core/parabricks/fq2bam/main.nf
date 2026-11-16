@@ -1,18 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_FQ2BAM {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to run on a cluster because we need to copy the fasta reference, see https://github.com/nf-core/modules/issues/9230
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     tuple val(meta4), path(intervals)
-    tuple val(meta5), path(known_sites)
+    tuple val(meta5), path(known_sites), path(known_sites_index)
     val output_fmt
 
     output:
@@ -46,8 +47,11 @@ process PARABRICKS_FQ2BAM {
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
-    cp ${fasta} \$INDEX
+    # Parabricks needs the fasta next to the index files, so build a local reference dir of symlinks
+    mkdir -p ref
+    for f in \$(readlink -f ${index})/*; do ln -sf \$f ref/; done
+    INDEX=`find -L ref -name "*.amb" | sed 's/\\.amb\$//'`
+    ln -sf \$(readlink -f ${fasta}) \$INDEX
 
     pbrun \\
         fq2bam \\
@@ -60,6 +64,7 @@ process PARABRICKS_FQ2BAM {
         ${num_gpus} \\
         --bwa-cpu-thread-pool ${task.cpus} \\
         --monitor-usage \\
+        --preserve-file-symlinks \\
         ${args}
     """
 

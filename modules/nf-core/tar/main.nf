@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAR {
     tag "${meta.id}"
     label 'process_single'
@@ -13,7 +16,7 @@ process TAR {
 
     output:
     tuple val(meta), path("*.tar${compress_type}"), emit: archive
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('tar'), eval('tar --version | sed -n "s/.*tar)//p"'), topic: versions, emit: versions_tar
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,21 +57,11 @@ process TAR {
         ${args} \\
         -f ${prefix}.tar${compress_type} \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tar: \$(tar --version | grep tar | sed 's/.*) //g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip -c > ${prefix}.tar.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tar: \$(tar --version | grep tar | sed 's/.*) //g')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.tar.gz
     """
 }

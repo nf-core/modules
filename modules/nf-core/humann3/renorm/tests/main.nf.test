@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process HUMANN3_RENORM"
+    script "../main.nf"
+    process "HUMANN3_RENORM"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "humann3"
+    tag "humann3/renorm"
+
+    test("humann3_renorm sarscov2 - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

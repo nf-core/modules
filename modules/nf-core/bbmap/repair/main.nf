@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_REPAIR {
     tag "$meta.id"
     label 'process_single'
@@ -31,7 +34,7 @@ process BBMAP_REPAIR {
         -Xmx\$maxmem \\
         $in_reads \\
         $out_reads \\
-        threads=${task.cpus}
+        threads=${task.cpus} \\
         ${args} \\
         &> ${prefix}.repair.sh.log
     """

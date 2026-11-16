@@ -46,9 +46,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.database,
-                    process.out.pickle[0][1].collect { file(it).name },
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["pickle"])
                 ).match() }
             )
         }
@@ -75,8 +73,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "jvarkit_dict2xml"
-description: Extract BED file from hts files containing a dictionary (VCF,BAM, CRAM,
-  DICT, etc...)
+name: "jvarkit_dict2bed"
+description: Extract BED file from hts files containing a dictionary (VCF,BAM,
+  CRAM, DICT, etc...)
 keywords:
   - vcf
   - bcf
@@ -17,7 +16,8 @@ tools:
       documentation: "https://jvarkit.readthedocs.io/"
       tool_dev_url: "https://github.com/lindenb/jvarkit"
       doi: "10.6084/m9.figshare.1425030"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       args_id: "$args"
       identifier: ""
 input:
@@ -43,13 +43,27 @@ output:
           description: BED output file
           pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
           ontologies: []
+  versions_jvarkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jvarkit:
+          type: string
+          description: The name of the tool
+      - jvarkit -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jvarkit:
+          type: string
+          description: The name of the tool
+      - jvarkit -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lindenb"
 maintainers:

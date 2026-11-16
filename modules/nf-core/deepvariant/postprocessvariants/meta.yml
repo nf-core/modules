@@ -13,7 +13,13 @@ tools:
       documentation: https://github.com/google/deepvariant
       tool_dev_url: https://github.com/google/deepvariant
       doi: "10.1038/nbt.4235"
-      licence: ["BSD-3-clause"]
+      publication:
+        author: "Poplin, R., Chang, P., Alexander, D., Schwartz, S., Colthurst, T., Ku, A., Newburger, D., Dijamco, J., Nguyen, N., Afshar, P. T., Gross, S. S., Dorfman, L., McLean, C. Y. & DePristo, M. A."
+        year: 2018
+        title: "A universal SNP and small-indel variant caller using deep neural networks"
+        source: "Nature Biotechnology"
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:deepvariant
 input:
   - - meta:
@@ -27,21 +33,27 @@ input:
           One or more data files containing variant calls from DEEPVARIANT_CALLVARIANTS
         pattern: "*.tfrecord.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - gvcf_tfrecords:
         type: file
         description: |
           Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with the coverage information used for GVCF output
         pattern: "*.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - small_model_calls:
         type: file
         description: |
           Sharded tfrecord file from DEEPVARIANT_MAKEEXAMPLES with variant calls from the small model
         pattern: "*.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
+    - phase_inputs:
+        type: file
+        description: |
+          Sharded phased read inputs tsv file from DEEPVARIANT_MAKEEXAMPLES
+        pattern: "*.tsv"
+        ontologies: []
     - intervals:
         type: file
         description: Interval file for targeted regions
@@ -89,7 +101,7 @@ output:
           description: Compressed VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf_index:
     - - meta:
           type: map
@@ -112,7 +124,7 @@ output:
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   gvcf_index:
     - - meta:
           type: map
@@ -124,6 +136,34 @@ output:
           description: Index for GVCF
           pattern: "*.g.vcf.gz.{tbi,csi}"
           ontologies: []
+  phased_reads_switches:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_reads_switches.tsv:
+          type: file
+          description: |
+            Phase set stitching status for each shard and region, from the merge
+            of the phased read inputs. Only created when phase_inputs is given.
+          pattern: "*.phased_reads_switches.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  phased_reads_corrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.phased_reads_corrected.tsv:
+          type: file
+          description: |
+            Corrected phase of each read after the merge of the phased read
+            inputs. Only created when phase_inputs is given.
+          pattern: "*.phased_reads_corrected.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   versions_deepvariant:
     - - ${task.process}:
           type: string
@@ -134,7 +174,6 @@ output:
       - /opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:

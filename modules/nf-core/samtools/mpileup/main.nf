@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_MPILEUP {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523'}"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -35,7 +38,8 @@ process SAMTOOLS_MPILEUP {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bgzip_command = "echo | bgzip -c > ${prefix}.mpileup.gz"
     """
-    echo | gzip > ${prefix}.mpileup.gz
+    ${bgzip_command}
     """
 }

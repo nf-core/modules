@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VEMBRANE_SORT {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0'
-        : 'quay.io/biocontainers/vembrane:2.4.0--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a1bc5a7c85eebca118ae436bda77e005cc6c1ca0e60687185fb1d2f195e5eaf/data'
+        : 'community.wave.seqera.io/library/vembrane:2.6.2--0bc429af0e13a402'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -30,11 +33,6 @@ process VEMBRANE_SORT {
         --output ${prefix}.${suffix} \\
         '${expression}' \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +43,5 @@ process VEMBRANE_SORT {
         : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
     touch ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
-    END_VERSIONS
     """
 }

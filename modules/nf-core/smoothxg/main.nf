@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SMOOTHXG {
     tag "$meta.id"
     label 'process_high'
@@ -13,7 +16,7 @@ process SMOOTHXG {
     output:
     tuple val(meta), path("*smoothxg.gfa"), emit: gfa
     path("*.maf") , optional: true, emit: maf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('smoothxg'), eval("smoothxg --version 2>&1 | sed 's/^v//; s/-.*//'"  ), topic: versions, emit: versions_smoothxg
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +30,11 @@ process SMOOTHXG {
         --gfa-in=${gfa} \\
         --smoothed-out=${prefix}.smoothxg.gfa \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        smoothxg: \$(smoothxg --version 2>&1 | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.smoothxg.gfa
     """
 }

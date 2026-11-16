@@ -1,0 +1,103 @@
+// nf-core modules test angsd/soapsnpcalibration
+nextflow_process {
+
+    name "Test Process ANGSD_SOAPSNPCALIBRATION"
+    script "../main.nf"
+    process "ANGSD_SOAPSNPCALIBRATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "angsd"
+    tag "angsd/soapsnpcalibration"
+
+    test("angsd - soapSNP - calibration") {
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    test("angsd - soapSNP - calibration - stub") {
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            params {
+                angsd_args   = '-r chr20:1400000-1500000 -checkBamHeaders 0'
+            }
+            process {
+                """
+                input[0] = [
+                    [
+                        id: "FIN",
+                        population: "FIN",
+                        samples: ["HG00349", "HG00358", "HG00350", "HG00351"]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam")
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00349.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00350.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00351.chr20_1400000-1500000.bam.bai"),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/HG00358.chr20_1400000-1500000.bam.bai")
+                    ]
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr20/sequence/GRCh38_chr20_1_2000000.fasta.gz.fai')
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

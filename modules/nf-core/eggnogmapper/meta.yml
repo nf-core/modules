@@ -115,7 +115,7 @@ output:
       - eggnog-mapper:
           type: string
           description: The name of the tool
-      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+      - python -c "from importlib.metadata import version; import sys; print(version(sys.argv[1]))" eggnog-mapper:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -126,7 +126,7 @@ topics:
       - eggnog-mapper:
           type: string
           description: The name of the tool
-      - emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/emapper-//':
+      - python -c "from importlib.metadata import version; import sys; print(version(sys.argv[1]))" eggnog-mapper:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -13,30 +13,49 @@ tools:
       homepage: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
       documentation: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
       tool_dev_url: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/using/tutorial_ov
+      doi: "10.1038/ncomms14049"
+      publication:
+        author: "Zheng, G. X. Y., Terry, J. M., Belgrader, P., Ryvkin, P., Bent, Z. W., Wilson, R., Ziraldo, S. B., Wheeler, T. D., McDermott, G. P., Zhu, J., Gregory, M. T., Shuga, J., Montesclaros, L., Underwood, J. G., Masquelier, D. A., Nishimura, S. Y., Schnall-Levin, M., Wyatt, P. W., Hindson, C. M., Bharadwaj, R., Wong, A., Ness, K. D., Beppu, L. W., Deeg, H. J., McFarland, C., Loeb, K. R., Valente, W. J., Ericson, N. G., Stevens, E. A., Radich, J. P., Mikkelsen, T. S., Hindson, B. J. & Bielas, J. H."
+        year: 2017
+        title: "Massively parallel digital transcriptional profiling of single cells"
+        source: "Nature Communications"
       licence:
         - 10X Genomics EULA
       identifier: ""
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fasta,fa}"
-      ontologies: []
-  - gtf:
-      type: file
-      description: Reference transcriptome GTF file
-      pattern: "*.gtf"
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - gtf:
+        type: file
+        description: Reference transcriptome GTF file
+        pattern: "*.gtf"
+        ontologies: []
   - reference_name:
       type: string
       description: The name to give the new reference folder
       pattern: str
 output:
   reference:
-    - ${reference_name}:
-        type: directory
-        description: Folder containing all the reference indices needed by Cell
-          Ranger
+    - - meta:
+          type: map
+          description: Groovy Map containing reference information
+      - ${reference_name}:
+          type: directory
+          description: Folder containing all the reference indices needed by Cell
+            Ranger
   versions_cellranger:
     - - ${task.process}:
           type: string

@@ -9,13 +9,92 @@ nextflow_process {
     tag "annotsv"
     tag "annotsv/installannotations"
 
-    test("homo_sapiens - stub") {
+    test("both versions supplied - stub") {
 
         options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    3.5,
+                    2406
+                ]
+                """
+            }
+        }
 
         then {
             assert process.success
             assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+        test("both versions empty - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    null,
+                    null
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+    test("annotsv version empty - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    null,
+                    2406
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+        }
+
+    }
+
+    test("exomiser version empty - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    3.5,
+                    null
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
         }
 
     }

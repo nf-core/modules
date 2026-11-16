@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SKA_FASTA {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process SKA_FASTA {
 
     output:
     tuple val(meta), path("*.skf"), emit: skf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ska'), eval("ska version | grep Version | cut -d ' ' -f 2"), topic: versions, emit: versions_ska
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +30,11 @@ process SKA_FASTA {
         ${fastas} \\
         ${arg_list} \\
         -o ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ska: \$(ska version | grep Version | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.skf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ska: \$(ska version | grep Version | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 }

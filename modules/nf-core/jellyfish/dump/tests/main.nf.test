@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process JELLYFISH_DUMP"
     script "../main.nf"
+    config "./nextflow.config"
     process "JELLYFISH_DUMP"
 
     tag "modules"
@@ -30,6 +31,9 @@ nextflow_process {
     test("sarscov2 - fasta") {
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = JELLYFISH_COUNT.out.jf
@@ -40,17 +44,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
     test("sarscov2 - txt") {
-
-        config "./nextflow.config"
-
         when {
+            params {
+                module_args = "-c"
+            }
             process {
                 """
                 input[0] = JELLYFISH_COUNT.out.jf
@@ -61,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -72,6 +76,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = JELLYFISH_COUNT.out.jf
@@ -82,10 +89,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }

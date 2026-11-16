@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ZIP {
     tag "$prefix"
     label 'process_single'
@@ -27,5 +30,11 @@ process ZIP {
         -l \\
         $args \\
         "${prefix}.zip" ./inputs/*
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : 'zipped_files')
+    """
+    touch ${prefix}.zip
     """
 }

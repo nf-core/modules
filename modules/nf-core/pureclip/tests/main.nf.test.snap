@@ -1,47 +1,45 @@
 {
     "test-pureclip-no-ctrl": {
         "content": [
-            "test_pureclip_crosslinks.bed",
-            "test_pureclip_peaks.bed",
-            [
-                "versions.yml:md5,0697b02752bccc223a2692e012f376fd"
-            ]
+            {
+                "crosslinks": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_pureclip_crosslinks.bed"
+                    ]
+                ],
+                "peaks": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_pureclip_peaks.bed"
+                    ]
+                ],
+                "versions_pureclip": [
+                    [
+                        "PURECLIP",
+                        "pureclip",
+                        "1.3.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-07T14:38:36.562563249",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T16:22:32.22791"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-pureclip-input-ctrl-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_pureclip_crosslinks.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_pureclip_peaks.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,0697b02752bccc223a2692e012f376fd"
-                ],
                 "crosslinks": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test_pureclip_crosslinks.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -49,35 +47,58 @@
                 "peaks": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test_pureclip_peaks.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,0697b02752bccc223a2692e012f376fd"
+                "versions_pureclip": [
+                    [
+                        "PURECLIP",
+                        "pureclip",
+                        "1.3.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-07T14:39:13.885619444",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T14:23:28.429784"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-pureclip-input-ctrl": {
         "content": [
-            "test_pureclip_crosslinks.bed",
-            "test_pureclip_peaks.bed",
-            [
-                "versions.yml:md5,0697b02752bccc223a2692e012f376fd"
-            ]
+            {
+                "crosslinks": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_pureclip_crosslinks.bed"
+                    ]
+                ],
+                "peaks": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_pureclip_peaks.bed"
+                    ]
+                ],
+                "versions_pureclip": [
+                    [
+                        "PURECLIP",
+                        "pureclip",
+                        "1.3.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-07T14:39:05.861284096",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-27T16:30:44.125686"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

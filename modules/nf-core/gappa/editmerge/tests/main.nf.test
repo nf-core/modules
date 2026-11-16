@@ -1,0 +1,88 @@
+
+nextflow_process {
+
+    name "Test Process GAPPA_EDITMERGE"
+    script "../main.nf"
+    process "GAPPA_EDITMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gappa"
+    tag "gappa/editmerge"
+
+    test("test-gappa-editmerge") {
+
+        when {
+            process {
+                """
+                def src = file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+
+                // Merging needs at least two jplace files on one reference tree, and the test
+                // data holds only one. Derive a second from it by renaming its queries, so the
+                // merged output is six distinguishable pqueries rather than the same three
+                // twice -- and no fixture has to be added for the sake of this test.
+                def renamed = file("${workDir}/editmerge/renamed.jplace.gz")
+                renamed.parent.mkdirs()
+                def text = new java.util.zip.GZIPInputStream(src.newInputStream()).withStream { gz -> new String(gz.bytes) }
+                new java.util.zip.GZIPOutputStream(renamed.newOutputStream()).withStream { os ->
+                    os.write(text.replace('"n": ["', '"n": ["renamed_').bytes)
+                }
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ src, renamed ]
+                ]
+                """
+            }
+        }
+
+        then {
+            def merged = new groovy.json.JsonSlurper().parseText(new File(process.out.jplace[0][1].toString()).text)
+            assertAll(
+                { assert process.success },
+                // Every pquery of both inputs has to come through, on the one shared tree.
+                { assert merged.placements.size() == 6 },
+                // A jplace file records the time it was written, so its checksum moves on every
+                // run: snapshot what describes the merge itself instead.
+                { assert snapshot([
+                    jplace: new File(process.out.jplace[0][1].toString()).name,
+                    tree: merged.tree,
+                    fields: merged.fields,
+                    queries: merged.placements*.n.flatten().sort(),
+                    versions_gappa: process.out.versions_gappa,
+                ]).match() }
+            )
+        }
+    }
+
+    test("test-gappa-editmerge-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                def src = file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+
+                // The same file twice would be a staging name collision, so give the second a
+                // name of its own -- the stub never looks inside either of them.
+                def second = file("${workDir}/editmerge/second.jplace.gz")
+                second.parent.mkdirs()
+                second.bytes = src.bytes
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ src, second ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

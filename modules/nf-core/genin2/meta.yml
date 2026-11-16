@@ -1,0 +1,70 @@
+name: "genin2"
+description: Genin2 is a lightining-fast bioinformatic tool to predict genotypes for
+  H5 viruses belonging to the European clade 2.3.4.4b.
+keywords:
+  - genotype
+  - avian influenza
+  - H5
+  - clade 2.3.4.4b
+  - genin2
+  - genomics
+tools:
+  - "genin2":
+      description: "Genin2 is a lightining-fast bioinformatic tool to predict genotypes
+        for H5 viruses belonging to the European clade 2.3.4.4b."
+      homepage: "https://izsvenezie-virology.github.io/genin2"
+      documentation: "https://izsvenezie-virology.github.io/genin2"
+      tool_dev_url: "https://github.com/izsvenezie-virology/genin2"
+      licence:
+        - "AGPL v3-or-later"
+      identifier: biotools:genin2
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input sequence in FASTA format
+        pattern: "*.{fa,fna,fasta,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Output TSV file with cluster IDs and genotypes
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_genin2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genin2:
+          type: string
+          description: The name of the tool
+      - genin2 --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genin2:
+          type: string
+          description: The name of the tool
+      - genin2 --version | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@AlexSartori"
+maintainers:
+  - "@AlexSartori"

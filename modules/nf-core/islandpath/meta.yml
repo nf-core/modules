@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/brinkmanlab/islandpath#readme
       tool_dev_url: https://github.com/brinkmanlab/islandpath
       doi: "10.1093/bioinformatics/bty095"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:islandpath
 input:
   - - meta:
@@ -32,12 +33,14 @@ output:
   gff:
     - - meta:
           type: file
-          description: GFF file listing the predicted genomic islands and their coordinates
+          description: GFF file listing the predicted genomic islands and their
+            coordinates
           pattern: "*.gff"
           ontologies: []
       - "*.gff":
           type: file
-          description: GFF file listing the predicted genomic islands and their coordinates
+          description: GFF file listing the predicted genomic islands and their
+            coordinates
           pattern: "*.gff"
           ontologies: []
   log:
@@ -46,13 +49,27 @@ output:
         description: Log file of the islandpath run
         pattern: "*.log"
         ontologies: []
+  versions_islandpath:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - islandpath:
+          type: string
+          description: The name of the tool
+      - 1.0.6:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - islandpath:
+          type: string
+          description: The name of the tool
+      - 1.0.6:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@jvfe"
 maintainers:

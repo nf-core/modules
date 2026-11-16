@@ -30,16 +30,13 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens") {
+    config "./nextflow.config"
 
-        config "./nextflow.config"
+    test("homo_sapiens") {
 
         when {
             params {
-                module_args = '--low-memory --read-files-command zcat --x3'
-                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s rnafq2bam requires 24GB of memory.
-                // Using --low-memory for testing
+                module_args = '--num-streams-per-gpu 1 --read-files-command zcat --x3'
             }
             process {
                 """
@@ -61,6 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.log_final[0][1]).text.contains('Uniquely mapped reads %') },
                 { assert snapshot(
                     file(process.out.log_final[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith('versions') },
@@ -72,7 +70,6 @@ nextflow_process {
 
     test("homo_sapiens - stub") {
 
-        config "./nextflow.config"
         options "-stub"
 
         when {
@@ -104,16 +101,52 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens_chimeric") {
-
-        config "./nextflow.config"
+    test("homo_sapiens - paired_end - multiple_fastq") {
 
         when {
             params {
-                module_args = '--low-memory --read-files-command zcat --out-chim-type Junctions --min-chim-segment 15 --x3'
-                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s rnafq2bam requires 24GB of memory.
-                // Using --low-memory for testing
+                module_args = '--num-streams-per-gpu 1 --read-files-command zcat --x3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = false
+                input[4] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.log_final[0][1]).text.contains('Uniquely mapped reads %') },
+                { assert snapshot(
+                    file(process.out.log_final[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    bam(process.out.bam[0][1]).getReadsMD5()
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens_chimeric") {
+
+        when {
+            params {
+                module_args = '--num-streams-per-gpu 1 --read-files-command zcat --out-chim-type Junctions --min-chim-segment 15 --x3'
             }
             process {
                 """
@@ -135,6 +168,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.log_final[0][1]).text.contains('Uniquely mapped reads %') },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     file(process.out.bai[0][1]).name,
@@ -147,7 +181,6 @@ nextflow_process {
 
     test("homo_sapiens_chimeric - stub") {
 
-        config "./nextflow.config"
         options "-stub"
 
         when {

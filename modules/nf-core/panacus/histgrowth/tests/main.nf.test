@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process PANACUS_HISTGROWTH"
     script "../main.nf"
+    config "./nextflow.config"
     process "PANACUS_HISTGROWTH"
 
     tag "modules"
@@ -12,12 +13,15 @@ nextflow_process {
     test("pangenome - gfa") {
 
         when {
+            params {
+                module_args = "-o table"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
-                    ]
+                ]
                 input[1] = []
                 input[2] = []
                 input[3] = []
@@ -28,7 +32,36 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("pangenome - gfa -- stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--output-format html"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.smoothxg.gfa', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

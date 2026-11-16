@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process MUTSERVE_CALL"
+    script "../main.nf"
+    process "MUTSERVE_CALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mutserve"
+    tag "mutserve/call"
+
+    test("mtDNA - bam - vcf.gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/seppinho/mutserve/raw/master/test-data/mtdna/bam/input/HG00096.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file('https://raw.githubusercontent.com/seppinho/mutserve/refs/heads/master/files/rCRS.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mtDNA - bam - vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/seppinho/mutserve/raw/master/test-data/mtdna/bam/input/HG00096.mapped.ILLUMINA.bwa.GBR.low_coverage.20101123.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file('https://raw.githubusercontent.com/seppinho/mutserve/refs/heads/master/files/rCRS.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

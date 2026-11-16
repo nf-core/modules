@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Run SAMtools idxstats, then split reads in input bam into one bam per chromosome in idxstats output
 //
@@ -11,9 +14,6 @@ workflow BAM_SPLIT_BY_REGION {
     ch_bam // channel: [ val(meta), path(bam), path(bai), path(regions_file) ]
 
     main:
-
-    ch_versions = channel.empty()
-
     //
     // Create channel containing the region names from the bed file.
     //
@@ -66,5 +66,4 @@ workflow BAM_SPLIT_BY_REGION {
 
     emit:
     bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
-    versions    = ch_versions                       // channel: [ path(versions.yml) ]
 }

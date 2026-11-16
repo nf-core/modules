@@ -37,13 +37,27 @@ output:
           description: Features in gzipped GFF3 format
           pattern: "*.{gff3.gz}"
           ontologies: []
+  versions_dshbio:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | sed '1!d;s/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | sed '1!d;s/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@heuermh"
 maintainers:

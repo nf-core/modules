@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQKIT_SAMPLE {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'oras://community.wave.seqera.io/library/seqkit:2.13.0--205358a3675c7775'
-        : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/297e985dd395d87f9089b314dbe685ddce59fa0770c4d1f5e1009bc7b6ec7a8d/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--3bacfb68370dd835'}"
 
     input:
     tuple val(meta), path(fastx)
@@ -38,6 +41,7 @@ process SEQKIT_SAMPLE {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta\.gz|.+\.fa|.+\.fa\.gz|.+\.fas|.+\.fas\.gz|.+\.fna|.+\.fna\.gz|.+\.fsa|.+\.fsa\.gz/) {
@@ -47,8 +51,10 @@ process SEQKIT_SAMPLE {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
-    def create_cmd = extension.endsWith('.gz') ? "echo '' | gzip >" : "touch"
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
+    echo ${args}
+
     ${create_cmd} ${prefix}.${extension}
     """
 }

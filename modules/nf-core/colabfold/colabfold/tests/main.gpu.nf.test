@@ -1,0 +1,193 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD_COLABFOLD (GPU)"
+    script "../main.nf"
+    process "COLABFOLD_COLABFOLD"
+    config "./nextflow.gpu.config"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+    tag "colabfold/colabfold"
+    tag "colabfold/downloadmodels"
+    tag "untar"
+
+    // The ~3.5 GB AlphaFold2 weights come from colabfold/downloadmodels, so the
+    // --data path that pipelines use is the one tested. No test queries the MSA
+    // server: the FASTA test runs in single-sequence mode, the template tests
+    // read a single-sequence A3M.
+    test("proteomics - faa - single sequence - gpu") {
+
+        setup {
+            run("COLABFOLD_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+                process {
+                    """
+                    input[0] = 'alphafold2_ptm'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--msa-mode single_sequence --num-models 1 --num-recycle 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = COLABFOLD_DOWNLOADMODELS.out.weights
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'pae', 'png', 'config', 'bibtex', 'log']),
+                    path(process.out.pdb[0][1]).readLines().count { line -> line.startsWith('ATOM') },
+                    path(process.out.json[0][1]).text.contains('plddt'),
+                    path(process.out.log[0][1]).text.contains('Done')
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - a3m - custom templates - gpu") {
+
+        setup {
+            run("COLABFOLD_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+                process {
+                    """
+                    input[0] = 'alphafold2_ptm'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--templates --num-models 1 --num-recycle 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage.a3m', checkIfExists: true)
+                ]
+                input[1] = COLABFOLD_DOWNLOADMODELS.out.weights
+                input[2] = [
+                    [ id:'1l2y' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1l2y.pdb', checkIfExists: true)
+                ]
+                input[3] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'pae', 'png', 'config', 'bibtex', 'log']),
+                    path(process.out.pdb[0][1]).readLines().count { line -> line.startsWith('ATOM') },
+                    path(process.out.log[0][1]).text.contains("found templates: ['1l2y_A']"),
+                    path(process.out.log[0][1]).text.contains('Done')
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - a3m - pdb hits - gpu") {
+
+        setup {
+            run("COLABFOLD_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+                process {
+                    """
+                    input[0] = 'alphafold2_ptm'
+                    """
+                }
+            }
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'local_pdb' ],
+                        file(params.modules_testdata_base_path + 'proteomics/colabfold/local_pdb.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--templates --num-models 1 --num-recycle 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage.a3m', checkIfExists: true)
+                ]
+                input[1] = COLABFOLD_DOWNLOADMODELS.out.weights
+                input[2] = [ [:], [] ]
+                input[3] = UNTAR.out.untar.map { meta, local_pdb ->
+                    [ meta, file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage_pdb_hits.m8', checkIfExists: true), local_pdb ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'pae', 'png', 'config', 'bibtex', 'log']),
+                    path(process.out.pdb[0][1]).readLines().count { line -> line.startsWith('ATOM') },
+                    path(process.out.log[0][1]).text.contains("found templates: ['1l2y_A']"),
+                    path(process.out.log[0][1]).text.contains('Done')
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - faa - gpu - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--msa-mode single_sequence --num-models 1 --num-recycle 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

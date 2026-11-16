@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBSV_CALL {
     tag "$meta.id"
     label 'process_medium'
@@ -13,7 +16,7 @@ process PBSV_CALL {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pbsv'), eval("pbsv --version |& sed 's/pbsv //;s/ .*//'"), topic: versions, emit: versions_pbsv
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +32,11 @@ process PBSV_CALL {
         ${fasta} \\
         ${svsig} \\
         ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbsv: \$(pbsv --version |& sed '1!d ; s/pbsv //')
-    END_VERSIONS
     """
 }

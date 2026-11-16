@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLOTSR {
     tag "${meta.id}"
     label 'process_single'
@@ -19,7 +22,7 @@ process PLOTSR {
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('plotsr'), eval("plotsr --version"), emit: versions_plotsr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,21 +47,11 @@ process PLOTSR {
         ${chrname_arg} \\
         ${args} \\
         -o ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plotsr: \$(plotsr --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plotsr: \$(plotsr --version)
-    END_VERSIONS
     """
 }

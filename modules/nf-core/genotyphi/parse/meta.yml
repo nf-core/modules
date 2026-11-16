@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/katholt/genotyphi"
       documentation: "https://github.com/katholt/genotyphi"
       tool_dev_url: "https://github.com/katholt/genotyphi"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -38,13 +39,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_genotyphi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genotyphi:
+          type: string
+          description: The name of the tool
+      - genotyphi --version |& sed 's/^.*GenoTyphi v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genotyphi:
+          type: string
+          description: The name of the tool
+      - genotyphi --version |& sed 's/^.*GenoTyphi v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

@@ -14,14 +14,15 @@ tools:
       documentation: "https://www.mdc-berlin.de/content/mirdeep2-documentation"
       tool_dev_url: "https://github.com/rajewsky-lab/mirdeep2"
       doi: "10.1093/nar/gkn491"
-      licence: ["GPL V3"]
+      licence:
+        - "GPL V3"
       identifier: biotools:mirdeep2
 
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information, e.g. `[ id:'sample1',
-          single_end:false ]`
+        description: Groovy Map containing sample information, e.g. `[
+          id:'sample1', single_end:false ]`
     - processed_reads:
         type: file
         description: FASTA file containing the processed sequencing reads.
@@ -34,7 +35,8 @@ input:
         ontologies: []
   - - meta2:
         type: map
-        description: Groovy Map for genome FASTA file metadata, e.g. `[ id:'genome']`
+        description: Groovy Map for genome FASTA file metadata, e.g. `[
+          id:'genome']`
     - fasta:
         type: file
         description: FASTA file of the corresponding genome.
@@ -42,12 +44,12 @@ input:
         ontologies: []
   - - meta3:
         type: map
-        description: Groovy Map for miRNA metadata, e.g. `[ id:'mirbase', single_end:false
-          ]`
+        description: Groovy Map for miRNA metadata, e.g. `[ id:'mirbase',
+          single_end:false ]`
     - mature:
         type: file
-        description: FASTA file containing known mature miRNAs of the species being
-          analyzed.
+        description: FASTA file containing known mature miRNAs of the species
+          being analyzed.
         pattern: "*.fa"
         ontologies: []
     - hairpin:
@@ -64,22 +66,38 @@ output:
   outputs:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. `[ id:'sample1',
-            single_end:false ]`
+          description: Groovy Map containing sample information e.g. `[
+            id:'sample1', single_end:false ]`
       - result*.{bed,csv,html}:
           type: file
-          description: Output files, including BED, CSV, and HTML results files with
-            an overview of detected miRNAs.
+          description: Output files, including BED, CSV, and HTML results files
+            with an overview of detected miRNAs.
           pattern: "result*.{bed,csv,html}"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_mirdeep2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirdeep2:
+          type: string
+          description: The name of the tool
+      - 2.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirdeep2:
+          type: string
+          description: The name of the tool
+      - 2.0.1:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@atrigila"
 maintainers:

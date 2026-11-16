@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELSEQ {
     tag "$meta.id"
     label 'process_single'
@@ -13,7 +16,8 @@ process TELSEQ {
 
     output:
     tuple val(meta), path("*.telseq.tsv"), emit: output
-    tuple val("${task.process}"), val('telseq'), eval('echo 0.0.2'), emit: versions_telseq, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('telseq'), val('0.0.2'), emit: versions_telseq, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
     when:

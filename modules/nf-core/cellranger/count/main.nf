@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "quay.io/nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.1.0"
 
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
-    path  reference
+    tuple val(meta2), path(reference)
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs

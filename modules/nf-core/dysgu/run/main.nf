@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DYSGU_RUN {
     tag "$meta.id"
     label 'process_medium'
@@ -17,9 +20,9 @@ process DYSGU_RUN {
     tuple val(meta7), path(exclude_bed)
 
     output:
-    tuple val(meta), path('*.vcf.gz')       , emit: vcf
-    tuple val(meta), path('*.vcf.gz.tbi')   , emit: tbi
-    path 'versions.yml'                     , emit: versions
+    tuple val(meta), path('*.vcf.gz')    , emit: vcf
+    tuple val(meta), path('*.vcf.gz.tbi'), emit: tbi
+    tuple val("${task.process}"), val('dysgu'), eval("dysgu --version 2>&1 | sed 's/.*version //'"), emit: versions_dysgu, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +51,6 @@ process DYSGU_RUN {
         . \\
         $input \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${args3} ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dysgu: \$(dysgu --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +58,5 @@ process DYSGU_RUN {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dysgu: \$(dysgu --version 2>&1)
-    END_VERSIONS
     """
 }

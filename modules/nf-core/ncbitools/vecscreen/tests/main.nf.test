@@ -15,13 +15,13 @@ nextflow_process {
     setup {
         run("BLAST_MAKEBLASTDB") {
             script "../../../blast/makeblastdb/main.nf"
-            config './nextflow.config'
             process {
                 """
-                input[0] = [[id:'test'],
+                input[0] = [
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
                 ]
-                input[1] = channel.of([])
+                input[1] = []
                 """
             }
         }
@@ -35,21 +35,17 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test'],
+                input[0] = [
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
         }
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 
@@ -62,21 +58,17 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [[id:'test'],
+                input[0] = [
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fasta/primers.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = BLAST_MAKEBLASTDB.out.db
                 """
             }
         }
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
-            )
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 }

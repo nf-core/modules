@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process IGVREPORTS"
     script "../main.nf"
+    config "./nextflow.config"
     process "IGVREPORTS"
 
     tag "modules"
@@ -11,16 +12,21 @@ nextflow_process {
     test("variants with fasta - vcf") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
-                input[0] = [ [ id:'test'], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
-                            [], []
-                        ]
-                input[1] = [ [id: 'test_genome'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [], []
+                ]
+                input[1] = [
+                    [ id: 'test_genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -28,14 +34,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                {
-                    with(process.out.report) {
-                        with(get(0)) {
-                            assert get(1).endsWith("_report.html")
-                        }
-                    }
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["report"])).match() }
             )
         }
 
@@ -45,17 +44,22 @@ nextflow_process {
     test("variants with fasta and tracks - vcf") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
-                input[0] = [ [ id:'test'], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
-                        ]
-                input[1] = [ [id: 'test_genome'],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                        ]
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'test_genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -63,14 +67,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                {
-                    with(process.out.report) {
-                        with(get(0)) {
-                            assert get(1).endsWith("_report.html")
-                        }
-                    }
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["report"])).match() }
             )
         }
 
@@ -78,16 +75,17 @@ nextflow_process {
 
 
     test("variants with genome - vcf") {
-    config "./nextflow_genome.config"
-
         when {
+            params {
+                module_args = '--genome hg38'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test'], // meta map
+                    [ id:'test' ],
                     file("https://raw.githubusercontent.com/igvteam/igv-reports/master/test/data/variants/variants.vcf"),
                     [], []
-                    ]
+                ]
                 // Need to specify the empty optional fasta input
                 input[1] = [ [:], [], [] ]
                 """
@@ -97,32 +95,26 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                {
-                    with(process.out.report) {
-                        with(get(0)) {
-                            assert get(1).endsWith("_report.html")
-                        }
-                    }
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["report"])).match() }
             )
         }
 
     }
 
     test("variant with genome - vcf - stub") {
-    config "./nextflow_genome.config"
-
         options "-stub"
 
         when {
+            params {
+                module_args = '--genome hg38'
+            }
             process {
-        """
+                """
                 input[0] = [
-                    [ id:'test'], // meta map
+                    [ id:'test' ],
                     file("https://raw.githubusercontent.com/igvteam/igv-reports/master/test/data/variants/variants.vcf"),
                     [], []
-                    ]
+                ]
                 input[1] = [ [:], [], [] ]
                 """
             }
@@ -131,14 +123,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match()},
-                {
-                    with(process.out.report) {
-                        with(get(0)) {
-                            assert get(1).endsWith("_report.html")
-                        }
-                    }
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

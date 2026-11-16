@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Gene/transcript quantification with RSEM
 //
@@ -49,12 +52,21 @@ workflow QUANTIFY_RSEM {
     ch_merged_isoforms_long     = channel.empty()
 
     if (!skip_merge) {
+        //
+        // Sorted by name for a stable cache key; the script globs the
+        // staged directory, so order doesn't affect output. Filtered to
+        // skip CUSTOM_RSEMMERGECOUNTS when there are no samples, since
+        // toSortedList() emits [] rather than nothing on an empty channel.
+        //
         CUSTOM_RSEMMERGECOUNTS (
             ch_counts_gene
-                .collect{ _meta, genes_count -> genes_count }
-                .map { genes_count -> [ ['id': 'all_samples'], genes_count ] },
+                .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .filter { sorted -> sorted.size() > 0 }
+                .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] },
             ch_counts_transcript
-                .collect{ _meta, transcripts_count -> transcripts_count }
+                .toSortedList { a, b -> a[1].name <=> b[1].name }
+                .filter { sorted -> sorted.size() > 0 }
+                .map { sorted -> sorted.collect { it[1] } }
         )
         ch_merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene
         ch_merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene

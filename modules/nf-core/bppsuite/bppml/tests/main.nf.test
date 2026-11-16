@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process BPPSUITE_BPPML"
+    script "../main.nf"
+    process "BPPSUITE_BPPML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bppsuite"
+    tag "bppsuite/bppml"
+
+    test("bppml - fasta + tree + params") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/bppml.bpp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("bppml - fasta + tree + params - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_tree.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/bppml.bpp', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

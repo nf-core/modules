@@ -29,10 +29,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam,
-                    process.out.bai,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["bai", "metrics"])
                 ).match() }
             )
         }
@@ -61,10 +58,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam,
-                    process.out.bai,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["bai", "metrics"])
                 ).match() }
             )
         }
@@ -90,13 +84,11 @@ nextflow_process {
         }
 
         then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.crai[0][1]).name,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["cram"], unstableKeys: ["crai", "metrics"], referenceFasta: fasta)
                 ).match() }
             )
         }
@@ -120,8 +112,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

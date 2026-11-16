@@ -5,11 +5,17 @@ keywords:
   - gtf
   - reference
 tools:
-  - stringtie2:
+  - stringtie:
       description: |
         Transcript assembly and quantification for RNA-Seq
       homepage: https://ccb.jhu.edu/software/stringtie/index.shtml
       documentation: https://ccb.jhu.edu/software/stringtie/index.shtml?t=manual
+      doi: "10.1186/s13059-019-1910-1"
+      publication:
+        author: "Kovaka, S., Zimin, A. V., Pertea, G. M., Razaghi, R., Salzberg, S. L. & Pertea, M."
+        year: 2019
+        title: "Transcriptome assembly from long-read RNA-seq alignments with StringTie2"
+        source: "Genome Biology"
       licence:
         - "MIT"
       identifier: biotools:stringtie
@@ -40,16 +46,6 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2306"
 output:
-  versions_stringtie:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - stringtie:
-          type: string
-          description: The name of the tool
-      - stringtie --version:
-          type: eval
-          description: The expression to obtain the version of the tool
   merged_gtf:
     - - meta:
           type: map
@@ -63,6 +59,16 @@ output:
           pattern: "${prefix}.{gtf}"
           ontologies:
             - edam: "http://edamontology.org/format_2306"
+  versions_stringtie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stringtie:
+          type: string
+          description: The name of the tool
+      - stringtie --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

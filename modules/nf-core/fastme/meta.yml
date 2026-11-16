@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastme"
 description: "Distance-based phylogeny with FastME"
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "http://www.atgc-montpellier.fr/fastme/usersguide.php"
       tool_dev_url: "https://gite.lirmm.fr/atgc/FastME/"
       doi: "10.1093/molbev/msv150"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       args_id: "$args"
-
       identifier: biotools:fastme
 input:
   - - meta:
@@ -74,13 +73,27 @@ output:
             although the provided file name will be overwritten
           pattern: "*.bootstrap"
           ontologies: []
+  versions_fastme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastme:
+          type: string
+          description: The name of the tool
+      - fastme --version |& sed '1!d ; s/FastME //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastme:
+          type: string
+          description: The name of the tool
+      - fastme --version |& sed '1!d ; s/FastME //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@itrujnara"
 maintainers:

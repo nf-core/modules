@@ -13,7 +13,12 @@ tools:
       homepage: "https://github.com/TRON-Bioinformatics/seq2HLA"
       documentation: "https://github.com/TRON-Bioinformatics/seq2HLA#readme"
       tool_dev_url: "https://github.com/TRON-Bioinformatics/seq2HLA"
-      doi: "10.1186/s13073-015-0240-5"
+      doi: "10.1186/gm403"
+      publication:
+        author: "Boegel, S., Löwer, M., Schäfer, M., Bukur, T., de Graaf, J., Boisguérin, V., Türeci, Ö., Diken, M., Castle, J. C. & Sahin, U."
+        year: 2012
+        title: "HLA typing from RNA-Seq sequence reads"
+        source: "Genome Medicine"
       licence:
         - "MIT"
       identifier: biotools:seq2HLA
@@ -30,50 +35,6 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
 output:
-  class1_genotype_2d:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassI-class.HLAgenotype2digits":
-          type: file
-          description: HLA Class I 2-digit genotype results
-          pattern: "*ClassI-class.HLAgenotype2digits"
-          ontologies: []
-  class2_genotype_2d:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassII.HLAgenotype2digits":
-          type: file
-          description: HLA Class II 2-digit genotype results
-          pattern: "*ClassII.HLAgenotype2digits"
-          ontologies: []
-  class1_genotype_4d:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassI-class.HLAgenotype4digits":
-          type: file
-          description: HLA Class I 4-digit genotype results
-          pattern: "*ClassI-class.HLAgenotype4digits"
-          ontologies: []
-  class2_genotype_4d:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassII.HLAgenotype4digits":
-          type: file
-          description: HLA Class II 4-digit genotype results
-          pattern: "*ClassII.HLAgenotype4digits"
-          ontologies: []
   class1_bowtielog:
     - - meta:
           type: map
@@ -84,17 +45,6 @@ output:
           type: file
           description: HLA Class I Bowtie alignment log
           pattern: "*ClassI-class.bowtielog"
-          ontologies: []
-  class2_bowtielog:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassII.bowtielog":
-          type: file
-          description: HLA Class II Bowtie alignment log
-          pattern: "*ClassII.bowtielog"
           ontologies: []
   class1_expression:
     - - meta:
@@ -107,49 +57,27 @@ output:
           description: HLA Class I expression results
           pattern: "*ClassI-class.expression"
           ontologies: []
-  class2_expression:
+  class1_genotype_2d:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassII.expression":
+      - "*ClassI-class.HLAgenotype2digits":
           type: file
-          description: HLA Class II expression results
-          pattern: "*ClassII.expression"
+          description: HLA Class I 2-digit genotype results
+          pattern: "*ClassI-class.HLAgenotype2digits"
           ontologies: []
-  class1_nonclass_genotype_2d:
+  class1_genotype_4d:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassI-nonclass.HLAgenotype2digits":
+      - "*ClassI-class.HLAgenotype4digits":
           type: file
-          description: HLA Class I non-classical 2-digit genotype results
-          pattern: "*ClassI-nonclass.HLAgenotype2digits"
-          ontologies: []
-  ambiguity:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.ambiguity":
-          type: file
-          description: HLA typing ambiguity results
-          pattern: "*.ambiguity"
-          ontologies: []
-  class1_nonclass_genotype_4d:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*ClassI-nonclass.HLAgenotype4digits":
-          type: file
-          description: HLA Class I non-classical 4-digit genotype results
-          pattern: "*ClassI-nonclass.HLAgenotype4digits"
+          description: HLA Class I 4-digit genotype results
+          pattern: "*ClassI-class.HLAgenotype4digits"
           ontologies: []
   class1_nonclass_bowtielog:
     - - meta:
@@ -172,6 +100,83 @@ output:
           type: file
           description: HLA Class I non-classical expression results
           pattern: "*ClassI-nonclass.expression"
+          ontologies: []
+  class1_nonclass_genotype_2d:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassI-nonclass.HLAgenotype2digits":
+          type: file
+          description: HLA Class I non-classical 2-digit genotype results
+          pattern: "*ClassI-nonclass.HLAgenotype2digits"
+          ontologies: []
+  class1_nonclass_genotype_4d:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassI-nonclass.HLAgenotype4digits":
+          type: file
+          description: HLA Class I non-classical 4-digit genotype results
+          pattern: "*ClassI-nonclass.HLAgenotype4digits"
+          ontologies: []
+  class2_bowtielog:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassII.bowtielog":
+          type: file
+          description: HLA Class II Bowtie alignment log
+          pattern: "*ClassII.bowtielog"
+          ontologies: []
+  class2_expression:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassII.expression":
+          type: file
+          description: HLA Class II expression results
+          pattern: "*ClassII.expression"
+          ontologies: []
+  class2_genotype_2d:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassII.HLAgenotype2digits":
+          type: file
+          description: HLA Class II 2-digit genotype results
+          pattern: "*ClassII.HLAgenotype2digits"
+          ontologies: []
+  class2_genotype_4d:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*ClassII.HLAgenotype4digits":
+          type: file
+          description: HLA Class II 4-digit genotype results
+          pattern: "*ClassII.HLAgenotype4digits"
+          ontologies: []
+  ambiguity:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.ambiguity":
+          type: file
+          description: HLA typing ambiguity results
+          pattern: "*.ambiguity"
           ontologies: []
   versions_seq2hla:
     - - ${task.process}:

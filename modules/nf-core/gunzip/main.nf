@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GUNZIP {
     tag "${archive}"
     label 'process_single'
@@ -19,8 +22,9 @@ process GUNZIP {
 
     script:
     def args = task.ext.args ?: ''
-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
-    def name = archive.toString() - '.gz' - ".${extension}"
+    def nameWithoutGz = archive.extension == 'gz' ? archive.baseName : archive.name
+	def extension = file(nameWithoutGz).extension
+	def name = file(nameWithoutGz).baseName
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """
@@ -35,8 +39,9 @@ process GUNZIP {
     """
 
     stub:
-    def extension = (archive.toString() - '.gz').tokenize('.')[-1]
-    def name = archive.toString() - '.gz' - ".${extension}"
+    def nameWithoutGz = archive.extension == 'gz' ? archive.baseName : archive.name
+	def extension = file(nameWithoutGz).extension
+	def name = file(nameWithoutGz).baseName
     def prefix = task.ext.prefix ?: name
     gunzip = prefix + ".${extension}"
     """

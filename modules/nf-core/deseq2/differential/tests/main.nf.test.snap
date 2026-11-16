@@ -858,6 +858,74 @@
             "nextflow": "25.04.2"
         }
     },
+    "RNAseq - Feature Counts - apeglm shrinkage": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT.treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.deseq2.results.tsv:md5,2e6f15c26629c232c7a052999eee8a49"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT.treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.deseq2.sizefactors.tsv:md5,0367d1ef76c5b9f01fc1f89647809b5d"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT.treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.normalised_counts.tsv:md5,6d9d7c02be9169ba4a649f8fb0f0b7ea"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT.treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.rlog.tsv:md5,0e9d0074e4acc651f50234fcce55a1cf"
+                ]
+            ],
+            [
+                
+            ],
+            [
+                [
+                    {
+                        "id": "genotype_WT_KO_treatment_Control_Treated",
+                        "formula": "~ genotype * treatment",
+                        "comparison": "genotypeWT.treatmentTreated"
+                    },
+                    "genotype_WT_KO_treatment_Control_Treated.deseq2.model.txt:md5,82165b8b24da8f8cffafa457290feeb3"
+                ]
+            ],
+            [
+                "versions.yml:md5,62c34d4f3d11c2bdbe2e4f7e6086b35e"
+            ],
+            "genotype_WT_KO_treatment_Control_Treated.deseq2.dispersion.png",
+            "genotype_WT_KO_treatment_Control_Treated.deseq2.dispersion.pdf",
+            "genotype_WT_KO_treatment_Control_Treated.dds.rld.rds"
+        ],
+        "timestamp": "2026-10-02T13:01:11.231375374",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "RNAseq - Feature Counts - formula + limma contrast string - shrunken": {
         "content": [
             [
@@ -1728,10 +1796,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-01-20T14:57:21.703291049",
+        "timestamp": "2026-10-02T13:04:11.757710113",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.2"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

@@ -1,6 +1,5 @@
 name: abricate_run
-description: Screen assemblies for antimicrobial resistance against multiple
-  databases
+description: Screen assemblies for antimicrobial resistance against multiple databases
 keywords:
   - bacteria
   - assembly
@@ -29,8 +28,7 @@ input:
           - edam: "http://edamontology.org/format_2204" # EMBL format
   - databasedir:
       type: directory
-      description: Optional location of local copy of database files, possibly
-        with custom databases set up with `abricate --setupdb`
+      description: Optional location of local copy of database files, possibly with custom databases set up with `abricate --setupdb`
       pattern: "*/"
 output:
   report:
@@ -70,3 +68,27 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/abricate:1.0.1--cb0de91fb575483f
+      build_id: bd-cb0de91fb575483f_1
+      scan_id: sc-edd7bf20f8363be6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/abricate:1.0.1--b0bd7a7945095dcd
+      build_id: bd-b0bd7a7945095dcd_1
+      scan_id: sc-fefb6bf688036423_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/abricate:1.0.1--a081be4a4f841ba9
+      build_id: bd-a081be4a4f841ba9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b8240fcd92840094d2cd1acc9822b7aa2c0af2783e22f6637b1de799a8fbecc/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/abricate:1.0.1--25e08cc23d5e4929
+      build_id: bd-25e08cc23d5e4929_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b75992c3e2d82899245f0e5839007cc1dc053cfa72d6018a66729e2ba540af75/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/abricate/run/.conda-lock/linux_amd64-bd-cb0de91fb575483f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/abricate/run/.conda-lock/linux_arm64-bd-b0bd7a7945095dcd_1.txt

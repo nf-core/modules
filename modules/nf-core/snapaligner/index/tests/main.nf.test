@@ -27,14 +27,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.index[0][1].collect { file(it).name }.toSorted(),
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/GenomeIndexHash*", "**/OverflowTable*"])).match() }
             )
         }
     }
@@ -56,14 +51,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

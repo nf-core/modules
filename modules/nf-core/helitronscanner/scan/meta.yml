@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "helitronscanner_scan"
-description: HelitronScanner scanHead and scanTail tools for Helitron transposons
-  in genomes
+description: HelitronScanner scanHead and scanTail tools for Helitron
+  transposons in genomes
 keywords:
   - genomics
   - helitron
@@ -14,7 +13,8 @@ tools:
       documentation: "https://sourceforge.net/projects/helitronscanner"
       tool_dev_url: "https://sourceforge.net/projects/helitronscanner"
       doi: "10.1073/pnas.1410068111"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -33,14 +33,14 @@ input:
       description: Command to execute. One of [ 'head', 'tail' ]
   - lcv_filepath:
       type: file
-      description: LCV file path. If not provided by setting it to [], the LCV file
-        packaged with the module will be used
+      description: LCV file path. If not provided by setting it to [], the LCV
+        file packaged with the module will be used
       pattern: "*.lcvs"
       ontologies: []
   - buffer_size:
       type: integer
-      description: Genome slice size (use negative or zero for non-buffer, i.e. treat
-        every whole chromosome)
+      description: Genome slice size (use negative or zero for non-buffer, i.e.
+        treat every whole chromosome)
 output:
   scan:
     - - meta:
@@ -53,13 +53,27 @@ output:
           description: Head or tail file depending on the command
           pattern: "*.$command"
           ontologies: []
+  versions_helitronscanner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

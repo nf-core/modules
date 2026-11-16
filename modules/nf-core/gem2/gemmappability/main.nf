@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEM2_GEMMAPPABILITY {
     tag "$meta.id"
     label 'process_high'
@@ -14,7 +17,7 @@ process GEM2_GEMMAPPABILITY {
 
     output:
     tuple val(meta), path("*.mappability")  , emit: map
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gem2'), val("20200110"), emit: versions_gem2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +25,6 @@ process GEM2_GEMMAPPABILITY {
     script:
     def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gem-mappability \\
         -I ${index} \\
@@ -30,23 +32,11 @@ process GEM2_GEMMAPPABILITY {
         -l ${read_length} \\
         -T ${task.cpus} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.mappability
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 }

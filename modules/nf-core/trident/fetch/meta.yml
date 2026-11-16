@@ -1,0 +1,66 @@
+name: "trident_fetch"
+description: Download data from a remote Poseidon repository
+keywords:
+  - poseidon-trident
+  - poseidon
+  - trident
+  - fetch
+tools:
+  - "trident":
+      description: "A tool to work with modular genotype databases formatted using Poseidon."
+      homepage: "https://www.poseidon-adna.org/"
+      documentation: "https://www.poseidon-adna.org/#/trident?id=fetch-command"
+      tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
+      doi: "10.7554/eLife.98317.1"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - archive_dir:
+        type: directory
+        description: |
+          The path to the directories containing any previously downloaded Poseidon archive files.
+          If this is provided, trident fetch will check these directories, and only download missing packages from the Poseidon-Framework server.
+    - fetch_s:
+        type: string
+        description: The fetchString provided to trident fetch (`--fetchString`), if any.
+    - fetch_fn:
+        type: file
+        description: A file containing a list of fetchStrings provided to trident fetch (`--fetchFile`), if any.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 ## Text
+output:
+  local_archive:
+    - ${output_archive_dir}:
+        type: directory
+        description: The local archive directory containing the downloaded Poseidon archive files. If no `archive_dir` is provided as input, this will default to "output_archive".
+  downloaded_packages:
+    - output_archive/*:
+        type: directory
+        description: A list containing the paths to downloaded Poseidon packages.
+  versions_trident:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@TCLamnidis"
+maintainers:
+  - "@TCLamnidis"
