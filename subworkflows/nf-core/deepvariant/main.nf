@@ -46,8 +46,10 @@ workflow DEEPVARIANT {
     )
 
     emit:
-    vcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
-    vcf_index  = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
-    gvcf       = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
-    gvcf_index = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
+    vcf                    = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
+    vcf_index              = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
+    gvcf                   = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
+    gvcf_index             = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
+    phased_reads_switches  = DEEPVARIANT_POSTPROCESSVARIANTS.out.phased_reads_switches
+    phased_reads_corrected = DEEPVARIANT_POSTPROCESSVARIANTS.out.phased_reads_corrected
 }

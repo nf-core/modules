@@ -11,7 +11,7 @@ process CUTESV {
         'community.wave.seqera.io/library/cutesv:2.1.4--f0ec240b872b2a98' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai), path(regions)
     tuple val(meta2), path(fasta)
 
     output:
@@ -24,6 +24,7 @@ process CUTESV {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def regions_bed = regions ? "-include_bed ${regions}" : ''
     """
     cuteSV \
         ${bam} \\
@@ -31,6 +32,7 @@ process CUTESV {
         ${prefix}.vcf \\
         . \\
         --threads ${task.cpus} \\
+        ${regions_bed} \\
         ${args}
     """
 

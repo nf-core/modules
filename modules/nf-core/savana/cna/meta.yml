@@ -34,7 +34,8 @@ input:
         type: file
         description: Tumour BAM/CRAM index
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # BAI
     - normal:
         type: file
         description: Optional normal BAM/CRAM file
@@ -48,7 +49,8 @@ input:
         description: Optional normal BAM/CRAM index
         pattern: "*.{bai,crai}"
         optional: true
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # BAI
     - snp_vcf:
         type: file
         description: Optional SNP VCF for allele counting (mutually exclusive with g1000_vcf and allele_counts_het_snps)
@@ -234,3 +236,4 @@ authors:
   - "@manascripts"
 maintainers:
   - "@manascripts"
+  - "@DylanMHouse"

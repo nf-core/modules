@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD_COLABFOLD"
+    script "../main.nf"
+    process "COLABFOLD_COLABFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+    tag "colabfold/colabfold"
+
+    // Stub only: the real predictions, with weights from colabfold/downloadmodels,
+    // run in main.gpu.nf.test
+    test("proteomics - faa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("proteomics - a3m - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage.a3m', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -9,8 +9,8 @@ process BWAMEM3_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98b0f53f5aed4a3743c17acf6fe59bb0587228a320a6bbe01b3ff3e9ccf85d43/data'
-        : 'community.wave.seqera.io/library/bwa-mem3:0.16.0--b56ccc800b165a7e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa51b6d8b6924f5ccb76a0b6d5380899901edbe821bf1440a3517029f198593a/data'
+        : 'community.wave.seqera.io/library/bwa-mem3:0.17.0--dfd4e361b022ff06'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -27,7 +27,8 @@ process BWAMEM3_INDEX {
     def args = task.ext.args ?: ''
     if (args.contains('--meth')) {
         // `index --meth` rejects -p and writes next to its input, so index a symlink named after the prefix.
-        // `mem --meth` needs neither the symlink nor the intermediate <prefix>.meth.fa.
+        // `mem --meth` needs neither the symlink, the intermediate <prefix>.meth.fa nor the plain <prefix>.bwt.2bit.64
+        // (it still reads the plain .amb, .ann and .pac), so a methylation index can't be used for plain alignment.
         """
         mkdir bwamem3
         ln -s ../${fasta} bwamem3/${prefix}
@@ -36,7 +37,7 @@ process BWAMEM3_INDEX {
             $args \\
             -t ${task.cpus} \\
             bwamem3/${prefix}
-        rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa
+        rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa bwamem3/${prefix}.bwt.2bit.64
         """
     } else {
         """
@@ -53,14 +54,9 @@ process BWAMEM3_INDEX {
     stub:
     def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
-    def meth_files = args.contains('--meth') ? "touch bwamem3/${prefix}.meth.{amb,ann,bwt.2bit.64,pac}" : ''
+    def index_files = args.contains('--meth') ? "{amb,ann,pac,meth.amb,meth.ann,meth.bwt.2bit.64,meth.pac}" : "{amb,ann,bwt.2bit.64,pac}"
     """
     mkdir bwamem3
-    touch bwamem3/${prefix}.0123
-    touch bwamem3/${prefix}.amb
-    touch bwamem3/${prefix}.ann
-    touch bwamem3/${prefix}.bwt.2bit.64
-    touch bwamem3/${prefix}.pac
-    ${meth_files}
+    touch bwamem3/${prefix}.${index_files}
     """
 }

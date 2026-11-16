@@ -7,14 +7,15 @@ process BWAMEM3_MEM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffd9362ddd396e0eb431def1812e02a274552b162355b242d974af65fcf83167/data'
-        : 'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:f271e572b6aa004b'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6c7e01f3fbb256f4cb63f77d5630fe44f9c41557cd25abccf1da96fd693bbbf8/data'
+        : 'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:ac58207ad8b29268'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
     tuple val(meta3), path(fasta)
     val sort_bam
+    val index_format
 
     output:
     tuple val(meta), path("*.{sam,bam,cram}"), emit: aligned
@@ -38,6 +39,19 @@ process BWAMEM3_MEM {
     if (!fasta && extension == "cram") {
         error("Fasta reference is required for CRAM output")
     }
+    // samtools picks the index format from the index file name given after `##idx##`
+    def output_file = "${prefix}.${extension}"
+    def write_index = ""
+    if (index_format) {
+        if (!sort_bam) {
+            error("index_format requires sort_bam = true: only coordinate-sorted output can be indexed")
+        }
+        if (!(extension == "bam" && index_format in ['bai', 'csi']) && !(extension == "cram" && index_format == 'crai')) {
+            error("index_format '${index_format}' is not valid for ${extension} output: use bai or csi for BAM, crai for CRAM")
+        }
+        output_file = "${prefix}.${extension}##idx##${prefix}.${extension}.${index_format}"
+        write_index = args2.contains('--write-index') ? "" : "--write-index"
+    }
     """
     # Skip the `index --meth` seed index: `mem --meth` derives it from the plain prefix.
     INDEX=`find -L ./ -name "*.amb" ! -name "*.meth.amb" | sed 's/\\.amb\$//'`
@@ -48,7 +62,7 @@ process BWAMEM3_MEM {
         -t ${task.cpus} \\
         \$INDEX \\
         ${reads} \\
-        | samtools ${samtools_command} ${args2} -@ ${task.cpus} ${reference} -o ${prefix}.${extension} -
+        | samtools ${samtools_command} ${args2} ${write_index} -@ ${task.cpus} ${reference} -o '${output_file}' -
     """
 
     stub:
@@ -62,11 +76,11 @@ process BWAMEM3_MEM {
     }
 
     def create_index = ""
-    if (extension == "cram") {
-        create_index = "touch ${prefix}.crai"
+    if (index_format) {
+        create_index = "touch ${prefix}.${extension}.${index_format}"
     }
-    else if (extension == "bam") {
-        create_index = "touch ${prefix}.csi"
+    else if (args2.contains('--write-index') && extension in ['bam', 'cram']) {
+        create_index = "touch ${prefix}.${extension}.${extension == 'cram' ? 'crai' : 'csi'}"
     }
     """
     touch ${prefix}.${extension}

@@ -4,8 +4,8 @@ process BULLSEYE_PARSEBAM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c267028d70907ccfc19fd125a704f7077197254083d97f5aaedda1bdb751c7b/data'
-        : 'community.wave.seqera.io/library/bullseye:1.0.0--bf11337413b3307b'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d1b3ef00779596d2255fc5dffeae072301ccc37d6cdb941c2aa8d67534ced41/data'
+        : 'community.wave.seqera.io/library/bullseye:1.1.0--6a0a52edc73ac840'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

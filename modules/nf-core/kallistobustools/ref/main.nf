@@ -58,18 +58,12 @@ process KALLISTOBUSTOOLS_REF {
     stub:
     if (workflow_mode == "standard") {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
+        touch kb_ref_out.idx t2g.txt cdna.fa
         """
     } else {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
-        touch intron.fa \\
-        touch cdna_t2c.txt \\
-        touch intron_t2c.txt
+        touch kb_ref_out.idx t2g.txt cdna.fa
+        touch intron.fa cdna_t2c.txt intron_t2c.txt
         """
     }
 }

@@ -6,9 +6,9 @@ process EPANG_PLACE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
-        'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5227fa1db763e3ed8267ff4f9e48d02b6a8a595a065607fd1a8f0b7fb8b17bb1/data'
+        : 'community.wave.seqera.io/library/epa-ng:0.3.8--b7414cbf4b37d776'}"
 
     input:
     tuple val(meta), path(queryaln), path(referencealn), path(referencetree)

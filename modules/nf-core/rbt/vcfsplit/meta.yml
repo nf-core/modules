@@ -12,7 +12,7 @@ tools:
       homepage: "https://github.com/rust-bio/rust-bio-tools"
       documentation: "https://github.com/rust-bio/rust-bio-tools"
       tool_dev_url: "https://github.com/rust-bio/rust-bio-tools"
-      doi: "no DOI available"
+      doi: ""
       licence: ["MIT"]
       identifier: ""
 
@@ -50,7 +50,7 @@ output:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - rbt:
+      - rust-bio-tools:
           type: string
           description: The tool name
       - "rbt --version | grep -oE '[0-9]+(\\.[0-9]+)+' | head -n 1":
@@ -62,7 +62,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - rbt:
+      - rust-bio-tools:
           type: string
           description: The tool name
       - "rbt --version | grep -oE '[0-9]+(\\.[0-9]+)+' | head -n 1":

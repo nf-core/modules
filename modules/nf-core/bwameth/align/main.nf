@@ -29,12 +29,20 @@ process BWAMETH_ALIGN {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
-    [ -e "${index}/${fasta}" ] || ln -s \$(readlink ${fasta}) ${index}/${fasta}
+
+    # bwameth.py expects the fasta next to its index files. Build a task-local directory of
+    # symlinks instead of writing into the staged index, which is shared by concurrent tasks
+    # (and may be read-only).
+    mkdir -p bwameth_ref
+    for f in ${index}/*; do
+        ln -s "../\$f" "bwameth_ref/\$(basename "\$f")"
+    done
+    ln -sf "../${fasta}" "bwameth_ref/${fasta}"
 
     bwameth.py \\
         ${args} \\
         -t ${task.cpus} \\
-        --reference ${index}/${fasta} \\
+        --reference bwameth_ref/${fasta} \\
         ${reads} \\
         | samtools view ${args2} -@ ${task.cpus} -bhS -o ${prefix}.bam -
     """

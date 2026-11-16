@@ -48,6 +48,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = false
+                input[4] = ''
                 """
             }
         }
@@ -72,6 +73,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
@@ -99,6 +101,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = false
+                input[4] = ''
                 """
             }
         }
@@ -126,6 +129,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
@@ -138,11 +142,11 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [fastq1, fastq2], meth index, fasta, true") {
+    test("sarscov2 - [fastq1, fastq2], meth index, fasta, true - bisulfite") {
 
         when {
             params {
-                module_args = ''
+                module_args = '--meth'
             }
             process {
                 """
@@ -156,6 +160,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX_METH.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
@@ -183,6 +188,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX_METH.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
@@ -215,6 +221,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX_METH.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
@@ -225,6 +232,123 @@ nextflow_process {
                 { assert bam(process.out.aligned[0][1]).getHeader().any { it.startsWith('@PG') && it.contains('--meth=taps') } },
                 { assert bam(process.out.aligned[0][1]).getSamLines().with { lines -> !lines.isEmpty() && lines.every { it.contains('\tXM:Z:') } } },
                 { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, bai") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = true
+                input[4] = 'bai'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new File(process.out.index[0][1]).name == 'test.bam.bai' },
+                { assert new File(process.out.index[0][1]).bytes[0..3] == ('BAI\u0001'.bytes as List) },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, csi") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = true
+                input[4] = 'csi'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new File(process.out.index[0][1]).name == 'test.bam.csi' },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, false, bai - unsorted fails") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = false
+                input[4] = 'bai'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('index_format requires sort_bam = true') }
+            )
+        }
+    }
+
+    test("sarscov2 - [fastq1, fastq2], index, fasta, true, bai - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = true
+                input[4] = 'bai'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -246,6 +370,7 @@ nextflow_process {
                 input[1] = BWAMEM3_INDEX.out.index
                 input[2] = Channel.of([[:], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
                 input[3] = true
+                input[4] = ''
                 """
             }
         }
