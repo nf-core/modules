@@ -6,9 +6,9 @@ process VCLUST_CLUSTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0':
-        'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04cb9a3b37b513bfdabb8f0e87050c5573bb7be92926617294cb3de221d37301/data'
+        : 'community.wave.seqera.io/library/vclust:1.3.1--039ae9c4872009ec'}"
 
     input:
     tuple val(meta), path(tsv)

@@ -9,8 +9,8 @@ process BWAMEM3_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98b0f53f5aed4a3743c17acf6fe59bb0587228a320a6bbe01b3ff3e9ccf85d43/data'
-        : 'community.wave.seqera.io/library/bwa-mem3:0.16.0--b56ccc800b165a7e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa51b6d8b6924f5ccb76a0b6d5380899901edbe821bf1440a3517029f198593a/data'
+        : 'community.wave.seqera.io/library/bwa-mem3:0.17.0--dfd4e361b022ff06'}"
 
     input:
     tuple val(meta), path(fasta)

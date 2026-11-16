@@ -4,7 +4,6 @@
 process PARABRICKS_DBSNP {
     tag "${meta.id}"
     label 'process_high'
-    label 'process_gpu'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
@@ -27,14 +26,12 @@ process PARABRICKS_DBSNP {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\
         dbsnp \\
         --in-vcf ${vcf_file} \\
         --in-dbsnp-file ${dbsnp_file} \\
         --out-vcf ${prefix}.vcf.gz \\
-        ${num_gpus} \\
         --preserve-file-symlinks \\
         ${args}
     """
