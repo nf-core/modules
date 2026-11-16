@@ -8,23 +8,31 @@ nextflow_process {
     tag "modules_nfcore"
     tag "scanpy"
     tag "scanpy/pca"
-
-    // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-    def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+    tag "untar"
 
     test("Should emit zarr output for zarr input - stub") {
 
         options '-stub'
 
-        def zarr
         setup {
-            zarr = extract(modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz').resolve('test.zarr')
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = [ [ id: 'test_zarr' ], file('${zarr}') ]
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
                 input[1] = "X_pca"
                 """
             }
@@ -42,15 +50,25 @@ nextflow_process {
 
     test("Should run with zarr input") {
 
-        def zarr
         setup {
-            zarr = extract(modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz').resolve('test.zarr')
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = [ [ id: 'test_zarr' ], file('${zarr}') ]
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
                 input[1] = "X_pca"
                 """
             }

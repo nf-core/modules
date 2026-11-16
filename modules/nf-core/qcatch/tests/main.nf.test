@@ -8,19 +8,31 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "qcatch"
+    tag "unzip"
 
     test("test_qcatch - 1k_pbmc_v3") {
 
-        def quant_dir
         setup {
-            // the URL has no extension, so name the compression
-            quant_dir = extract('https://umd.box.com/shared/static/zd4sai70uw9fs24e1qx6r41ec50pf45g.zip', compression: 'zip').resolve('test_data/1k_pbmc_v3')
+            // Download and extract QCatch test data from COMBINE-lab using UNZIP module
+            run("UNZIP") {
+                script "modules/nf-core/unzip/main.nf"
+                process {
+                    """
+                    meta = [id:'qcatch_test_data']
+                    input[0] = Channel.of([meta, file('https://umd.box.com/shared/static/zd4sai70uw9fs24e1qx6r41ec50pf45g.zip')])
+                    """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = [[id:'1k_pbmc_v3'], '10X_3p_v3', file('${quant_dir}')]
+                // Get the 1k_pbmc_v3 subdirectory from the extracted archive
+                input[0] = UNZIP.out.unzipped_archive.map { meta, dir ->
+                    def quant_dir = file("\${dir}/test_data/1k_pbmc_v3")
+                    [[id:'1k_pbmc_v3'], '10X_3p_v3', quant_dir]
+                }
                 """
             }
         }
@@ -42,16 +54,25 @@ nextflow_process {
 
         config "./nextflow_doublets.config"
 
-        def quant_dir
         setup {
-            // the URL has no extension, so name the compression
-            quant_dir = extract('https://umd.box.com/shared/static/zd4sai70uw9fs24e1qx6r41ec50pf45g.zip', compression: 'zip').resolve('test_data/1k_pbmc_v3')
+            run("UNZIP") {
+                script "modules/nf-core/unzip/main.nf"
+                process {
+                    """
+                    meta = [id:'qcatch_test_data']
+                    input[0] = Channel.of([meta, file('https://umd.box.com/shared/static/zd4sai70uw9fs24e1qx6r41ec50pf45g.zip')])
+                    """
+                }
+            }
         }
 
         when {
             process {
                 """
-                input[0] = [[id:'1k_pbmc_v3_doublets'], '10X_3p_v3', file('${quant_dir}')]
+                input[0] = UNZIP.out.unzipped_archive.map { meta, dir ->
+                    def quant_dir = file("\${dir}/test_data/1k_pbmc_v3")
+                    [[id:'1k_pbmc_v3_doublets'], '10X_3p_v3', quant_dir]
+                }
                 """
             }
         }
