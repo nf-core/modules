@@ -6,9 +6,9 @@ process CLAIR3 {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-    'docker.io/hkubal/clair3:v2.0.0' :
-    'docker.io/hkubal/clair3:v2.0.0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fac3c639be51f2aa2d33b51009f2a6c4175392b90c1073c670f7e70afa367f6d/data'
+        : 'community.wave.seqera.io/library/clair3:2.0.5--af64dfa2c8f0b388'}"
 
     input:
     tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
@@ -29,20 +29,11 @@ process CLAIR3 {
     task.ext.when == null || task.ext.when
 
     script:
-    def model = ""
-    if (!user_model) {
-        if (workflow.containerEngine in ['singularity', 'docker', 'podman']) {
-            model = "/opt/models/${packaged_model}"
-        } else {
-            error "Clair3 packaged models are only available in Docker/Singularity/Podman containers. Please use one of these profiles or provide a user_model instead."
-        }
-    }
-    if (!packaged_model) {
-        model = "${user_model}"
-    }
     if (packaged_model && user_model) {
         error("Two models specified ${user_model} and ${packaged_model}, specify one of them.")
     }
+    // bioconda clair3 bundles its models next to run_clair3.sh, wherever the environment is installed
+    def model = user_model ? "${user_model}" : "\$(dirname \$(command -v run_clair3.sh))/models/${packaged_model}"
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
