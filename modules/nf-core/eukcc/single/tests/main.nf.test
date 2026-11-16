@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'eukcc_db' ],
-                    file('https://ftp.ebi.ac.uk/pub/databases/metagenomics/eukcc/eukcc2_db_tiny_fungi.tar.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/metagenome/qc/eukcc2_db_tiny_fungi.tar.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -28,11 +28,14 @@ nextflow_process {
     test("fungi - fasta") {
 
         when {
+            params {
+                module_args = '--clade fungi'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/280/035/GCF_000280035.1_ASM28003v2/GCF_000280035.1_ASM28003v2_genomic.fna.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa', checkIfExists: true)
                 ]
                 input[1] = UNTAR.out.untar.map { meta, db -> db }
                 """
@@ -52,16 +55,50 @@ nextflow_process {
 
     }
 
+    test("fungi - faa - extra") {
+
+        when {
+            params {
+                module_args = '--clade fungi --AA --extra'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map { meta, db -> db }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).readLines().collect { it.split('\t').drop(1).join('\t') },
+                    process.out.marker_table,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.log[0][1]).text.contains('Wrote output to') }
+            )
+        }
+
+    }
+
     test("fungi - fasta - stub") {
 
         options "-stub"
 
         when {
+            params {
+                module_args = '--clade fungi'
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/280/035/GCF_000280035.1_ASM28003v2/GCF_000280035.1_ASM28003v2_genomic.fna.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa', checkIfExists: true)
                 ]
                 input[1] = UNTAR.out.untar.map { meta, db -> db }
                 """

@@ -56,17 +56,25 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-12T15:10:27.01096",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
-        }
+        },
+        "timestamp": "2026-11-12T15:10:27.01096"
     },
-    "fungi - fasta": {
+    "fungi - faa - extra": {
         "content": [
             [
                 "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
-                "100.0\t0.0\t1-131567-2759-33154-4751-112252-6029-6032-36734\troot;cellular organisms;Eukaryota;Opisthokonta;Fungi;Fungi incertae sedis;Microsporidia;Apansporoblastina;Unikaryonidae"
+                "95.83\t20.83\t1-131567-2759-33154-4751-112252\troot;cellular organisms;Eukaryota;Opisthokonta;Fungi;Fungi incertae sedis"
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "scmg_marker_table.csv.gz:md5,5d4e9b09ce1a682adb5d269c617f8839"
+                ]
             ],
             {
                 "versions_eukcc": [
@@ -78,10 +86,32 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-12T15:07:03.069197",
         "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
+            "nf-test": "0.9.2",
+            "nextflow": "26.04.3"
+        },
+        "timestamp": "2026-11-16T10:41:22.393102"
+    },
+    "fungi - fasta": {
+        "content": [
+            [
+                "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
+                "NA\tNA\tNA\tNA"
+            ],
+            {
+                "versions_eukcc": [
+                    [
+                        "EUKCC_SINGLE",
+                        "eukcc",
+                        "2.3.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "26.04.3"
+        },
+        "timestamp": "2026-11-16T10:36:33.90619"
     }
 }
