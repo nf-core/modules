@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_MPILEUP {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/315d2445cd42b0f5512fa37965a9c59bc93ae8614b7d105150caece6c61e2e71/data'
-        : 'community.wave.seqera.io/library/htslib_samtools_xz:1595ae0727655963'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523'}"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)

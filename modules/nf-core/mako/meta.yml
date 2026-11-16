@@ -102,3 +102,27 @@ authors:
 maintainers:
   - "@nh13"
   - "@emmcauley"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fg-mako:0.1.8--55317497dabc45f3
+      build_id: bd-55317497dabc45f3_1
+      scan_id: sc-a1026eb115155e91_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fg-mako:0.1.8--e197448660bdd54e
+      build_id: bd-e197448660bdd54e_1
+      scan_id: sc-67819a1567b907e7_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fg-mako:0.1.8--7d59f7b36eea9ee0
+      build_id: bd-7d59f7b36eea9ee0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/22e69bfd69daa7674f193e48e7b4daf80f5cad7227e07c4724250310f84a45cf/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fg-mako:0.1.8--1f2263df1f5cbd46
+      build_id: bd-1f2263df1f5cbd46_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8581689e70d48ca3b393654c08f87e95a7bed8fb825913dc5d89822c0a4bf4c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mako/.conda-lock/linux_amd64-bd-55317497dabc45f3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/mako/.conda-lock/linux_arm64-bd-e197448660bdd54e_1.txt

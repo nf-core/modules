@@ -1,6 +1,5 @@
 name: "virusrecom"
-description: Information-theory-based method for recombination detection of
-  viral lineages using weighted information content (WIC).
+description: Information-theory-based method for recombination detection of viral lineages using weighted information content (WIC).
 keywords:
   - recombination
   - virus
@@ -8,8 +7,7 @@ keywords:
   - phylogenetics
 tools:
   - "virusrecom":
-      description: "An information-theory-based method for recombination detection of
-        viral lineages."
+      description: "An information-theory-based method for recombination detection of viral lineages."
       homepage: "https://github.com/ZhijianZhou01/virusrecom"
       documentation: "https://github.com/ZhijianZhou01/virusrecom"
       tool_dev_url: "https://github.com/ZhijianZhou01/virusrecom"
@@ -36,15 +34,13 @@ input:
           - edam: http://edamontology.org/format_3475
     - iwic:
         type: file
-        description: Optional CSV file containing pre-computed WIC values. Use []
-          to skip.
+        description: Optional CSV file containing pre-computed WIC values. Use [] to skip.
         pattern: "*.csv"
         ontologies:
           - edam: http://edamontology.org/format_3752
   - query:
       type: string
-      description: Name of the query lineage to test for recombination (e.g.
-        query_recombinant). Use auto to scan all lineages.
+      description: Name of the query lineage to test for recombination (e.g. query_recombinant). Use auto to scan all lineages.
 output:
   results:
     - - meta:
@@ -54,8 +50,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "${prefix}/":
           type: directory
-          description: Directory containing virusrecom output files including WIC
-            plots and recombination tables
+          description: Directory containing virusrecom output files including WIC plots and recombination tables
   versions_virusrecom:
     - - ${task.process}:
           type: string
@@ -81,3 +76,27 @@ authors:
   - "@haggaikelisha-ai"
 maintainers:
   - "@haggaikelisha-ai"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/virusrecom:1.4.0--b0b2c64800fa6452
+      build_id: bd-b0b2c64800fa6452_1
+      scan_id: sc-6e2470b3b3362348_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/virusrecom:1.4.0--f4e62778510f3556
+      build_id: bd-f4e62778510f3556_1
+      scan_id: sc-fe964da06c40dfb5_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/virusrecom:1.4.0--469e48c17bdf602b
+      build_id: bd-469e48c17bdf602b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee93b7d3465edaea79b48300b720c4aec8c98651deb23faf48ac6d3e4edf7051/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/virusrecom:1.4.0--a1cbf24a4d197dcc
+      build_id: bd-a1cbf24a4d197dcc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc4e9e01ce104f8f1ba09daf74ec67846a1665a057418d6e06721e9396cf66ea/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/virusrecom/.conda-lock/linux_amd64-bd-b0b2c64800fa6452_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/virusrecom/.conda-lock/linux_arm64-bd-f4e62778510f3556_1.txt

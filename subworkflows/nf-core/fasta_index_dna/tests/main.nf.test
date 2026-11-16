@@ -10,6 +10,7 @@ nextflow_workflow {
     tag "bowtie2/build"
     tag "bwa/index"
     tag "bwamem2/index"
+    tag "bwamem3/index"
     tag "dragmap/hashtable"
     tag "snapaligner/index"
 
@@ -79,6 +80,28 @@ nextflow_workflow {
             assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
+    test("Params: bwamem3 | generate bwamem3 index") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [],
+                    []
+                    ])
+                input[2] = 'bwamem3'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
+        }
+    }
     test("Params: dragmap | generate dragmap hashtable") {
 
         when {
@@ -129,8 +152,6 @@ nextflow_workflow {
             )
         }
     }
-
-
     test("Params: bowtie2 | generate bowtie2 index - stub") {
         options '-stub'
         when {
@@ -189,6 +210,28 @@ nextflow_workflow {
                     []
                     ])
                 input[2] = 'bwamem2'
+                """
+            }
+        }
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
+        }
+    }
+    test("Params: bwamem3 | generate bwamem3 index - stub") {
+        options '-stub'
+        when {
+            workflow {
+                """
+                input[0] = Channel.value([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    ])
+                input[1] = Channel.value([
+                    [],
+                    []
+                    ])
+                input[2] = 'bwamem3'
                 """
             }
         }

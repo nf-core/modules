@@ -232,3 +232,17 @@ authors:
   - "@marrip"
 maintainers:
   - "@marrip"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/resfinder:4.1.11--086f50dea08746a8
+      build_id: bd-086f50dea08746a8_1
+      scan_id: sc-67d5503cee3df64e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/resfinder:4.1.11--c09ef14370c1f1d2
+      build_id: bd-c09ef14370c1f1d2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a9b883095072998e99bc53ae775aeafc744902bd976261dc5a439fe19299c31/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/resfinder/run/.conda-lock/linux_amd64-bd-086f50dea08746a8_1.txt

@@ -15,8 +15,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true,
-                            "index_id": "genome"
+                            "index_id": "genome",
+                            "single_end": true
                         },
                         "genome.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -32,10 +32,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-25T09:44:29.66627682",
+        "timestamp": "2026-11-10T23:07:57.101019",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.10.2"
         }
     },
     "sarscov2 - fastq - paired-end": {
@@ -57,8 +57,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": false,
-                            "index_id": "genome"
+                            "index_id": "genome",
+                            "single_end": false
                         },
                         "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                     ]
@@ -74,10 +74,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-25T09:31:25.930510862",
+        "timestamp": "2026-11-10T23:07:52.114578",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.10.2"
         }
     },
     "sarscov2 - fastq - single-end": {
@@ -96,8 +96,8 @@
                     [
                         {
                             "id": "test",
-                            "single_end": true,
-                            "index_id": "genome"
+                            "index_id": "genome",
+                            "single_end": true
                         },
                         "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                     ]
@@ -113,10 +113,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-25T09:31:18.10054354",
+        "timestamp": "2026-11-10T23:07:46.796022",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.10.2"
         }
     },
     "sarscov2 - identical fasta should be indexed only once": {
@@ -142,16 +142,16 @@
                     [
                         {
                             "id": "sample1",
-                            "single_end": true,
-                            "index_id": "genome"
+                            "index_id": "genome",
+                            "single_end": true
                         },
                         "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                     ],
                     [
                         {
                             "id": "sample2",
-                            "single_end": true,
-                            "index_id": "genome"
+                            "index_id": "genome",
+                            "single_end": true
                         },
                         "genome.idx:md5,84e4985c91800686db9c9dca28fabd1a"
                     ]
@@ -174,10 +174,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-25T09:24:55.20131212",
+        "timestamp": "2026-11-10T23:08:02.317983",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.10.2"
         }
     }
 }

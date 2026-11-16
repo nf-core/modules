@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_TRIMHEADER {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9b1a71ab018f22bcae5f800c93b0a6627516210c2f3bcf6c5a5af8cfdfb1d99/data'
-        : 'community.wave.seqera.io/library/gawk_htslib_samtools:908360748e8474ae'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf776bd8977ad787661a64512dbecfbe70f88b504f939b473aa4ad87b1747edd/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_gawk:5366169842fe8538'}"
 
     input:
     tuple val(meta), path(bam, stageAs: 'input/*'), path(bai, stageAs: 'input/*')

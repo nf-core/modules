@@ -1,6 +1,5 @@
 name: "custom_summarisetelomereestimation"
-description: "Normalise and combine telomere length and content estimates from telseq,
-  telogator2, and telomerehunter into a unified summary"
+description: "Normalise and combine telomere length and content estimates from telseq, telogator2, and telomerehunter into a unified summary"
 keywords:
   - telomere
   - summary
@@ -23,15 +22,13 @@ input:
           e.g. [ id:'test' ]
     - length_tsv:
         type: file
-        description: TSV file from telseq or telogator2 with telomere length
-          estimates
+        description: TSV file from telseq or telogator2 with telomere length estimates
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475
     - content_tsv:
         type: file
-        description: Optional TSV file from telomerehunter with telomere content
-          estimates
+        description: Optional TSV file from telomerehunter with telomere content estimates
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475
@@ -47,8 +44,7 @@ output:
             e.g. [ id:'test' ]
       - "*_telomere_summary.tsv":
           type: file
-          description: Unified summary TSV with normalised telomere length (kb)
-            and content metrics
+          description: Unified summary TSV with normalised telomere length (kb) and content metrics
           pattern: "*_telomere_summary.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -67,3 +63,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pandas_python:a1229de030b588d2
+      build_id: bd-a1229de030b588d2_1
+      scan_id: sc-ea42c2b9f4149bae_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pandas_python:5679d1c71bbef740
+      build_id: bd-5679d1c71bbef740_1
+      scan_id: sc-5d0c5bff95a67c5a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pandas_python:0af8588ef30c9f96
+      build_id: bd-0af8588ef30c9f96_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/93f76f0461c25ad04c5f645d7eadbc8ec12c7b2100b0ffef05dc6509e03dac3e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pandas_python:9f3106e0e16e0c4a
+      build_id: bd-9f3106e0e16e0c4a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8e09d3729e7f2fb09b4f0171f3343a03e37e984a1b349b79d22e835c4f141486/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/summarisetelomereestimation/.conda-lock/linux_amd64-bd-a1229de030b588d2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/summarisetelomereestimation/.conda-lock/linux_arm64-bd-5679d1c71bbef740_1.txt

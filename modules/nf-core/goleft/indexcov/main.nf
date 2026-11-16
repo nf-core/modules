@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GOLEFT_INDEXCOV {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1'
-        : 'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d1e3f3b3200ddd017a04f37038aa0af3b1948b55fb9e8393447f2463c98ffdb/data'
+        : 'community.wave.seqera.io/library/goleft_htslib:f68a4f023ff8042a'}"
 
     input:
     tuple val(meta), path(bams), path(indexes)

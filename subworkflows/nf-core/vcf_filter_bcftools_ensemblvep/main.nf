@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view'
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep'
 include { HTSLIB_BGZIPTABIX    } from '../../../modules/nf-core/htslib/bgziptabix'

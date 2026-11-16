@@ -93,3 +93,27 @@ authors:
 maintainers:
   - "@Midnighter"
   - "@gallvp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sra-tools_curl:ba1c2f8a8493c0f2
+      build_id: bd-ba1c2f8a8493c0f2_1
+      scan_id: sc-656fb8fea1676fcc_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sra-tools_curl:c1e36977de327cd2
+      build_id: bd-c1e36977de327cd2_1
+      scan_id: sc-e3dbba7123f5cd55_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sra-tools_curl:21812ceb6834759b
+      build_id: bd-21812ceb6834759b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14d03cdaeca140996327f195b642b332f6d24432cec5c69cd420fb5843eb4323/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sra-tools_curl:4d4cbf86ddcf59cc
+      build_id: bd-4d4cbf86ddcf59cc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9a7d146a9a0215c5386603fe7f0b3c347254854a447ed8dd4919a4b2eae2a88/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sratools/prefetch/.conda-lock/linux_amd64-bd-c1e36977de327cd2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sratools/prefetch/.conda-lock/linux_arm64-bd-ba1c2f8a8493c0f2_1.txt

@@ -1,0 +1,121 @@
+name: colabfold_downloadmodels
+description: Downloads the AlphaFold2 (or DeepFold) parameters that ColabFold needs, once, as a data directory for colabfold/colabfold
+keywords:
+  - protein structure
+  - structure prediction
+  - AlphaFold2
+  - model
+  - download
+tools:
+  - colabfold:
+      description: |
+        ColabFold runs AlphaFold2 (and other folding models) while sourcing its
+        multiple sequence alignment from a remote MMseqs2 server. This module
+        calls ColabFold's own downloader, `download_alphafold_params()`, which
+        extracts the parameters into `params/` and writes the empty
+        `params/download*_finished.txt` marker that `colabfold_batch` checks
+        before using a data directory.
+      homepage: https://github.com/sokrypton/ColabFold
+      documentation: https://github.com/sokrypton/ColabFold
+      doi: 10.1038/s41592-022-01488-1
+      licence: ["MIT"]
+      identifier: biotools:colabfold
+
+input:
+  - model_type:
+      type: string
+      description: |
+        Set of parameters to download, as named by `colabfold_batch --model-type`:
+        `alphafold2_ptm` (monomers, ~3.5 GB), `alphafold2_multimer_v1`,
+        `alphafold2_multimer_v2`, `alphafold2_multimer_v3` (complexes) or `deepfold_v1`
+output:
+  weights:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map naming the downloaded parameter set
+            e.g. [ id:'alphafold2_ptm' ]
+      - weights:
+          type: directory
+          description: ColabFold data directory with the parameters and the download marker in `params/`, to pass as `weights` to colabfold/colabfold
+          pattern: "weights"
+          ontologies: []
+  versions_colabfold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_dm_haiku:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dm-haiku:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("dm-haiku"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_flax:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("flax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dm-haiku:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("dm-haiku"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("flax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/colabfold_dm-haiku_flax:50a22b7e73876edb
+      build_id: bd-50a22b7e73876edb_1
+      scan_id: sc-7d6a4f09ec9a8b34_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/colabfold_dm-haiku_flax:797eb5b15587ba43
+      build_id: bd-797eb5b15587ba43_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2de6276b0c23cc1aaab4af2aa1336fa943b0c45d43ce4ed483911fb99a3db33/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/colabfold/downloadmodels/.conda-lock/linux_amd64-bd-50a22b7e73876edb_1.txt

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE2_CHUNK                          } from '../../../modules/nf-core/glimpse2/chunk/main'
 include { GLIMPSE2_SPLITREFERENCE                 } from '../../../modules/nf-core/glimpse2/splitreference/main'
 include { GLIMPSE2_PHASE                          } from '../../../modules/nf-core/glimpse2/phase/main'

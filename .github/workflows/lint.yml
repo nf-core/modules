@@ -37,9 +37,9 @@ jobs:
     runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+      - uses: nf-core/setup-nextflow@c66f1bfa2dc817ae23f4b34eaa26fa5f1453ca71 # v3
       - name: Run prek
-        uses: j178/prek-action@1382ad72dea72f9d53832f2bcb65b3e87a947204 # v3.0.1
+        uses: j178/prek-action@7b101f8338a08d2bd6fdb3625e4e7692428763a3 # v3.1.1
 
   ###################
   # nf-core linting #
@@ -130,7 +130,7 @@ jobs:
           sudo rm -rf ./.* || true
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.15"
 
@@ -145,13 +145,13 @@ jobs:
       - name: Install pip
         run: python -m pip install --upgrade pip
 
-      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6
         with:
           distribution: "temurin"
           java-version: "25"
 
       - name: Set up Nextflow
-        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+        uses: nf-core/setup-nextflow@c66f1bfa2dc817ae23f4b34eaa26fa5f1453ca71 # v3
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
@@ -178,12 +178,12 @@ jobs:
           sudo rm -rf ./.* || true
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.15"
 
       - name: Set up Nextflow
-        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+        uses: nf-core/setup-nextflow@c66f1bfa2dc817ae23f4b34eaa26fa5f1453ca71 # v3
 
       - name: Install nf-core tools development version
         run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev

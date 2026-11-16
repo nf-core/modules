@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { HMMER_HMMSEARCH } from '../../../modules/nf-core/hmmer/hmmsearch/main'
 include { HMMER_FORMATTSV as HMMER_FORMATTSV_TBLOUT       } from '../../../modules/nf-core/hmmer/formattsv/main'
 include { HMMER_FORMATTSV as HMMER_FORMATTSV_DOMTBLOUT    } from '../../../modules/nf-core/hmmer/formattsv/main'

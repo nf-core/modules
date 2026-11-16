@@ -19,6 +19,7 @@ nextflow_process {
                 ]
 
                 input[1] = []
+                input[2] = 'vcf.gz'
                 """
             }
         }
@@ -39,16 +40,14 @@ nextflow_process {
         when {
             process {
                 """
-                // Create dummy lua prelude file
-                def lua_file = file("${moduleDir}/tests/prelude_test.lua")
-                lua_file.text = 'header:add_filter({ID="LowQual", Description="Qual less than 1000"})'
-
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                 ]
 
-                input[1] = file(lua_file)
+                input[1] = channel.of('header:add_filter({ID="LowQual", Description="Qual less than 1000"})')
+                    .collectFile(name: 'prelude_test.lua')
+                input[2] = 'vcf.gz'
                 """
             }
         }
@@ -77,6 +76,7 @@ nextflow_process {
                 ]
 
                 input[1] = []
+                input[2] = 'vcf.gz'
                 """
             }
         }
@@ -105,6 +105,7 @@ nextflow_process {
                 ]
 
                 input[1] = []
+                input[2] = 'vcf.gz'
                 """
             }
         }

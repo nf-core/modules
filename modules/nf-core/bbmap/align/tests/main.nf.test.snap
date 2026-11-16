@@ -1,11 +1,28 @@
 {
     "single_end - index": {
         "content": [
-            "test.bbmap.log",
-            [
-                "c17efa4ccc4e9018090792c71af92660"
-            ],
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5Reads,c17efa4ccc4e9018090792c71af92660"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_ALIGN",
@@ -15,19 +32,182 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:48:01.924508358",
+        "timestamp": "2026-10-15T12:38:34.065962",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2] - transcriptome - unmapped - fastq.gz": {
+        "content": [
+            {
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unmapped_1.fastq.gz",
+                            "test.unmapped_2.fastq.gz"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            [
+                [
+                    [
+                        "test.unmapped_1.fastq.gz",
+                        4,
+                        "316e3bf71159aab93c75c735ab71c6ca"
+                    ],
+                    [
+                        "test.unmapped_2.fastq.gz",
+                        4,
+                        "e2c49ca4ab6f381c8f55c7a157e67e6a"
+                    ]
+                ]
+            ]
+        ],
+        "timestamp": "2026-10-15T12:39:12.988607",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2] - transcriptome - unmapped - fastq.gz - stub": {
+        "content": [
+            {
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unmapped_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.unmapped_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T12:13:30.058914",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2] - transcriptome - mapped - fastq.gz - interleaved_output": {
+        "content": [
+            {
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mapped.fastq.gz"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            [
+                [
+                    [
+                        "test.mapped.fastq.gz",
+                        792,
+                        "48ab9757d7325cfa66b97e62b3d93073"
+                    ]
+                ]
+            ]
+        ],
+        "timestamp": "2026-10-15T12:39:23.751512",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "paired_end - index": {
         "content": [
-            "test.bbmap.log",
-            [
-                "88d78879c34214288644aec7ec3cb270"
-            ],
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,88d78879c34214288644aec7ec3cb270"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_ALIGN",
@@ -37,41 +217,36 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:47:49.973917189",
+        "timestamp": "2026-10-15T12:38:16.009948",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "paired_end - fasta": {
-        "content": [
-            "test.bbmap.log",
-            [
-                "88d78879c34214288644aec7ec3cb270"
-            ],
-            {
-                "versions_bbmap": [
-                    [
-                        "BBMAP_ALIGN",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-11T13:47:38.195310831",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "paired_end - index - pigz": {
         "content": [
-            "test.bbmap.log",
-            [
-                "88d78879c34214288644aec7ec3cb270"
-            ],
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,88d78879c34214288644aec7ec3cb270"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_ALIGN",
@@ -81,19 +256,226 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:48:13.729102436",
+        "timestamp": "2026-10-15T12:38:48.965474",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "paired_end - fasta": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,88d78879c34214288644aec7ec3cb270"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T12:37:59.91342",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2] - transcriptome - all - fastq.gz": {
+        "content": [
+            {
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.all_1.fastq.gz",
+                            "test.all_2.fastq.gz"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            [
+                [
+                    [
+                        "test.all_1.fastq.gz",
+                        400,
+                        "4de5088852e098ec6bd5dfb05425fe16"
+                    ],
+                    [
+                        "test.all_2.fastq.gz",
+                        400,
+                        "e79e5570171ab63573c2c704aa1c0c6b"
+                    ]
+                ]
+            ]
+        ],
+        "timestamp": "2026-10-15T12:39:05.299667",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - fastq - transcriptome - mapped - bam": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapped.bam:md5Reads,946280c22bbf653e797187227a239974"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T12:39:41.888634",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - interleaved fastq - transcriptome - unmapped - fastq.gz": {
+        "content": [
+            {
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unmapped_1.fastq.gz",
+                            "test.unmapped_2.fastq.gz"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            [
+                [
+                    [
+                        "test.unmapped_1.fastq.gz",
+                        4,
+                        "316e3bf71159aab93c75c735ab71c6ca"
+                    ],
+                    [
+                        "test.unmapped_2.fastq.gz",
+                        4,
+                        "e2c49ca4ab6f381c8f55c7a157e67e6a"
+                    ]
+                ]
+            ]
+        ],
+        "timestamp": "2026-10-15T12:39:32.99926",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "paired_end - index - stub": {
         "content": [
-            "test.bbmap.log",
-            [
-                "d41d8cd98f00b204e9800998ecf8427e"
-            ],
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_ALIGN",
@@ -103,10 +485,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:48:22.127892418",
+        "timestamp": "2026-10-15T12:38:57.089142",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     }
 }

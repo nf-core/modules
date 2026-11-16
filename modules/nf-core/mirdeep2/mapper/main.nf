@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MIRDEEP2_MAPPER {
     tag "$meta.id"
     label 'process_medium'
@@ -28,6 +31,7 @@ process MIRDEEP2_MAPPER {
         ${reads} \\
         $args \\
         -p ${index}/${meta2.id}  \\
+        -o ${task.cpus} \\
         -s ${prefix}_collapsed.fa \\
         -t ${prefix}_reads_collapsed_vs_${meta2.id}_genome.arf
     """

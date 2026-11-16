@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALLISTOBUSTOOLS_REF {
     tag "$meta.id"
     label 'process_medium'
@@ -55,18 +58,12 @@ process KALLISTOBUSTOOLS_REF {
     stub:
     if (workflow_mode == "standard") {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
+        touch kb_ref_out.idx t2g.txt cdna.fa
         """
     } else {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
-        touch intron.fa \\
-        touch cdna_t2c.txt \\
-        touch intron_t2c.txt
+        touch kb_ref_out.idx t2g.txt cdna.fa
+        touch intron.fa cdna_t2c.txt intron_t2c.txt
         """
     }
 }

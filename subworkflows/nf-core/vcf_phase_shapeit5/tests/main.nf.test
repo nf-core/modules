@@ -10,17 +10,16 @@ nextflow_workflow {
     tag "subworkflows/vcf_phase_shapeit5"
     tag "vcf_phase_shapeit5"
 
-    tag "glimpse2/chunk"
-    tag "glimpse2"
-    tag "shapeit5/phasecommon"
-    tag "shapeit5/ligate"
-    tag "shapeit5"
-    tag "bcftools/index"
     tag "bcftools"
-
-    tag "bcftools/view"
     tag "bcftools/concat"
+    tag "bcftools/index"
     tag "bcftools/pluginfilltags"
+    tag "bcftools/view"
+    tag "glimpse2"
+    tag "glimpse2/chunk"
+    tag "shapeit5"
+    tag "shapeit5/ligate"
+    tag "shapeit5/phasecommon"
 
     test("homo_sapiens - target - no chunks, no ref, no scaffold, no map - two chromosomes in two vcf") {
         when {

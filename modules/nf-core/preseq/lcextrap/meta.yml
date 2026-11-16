@@ -76,3 +76,27 @@ authors:
 maintainers:
   - "@drpatelh"
   - "@edmundmiller"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/preseq:3.2.0--c485d1f68d51de10
+      build_id: bd-c485d1f68d51de10_1
+      scan_id: sc-229b0262144f6304_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/preseq:3.2.0--074b22872ea89b59
+      build_id: bd-074b22872ea89b59_1
+      scan_id: sc-5d926dca1c929f34_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/preseq:3.2.0--2f439e0eb6cb17a9
+      build_id: bd-2f439e0eb6cb17a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/497b9b64f7a0554e9e0eaba8b789fc8796a01f61547a52d6006774bea4b853d0/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/preseq:3.2.0--f838f1ee276e19c5
+      build_id: bd-f838f1ee276e19c5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7be1d7d080ab08a30cee8f3497d38e939cf107fc4b0e08ccfd88d819e0e9a81b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/preseq/lcextrap/.conda-lock/linux_amd64-bd-c485d1f68d51de10_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/preseq/lcextrap/.conda-lock/linux_arm64-bd-074b22872ea89b59_1.txt

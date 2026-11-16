@@ -1,0 +1,111 @@
+name: "plink2_makepgen"
+description: Convert PLINK 1 binary files to PLINK 2 binary format
+keywords:
+  - plink2
+  - genotype
+  - conversion
+  - population genetics
+tools:
+  - "plink2":
+      description: Whole genome association analysis toolset
+      homepage: "https://www.cog-genomics.org/plink/2.0/"
+      documentation: "https://www.cog-genomics.org/plink/2.0/data"
+      tool_dev_url: "https://github.com/chrchang/plink-ng"
+      doi: "10.1186/s13742-015-0047-8"
+      licence:
+        - "GPL v3"
+      identifier: "biotools:plink"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing dataset information
+          e.g. `[ id:'population1' ]`
+    - bed:
+        type: file
+        description: PLINK 1 binary genotype file
+        pattern: "*.bed"
+        ontologies: []
+    - bim:
+        type: file
+        description: PLINK 1 variant information file
+        pattern: "*.bim"
+        ontologies: []
+    - fam:
+        type: file
+        description: PLINK 1 sample information file
+        pattern: "*.fam"
+        ontologies: []
+output:
+  pgen:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'population1' ]`
+      - "*.pgen":
+          type: file
+          description: PLINK 2 binary genotype table
+          pattern: "*.{pgen}"
+          ontologies: []
+  pvar:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'population1' ]`
+      - "*.pvar":
+          type: file
+          description: PLINK 2 variant information file
+          pattern: "*.{pvar}"
+          ontologies: []
+  psam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'population1' ]`
+      - "*.psam":
+          type: file
+          description: PLINK 2 sample information file
+          pattern: "*.{psam}"
+          ontologies: []
+  versions_plink2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//; s/LM\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//; s/LM\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@malghuraybi"
+maintainers:
+  - "@malghuraybi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink2:2.00a5.10--223badfc86e2b6e6
+      build_id: bd-223badfc86e2b6e6_1
+      scan_id: sc-f6906267c0a85442_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink2:2.00a5.10--d40179e933fa9ccc
+      build_id: bd-d40179e933fa9ccc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c7dfbbefb7c4dccd8c211a1c8bf94988dcd6a58a147e5c22e2553e80af907569/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink2/makepgen/.conda-lock/linux_amd64-bd-223badfc86e2b6e6_1.txt

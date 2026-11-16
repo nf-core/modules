@@ -1,0 +1,151 @@
+// nf-core modules test fastga
+nextflow_process {
+
+    name "Test Process FASTGA_FASTGA"
+    script "../main.nf"
+    process "FASTGA_FASTGA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastga"
+    tag "fastga/fastga"
+    config "./nextflow.config"
+
+    test("sarscov2 - paf") {
+
+        when {
+            params {
+                fastga_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "paf"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["paf"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - paf - keep intermediates") {
+
+        when {
+            params {
+                fastga_args = "-k"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true),
+                ]
+                input[1] = "paf"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["onegdb", "paf"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - psl") {
+
+        when {
+            params {
+                fastga_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "psl"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["psl"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - 1aln") {
+
+        when {
+            params {
+                fastga_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "1aln"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["onealn"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                fastga_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
+                input[1] = "paf"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

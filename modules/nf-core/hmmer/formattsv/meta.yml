@@ -103,13 +103,13 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/gawk_gzip:34c193f8cae8819b
-      build_id: bd-34c193f8cae8819b_1
-      scan_id: sc-b38f66f613abdf58_1
+      name: community.wave.seqera.io/library/gawk_gzip:fe0c202000bc8ed4
+      build_id: bd-fe0c202000bc8ed4_1
+      scan_id: sc-0653c1ae5a7281a7_2
     linux/arm64:
-      name: community.wave.seqera.io/library/gawk_gzip:f957caaf8edc98ce
-      build_id: bd-f957caaf8edc98ce_1
-      scan_id: sc-3c8becad9601497f_1
+      name: community.wave.seqera.io/library/gawk_gzip:6fab93852b0eb5a5
+      build_id: bd-6fab93852b0eb5a5_1
+      scan_id: sc-0bdc20c1d00f0236_2
   singularity:
     linux/arm64:
       name: oras://community.wave.seqera.io/library/gawk_gzip:88d638f9e3f9deb5
@@ -121,4 +121,6 @@ containers:
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/0600fdb9287986d3d684b95d6e94f597c41b24a746608532d7c0836bd7b44c15/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/hmmer/formattsv/.conda-lock/linux_amd64-bd-34c193f8cae8819b_1.txt
+      lock_file: modules/nf-core/hmmer/formattsv/.conda-lock/linux_amd64-bd-fe0c202000bc8ed4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/formattsv/.conda-lock/linux_arm64-bd-6fab93852b0eb5a5_1.txt

@@ -202,7 +202,7 @@ nextflow_process {
                 // collect references and fastq files for staging
                 ch_gex_fastqs_10k_pbmc = Channel.of( fivepgex_fastqs_10k_pbmc )
                     .collect()
-                    .map { reads -> [ [ id:fivepgex_fastq_samplename_10k_pbmc ], reads, [ "expect-cells":"1000", chemistry:"SC5P-PE", "create-bam":false, "no-secondary":true ] ] }
+                    .map { reads -> [ [ id:fivepgex_fastq_samplename_10k_pbmc ], reads, [ "expect-cells":"1000", chemistry:"SC5P-R2", "create-bam":false, "no-secondary":true ] ] }
                 ch_vdj_reference = Channel.of( vdj_reference )
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()

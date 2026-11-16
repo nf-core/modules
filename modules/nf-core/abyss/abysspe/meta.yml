@@ -8,8 +8,7 @@ keywords:
   - de novo assembler
 tools:
   - "abyss":
-      description: "Assembly By Short Sequences - a de novo, parallel, paired-end short
-        read sequence assembler."
+      description: "Assembly By Short Sequences - a de novo, parallel, paired-end short read sequence assembler."
       homepage: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
       documentation: "https://github.com/bcgsc/abyss/blob/v2.3.10/README.md"
       tool_dev_url: "https://github.com/bcgsc/abyss"
@@ -117,3 +116,27 @@ authors:
   - "@LiaOb21"
 maintainers:
   - "@LiaOb21"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/abyss:2.3.10--5c87495f5df106fd
+      build_id: bd-5c87495f5df106fd_1
+      scan_id: sc-a1230df1eda246ed_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/abyss:2.3.10--5e1b4f9539e92f5d
+      build_id: bd-5e1b4f9539e92f5d_1
+      scan_id: sc-285e996000e93c85_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/abyss:2.3.10--79acd26b9fa3e614
+      build_id: bd-79acd26b9fa3e614_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f45759bcc928cd39dd19abf00e86fdc4c2394efff3ef6b02e73d7ef1b4da50d/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/abyss:2.3.10--1e13483ed868e6c6
+      build_id: bd-1e13483ed868e6c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fe4b5f24c0e57c0be7a5b3d77959049b8ad114ec580643b4bc0c24247d16c33/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/abyss/abysspe/.conda-lock/linux_amd64-bd-5e1b4f9539e92f5d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/abyss/abysspe/.conda-lock/linux_arm64-bd-5c87495f5df106fd_1.txt

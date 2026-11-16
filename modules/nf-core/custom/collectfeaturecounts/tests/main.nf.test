@@ -61,6 +61,60 @@ nextflow_process {
         }
     }
 
+    test("first sample without counts") {
+
+        when {
+            process {
+                """
+                def header = "# Program:featureCounts\\nGeneid\\tChr\\tStart\\tEnd\\tStrand\\tLength\\t"
+                input[0] = channel.of(
+                        [ 'a.featureCounts.tsv', header + "A.sorted.bam\\ng1\\tc\\t1\\t100\\t+\\t100\\t0\\ng2\\tc\\t200\\t399\\t+\\t200\\t0\\n" ],
+                        [ 'b.featureCounts.tsv', header + "B.sorted.bam\\ng1\\tc\\t1\\t100\\t+\\t100\\t3\\ng2\\tc\\t200\\t399\\t+\\t200\\t0\\n" ]
+                    )
+                    .collectFile { name, content -> [ name, content ] }
+                    .collect()
+                    .map { files -> [ [ id:'test' ], files ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.counts.get(0).get(1)).linesGzip == [
+                    "orf\tchr\tstart\tend\tstrand\tlength\tsample\tcount\ttpm",
+                    "g1\tc\t1\t100\t+\t100\tB\t3\t1000000"
+                ] },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+    }
+
+    test("the same sample in two files fails") {
+
+        when {
+            process {
+                """
+                def header = "# Program:featureCounts\\nGeneid\\tChr\\tStart\\tEnd\\tStrand\\tLength\\t"
+                input[0] = channel.of(
+                        [ 'a.featureCounts.tsv', header + "A.sorted.bam\\ng1\\tc\\t1\\t100\\t+\\t100\\t3\\n" ],
+                        [ 'b.featureCounts.tsv', header + "A.sorted.bam\\ng2\\tc\\t200\\t399\\t+\\t200\\t4\\n" ]
+                    )
+                    .collectFile { name, content -> [ name, content ] }
+                    .collect()
+                    .map { files -> [ [ id:'test' ], files ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('is in more than one input file') }
+            )
+        }
+    }
+
     test("two samples - stub") {
 
         options "-stub"

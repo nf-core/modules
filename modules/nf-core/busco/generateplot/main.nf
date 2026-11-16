@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BUSCO_GENERATEPLOT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
-        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc1935be05e41ef9e53df8820a4862bc2f35637af83fbe1dc402fc109824e5a2/data'
+        : 'community.wave.seqera.io/library/busco_sepp:28bfd2435aed3cc4' }"
 
     input:
     path short_summary_txt, stageAs: 'busco/*'
