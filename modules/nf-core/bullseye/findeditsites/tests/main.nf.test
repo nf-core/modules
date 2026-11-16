@@ -67,8 +67,7 @@ nextflow_process {
             process {
                 """
                 // the genome.gtf fixture annotates 'chr22', but the dart/control
-                // bams here use the contig name 'chr22_test' - rename so sites
-                // can actually be matched to a gene instead of silently finding none
+                // bams here use the contig name 'chr22_test'
                 def gtf_src   = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 def gtf_stage = new File(workDir.toString(), 'chr22_test.gtf')
                 gtf_stage.text = gtf_src.text.replaceAll('(?m)^chr22\\t', 'chr22_test\\t')
