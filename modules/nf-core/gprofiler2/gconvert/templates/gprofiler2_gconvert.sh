@@ -1,4 +1,6 @@
-#!/usr/bin/env Rscript
+#!/usr/bin/env bash
+
+Rscript - <<'RSCRIPT_EOF'
 
 #written by Mo Tan (https://github.com/Schansiate) modified from original script by Oliver Wacker (https://github.com/WackerO)
 
@@ -153,3 +155,4 @@ create_log_session_info()
 ################################################
 ################################################
 ################################################
+RSCRIPT_EOF

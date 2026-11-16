@@ -22,7 +22,7 @@ process GPROFILER2_GCONVERT {
     task.ext.when == null || task.ext.when
 
     script:
-    template 'gprofiler2_gconvert.R'
+    template 'gprofiler2_gconvert.sh'
 
     stub:
     def prefix = task.ext.prefix ?: meta.id
