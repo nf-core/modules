@@ -7,8 +7,8 @@ process STITCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/r-stitch:1.7.3--r44h64f727c_0'
-        : 'quay.io/biocontainers/r-stitch:1.7.3--r44h64f727c_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5701e3df43ee9d7987215c66e9d39bca09e7e90f721c159aadf3f3be1bd1d699/data'
+        : 'community.wave.seqera.io/library/htslib_r-stitch_r-base_rsync:af2e4f36bb901ef3'}"
 
     input:
     tuple val(meta), path(collected_crams), path(collected_crais), path(cramlist), path(samplename), path(posfile), path(input, stageAs: "input"), path(genetic_map), path(rdata, stageAs: "RData_in"), val(chromosome_name), val(start), val(end), val(buffer), val(K), val(nGen)

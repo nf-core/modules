@@ -13,6 +13,11 @@ tools:
       homepage: "https://github.com/alexdobin/STAR/"
       documentation: "https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md"
       doi: "10.1101/2021.05.05.442755"
+      publication:
+        author: "Kaminow, B., Yunusov, D. & Dobin, A."
+        year: 2021
+        title: "STARsolo: accurate, fast and versatile mapping/quantification of single-cell and single-nucleus RNA-seq data"
+        source: "bioRxiv"
       licence:
         - "MIT"
       identifier: biotools:star
@@ -119,11 +124,11 @@ output:
           pattern: "*.Solo.out/Gene/Summary.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
-  versions_star:
+  versions_starsolo:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - star:
+      - starsolo:
           type: string
           description: The name of the tool
       - STAR --version | sed -e "s/STAR_//g":
@@ -304,7 +309,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - star:
+      - starsolo:
           type: string
           description: The name of the tool
       - STAR --version | sed -e "s/STAR_//g":
