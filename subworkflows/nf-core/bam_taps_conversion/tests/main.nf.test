@@ -162,6 +162,7 @@ nextflow_workflow {
                 { assert workflow.out.call.collect { meta, txt -> meta.id }.sort() == ['paired', 'single'] },
                 { assert snapshot(
                     workflow.out.mbias.sort { entry -> entry[0].id },
+                    workflow.out.mbias_trims.sort { entry -> entry[0].id },
                     workflow.out.call.sort { entry -> entry[0].id },
                     workflow.out.methylkit.sort { entry -> entry[0].id }
                 ).match() }

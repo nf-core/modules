@@ -41,6 +41,7 @@ workflow BAM_TAPS_CONVERSION {
     ch_bcftools_stats = channel.empty()
     ch_mbias_html    = channel.empty()
     ch_mbias_cutoffs = channel.empty()
+    ch_trims         = channel.empty()
 
     if (trims && !(trims.size() == 2 && trims.every { trim -> trim ==~ /\d+,\d+,\d+,\d+/ })) {
         error("bam_taps_conversion: trims must be [] or [ nOT, nOB ], each as 'r1_start,r1_end,r2_start,r2_end' (got ${trims})")
@@ -138,12 +139,17 @@ workflow BAM_TAPS_CONVERSION {
         }
 
         ch_call_input = ch_bam_bai
-            .join(ch_trims)
-            .multiMap { meta, bam, bai, nOT_clip, nOB_clip ->
+            .join(ch_trims, remainder: true)
+            .multiMap { row ->
+                def (meta, bam, bai) = row[0..2]
+                def found = row.size() == 5 && row[3] != null
+                if (!found) {
+                    log.warn("bam_taps_conversion: no M-bias trims for ${meta.id}; calling it without trimming")
+                }
                 bam: [ meta, bam ]
                 bai: [ meta, bai ]
-                trim_OT: [ meta, nOT_clip ]
-                trim_OB: [ meta, nOB_clip ]
+                trim_OT: [ meta, found ? row[3] : '0,0,0,0' ]
+                trim_OB: [ meta, found ? row[4] : '0,0,0,0' ]
             }
 
         RASTAIR_CALL (
@@ -173,4 +179,5 @@ workflow BAM_TAPS_CONVERSION {
     bcftools_stats = ch_bcftools_stats        // channel: [ val(meta), path("*stats.txt") ] rastair 2
     mbias_html     = ch_mbias_html            // channel: [ val(meta), path("*.mbias.html") ] rastair 2
     mbias_cutoffs  = ch_mbias_cutoffs         // channel: [ val(meta), path("*.cutoffs.txt") ] rastair 2
+    mbias_trims    = ch_trims                 // channel: [ val(meta), val(nOT), val(nOB) ] rastair 0.8
 }

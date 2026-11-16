@@ -175,6 +175,15 @@
                         "test.rastair_call.txt:md5,7508cfdd0045c688f82e4cb4f1d37373"
                     ]
                 ],
+                "10": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "0,0,0,0",
+                        "0,0,0,0"
+                    ]
+                ],
                 "2": [
                     [
                         {
@@ -235,6 +244,15 @@
                 "mbias_html": [
                     
                 ],
+                "mbias_trims": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "0,0,0,0",
+                        "0,0,0,0"
+                    ]
+                ],
                 "methylkit": [
                     [
                         {
@@ -251,10 +269,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-10T11:10:23.613668",
+        "timestamp": "2026-11-16T16:55:10.356381347",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.5"
+            "nextflow": "25.10.4"
         }
     },
     "sarscov2 - [ bam, bai ], [ fasta, fai ] - rastair 0.8 - manual trims": {
@@ -306,6 +324,24 @@
                         "id": "paired",
                         "single_end": false
                     },
+                    "0,0,0,0",
+                    "0,0,0,0"
+                ],
+                [
+                    {
+                        "id": "single",
+                        "single_end": true
+                    },
+                    "0,0,0,0",
+                    "0,0,0,0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "paired",
+                        "single_end": false
+                    },
                     "paired.rastair_call.txt:md5,7508cfdd0045c688f82e4cb4f1d37373"
                 ],
                 [
@@ -333,7 +369,7 @@
                 ]
             ]
         ],
-        "timestamp": "2026-11-12T15:06:41.3565678",
+        "timestamp": "2026-11-16T16:56:42.047115357",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -364,6 +400,9 @@
                     
                 ],
                 "1": [
+                    
+                ],
+                "10": [
                     
                 ],
                 "2": [
@@ -471,6 +510,9 @@
                         "test.mbias.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "mbias_trims": [
+                    
+                ],
                 "methylkit": [
                     
                 ],
@@ -492,10 +534,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-10T11:13:10.211337",
+        "timestamp": "2026-11-16T16:57:30.368540467",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.5"
+            "nextflow": "25.10.4"
         }
     }
 }
