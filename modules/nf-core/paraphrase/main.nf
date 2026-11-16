@@ -6,9 +6,9 @@ process PARAPHRASE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc177b8e7e1d9bbdcbb64a6ad630c7ecc63a2229ce2b219408888bc2bb34cac3/data':
-        'community.wave.seqera.io/library/pip_paraphrase:59a4576966ee5f0b' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/067ee19a995c4594495da4a1098114e1b9e5390af80479b15d6ae68e67e5c6e1/data'
+:         'community.wave.seqera.io/library/pip_python_paraphrase:48432dd9875d118c' }"
 
     input:
     tuple val(meta), path(jsons), val(samples)

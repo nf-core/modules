@@ -6,9 +6,9 @@ process LIFTOFF {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/liftoff:1.6.3--pyhdfd78af_0':
-        'quay.io/biocontainers/liftoff:1.6.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/400986069bb08c0d1c17bd89600ea2a1bd3834ae5e268cb643ddce6bc038e513/data'
+        : 'community.wave.seqera.io/library/liftoff:1.6.3--ef367fab3c5cff4f'}"
 
     input:
     tuple val(meta), path(target_fa)

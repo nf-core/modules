@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fastq_align_dedup_bwamem3"
+description: Align DNA, bisulfite/EM-seq or TAPS reads with bwa-mem3, coordinate-sort
+  and index, optionally mark duplicates, and collect samtools stats
+keywords:
+  - bwamem3
+  - alignment
+  - map
+  - 5mC
+  - methylseq
+  - taps
+  - DNA
+  - fastq
+  - bam
+components:
+  - bwamem3/mem
+  - picard/markduplicates
+  - samtools/index
+  - bam_stats_samtools
+input:
+  - ch_reads:
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.{fastq,fastq.gz}"
+  - ch_fasta_fai:
+      type: file
+      description: |
+        Reference genome fasta file and its index
+        Structure: [ val(meta), path(fasta), path(fai) ]
+      pattern: "*.{fa,fa.gz,fasta,fasta.gz}"
+  - ch_bwamem3_index:
+      type: directory
+      description: |
+        bwa-mem3 genome index. The alignment mode comes from BWAMEM3_MEM `ext.args`:
+        none for plain DNA, `--meth` for bisulfite/EM-seq, `--meth=taps` for TAPS.
+        Both methylation modes need an index built with `bwa-mem3 index --meth`.
+        Structure: [ val(meta), path(index) ]
+  - skip_deduplication:
+      type: boolean
+      description: |
+        Skip marking duplicates with Picard MarkDuplicates
+output:
+  - bam:
+      type: file
+      description: |
+        Coordinate-sorted BAM (duplicate-marked unless skip_deduplication)
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - index:
+      type: file
+      description: |
+        BAI index of the BAM
+        Structure: [ val(meta), path(bai) ]
+      pattern: "*.bai"
+  - samtools_flagstat:
+      type: file
+      description: |
+        samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
+      pattern: "*.flagstat"
+  - samtools_stats:
+      type: file
+      description: |
+        samtools stats output
+        Structure: [ val(meta), path(stats) ]
+      pattern: "*.stats"
+  - samtools_idxstats:
+      type: file
+      description: |
+        samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+      pattern: "*.idxstats"
+  - picard_metrics:
+      type: file
+      description: |
+        Duplicate metrics from Picard MarkDuplicates
+        Structure: [ val(meta), path(metrics) ]
+      pattern: "*.metrics.txt"
+  - multiqc:
+      type: file
+      description: |
+        Files for MultiQC (duplicate metrics, stats, flagstat, idxstats)
+        Structure: [ path(file) ]
+      pattern: "*{.txt,.stats,.flagstat,.idxstats}"
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"

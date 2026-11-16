@@ -51,6 +51,15 @@ input:
         pattern: "*.{bai,csi,crai}"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
+    - mbias_cutoffs:
+        type: file
+        description: |
+          Optional. One M-bias cutoffs file from rastair2/mbias (pass `[]` for none).
+          Line 1 is used as `--nOT` and line 2 as `--nOB`: bases to ignore at the
+          read ends, as `r1_start,r1_end,r2_start,r2_end`.
+        pattern: "*.cutoffs.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
   - - meta2:
         type: map
         description: |

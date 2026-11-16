@@ -6,9 +6,9 @@ process DEACON_INDEXINTERSECT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.15.0--hdd79491_0':
-        'quay.io/biocontainers/deacon:0.15.0--hdd79491_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f628781900b19a962ce706a66d7b1d83c26acb5b08d5085947ae1bbea879b1f8/data'
+        : 'community.wave.seqera.io/library/deacon:0.15.0--ac1f965b3a6ea82e'}"
 
     input:
     tuple val(meta), path(indices)  // two or more deacon .idx index files to intersect

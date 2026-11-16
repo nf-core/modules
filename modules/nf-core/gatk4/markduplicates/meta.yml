@@ -11,9 +11,29 @@ tools:
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
       tool_dev_url: https://github.com/broadinstitute/gatk
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       licence: ["MIT"]
       identifier: ""
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   - - meta:
         type: map

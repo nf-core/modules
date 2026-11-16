@@ -6,9 +6,9 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' :
-        'quay.io/biocontainers/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4433b2cb821d4bc152f1911ab5750ca0feda7980b5e3d87a3eccbf864d0821ee/data'
+        : 'community.wave.seqera.io/library/bioconductor-summarizedexperiment:1.42.0--39b9fc09268fd17d'}"
 
     input:
     tuple val(meta), path(matrix_files)
