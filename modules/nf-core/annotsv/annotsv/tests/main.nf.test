@@ -40,13 +40,8 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                [
-                    tsv: file(process.out.tsv[0][1]).name,
-                    tsv_lines: path(process.out.tsv[0][1]).readLines().size(),
-                    unannotated_tsv: process.out.unannotated_tsv,
-                    vcf: process.out.vcf,
-                    versions: process.out.versions_annotsv
-                ]
+                sanitizeOutput(process.out, unstableKeys: ["tsv"]),
+                file(process.out.tsv[0][1]).size()
             ).match()
         }
 
