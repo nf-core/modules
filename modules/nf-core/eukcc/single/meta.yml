@@ -27,6 +27,7 @@ input:
         pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
   - - meta2:
         type: map
         description: Groovy Map containing database information. e.g. `[ id:'eukcc_db' ]`
@@ -39,6 +40,7 @@ input:
       pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
       ontologies:
         - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   tsv:
     - - meta:
@@ -58,16 +60,19 @@ output:
           type: file
           description: EukCC log file
           pattern: "eukcc.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   marker_table:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
       - ${prefix}/scmg_marker_table.csv.gz:
           type: file
-          description: Single copy marker gene table, produced only with `--extra`
+          description: Optional single copy marker gene table, produced only with `--extra`
           pattern: "scmg_marker_table.csv.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   workdir:
     - - meta:
           type: map
