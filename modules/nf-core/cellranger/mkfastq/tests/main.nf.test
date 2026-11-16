@@ -10,20 +10,10 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cellranger"
     tag "cellranger/mkfastq"
-    tag "untar"
 
+    def bcl_dir
     setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id: 'test', lane:1 ],
-                    file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz", checkIfExists: true)
-                ]
-                """
-            }
-        }
+        bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz').resolve('cellranger-tiny-bcl-1.2.0')
     }
 
     test("cellranger - tiny - simple") {
@@ -31,7 +21,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), it[1] ] }
+                input[0] = [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), file('${bcl_dir}') ]
                 """
             }
         }
@@ -57,7 +47,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true), it[1] ] }
+                input[0] = [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-samplesheet-1.2.0.csv", checkIfExists: true), file('${bcl_dir}') ]
                 """
             }
         }
@@ -85,7 +75,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it -> [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), it[1] ] }
+                input[0] = [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), file('${bcl_dir}') ]
                 """
             }
         }

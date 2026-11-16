@@ -9,40 +9,27 @@ nextflow_process {
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/importsegmentation"
-    tag "untar"
 
-
+    def bundle
     setup {
-
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz', checkIfExists: true)]
-                """
-            }
-        }
-
+        bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz').resolve('xenium_bundle')
     }
 
     test("xeniumranger importsegmentation nuclei") {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                    .map { meta, bundle ->
-                        [
-                            [id: "test_xeniumranger_importsegmentation"],
-                            bundle,
-                            [],
-                            [],
-                            bundle + "/cells.zarr.zip",
-                            [],
-                            [],
-                            [],
-                            5
-                        ]
-                    }
+                input[0] = [
+                    [id: "test_xeniumranger_importsegmentation"],
+                    file('${bundle}'),
+                    [],
+                    [],
+                    file('${bundle}/cells.zarr.zip'),
+                    [],
+                    [],
+                    [],
+                    5
+                ]
                 """
             }
         }
@@ -64,20 +51,17 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                    .map { meta, bundle ->
-                        [
-                            [id: "test_xeniumranger_importsegmentation"],
-                            bundle,
-                            [],
-                            [],
-                            bundle + "/cells.zarr.zip",
-                            [],
-                            [],
-                            [],
-                            5
-                        ]
-                    }
+                input[0] = [
+                    [id: "test_xeniumranger_importsegmentation"],
+                    file('${bundle}'),
+                    [],
+                    [],
+                    file('${bundle}/cells.zarr.zip'),
+                    [],
+                    [],
+                    [],
+                    5
+                ]
                 """
             }
         }
