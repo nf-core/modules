@@ -58,15 +58,8 @@
                             },
                             "doi": {
                                 "type": "string",
-                                "description": "DOI to cite for the tool: the publication's DOI if the tool has one, otherwise the DOI of the software archive (e.g. Zenodo)",
-                                "anyOf": [
-                                    {
-                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
-                                    },
-                                    {
-                                        "enum": ["no DOI available"]
-                                    }
-                                ]
+                                "description": "DOI to cite for the tool, without prefix: the publication's DOI if the tool has one, otherwise the DOI of the software archive (e.g. Zenodo); empty when there is none",
+                                "pattern": "^(10\\.\\d{4,9}\\/[^,\\s]+)?$"
                             },
                             "licence": {
                                 "type": "array",
