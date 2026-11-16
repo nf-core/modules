@@ -222,10 +222,10 @@ nextflow_process {
                         [id: 'homo_sapiens'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ])
-                    input[1] = channel.of[
+                    input[1] = channel.of([
                         [id: 'homo_sapiens'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                    ]
+                    ])
                     input[2] = 'homo_sapiens_reference'
                     """
                 }

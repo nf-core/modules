@@ -9,17 +9,16 @@ os.environ["NUMBA_CACHE_DIR"] = "."
 import glob
 import json
 import platform
+from importlib.metadata import version
+
 import h5py
-import hdf5plugin
-import leidenalg
 import igraph
-import scipy
-import anndata
+import leidenalg
 import pandas as pd
 import scanpy as sc
+import scipy
 from anndata import AnnData, concat
 from scipy.sparse import csr_matrix
-from importlib.metadata import version
 
 
 def format_yaml_like(data: dict, indent: int = 0) -> str:
@@ -54,7 +53,7 @@ def dump_versions():
             "hdf5plugin": version("hdf5plugin"),
             "leidenalg": leidenalg.__version__,
             "python-igraph": igraph.__version__,
-            "scipy": scipy.__version__
+            "scipy": scipy.__version__,
         }
     }
 
