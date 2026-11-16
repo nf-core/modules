@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GFFCOMPARE                      } from '../../../modules/nf-core/gffcompare'
 include { GAWK as GAWK_FILTER             } from '../../../modules/nf-core/gawk'
 include { BEDTOOLS_INTERSECT              } from '../../../modules/nf-core/bedtools/intersect'
@@ -49,7 +52,8 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
 
     BEDTOOLS_INTERSECT(
         ch_after_filter.with_blacklist.map { meta, gtf, _bed_meta, bed -> [ meta, gtf, bed ] },
-        [[:], []]
+        [[:], []],
+        ''
     )
 
     ch_post_blacklist = BEDTOOLS_INTERSECT.out.intersect

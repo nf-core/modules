@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { METAPHLAN_MAKEDB               } from '../../../modules/nf-core/metaphlan/makedb/main'
 include { METAPHLAN_METAPHLAN            } from '../../../modules/nf-core/metaphlan/metaphlan/main'
 include { METAPHLAN_MERGEMETAPHLANTABLES } from '../../../modules/nf-core/metaphlan/mergemetaphlantables/main'

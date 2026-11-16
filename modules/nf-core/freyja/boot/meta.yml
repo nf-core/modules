@@ -1,11 +1,5 @@
 name: "freyja_boot"
-description: Bootstrap sample demixing by resampling each site based on a
-  multinomial distribution of read depth across all sites, where the event
-  probabilities were determined by the fraction of the total sample reads found
-  at each site, followed by a secondary resampling at each site according to a
-  multinomial distribution (that is, binomial when there was only one SNV at a
-  site), where event probabilities were determined by the frequencies of each
-  base at the site, and the number of trials is given by the sequencing depth.
+description: Bootstrap sample demixing by resampling each site based on a multinomial distribution of read depth across all sites, where the event probabilities were determined by the fraction of the total sample reads found at each site, followed by a secondary resampling at each site according to a multinomial distribution (that is, binomial when there was only one SNV at a site), where event probabilities were determined by the frequencies of each base at the site, and the number of trials is given by the sequencing depth.
 keywords:
   - variants
   - fasta
@@ -14,8 +8,7 @@ keywords:
   - bootstrapping
 tools:
   - "freyja":
-      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2
-        samples and provides functionality to analyze lineage dynamics."
+      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2 samples and provides functionality to analyze lineage dynamics."
       homepage: "https://github.com/andersen-lab/Freyja"
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
@@ -52,15 +45,13 @@ input:
         - edam: http://edamontology.org/format_3752 # CSV
   - lineages_meta:
       type: file
-      description: Optional file containing lineage metadata that correspond to
-        barcodes
+      description: Optional file containing lineage metadata that correspond to barcodes
       pattern: "*lineages.json"
       ontologies:
         - edam: http://edamontology.org/format_3464 # JSON
   - lineages_topology:
       type: file
-      description: Optional file containing lineage topology information that
-        correspond to barcodes
+      description: Optional file containing lineage topology information that correspond to barcodes
       pattern: "*lineages.yml"
       ontologies:
         - edam: http://edamontology.org/format_3750 # YAML
@@ -73,8 +64,7 @@ output:
             e.g. [ id:'test' ]
       - "*lineages.csv":
           type: file
-          description: a csv file that includes the lineages present and their
-            corresponding abundances
+          description: a csv file that includes the lineages present and their corresponding abundances
           pattern: "*lineages.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -86,8 +76,7 @@ output:
             e.g. [ id:'test' ]
       - "*summarized.csv":
           type: file
-          description: a csv file that includes the lineages present but
-            summarized by constellation and their corresponding abundances
+          description: a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
           pattern: "*summarized.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -116,3 +105,27 @@ authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/freyja:2.0.6--55d2f3a5585cc140
+      build_id: bd-55d2f3a5585cc140_1
+      scan_id: sc-51ac25613c0c09f0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/freyja:2.0.6--be3cbd6f14f9d542
+      build_id: bd-be3cbd6f14f9d542_1
+      scan_id: sc-3925bc9edd3eee24_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/freyja:2.0.6--cf88d96736eb2a40
+      build_id: bd-cf88d96736eb2a40_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6d33da33b3dc4cf7a77bf69ba64313890cb6e6e98ed26c94b8c51eef50c63b22/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/freyja:2.0.6--04f94a9ca1164ac2
+      build_id: bd-04f94a9ca1164ac2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f0b023f9c9e25f338d72ed6710e4d2a54a4c3a9a3ac34f17e08683894dc40830/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/freyja/boot/.conda-lock/linux_amd64-bd-be3cbd6f14f9d542_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/freyja/boot/.conda-lock/linux_arm64-bd-55d2f3a5585cc140_1.txt

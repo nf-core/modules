@@ -21,6 +21,12 @@ nextflow_process {
         then {
             assert process.success
             assert path(process.out.dbcan_db.get(0)).exists()
+            // Keep in sync with the mini database the annotation module tests untar
+            assert new File(process.out.dbcan_db.get(0).toString()).list().toList().sort() == [
+                'CAZy.dmnd', 'PUL.dmnd', 'STP.hmm', 'TCDB.dmnd', 'TF.dmnd', 'TF.hmm',
+                'dbCAN-PUL', 'dbCAN-PUL.xlsx', 'dbCAN-sub.hmm', 'dbCAN.hmm',
+                'fam-substrate-mapping.tsv', 'peptidase_db.dmnd', 'sulfatlas_db.dmnd'
+            ]
             assertAll(
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') }

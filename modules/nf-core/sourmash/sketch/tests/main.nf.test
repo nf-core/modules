@@ -7,7 +7,6 @@ nextflow_process {
     tag "sourmash/sketch"
     tag "modules"
     tag "modules_nfcore"
-    tag "temp"
 
     test("sarscov2 - genome single fasta") {
 
@@ -21,7 +20,7 @@ nextflow_process {
                                 [ id:'test', single_end:false ], // meta map
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
-                input[1] =  false // merge_sigs
+                input[1] =  false // false means do _not_ merge sigs
                 """
             }
         }
@@ -53,7 +52,7 @@ nextflow_process {
                                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                                 ]
                             ]
-                input[1] =  false // merge_sigs
+                input[1] =  false // false means do _not_ merge sigs
                 """
             }
         }
@@ -86,7 +85,7 @@ nextflow_process {
                                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
                                 ]
                             ]
-                input[1] =  true // merge_sigs
+                input[1] =  true // false means do _not_ merge sigs
                 """
             }
         }
@@ -96,6 +95,35 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.signatures[0][1]).text.contains('library/genome.f'),
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                ).match()}
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome fasta merge signatures - prefix with space") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test sample', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                input[1] =  true // false means do _not_ merge sigs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.signatures[0][1]).text.contains('library/genome.fasta'),
                     process.out.findAll { key, val -> key.startsWith('versions') },
                 ).match()}
             )
@@ -114,7 +142,7 @@ nextflow_process {
                                 [ id:'test', single_end:false ], // meta map
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                             ]
-                input[1] =  false // merge_sigs
+                input[1] =  false // false means do _not_ merge sigs
                 """
             }
         }

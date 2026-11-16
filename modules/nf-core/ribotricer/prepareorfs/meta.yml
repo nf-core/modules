@@ -73,3 +73,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ribotricer_python_scipy:982ff8a8eaff104b
+      build_id: bd-982ff8a8eaff104b_1
+      scan_id: sc-966104943928a88d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ribotricer_python_scipy:5721a090d55db3f6
+      build_id: bd-5721a090d55db3f6_1
+      scan_id: sc-ea04e61b367b5023_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ribotricer_python_scipy:37a7eb0c8ba098c5
+      build_id: bd-37a7eb0c8ba098c5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f634421ff566b498d7c9d065bdcce907e7cb62022f519417cabea6c3a921b41d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ribotricer_python_scipy:4e9d014bf68eb4bb
+      build_id: bd-4e9d014bf68eb4bb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d257272deeae36dfab76d4afdfa0f3b795230ecf1525834b3d7ae44260f197b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ribotricer/prepareorfs/.conda-lock/linux_amd64-bd-5721a090d55db3f6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ribotricer/prepareorfs/.conda-lock/linux_arm64-bd-982ff8a8eaff104b_1.txt

@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process HTSLIB_BGZIPTABIX"
     script "../main.nf"
     process "HTSLIB_BGZIPTABIX"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,7 +12,7 @@ nextflow_process {
 
     test("sarscov2 - vcf - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -40,7 +41,7 @@ nextflow_process {
 
     test("sarscov2 - vcf - compress - index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -97,7 +98,7 @@ nextflow_process {
 
     test("sarscov2 - bgzip - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -125,7 +126,7 @@ nextflow_process {
 
     test("sarscov2 - bgzip - compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -154,7 +155,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -182,7 +183,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -210,7 +211,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - name clash") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -236,7 +237,7 @@ nextflow_process {
 
     test("metagenome - bz2 - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -264,7 +265,7 @@ nextflow_process {
 
     test("metagenome - bz2 - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -292,7 +293,7 @@ nextflow_process {
 
     test("metagenome - xz - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -323,7 +324,7 @@ nextflow_process {
 
     test("metagenome - xz - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -347,6 +348,102 @@ nextflow_process {
                 { assert process.out.index.size() == 0 }
             )
         }
+    }
+
+    test("sarscov2 - vcf - compress - gzi") {
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'compress' // action
+                input[2] = false // make_index
+                input[3] = 'vcf' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.output.get(0).get(1).endsWith('.vcf.gz') },
+                { assert process.out.gzi.get(0).get(1).endsWith('.vcf.gz.gzi') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bgzip - compress - index - gzi") {
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'compress' // action
+                input[2] = true // make_index
+                input[3] = 'vcf' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.output.get(0).get(1).endsWith('.vcf.gz') },
+                { assert process.out.gzi.get(0).get(1).endsWith('.vcf.gz.gzi') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gzip - (re)compress - gzi") {
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'compress' // action
+                input[2] = false // make_index
+                input[3] = 'fastq' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert process.out.output.get(0).get(1).endsWith('.fastq.gz') },
+                { assert process.out.gzi.get(0).get(1).endsWith('.fastq.gz.gzi') }
+            )
+        }
+
     }
 
     test("sarscov2 - vcf - compress - index - stub") {
@@ -407,9 +504,74 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - vcf - compress - gzi - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'compress' // action
+                input[2] = false // make_index
+                input[3] = 'vcf' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - decompress - gzi - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'decompress' // action
+                input[2] = false // make_index
+                input[3] = 'vcf' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.gzi.isEmpty() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("illegal action") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [

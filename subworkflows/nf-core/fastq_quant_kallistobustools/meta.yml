@@ -1,0 +1,54 @@
+name: fastq_quant_kallistobustools
+description: Build a Kallisto reference when needed and quantify single-cell reads with kb.
+keywords:
+  - single-cell
+  - kallisto
+  - bustools
+components:
+  - kallistobustools/ref
+  - kallistobustools/count
+input:
+  - genome_fasta:
+      type: file
+      description: Genome FASTA tuple with metadata, or an empty list when using a prebuilt reference.
+  - gtf:
+      type: file
+      description: Genome annotation tuple with metadata, or an empty list when using a prebuilt reference.
+  - kallisto_index:
+      type: file
+      description: Prebuilt Kallisto index as a value channel, or an empty list to generate one.
+  - txp2gene:
+      type: file
+      description: Transcript-to-gene map, or an empty list to generate one.
+  - t1c:
+      type: file
+      description: cDNA capture list, or an empty list.
+  - t2c:
+      type: file
+      description: Intron capture list, or an empty list.
+  - protocol:
+      type: string
+      description: kb sequencing technology.
+  - kb_workflow:
+      type: string
+      description: Reference and counting workflow (standard, nac, or lamanno).
+  - ch_fastq:
+      type: file
+      description: Read pairs with sample metadata.
+output:
+  - counts:
+      type: directory
+      description: kb count output as a tuple of sample metadata and a directory.
+  - counts_raw:
+      type: directory
+      description: Unfiltered count matrix directory with sample metadata and input_type raw.
+  - counts_filtered:
+      type: directory
+      description: Filtered count matrix directory with sample metadata and input_type filtered, when present.
+  - txp2gene:
+      type: file
+      description: Supplied or generated transcript-to-gene map.
+authors:
+  - "@atrigila"
+  - "@fmalmeida"
+  - "@grst"

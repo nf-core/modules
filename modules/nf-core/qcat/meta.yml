@@ -69,3 +69,17 @@ authors:
 maintainers:
   - "@yuukiiwa"
   - "@drpatelh"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/qcat_python_setuptools:f1f481513e1ca893
+      build_id: bd-f1f481513e1ca893_1
+      scan_id: sc-0df53c6d6dbb7684_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/qcat_python_setuptools:9cf9d173188b229b
+      build_id: bd-9cf9d173188b229b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/45/457da82216e5355e298ecd5b4ba3d5c5a81421605af9029da08680c0e31f2ba4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/qcat/.conda-lock/linux_amd64-bd-f1f481513e1ca893_1.txt

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "arcane_filter"
 description: Filter GTF annotations and genome sequence for alignment-free single-cell RNA-seq quantification with Arcane
 keywords:
@@ -128,3 +127,27 @@ authors:
   - "@LeonHornich"
 maintainers:
   - "@LeonHornich"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--752a60e8ee27a43e
+      build_id: bd-752a60e8ee27a43e_1
+      scan_id: sc-a1ae7e8ee4a9bd42_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--d2e66a3ae9fa2825
+      build_id: bd-d2e66a3ae9fa2825_1
+      scan_id: sc-ae1380a072a5413f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--637a22ae50dea3c2
+      build_id: bd-637a22ae50dea3c2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6d1b38ce02081f5481cdf0e4efe51db15ec77e1982196f01c58b66b544e1740/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--70426d4b7f8c5f2d
+      build_id: bd-70426d4b7f8c5f2d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/0253df676409f725ec17f768adfb6bb906cfe371557751703964be159372c290/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/arcane/filter/.conda-lock/linux_amd64-bd-d2e66a3ae9fa2825_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/arcane/filter/.conda-lock/linux_arm64-bd-752a60e8ee27a43e_1.txt

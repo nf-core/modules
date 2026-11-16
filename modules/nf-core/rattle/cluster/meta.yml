@@ -67,3 +67,27 @@ authors:
 maintainers:
   - "@chriswyatt1"
   - "@srisarya"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/rattle:1.0--30804627b1e7c1b8
+      build_id: bd-30804627b1e7c1b8_1
+      scan_id: sc-eed52931374b5026_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/rattle:1.0--ae3dd63e7a98745b
+      build_id: bd-ae3dd63e7a98745b_1
+      scan_id: sc-300528d7e593efdf_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rattle:1.0--63cfd92e0ff5f788
+      build_id: bd-63cfd92e0ff5f788_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/597c4110442b53dc0d73420af28bc774518719d974b2be3190dfa478da17acac/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rattle:1.0--0ff107daf7e47b9d
+      build_id: bd-0ff107daf7e47b9d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4c0c527dd273cec6c299b426d76d8ca5d0831b2ef2e52c93436fa1969eb29c9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rattle/cluster/.conda-lock/linux_amd64-bd-ae3dd63e7a98745b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rattle/cluster/.conda-lock/linux_arm64-bd-30804627b1e7c1b8_1.txt

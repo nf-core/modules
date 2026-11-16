@@ -324,6 +324,16 @@ output:
           pattern: "*.wgs-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  wgs_per_base_bw:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.wgs-per-base.bw":
+          type: file
+          description: Whole-genome per-base coverage BigWig (wgs tool)
+          pattern: "*.wgs-per-base.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # BigWig
   versions_riker:
     - - ${task.process}:
           type: string
@@ -352,3 +362,27 @@ authors:
 maintainers:
   - "@emmcauley"
   - "@matthdsm"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/riker:0.5.0--b407026cbdb7f300
+      build_id: bd-b407026cbdb7f300_1
+      scan_id: sc-db0b6cdb4a2c1687_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/riker:0.5.0--fc5310a356298f75
+      build_id: bd-fc5310a356298f75_1
+      scan_id: sc-d3eaee5467fc5464_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/riker:0.5.0--494641445248cb80
+      build_id: bd-494641445248cb80_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/6889ae6fe776c1288a5d446e00cf57324e3e0a02b6f13fb8351bfb719dd4fc42/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/riker:0.5.0--b47ea90c58131414
+      build_id: bd-b47ea90c58131414_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e6c8b6b94159eba36cb744489468edddf09202a42b09cf41af6681325b8d60a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/riker/multi/.conda-lock/linux_amd64-bd-fc5310a356298f75_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/riker/multi/.conda-lock/linux_arm64-bd-b407026cbdb7f300_1.txt

@@ -1,7 +1,5 @@
 name: "bamutil_clipoverlap"
-description: clips overlapping read pairs. When two mates overlap, this tool
-  will clip the record's whose clipped region would have the lowest average
-  quality.
+description: clips overlapping read pairs. When two mates overlap, this tool will clip the record's whose clipped region would have the lowest average quality.
 keywords:
   - bam
   - clipping
@@ -9,8 +7,7 @@ keywords:
   - bamUtil
 tools:
   - "bamutil":
-      description: "Programs that perform operations on SAM/BAM files, all built into
-        a single executable, bam."
+      description: "Programs that perform operations on SAM/BAM files, all built into a single executable, bam."
       homepage: "https://genome.sph.umich.edu/wiki/BamUtil"
       documentation: "https://genome.sph.umich.edu/wiki/BamUtil:_clipOverlap"
       tool_dev_url: "https://github.com/statgen/bamUtil"
@@ -77,3 +74,27 @@ authors:
   - "@Y-Pei"
 maintainers:
   - "@Y-Pei"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bamutil:1.0.15--1582863f9eda77c6
+      build_id: bd-1582863f9eda77c6_1
+      scan_id: sc-7e0163f4eeeb5a48_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bamutil:1.0.15--b49509f6d9175c24
+      build_id: bd-b49509f6d9175c24_1
+      scan_id: sc-31164ee20a648e56_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bamutil:1.0.15--ff30698e5b8b9a23
+      build_id: bd-ff30698e5b8b9a23_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/91c86394353680e525a569121749574c1340e4b82168af825e4cbed716f9cfc1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bamutil:1.0.15--4949a7ace34d8dd8
+      build_id: bd-4949a7ace34d8dd8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/32f36960442c157e793e792826ad6ceab3d7dfe59536f08718f395dfea9fbaa5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamutil/clipoverlap/.conda-lock/linux_amd64-bd-1582863f9eda77c6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bamutil/clipoverlap/.conda-lock/linux_arm64-bd-b49509f6d9175c24_1.txt

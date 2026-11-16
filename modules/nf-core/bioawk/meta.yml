@@ -1,6 +1,5 @@
 name: "bioawk"
-description: Bioawk is an extension to Brian Kernighan's awk, adding the support
-  of several common biological data formats.
+description: Bioawk is an extension to Brian Kernighan's awk, adding the support of several common biological data formats.
 keywords:
   - bioawk
   - fastq
@@ -15,8 +14,7 @@ tools:
       documentation: https://github.com/lh3/bioawk
       tool_dev_url: https://github.com/lh3/bioawk
       licence:
-        - Free software license
-          (https://github.com/lh3/bioawk/blob/master/README.awk#L1)
+        - Free software license (https://github.com/lh3/bioawk/blob/master/README.awk#L1)
       identifier: ""
 input:
   - - meta:
@@ -39,8 +37,7 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
   - program_file:
       type: file
-      description: Optional file containing logic for awk to execute. If you don't
-        wish to use a file, you can use `ext.args2` to specify the logic.
+      description: Optional file containing logic for awk to execute. If you don't wish to use a file, you can use `ext.args2` to specify the logic.
       pattern: "*"
       ontologies:
         - edam: http://edamontology.org/data_3671 # TXT
@@ -89,4 +86,28 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioawk:1.0--63ed57d97ec41790
+      build_id: bd-63ed57d97ec41790_1
+      scan_id: sc-acb8c72eb9a58e6c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioawk:1.0--9bf01482653af89a
+      build_id: bd-9bf01482653af89a_1
+      scan_id: sc-7fe4b20225e1381f_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioawk:1.0--6e7bbecce9aeb647
+      build_id: bd-6e7bbecce9aeb647_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/106097c0f6aba702bda1b313c4ced8589dc3573a625673f9f3b47771fc9612f2/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioawk:1.0--e9cd40acae79aece
+      build_id: bd-e9cd40acae79aece_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/8266909aff235d1f423ca76029d89a7b470f17c634e001aa388b85713d71dd16/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bioawk/.conda-lock/linux_amd64-bd-63ed57d97ec41790_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bioawk/.conda-lock/linux_arm64-bd-9bf01482653af89a_1.txt
 schema_version: 1.1.0

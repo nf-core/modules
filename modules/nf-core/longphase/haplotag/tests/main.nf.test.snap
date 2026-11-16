@@ -22,16 +22,16 @@
                     [
                         "LONGPHASE_HAPLOTAG",
                         "longphase",
-                        "2.0.1 "
+                        "2.1.1"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-19T09:43:15.857332316",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T10:13:11.968590854"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "[ bam, bai, snps, [], [] ], fasta, fai": {
         "content": [
@@ -40,7 +40,7 @@
                     [
                         "LONGPHASE_HAPLOTAG",
                         "longphase",
-                        "2.0.1 "
+                        "2.1.1"
                     ]
                 ]
             },
@@ -50,15 +50,15 @@
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.1.1\tCL:longphase haplotag --threads 4 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
+        "timestamp": "2026-10-19T09:42:58.449808024",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T10:12:40.584213389"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "[ bam, bai, snps, [], [] ], fasta, fai -stub": {
         "content": [
@@ -78,16 +78,16 @@
                     [
                         "LONGPHASE_HAPLOTAG",
                         "longphase",
-                        "2.0.1 "
+                        "2.1.1"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-19T09:43:11.903789503",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T10:13:04.628910585"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "[ bam, bai, snps, svs, [] ], fasta, fai": {
         "content": [
@@ -96,7 +96,7 @@
                     [
                         "LONGPHASE_HAPLOTAG",
                         "longphase",
-                        "2.0.1 "
+                        "2.1.1"
                     ]
                 ]
             },
@@ -106,15 +106,15 @@
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.1.1\tCL:longphase haplotag --threads 4 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
+        "timestamp": "2026-10-19T09:43:07.945286195",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T10:12:57.997252428"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "[ bam, bai, snps, [], [] ], fasta, fai - log & cram": {
         "content": [
@@ -123,7 +123,7 @@
                     [
                         "LONGPHASE_HAPLOTAG",
                         "longphase",
-                        "2.0.1 "
+                        "2.1.1"
                     ]
                 ]
             },
@@ -132,21 +132,21 @@
                     {
                         "id": "test"
                     },
-                    "test.log:md5,4ca65dc87cc5c362e8a5fa26a47a896b"
+                    "test.log:md5,3c10627fd40507249fe963db941e99d6"
                 ]
             ],
             [
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --log --cram --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.1.1\tCL:longphase haplotag --log --cram --threads 4 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
+        "timestamp": "2026-10-19T09:43:03.899570009",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T10:12:49.73950987"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     }
 }

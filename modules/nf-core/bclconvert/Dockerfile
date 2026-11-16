@@ -3,8 +3,8 @@
 # Push to nfcore/bclconvert:<VER>
 
 # Build stage: unpack the RPM file
-FROM debian:bullseye-slim AS build
-ARG BCLCONVERT_VERSION="4.5.4"
+FROM debian:trixie-slim AS build
+ARG BCLCONVERT_VERSION="4.6.2"
 
 # Install tools needed to extract RPM
 RUN apt-get update \
@@ -15,13 +15,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Extract bcl-convert from RPM
-COPY bcl-convert-${BCLCONVERT_VERSION}-2.el8.x86_64.rpm bcl-convert.rpm
+COPY bcl-convert-${BCLCONVERT_VERSION}-2.el9.x86_64.rpm bcl-convert.rpm
 RUN rpm2cpio bcl-convert.rpm | cpio -idmv \
     && rm bcl-convert.rpm
 
 # Final stage: minimal image with only necessary components
-FROM debian:bullseye-slim
-ARG BCLCONVERT_VERSION="4.5.4"
+FROM debian:trixie-slim
+ARG BCLCONVERT_VERSION="4.6.2"
 LABEL org.opencontainers.image.description="Docker image containing bcl-convert"
 LABEL org.opencontainers.image.version="$BCLCONVERT_VERSION"
 LABEL org.opencontainers.image.documentation="https://github.com/nf-core/modules/blob/master/modules/nf-core/bclconvert/README.md"
@@ -37,9 +37,6 @@ RUN apt-get update \
     rclone \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Link hostname cmd to fix hardcoded path
-RUN ln -s /bin/hostname /usr/bin/hostname
 
 # Copy bcl-convert executable from build stage
 COPY --from=build /usr/bin/bcl-convert /usr/bin/bcl-convert

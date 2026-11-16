@@ -22,8 +22,7 @@ input:
           e.g. [ id:'test' ]
     - infile:
         type: file
-        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho,
-          OrthAgogue or OrthoFinder)
+        description: Gene counts table (from OrthoMCL, SwiftOrtho, FastOrtho, OrthAgogue or OrthoFinder)
         pattern: "*.{txt,tsv,tab}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -95,3 +94,17 @@ authors:
   - "@chriswyatt1"
 maintainers:
   - "@chriswyatt1"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cafe:5.1.0--4ba563d3b90c6a6e
+      build_id: bd-4ba563d3b90c6a6e_1
+      scan_id: sc-0a85ed8319a3fa5a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cafe:5.1.0--c24b30238049ca3a
+      build_id: bd-c24b30238049ca3a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1abaff43e5320ef242c17d05367cb50bf1e256c0e4f9211e522e0c187b7ab4ba/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cafe/.conda-lock/linux_amd64-bd-4ba563d3b90c6a6e_1.txt

@@ -1,6 +1,5 @@
 name: "CUSTOM_CLUSTERMETRICS"
-description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz,
-  Davies-Bouldin), performs k-sweep and k-distance analysis"
+description: "Computes clustering quality metrics (silhouette, Calinski-Harabasz, Davies-Bouldin), performs k-sweep and k-distance analysis"
 keywords:
   - clustering
   - metrics
@@ -97,3 +96,27 @@ authors:
   - "@dbaku42"
 maintainers:
   - "@dbaku42"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:98f5772f09be086e
+      build_id: bd-98f5772f09be086e_1
+      scan_id: sc-703228fe01063a6b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:7481ccbf6422b6bd
+      build_id: bd-7481ccbf6422b6bd_1
+      scan_id: sc-26e9d759c3147735_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:ed0a787228d02d18
+      build_id: bd-ed0a787228d02d18_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c06892da96673443d3396e45db8846cae65b7093caaf607093ee18e1a3002034/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/matplotlib_numpy_pandas_python_pruned:07e6f8cb7181d718
+      build_id: bd-07e6f8cb7181d718_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3cc55d016630d9aab5aebf922c59fdc8ef18783ad4572c79ff6b7e4ee2b5964/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/clustermetrics/.conda-lock/linux_amd64-bd-98f5772f09be086e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/clustermetrics/.conda-lock/linux_arm64-bd-7481ccbf6422b6bd_1.txt

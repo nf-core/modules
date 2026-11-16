@@ -28,7 +28,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "bam"
+                input[2] = ["bam", "bai"]
                 """
             }
         }
@@ -37,9 +37,41 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.bai,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - csi") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
+                    []
+                ]
+                input[1] =[
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
+                ]
+                input[2] = ["bam", "csi"]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"])
                 ).match() }
             )
         }
@@ -64,18 +96,17 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "cram"
+                input[2] = ["cram", "crai"]
                 """
             }
         }
 
         then {
             assert process.success
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta'
             assertAll(
                 { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.bai[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], unstableKeys: ["index"], referenceFasta: fasta)
                 ).match() }
             )
         }
@@ -86,7 +117,6 @@ nextflow_process {
 
         when {
             process {
-
                 """
                 input[0] = [
                     [ id:'test'],
@@ -101,7 +131,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "bam"
+                input[2] = ["bam", "bai"]
                 """
             }
         }
@@ -109,7 +139,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], unstableKeys: ["index"])
+                ).match() }
             )
         }
     }
@@ -131,18 +163,17 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "cram"
+                input[2] = ["cram", "crai"]
                 """
             }
         }
 
         then {
             assert process.success
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assertAll(
                 { assert snapshot(
-                    file(process.out.cram[0][1]).name,
-                    file(process.out.bai[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], unstableKeys: ["index"], referenceFasta: fasta)
                 ).match() }
             )
         }
@@ -168,7 +199,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "cram"
+                input[2] = ["cram", "crai"]
                 """
             }
         }
@@ -176,7 +207,40 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - default output format - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[1] =[
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
+                ]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -201,7 +265,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true),
                 ]
-                input[2] = "bam"
+                input[2] = ["bam", "bai"]
                 """
             }
         }
@@ -209,7 +273,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rnaquast"
-description: Assess the quality of an RNAseq assembly with or without a
-  reference genome
+description: Assess the quality of an RNAseq assembly with or without a reference genome
 keywords:
   - rna assembly
   - rnaseq
@@ -9,10 +7,7 @@ keywords:
   - quality control
 tools:
   - "rnaquast":
-      description: "rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference
-        genome and gene database. In addition, rnaQUAST is also capable of estimating
-        gene database coverage by raw reads and de novo quality assessment using third-party
-        software."
+      description: "rnaQUAST is a tool for evaluating RNA-Seq assemblies using reference genome and gene database. In addition, rnaQUAST is also capable of estimating gene database coverage by raw reads and de novo quality assessment using third-party software."
       homepage: "https://github.com/ablab/rnaquast"
       documentation: "https://github.com/ablab/rnaquast"
       tool_dev_url: "https://github.com/ablab/rnaquast"
@@ -28,8 +23,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
-        description: Specifies the transcriptome assembly FASTA file(s) to be
-          evaluated.
+        description: Specifies the transcriptome assembly FASTA file(s) to be evaluated.
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -40,8 +34,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - reference:
         type: file
-        description: Provides the reference genome FASTA file against which
-          transcripts will be aligned.
+        description: Provides the reference genome FASTA file against which transcripts will be aligned.
         pattern: "*.{fasta,fa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -52,8 +45,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - gtf:
         type: file
-        description: Supplies the reference gene annotation file in GTF format for
-          evaluating transcript accuracy and completeness.
+        description: Supplies the reference gene annotation file in GTF format for evaluating transcript accuracy and completeness.
         pattern: "*.{gff,gtf}"
         ontologies:
           - edam: http://edamontology.org/format_2305 # GFF
@@ -97,3 +89,17 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/rnaquast:2.3.0--9fcd20e07559eb30
+      build_id: bd-9fcd20e07559eb30_1
+      scan_id: sc-0ef30df2710b98f7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rnaquast:2.3.0--ee4e4fedd3206982
+      build_id: bd-ee4e4fedd3206982_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b808671479318b6f8bb8d5b0c105ecccdea485b1f380e667366fa9363e15e61a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rnaquast/.conda-lock/linux_amd64-bd-9fcd20e07559eb30_1.txt

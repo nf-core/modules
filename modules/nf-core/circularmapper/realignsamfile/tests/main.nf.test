@@ -36,6 +36,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = CIRCULARMAPPER_CIRCULARGENERATOR.out.fasta
+                    input[1] = []
                     """
                 }
             }

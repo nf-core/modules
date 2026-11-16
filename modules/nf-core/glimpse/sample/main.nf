@@ -1,14 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE_SAMPLE {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1'
-        : 'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f722eb1dd56d995b28e1ec47f7808450bf6477e0b4ec28ec5f294c1a66fd479e/data'
+        : 'community.wave.seqera.io/library/glimpse-bio:1.1.1--26d63752054f98c5'}"
 
     input:
     tuple val(meta), path(input), path(index)
+    val extension
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: haplo_sampled
@@ -20,7 +24,7 @@ process GLIMPSE_SAMPLE {
     script:
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = extension ?: "vcf.gz"
 
     """
     GLIMPSE_sample \\
@@ -32,7 +36,7 @@ process GLIMPSE_SAMPLE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = extension ?: "vcf.gz"
 
     def create_cmd = suffix.endsWith(".gz") ? "echo | gzip >" : "touch"
 

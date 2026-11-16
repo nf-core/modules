@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json:wq
 name: "gcta_reml"
 description: Run univariate REML heritability estimation with a dense GRM
 keywords:
@@ -26,8 +26,7 @@ input:
           (for example `plink_simulated_dense` for `plink_simulated_dense.grm.{id,bin,N.bin}`)
     - grm_files:
         type: file
-        description: Dense GRM bundle containing sample identifier, binary matrix,
-          and sample-count matrix files
+        description: Dense GRM bundle containing sample identifier, binary matrix, and sample-count matrix files
         pattern: "*.grm.*"
         ontologies: []
   - - meta2:
@@ -102,3 +101,17 @@ authors:
   - "@lyh970817"
 maintainers:
   - "@lyh970817"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gcta:1.94.1--e22d27187f066d3c
+      build_id: bd-e22d27187f066d3c_1
+      scan_id: sc-b6cc55fb8a03cfda_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gcta:1.94.1--466cdc5f0ba301ae
+      build_id: bd-466cdc5f0ba301ae_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56e7d9dd85fa648387dcb28e6f9c2eb293c5b2f444f5419266be7732cac23f3d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gcta/reml/.conda-lock/linux_amd64-bd-e22d27187f066d3c_1.txt

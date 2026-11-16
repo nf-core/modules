@@ -1,5 +1,52 @@
 {
-    "stub - download config.json - tiny-random-gpt2": {
+    "download repository - demo1 - custom prefix - stub": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "demo_subset",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:09:08.661879",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download Xet repository - tiny-random-gpt2": {
+        "content": [
+            1,
+            {
+                "id": "test_xet"
+            },
+            "test_xet",
+            "model.safetensors:md5,008d07f842d3ffbc7eaa48a04044d13f",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:23:35.590811",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download config.json - tiny-random-gpt2 - stub": {
         "content": [
             {
                 "output": [
@@ -19,10 +66,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-11T22:44:19.339156878",
+        "timestamp": "2026-10-01T12:08:43.60187",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.6"
         }
     },
     "download config.json - tiny-random-bert": {
@@ -47,6 +94,126 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
+        }
+    },
+    "download nested file - demo1": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "train.csv",
+            "train.csv:md5,fcddff61b5a0106ff160db19ab53ca44",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:09:01.209571",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download nested file - demo1 - stub": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "train.csv",
+            "train.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:09:12.377814",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download filtered repository - demo1 - custom prefix": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "demo_subset",
+            "train.csv:md5,fcddff61b5a0106ff160db19ab53ca44",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:08:56.797306",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download repository - demo1 - stub": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "test_dataset",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:09:04.917667",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "download repository - demo1": {
+        "content": [
+            1,
+            {
+                "id": "test_dataset"
+            },
+            "test_dataset",
+            "train.csv:md5,fcddff61b5a0106ff160db19ab53ca44",
+            "test.csv:md5,11172becce7e5202af83e0ebe96d75d3",
+            {
+                "versions_huggingface_hub": [
+                    [
+                        "HUGGINGFACE_DOWNLOAD",
+                        "huggingface_hub",
+                        "1.18.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T12:08:50.223345",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "download config.json - tiny-random-gpt2": {

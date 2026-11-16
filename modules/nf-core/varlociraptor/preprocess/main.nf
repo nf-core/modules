@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARLOCIRAPTOR_PREPROCESS {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/varlociraptor%3A8.9.5--h24073b4_0'
-        : 'quay.io/biocontainers/varlociraptor:8.9.5--h24073b4_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4788613cdc4faf20c5ebb24da24575ec3d80a8a52a0daf1c986b742444fe6c99/data'
+:         'community.wave.seqera.io/library/varlociraptor:8.12.0--294eead5eab5a1dc' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(candidates), path(alignment_json), path(fasta), path(fai)

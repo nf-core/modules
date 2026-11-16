@@ -1,6 +1,5 @@
 name: "ashlar"
-description: Alignment by Simultaneous Harmonization of Layer/Adjacency
-  Registration
+description: Alignment by Simultaneous Harmonization of Layer/Adjacency Registration
 keywords:
   - image_processing
   - alignment
@@ -22,8 +21,7 @@ input:
           e.g. [ id:'test' ]
     - images:
         type: file
-        description: Overlapping tile image data in formats from most commercial
-          microscopes
+        description: Overlapping tile image data in formats from most commercial microscopes
         pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
         ontologies: []
   - opt_dfp:
@@ -73,3 +71,27 @@ authors:
 maintainers:
   - "@RobJY"
   - "@jmuhlich"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ashlar_tifffile:6466db6f351397ba
+      build_id: bd-6466db6f351397ba_1
+      scan_id: sc-cceea23b86b93d04_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ashlar_tifffile:68dd4095ed92ddc1
+      build_id: bd-68dd4095ed92ddc1_1
+      scan_id: sc-5e58fcffeb038cf9_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ashlar_tifffile:ccd3fae9b4eab232
+      build_id: bd-ccd3fae9b4eab232_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/774b24842ee0875beafb5463ee1aaf268cd2ea04b4ab09cd7e645a111543d88e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ashlar_tifffile:8071007ebd80be4b
+      build_id: bd-8071007ebd80be4b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f9a902bb541dc2abba28e73c4bac2ee14d28373abe2e14b444a5096f4919cb7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ashlar/.conda-lock/linux_amd64-bd-6466db6f351397ba_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ashlar/.conda-lock/linux_arm64-bd-68dd4095ed92ddc1_1.txt

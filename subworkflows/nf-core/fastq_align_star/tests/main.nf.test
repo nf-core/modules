@@ -11,6 +11,7 @@ nextflow_workflow {
     tag "star/genomegenerate"
     tag "rsem/preparereference"
     tag "subworkflows/bam_sort_stats_samtools"
+    tag "subworkflows/../bam_sort_stats_samtools"
 
     setup {
         run("STAR_GENOMEGENERATE") {

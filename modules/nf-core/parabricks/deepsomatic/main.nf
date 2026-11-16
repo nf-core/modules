@@ -1,11 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_DEEPSOMATIC {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
     tuple val(meta), path(input_tumor), path(index_tumor), path(input_normal), path(index_normal), path(intervals)
@@ -40,6 +41,7 @@ process PARABRICKS_DEEPSOMATIC {
         --out-variants ${output_file} \\
         ${interval_command} \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
     """
 

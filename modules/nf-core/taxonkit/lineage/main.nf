@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAXONKIT_LINEAGE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/taxonkit:0.18.0--h9ee0642_0':
-        'quay.io/biocontainers/taxonkit:0.18.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47a901198dfa6fd00c447557e953a64abb8794d49812ccb623bc973510069706/data'
+        : 'community.wave.seqera.io/library/taxonkit:0.18.0--36a4cff30b2fab4e'}"
 
     input:
     tuple val(meta), val(taxid), path(taxidfile)

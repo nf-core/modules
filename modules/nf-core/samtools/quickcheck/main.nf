@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_QUICKCHECK {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e994bf4eb3731150511a14f5706b7bdfd64df1b6d40898fff334286c027e0859/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.24--d697cfb9dce007cd'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5749b5efca036c73d7b427c0ba347c94773330fe228b8eb395cdb619e7a5635c/data'
+        : 'community.wave.seqera.io/library/samtools_htslib:1.25--65a8db39c6e3f5bd'}"
 
     input:
     tuple val(meta), path(bam)

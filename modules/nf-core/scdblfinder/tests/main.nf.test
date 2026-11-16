@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process SCDBLFINDER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "SCDBLFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scdblfinder"
+
+    test("homo sapiens - pbmc1k - h5ad") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def calls = new File(process.out.predictions[0][1].toString()).readLines()
+            assert calls.size() == 1001
+            assert calls[0] == '"","test_scdblfinder"'
+            assert calls.drop(1).every { line -> line.endsWith(",TRUE") || line.endsWith(",FALSE") }
+            def scores = new File(process.out.scores[0][1].toString()).readLines()
+            assert scores.size() == 1001
+            def adata = anndata(process.out.h5ad[0][1])
+            with(adata) {
+                assert "scDblFinder.class" in obs.colnames
+                assert "scDblFinder.score" in obs.colnames
+            }
+            assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ['h5ad', 'scores']),
+                scores.size(),
+                adata.yaml
+            ).match()
+        }
+
+    }
+
+    test("homo sapiens - pbmc1k - h5ad - doublet rate and batch column") {
+
+        when {
+            params {
+                module_args = 'dbr = 0.08, samples = "batch"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def calls = new File(process.out.predictions[0][1].toString()).readLines()
+            assert calls.size() == 1001
+            assert calls[0] == '"","test_scdblfinder"'
+            assert calls.drop(1).every { line -> line.endsWith(",TRUE") || line.endsWith(",FALSE") }
+            def scores = new File(process.out.scores[0][1].toString()).readLines()
+            assert scores.size() == 1001
+            def adata = anndata(process.out.h5ad[0][1])
+            with(adata) {
+                assert "scDblFinder.class" in obs.colnames
+                assert "scDblFinder.score" in obs.colnames
+            }
+            assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ['h5ad', 'scores']),
+                scores.size(),
+                adata.yaml
+            ).match()
+        }
+
+    }
+
+    test("homo sapiens - pbmc1k - h5ad - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+}
