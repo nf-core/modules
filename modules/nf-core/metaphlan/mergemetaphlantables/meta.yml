@@ -8,8 +8,7 @@ keywords:
   - profiles
 tools:
   - metaphlan4:
-      description: Identify clades (phyla to species) present in the metagenome obtained
-        from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.1038/s41587-023-01688-w"
@@ -65,3 +64,27 @@ authors:
 maintainers:
   - "@jfy133"
   - "@LilyAnderssonLee"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/metaphlan_numpy_python:729d587efd21f3af
+      build_id: bd-729d587efd21f3af_1
+      scan_id: sc-911b10c06b2a2f9d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/metaphlan_numpy_python:59796ca881a8bb02
+      build_id: bd-59796ca881a8bb02_1
+      scan_id: sc-f98b614bb73250be_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/metaphlan_numpy_python:373e0586cfa7f0cb
+      build_id: bd-373e0586cfa7f0cb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/01/0198f5dc14251a57ec171969072954f8acfe03827ee492d8962325b61db128c9/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/metaphlan_numpy_python:1276de67df48518a
+      build_id: bd-1276de67df48518a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59f3aa387903d5b87b6e2d3c0172f462f701c662e73cb2e26066d4ec6fd3e8c6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/metaphlan/mergemetaphlantables/.conda-lock/linux_amd64-bd-59796ca881a8bb02_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/metaphlan/mergemetaphlantables/.conda-lock/linux_arm64-bd-729d587efd21f3af_1.txt

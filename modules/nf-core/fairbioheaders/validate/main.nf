@@ -31,12 +31,12 @@ process FAIRBIOHEADERS_VALIDATE {
             validate \\
             ${args} \\
             ${metadata}
-    } > ${prefix}.validate.txt
+    } > "${prefix}.validate.txt"
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.validate.txt
+    touch "${prefix}.validate.txt"
     """
 }

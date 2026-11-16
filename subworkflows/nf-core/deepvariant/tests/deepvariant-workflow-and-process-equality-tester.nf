@@ -21,4 +21,5 @@ workflow DEEPVARIANT_WORKFLOW_AND_PROCESS_EQUALITY_TESTER {
     pc_vcf = DEEPVARIANT_RUNDEEPVARIANT.out.vcf
     wf_gvcf = DEEPVARIANT.out.gvcf
     pc_gvcf = DEEPVARIANT_RUNDEEPVARIANT.out.gvcf
+    wf_phased_reads_switches = DEEPVARIANT.out.phased_reads_switches
 }

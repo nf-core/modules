@@ -28,7 +28,7 @@ process FAIRBIOHEADERS_COMBINE {
     bioheaders \\
         combine \\
         ${args} \\
-        --output ${prefix}.${extension} \\
+        --output "${prefix}.${extension}" \\
         ${metadata} \\
         ${sequence}
     """
@@ -38,6 +38,6 @@ process FAIRBIOHEADERS_COMBINE {
     extension = sequence.name.tokenize('.').takeRight(sequence.extension in ['gz', 'bgz'] ? 2 : 1).join('.')
     def create = sequence.extension in ['gz', 'bgz'] ? "echo '' | gzip >" : 'touch'
     """
-    ${create} ${prefix}.${extension}
+    ${create} "${prefix}.${extension}"
     """
 }

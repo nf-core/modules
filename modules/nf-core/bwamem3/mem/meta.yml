@@ -54,7 +54,9 @@ input:
           for TAPS; the `=` is required) needs an index built with `bwa-mem3 index --meth`,
           which adds the `*.meth.*` seed index. Aligning against a `--meth` index needs about
           1.7x the memory of a plain index (measured on human chr21 with bwa-mem3 0.16.0);
-          for a human genome that is tens of GB.
+          for a human genome that is tens of GB. Since bwa-mem3 0.17.0, bare `--meth`
+          (bisulfite/EM-seq) scores mismatches as `--meth-scoring genomic`; pass
+          `--meth-scoring collapsed` to keep the 0.16.0 scores, MAPQ and placements.
         pattern: "Directory containing bwa-mem3 index *.{amb,ann,bwt.2bit.64,pac}"
         ontologies:
           - edam: "http://edamontology.org/data_3210"
@@ -151,25 +153,25 @@ maintainers:
   - "@nh13"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:e73cbc14b9a6cced
-      build_id: bd-e73cbc14b9a6cced_1
-      scan_id: sc-88dd26a648f84e35_1
     linux/amd64:
-      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:f271e572b6aa004b
-      build_id: bd-f271e572b6aa004b_1
-      scan_id: sc-f2ead31ae29e9b64_1
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:ac58207ad8b29268
+      build_id: bd-ac58207ad8b29268_1
+      scan_id: sc-0581889347908187_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:1b8229347711c377
+      build_id: bd-1b8229347711c377_1
+      scan_id: sc-113843aa1a9c1b59_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:6b077b9587af43f7
-      build_id: bd-6b077b9587af43f7_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f32caea810da83646cb7c62800d7952f4246ca68799f53fa6b0e1a02e19009b5/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:9ae3c28116c5de4c
-      build_id: bd-9ae3c28116c5de4c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffd9362ddd396e0eb431def1812e02a274552b162355b242d974af65fcf83167/data
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:faf85ebedc129476
+      build_id: bd-faf85ebedc129476_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6c7e01f3fbb256f4cb63f77d5630fe44f9c41557cd25abccf1da96fd693bbbf8/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:a93f66d3bd891ac5
+      build_id: bd-a93f66d3bd891ac5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/2620fede02f2bcc887412dbb17f5d0b7658fee3f9bc94f4bb3fdcef97fdd35b3/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-f271e572b6aa004b_1.txt
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-ac58207ad8b29268_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-e73cbc14b9a6cced_1.txt
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-1b8229347711c377_1.txt

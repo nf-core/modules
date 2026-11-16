@@ -80,6 +80,30 @@ nextflow_function {
         }
     }
 
+    test("Test Function processVersionsFromYAML keeps trailing zeros in versions") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = 'PIPELINE:WORKFLOW:SAMTOOLS_SORT:\\n  samtools: 1.20\\nPIPELINE:WORKFLOW:SED_TOOL:\\n  sed: 4.10\\nPIPELINE:WORKFLOW:FASTQC:\\n  fastqc: 0.12.1\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result.contains("samtools: '1.20'") },
+                { assert function.result.contains("sed: '4.10'") },
+                { assert function.result.contains("fastqc: 0.12.1") },
+                { assert snapshot(function.result).match() }
+            )
+        }
+    }
+
     test("Test Function getSingleReport with a single file") {
         function "getSingleReport"
 

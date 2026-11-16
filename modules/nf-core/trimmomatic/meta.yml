@@ -1,6 +1,5 @@
 name: "trimmomatic"
-description: Performs quality and adapter trimming on paired end and single end
-  reads
+description: Performs quality and adapter trimming on paired end and single end reads
 keywords:
   - trimming
   - adapter trimming
@@ -110,3 +109,25 @@ authors:
   - "@alyssa-ab"
 maintainers:
   - "@alyssa-ab"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/trimmomatic:0.39--1ffbebb3556a75f8
+      build_id: bd-1ffbebb3556a75f8_1
+      scan_id: sc-2f3acef911a7e0a7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/trimmomatic:0.39--d5047924c9ebc903
+      build_id: bd-d5047924c9ebc903_1
+      scan_id: sc-7fa6d059828774d4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/trimmomatic:0.39--fe5336e7c4ed132e
+      build_id: bd-fe5336e7c4ed132e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4ded954e44421dec3aa69f15424f3d2e5fae70aefc54f4b1d3eb85adcf5fd046/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/trimmomatic:0.39--96257be0abe00ac5
+      build_id: bd-96257be0abe00ac5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aac61eceef146ec8b1c0bb117542dfffb0dce0b720efb867c69a71ee4774f57/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/trimmomatic/.conda-lock/linux_amd64-bd-1ffbebb3556a75f8_1.txt
