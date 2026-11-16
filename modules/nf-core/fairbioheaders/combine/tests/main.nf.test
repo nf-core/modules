@@ -1,0 +1,200 @@
+nextflow_process {
+
+    name "Test Process FAIRBIOHEADERS_COMBINE"
+    script "../main.nf"
+    process "FAIRBIOHEADERS_COMBINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fairbioheaders"
+    tag "fairbioheaders/combine"
+
+    test("sarscov2 - fasta - fhr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta.gz - fhr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gfa - fhr") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - faa - fhp") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/proteome_test.fhp.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - gff3 - fhgff3") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/fairbioheaders/test1.fhgff3.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - gfa - fhp - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/proteome_test.fhp.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains('FHP metadata is incompatible with GFA') } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta.gz - fhr - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

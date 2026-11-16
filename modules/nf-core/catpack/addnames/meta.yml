@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "catpack_addnames"
-description: Taxonomic classification of long DNA sequences and metagenome assembled
-  genomes (e.g. MAGs / bins).
+description: Taxonomic classification of long DNA sequences and metagenome assembled genomes (e.g. MAGs / bins).
 keywords:
   - taxonomic classification
   - classification
@@ -10,8 +8,7 @@ keywords:
   - assembly
 tools:
   - "catpack":
-      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled
-        genomes (MAGs)"
+      description: "CAT/BAT: tool for taxonomic classification of contigs and metagenome-assembled genomes (MAGs)"
       homepage: "https://github.com/MGXlab/CAT_pack"
       documentation: "https://github.com/MGXlab/CAT_pack"
       tool_dev_url: "https://github.com/MGXlab/CAT_pack"
@@ -87,3 +84,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cat:6.0.1--45eb3de71f06f426
+      build_id: bd-45eb3de71f06f426_1
+      scan_id: sc-7162bafb32bf96b7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/cat:6.0.1--d169f2237dcfbb95
+      build_id: bd-d169f2237dcfbb95_1
+      scan_id: sc-7708184280b13eba_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cat:6.0.1--187f98ff6e6fe90e
+      build_id: bd-187f98ff6e6fe90e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4dd0a1f1a97b1a5ab05634cbafee919dbe98818bfed4bcff2c71c4d1bdace73c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cat:6.0.1--603b233806ede90a
+      build_id: bd-603b233806ede90a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1fc8ea63d90f6b164b197ef1077183c909391ef70e65955b9e5fee54ffcfe3d5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/catpack/addnames/.conda-lock/linux_amd64-bd-45eb3de71f06f426_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/catpack/addnames/.conda-lock/linux_arm64-bd-d169f2237dcfbb95_1.txt

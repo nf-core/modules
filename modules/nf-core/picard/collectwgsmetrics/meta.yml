@@ -1,6 +1,5 @@
 name: picard_collectwgsmetrics
-description: Collect metrics about coverage and performance of whole genome sequencing
-  (WGS) experiments.
+description: Collect metrics about coverage and performance of whole genome sequencing (WGS) experiments.
 keywords:
   - alignment
   - metrics
@@ -54,8 +53,7 @@ input:
         ontologies: []
   - intervallist:
       type: file
-      description: Picard Interval List. Defines which contigs to include. Can be generated
-        from a BED file with GATK BedToIntervalList.
+      description: Picard Interval List. Defines which contigs to include. Can be generated from a BED file with GATK BedToIntervalList.
       ontologies: []
 output:
   metrics:
@@ -100,3 +98,27 @@ maintainers:
   - "@flowuenne"
   - "@lassefolkersen"
   - "@ramprasadn"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/picard_r-base:5659104ba2ac5868
+      build_id: bd-5659104ba2ac5868_1
+      scan_id: sc-ae7623156aafdb0e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/picard_r-base:ae404e1995ac7dd9
+      build_id: bd-ae404e1995ac7dd9_1
+      scan_id: sc-21606a176c9192d1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/picard_r-base:90aba3c75fc76f27
+      build_id: bd-90aba3c75fc76f27_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb0017f30def00fe4a6b81c0667759b4b9092c1772443c719cab854346a68daa/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/picard_r-base:21407dac8e4499b4
+      build_id: bd-21407dac8e4499b4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/957d5b2dfd43fee3d77279686a782da1da9820390424032c009005c24d2e58de/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/picard/collectwgsmetrics/.conda-lock/linux_amd64-bd-5659104ba2ac5868_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/picard/collectwgsmetrics/.conda-lock/linux_arm64-bd-ae404e1995ac7dd9_1.txt

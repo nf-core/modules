@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_PLUGINVCF2TABLE {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e674cbc269b944e50ad4f5846ee92a2196b59d9ed76e9146867c76fb32cb8aa/data'
-        : 'community.wave.seqera.io/library/bcftools:1.23.1--4d193a5f61d4aed7'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f57eb9360a7f27a3b111d842194286fe02665c1c008ea7635f2a611939523def/data'
+        : 'community.wave.seqera.io/library/bcftools:1.25--140bbb151b8acfe5'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

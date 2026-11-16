@@ -78,8 +78,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input.") },
+                { assert process.failed },
+                { assert process.stdout.toString().contains("no reference FASTA") },
             )
         }
     }
@@ -104,8 +104,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("CRAM input file provided but no reference FASTA and/or FAI index for said reference, both are required for CRAM input.") },
+                { assert process.failed },
+                { assert process.stdout.toString().contains("no reference FASTA") },
             )
         }
     }

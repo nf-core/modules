@@ -1,0 +1,80 @@
+UniverSC 1.2.7 fixes for Cell Ranger 10.1.0: --create-bam flag, Bash syntax
+fixes, and skipping the legacy Cloupe MRO edits that break preflight.
+
+--- a/launch_universc.sh
++++ b/launch_universc.sh
+@@ -349,7 +349,7 @@
+ jobmode="local"
+ ncores=""
+ mem=""
+-bam=""
++bam="--create-bam=true"
+ secondary=""
+ library=""
+ introns=""
+@@ -594,7 +594,7 @@
+             shift
+             ;;
+         --no-bam)
+-            bam="--no-bam"
++            bam="--create-bam=false"
+             next=false
+             shift
+             ;;
+@@ -2026,9 +2026,9 @@
+             echo "  generating combination of I1, I2, and RT barcodes ..."
+         fi
+     elif [[ "$technology" == "quartz-seq" ]]; then
+-        indexlength=$(($(head $index1([0]) -n 2 | tail -n 1 | wc -c) -1))
+-        if [[ -f $(echo ${index2}([0])) ]]; then
+-            index2length=$(($(head $index2([0]) -n 2 | tail -n 1 | wc -c) -1))
++        indexlength=$(($(head "${index1[0]}" -n 2 | tail -n 1 | wc -c) -1))
++        if [[ -f $(echo "${index2[0]}") ]]; then
++            index2length=$(($(head "${index2[0]}" -n 2 | tail -n 1 | wc -c) -1))
+             barcodelength=$(($indexlength+$index2length))
+             if [[ -f ${whitelistdir}/Illumina_dual_barcodes.txt ]]; then
+                 cat ${whitelistdir}/Illumina_TruSeq_Index1_i7_barcodes.txt ${whitelistdir}/Illumina_Nextera_Index1_i7_barcodes.txt | sort | uniq > ${whitelistdir}/Illumina_Index1_i7_barcodes.txt
+@@ -2637,7 +2637,7 @@
+         cp ${cellrangerpath}-cs/${cellrangerversion}/lib/python/cellranger/webshim/template/navbar.html ${cellrangerpath}-cs/${cellrangerversion}/lib/python/cellranger/webshim/template/navbar.backup.html
+         cp ${cellrangerpath}-cs/${cellrangerversion}/lib/python/cellranger/webshim/template/navbar.html ${cellrangerpath}-cs/${cellrangerversion}/lib/python/cellranger/webshim/template/navbar.temp.html
+     fi
+-    if [[ $technology == "10x" ]] && [[ $barcodefile == "default:10x" ]]; then
++    if [[ $technology == "10x" ]] && [[ $barcodefile == "default:10x" ]] && [[ ${cellrangerversion} != "10.1.0" ]]; then
+         #restore logo in HTML template
+         if [[ $verbose ]]; then
+             echo "restore logo in summary HTML"
+@@ -2681,7 +2681,7 @@
+             fi
+             eval "sed -i '$(echo "${num},${num2}s/^#*#//g")' $file"
+         done
+-    elif [[ $lastcall_p == "default:10x" ]] || [[ ! -f $lastcallfile ]]; then
++    elif [[ ${cellrangerversion} != "10.1.0" ]] && { [[ $lastcall_p == "default:10x" ]] || [[ ! -f $lastcallfile ]]; }; then
+         #remove logo from HTML template
+         if [[ -f ${cellrangerpath}-cs/${cellrangerversion}/lib/python/cellranger/webshim/template/navbar.backup.html ]];then
+             #line of HTML in header is removed
+@@ -3004,7 +3004,7 @@
+     to=$(echo "$to" | sed 's/\.gz$//')
+
+     #invert read1 and read2
+-    if [[ "$technology" == "indrop-v2" ]] || [[ "$technology" == "indrop-v3" ]] || [["$technology" == "vasa-drop" ]]; then
++    if [[ "$technology" == "indrop-v2" ]] || [[ "$technology" == "indrop-v3" ]] || [[ "$technology" == "vasa-drop" ]]; then
+         #where converted "read2" is R1 in source files
+         echo "using transcripts in Read 1 for ${technology}"
+         to=`echo $to | sed -e "s/_R1_/_R2_/g"`
+@@ -3197,13 +3197,13 @@
+             convI1=$(echo $read | perl -pne 's/(.*)_R1/$1_I1/' )
+
+             #detect barcode length from index sequence
+-            indexlength=$(($(head $index1([0]) -n 2 | tail -n 1 | wc -c) -1))
++            indexlength=$(($(head "${index1[0]}" -n 2 | tail -n 1 | wc -c) -1))
+             barcodelength=$indexlength
+
+             #detect whether index 2 files exist
+-            if [[ -f $(echo ${index2}([0])) ]]; then
++            if [[ -f $(echo "${index2[0]}") ]]; then
+                 #detect barcode length from length of both index sequences
+-                index2length=$(($(head $index2([0]) -n 2 | tail -n 1 | wc -c) -1))
++                index2length=$(($(head "${index2[0]}" -n 2 | tail -n 1 | wc -c) -1))
+                 barcodelength=$(($indexlength+$index2length))
+                 convI2=$(echo $read | perl -pne 's/(.*)_R1/$1_I2/' )
+                 echo "  ... concatencate barcodes to R1 from I1 and I2 index files"

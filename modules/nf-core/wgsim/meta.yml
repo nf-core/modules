@@ -62,3 +62,27 @@ authors:
   - "@priyanka-surana"
 maintainers:
   - "@priyanka-surana"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/wgsim:1.0--88dbc50cda09a2ed
+      build_id: bd-88dbc50cda09a2ed_1
+      scan_id: sc-ad1623ac92a1c305_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/wgsim:1.0--2fb08e23ce8d62af
+      build_id: bd-2fb08e23ce8d62af_1
+      scan_id: sc-a34419ac5f974ab5_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/wgsim:1.0--c94b6e679870d799
+      build_id: bd-c94b6e679870d799_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e41ff04a2e8632e62ecbce8ac2e3e06f6738c815b1a4f38acd937b133c587b92/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/wgsim:1.0--b2d79557f4b7798d
+      build_id: bd-b2d79557f4b7798d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ed726a6be88e088ab7616ba23cf8362bb186cae29449ab8127bc35f33dad848/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/wgsim/.conda-lock/linux_amd64-bd-2fb08e23ce8d62af_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/wgsim/.conda-lock/linux_arm64-bd-88dbc50cda09a2ed_1.txt

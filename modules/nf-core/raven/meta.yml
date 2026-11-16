@@ -78,3 +78,17 @@ authors:
   - "@fmalmeida"
 maintainers:
   - "@fmalmeida"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/raven-assembler:1.6.1--2388e7e21e19cd95
+      build_id: bd-2388e7e21e19cd95_1
+      scan_id: sc-ac0a656e22de0e15_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/raven-assembler:1.6.1--c497653b0178bc3a
+      build_id: bd-c497653b0178bc3a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ece0d4ba37373e4fcf84fd856b4e7f3b84ecc4394dabeed7928a0c9a9b3b92bb/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/raven/.conda-lock/linux_amd64-bd-2388e7e21e19cd95_1.txt

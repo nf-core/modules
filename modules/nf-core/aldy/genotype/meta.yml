@@ -1,0 +1,136 @@
+name: "aldy_genotype"
+description: Genotype and phase pharmacogenes using star-allele nomenclature
+keywords:
+  - pharmacogenomics
+  - star-allele
+  - genotyping
+  - phasing
+  - cyp2d6
+tools:
+  - "aldy":
+      description: "Allelic decomposition and exact genotyping of highly polymorphic and structurally variant pharmacogenes"
+      homepage: "https://github.com/0xTCG/aldy"
+      documentation: "https://aldy.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/0xTCG/aldy"
+      doi: "10.1101/gr.277075.122"
+      licence:
+        - "Aldy/IURTC License (free for academic/non-commercial use)"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Alignment (SAM/BAM/CRAM) or variant (VCF) file mapped to hg19 or hg38
+        pattern: "*.{sam,bam,cram,vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_3016 # VCF
+    - index:
+        type: file
+        description: Index of the input file
+        pattern: "*.{bai,crai,csi,tbi}"
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
+          - edam: http://edamontology.org/format_3616 # TBI
+    - gene:
+        type: string
+        description: |
+          Gene (or comma-separated list of genes) to genotype, e.g. `CYP2D6`.
+          Use `all` to genotype every supported gene.
+    - profile:
+        type: string
+        description: |
+          Name of the built-in sequencing profile matching the technology used
+          to generate the input
+        pattern: "illumina|wgs|pgx1|pgx2|pgx3|pgrnseq-v1|pgrnseq-v2|pgrnseq-v3|10x|exome|wxs|wes|pacbio-hifi-targeted|pacbio-hifi-targeted-twist"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file, required for CRAM input
+        pattern: "*.{fa,fasta,fna}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  aldy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.aldy":
+          type: file
+          description: Tab-separated file with the star-allele decomposition of each solution
+          pattern: "*.aldy"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: Aldy log file
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_aldy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - aldy:
+          type: string
+          description: The name of the tool
+      - aldy help 2>&1 | grep -o 'Aldy v[0-9.]*' | cut -c7-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - aldy:
+          type: string
+          description: The name of the tool
+      - aldy help 2>&1 | grep -o 'Aldy v[0-9.]*' | cut -c7-:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@JoseEspinosa"
+maintainers:
+  - "@JoseEspinosa"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mappy_pysam_gcc_pip_pruned:76bc0744bd24414b
+      build_id: bd-76bc0744bd24414b_1
+      scan_id: sc-a4a5d912121233e9_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mappy_pysam_gcc_pip_pruned:c6fac352416249ac
+      build_id: bd-c6fac352416249ac_1
+      scan_id: sc-6f3f58f9827f8a28_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mappy_pysam_gcc_pip_pruned:fa92908907274d5e
+      build_id: bd-fa92908907274d5e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8ad9095fa0372544cb2c9d868620c5c5226b7c6504fa3c59a879d73bef52e1d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mappy_pysam_gcc_pip_pruned:378ef024c4da3172
+      build_id: bd-378ef024c4da3172_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a6ce2cec4db6b3df5d6dd990c94552ccdc0c1e77bdaaae14cb081d5f01e116b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/aldy/genotype/.conda-lock/linux_amd64-bd-76bc0744bd24414b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/aldy/genotype/.conda-lock/linux_arm64-bd-c6fac352416249ac_1.txt

@@ -1,6 +1,5 @@
 name: "openms_idmassaccuracy"
-description: Calculates a distribution of the mass error from given mass spectra and
-  IDs.
+description: Calculates a distribution of the mass error from given mass spectra and IDs.
 deprecated: true
 keywords:
   - mass_error
@@ -8,8 +7,7 @@ keywords:
   - proteomics
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management
-        and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
@@ -85,3 +83,27 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@jonasscheid"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/openms:3.4.1--fcd8b7f4d2e7250d
+      build_id: bd-fcd8b7f4d2e7250d_1
+      scan_id: sc-28028d3f757852c1_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/openms:3.4.1--6825b96bd18a1e9e
+      build_id: bd-6825b96bd18a1e9e_1
+      scan_id: sc-a73e5392f6dbd8b9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/openms:3.4.1--428939b54df5e7aa
+      build_id: bd-428939b54df5e7aa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/233b3693133c970e693ef74e8a599dd8984d987e4d3e298f43bf520dd184f754/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/openms:3.4.1--dfeeded64945f10c
+      build_id: bd-dfeeded64945f10c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d060f542292881083157fe2b4e533583e462f5f7cf2c58d1c7fdf80a83af808e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/openms/idmassaccuracy/.conda-lock/linux_amd64-bd-6825b96bd18a1e9e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/openms/idmassaccuracy/.conda-lock/linux_arm64-bd-fcd8b7f4d2e7250d_1.txt

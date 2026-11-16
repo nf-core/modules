@@ -22,8 +22,7 @@ input:
           e.g. [ id:'test' ]
     - jplace:
         type: file
-        description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped
-          or not
+        description: jplace file output from phylogenetic placement, e.g. EPA-NG, gzipped or not
         pattern: "*.{jplace,jplace.gz}"
         ontologies: []
 output:
@@ -118,3 +117,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/gappa:0.9.0--12dcfe09626fb9a8
+      build_id: bd-12dcfe09626fb9a8_1
+      scan_id: sc-b4dd9b85ccb4ade4_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/gappa:0.9.0--2f0efa59bcb34481
+      build_id: bd-2f0efa59bcb34481_1
+      scan_id: sc-d1dd5d30e6aa4c48_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gappa:0.9.0--810ace50b5d8837f
+      build_id: bd-810ace50b5d8837f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/99898b27409cb54d5afa243495e2ca99eb3dedd297a1ce1779000049e4b45ef8/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gappa:0.9.0--f5de58267f38bf88
+      build_id: bd-f5de58267f38bf88_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a30e4444b69c99470cae4a631a9e293ed76d475a6a44812a1f38ad2b9ece7af/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gappa/examineheattree/.conda-lock/linux_amd64-bd-2f0efa59bcb34481_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gappa/examineheattree/.conda-lock/linux_arm64-bd-12dcfe09626fb9a8_1.txt

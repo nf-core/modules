@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "autocycler_cluster"
 description: Cluster replicons in compressed assemblies with Autocycler.
 keywords:
@@ -123,3 +121,27 @@ authors:
   - "@eit-maxlcummins"
 maintainers:
   - "@dwells-eit"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/autocycler:0.5.2--acbc9f6f3af08e2c
+      build_id: bd-acbc9f6f3af08e2c_1
+      scan_id: sc-f0d8e4da115673f7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/autocycler:0.5.2--91b58d5b8fccdfb9
+      build_id: bd-91b58d5b8fccdfb9_1
+      scan_id: sc-555ce0e82495a54c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/autocycler:0.5.2--9e42c6c874cccf1f
+      build_id: bd-9e42c6c874cccf1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/945c5053805b84d0f8ef56f3ecbee814f80d70f0f32195102462553d9488fa77/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/autocycler:0.5.2--5a049a6b812149c6
+      build_id: bd-5a049a6b812149c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a59a19abe50e65d964ea723d2c310a0005ef5a965beb7bc740d02894dd056e8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/autocycler/cluster/.conda-lock/linux_amd64-bd-91b58d5b8fccdfb9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/autocycler/cluster/.conda-lock/linux_arm64-bd-acbc9f6f3af08e2c_1.txt

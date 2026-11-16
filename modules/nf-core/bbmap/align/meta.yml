@@ -25,16 +25,33 @@ input:
     - fastq:
         type: file
         description: |
-          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
-          respectively.
-        ontologies: []
+          Input FastQ files: one file for single-end data, and two files, or one
+          interleaved file, for paired-end data.
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
   - ref:
       type: file
       description: |
         Either "ref" a directory containing an index, the name of another directory
         with a "ref" subdirectory containing an index or the name of a fasta formatted
         nucleotide file containing the reference to map to.
-      ontologies: []
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
+  - - output_format:
+        type: string
+        description: |
+          Format of the output reads, one of "bam", "fastq", "fastq.gz", "fasta" or
+          "fasta.gz". Defaults to "bam" if empty.
+    - output_reads:
+        type: string
+        description: |
+          Which reads to write, one of "all" (bbmap `out`), "mapped" (`outm`) or
+          "unmapped" (`outu`). Defaults to "all" if empty.
+    - interleaved_output:
+        type: boolean
+        description: |
+          Whether to write paired-end fastq/fasta output to a single interleaved
+          file instead of two files. Has no effect on single-end or bam output.
 output:
   bam:
     - - meta:
@@ -44,9 +61,29 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bam":
           type: file
-          description: BAM file
+          description: |
+            BAM file, written when output_format is "bam". Named `${prefix}.bam`
+            for all reads, `${prefix}.<output_reads>.bam` otherwise.
           pattern: "*.{bam}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{fastq,fastq.gz,fasta,fasta.gz}":
+          type: file
+          description: |
+            Reads in fastq/fasta format, written when output_format is not "bam" and
+            named `${prefix}.<output_reads>`. Paired-end reads are split into `_1` and
+            `_2` files unless interleaved_output is true.
+          pattern: "*.{fastq,fastq.gz,fasta,fasta.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
   log:
     - - meta:
           type: map

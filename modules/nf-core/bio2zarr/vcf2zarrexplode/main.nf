@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BIO2ZARR_VCF2ZARREXPLODE {
     tag "$meta.id"
     label 'process_low'

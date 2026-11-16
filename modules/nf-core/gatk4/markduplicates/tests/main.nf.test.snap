@@ -1,20 +1,52 @@
 {
-    "sarscov2 - bam": {
+    "stub": {
         "content": [
-            [
-                "test.bam:readsMD5,894549ee3ced6b5ca2eed2563a985217"
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bai:md5,fd1c3cc02f4e223d32eedeed842b86c7"
-                ]
-            ],
-            "test.bam.metrics",
             {
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "crai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_gatk4": [
                     [
                         "GATK4_MARKDUPLICATES",
@@ -26,33 +58,111 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "samtools",
-                        "1.21"
+                        "1.24"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-19T09:33:32.821723",
+        "timestamp": "2026-10-14T10:35:26.047318697",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - bam": {
+        "content": [
+            {
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bai"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_MARKDUPLICATES",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_MARKDUPLICATES",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-14T10:32:20.823246884",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "homo_sapiens - multiple bam": {
         "content": [
-            [
-                "test.bam:readsMD5,c4525b95f05075208347295e6a1fb232"
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bai:md5,2b1603773979ad06f4dbcbaa90e93e8c"
-                ]
-            ],
-            "test.bam.metrics",
             {
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bai"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,c4525b95f05075208347295e6a1fb232"
+                    ]
+                ],
+                "crai": [
+                    
+                ],
+                "cram": [
+                    
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.metrics"
+                    ]
+                ],
                 "versions_gatk4": [
                     [
                         "GATK4_MARKDUPLICATES",
@@ -64,25 +174,59 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "samtools",
-                        "1.21"
+                        "1.24"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-19T09:33:46.249898",
+        "timestamp": "2026-10-14T10:35:08.692271741",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "homo_sapiens - multiple cram": {
         "content": [
-            [
-                "test.cram:readsMD5,c4525b95f05075208347295e6a1fb232"
-            ],
-            "test.cram.crai",
-            "test.cram.metrics",
             {
+                "bai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bai:md5,781fee6074afe5276161efb182f09ce3"
+                    ]
+                ],
+                "bam": [
+                    
+                ],
+                "crai": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.crai"
+                    ]
+                ],
+                "cram": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram:md5Reads,c4525b95f05075208347295e6a1fb232"
+                    ]
+                ],
+                "metrics": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.cram.metrics"
+                    ]
+                ],
                 "versions_gatk4": [
                     [
                         "GATK4_MARKDUPLICATES",
@@ -94,15 +238,15 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "samtools",
-                        "1.21"
+                        "1.24"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-19T09:34:01.362211",
+        "timestamp": "2026-10-14T10:35:19.933448957",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     }
 }

@@ -1,16 +1,12 @@
 name: "verifybamid_verifybamid"
-description: Detecting and estimating inter-sample DNA contamination became a
-  crucial quality assessment step to ensure high quality sequence reads and
-  reliable downstream analysis.
+description: Detecting and estimating inter-sample DNA contamination became a crucial quality assessment step to ensure high quality sequence reads and reliable downstream analysis.
 keywords:
   - qc
   - contamination
   - bam
 tools:
   - "verifybamid":
-      description: "verifyBamID is a software that verifies whether the reads in particular
-        file match previously known genotypes for an individual (or group of individuals),
-        and checks whether the reads are contaminated as a mixture of two samples."
+      description: "verifyBamID is a software that verifies whether the reads in particular file match previously known genotypes for an individual (or group of individuals), and checks whether the reads are contaminated as a mixture of two samples."
       homepage: "https://genome.sph.umich.edu/wiki/VerifyBamID"
       documentation: "http://genome.sph.umich.edu/wiki/VerifyBamID"
       tool_dev_url: "https://github.com/statgen/verifyBamID"
@@ -65,8 +61,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.selfSM":
           type: file
-          description: Per-sample statistics describing how well the sample
-            matches to the annotated sample.
+          description: Per-sample statistics describing how well the sample matches to the annotated sample.
           pattern: "*.selfSM"
           ontologies: []
   depthsm:
@@ -88,9 +83,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.selfRG":
           type: file
-          description: Per-readGroup statistics describing how well each lane
-            matches to the annotated sample. (available only without --ignoreRG
-            option)
+          description: Per-readGroup statistics describing how well each lane matches to the annotated sample. (available only without --ignoreRG option)
           pattern: "*.selfRG"
           ontologies: []
   depthrg:
@@ -101,8 +94,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.depthRG":
           type: file
-          description: The depth distribution of the sequence reads per readGroup.
-            (available only without --ignoreRG option)
+          description: The depth distribution of the sequence reads per readGroup. (available only without --ignoreRG option)
           pattern: "*.depthRG"
           ontologies: []
   bestsm:
@@ -113,8 +105,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bestSM":
           type: file
-          description: Per-sample best-match statistics with best-matching sample
-            among the genotyped sample (available only with --best option)
+          description: Per-sample best-match statistics with best-matching sample among the genotyped sample (available only with --best option)
           pattern: "*.bestSM"
           ontologies: []
   bestrg:
@@ -125,9 +116,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bestRG":
           type: file
-          description: Per-readgroup best-match statistics with best-matching
-            sample among the genotyped sample (available only with --best and
-            without --ignoreRG option)
+          description: Per-readgroup best-match statistics with best-matching sample among the genotyped sample (available only with --best and without --ignoreRG option)
           pattern: "*.bestRG"
           ontologies: []
   versions_verifybamid:
@@ -157,3 +146,17 @@ authors:
   - "@manifestoso"
 maintainers:
   - "@manifestoso"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/verifybamid:1.1.3--9f0eaf38a0cd990c
+      build_id: bd-9f0eaf38a0cd990c_1
+      scan_id: sc-826cbc8b22a4335d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/verifybamid:1.1.3--69bddfbaec86c07d
+      build_id: bd-69bddfbaec86c07d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d3e4d4d910f64d2f9f54b600babf9664c10005a2dbc05d6108586a055889571/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/verifybamid/verifybamid/.conda-lock/linux_amd64-bd-9f0eaf38a0cd990c_1.txt

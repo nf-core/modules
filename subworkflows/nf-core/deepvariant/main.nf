@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { DEEPVARIANT_MAKEEXAMPLES        } from '../../../modules/nf-core/deepvariant/makeexamples/main'
 include { DEEPVARIANT_CALLVARIANTS        } from '../../../modules/nf-core/deepvariant/callvariants/main'
 include { DEEPVARIANT_POSTPROCESSVARIANTS } from '../../../modules/nf-core/deepvariant/postprocessvariants/main'
@@ -43,8 +46,10 @@ workflow DEEPVARIANT {
     )
 
     emit:
-    vcf        = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
-    vcf_index  = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
-    gvcf       = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
-    gvcf_index = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
+    vcf                    = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf
+    vcf_index              = DEEPVARIANT_POSTPROCESSVARIANTS.out.vcf_index
+    gvcf                   = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf
+    gvcf_index             = DEEPVARIANT_POSTPROCESSVARIANTS.out.gvcf_index
+    phased_reads_switches  = DEEPVARIANT_POSTPROCESSVARIANTS.out.phased_reads_switches
+    phased_reads_corrected = DEEPVARIANT_POSTPROCESSVARIANTS.out.phased_reads_corrected
 }

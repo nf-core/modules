@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKGTF {
     tag "$meta.id"
     label 'process_low'
 
-    container "quay.io/nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.1.0"
 
     input:
     tuple val(meta), path(gtf)
