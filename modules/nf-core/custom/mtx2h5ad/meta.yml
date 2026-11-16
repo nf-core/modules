@@ -96,6 +96,8 @@ output:
             are retained in var['gene_versions']; the variable index uses unique,
             version-free gene IDs.
           pattern: "*.h5ad"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
   versions:
     - versions.yml:
         type: file
