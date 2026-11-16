@@ -241,6 +241,35 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fhr yaml - json - prefix with space") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_prefix = 'test converted'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.metadata[0][1].endsWith('/test converted.json') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - no header - fails") {
 
         when {

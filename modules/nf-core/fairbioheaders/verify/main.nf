@@ -31,12 +31,12 @@ process FAIRBIOHEADERS_VERIFY {
             verify \\
             ${args} \\
             ${sequence}
-    } > ${prefix}.verify.txt
+    } > "${prefix}.verify.txt"
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.verify.txt
+    touch "${prefix}.verify.txt"
     """
 }
