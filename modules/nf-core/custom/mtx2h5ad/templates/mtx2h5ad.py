@@ -12,7 +12,7 @@ import platform
 from importlib.metadata import version
 
 import h5py
-import hdf5plugin
+import hdf5plugin # noqa: F401
 import igraph
 import leidenalg
 import pandas as pd
