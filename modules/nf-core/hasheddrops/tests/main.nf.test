@@ -7,21 +7,14 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "hasheddrops"
-    tag "untar"
 
-
+    def hto
+    def rna
     setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = channel.of(
-                    [ [id: 'hto'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz") ],
-                    [ [id: 'rna'], file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz") ]
-                )
-                """
-            }
-        }
+        // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+        def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+        hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
+        rna = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz').resolve('rna')
     }
 
     test("hto_matrix - runEmptyDrops:false - rna_matrix") {
@@ -29,10 +22,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                    .filter{ meta, _f -> meta.id == 'hto' }
-                    .combine(UNTAR.out.untar.filter{ meta, _f -> meta.id == 'rna' })
-                    .map{ _meta_hto, hto, _meta_rna, rna -> [[id: 'test'], hto, "FALSE", rna] }
+                input[0] = [ [id: 'test'], file('${hto}'), "FALSE", file('${rna}') ]
                 """
             }
         }
@@ -53,10 +43,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                    .filter{ meta, _f -> meta.id == 'hto' }
-                    .combine(UNTAR.out.untar.filter{ meta, _f -> meta.id == 'rna' })
-                    .map{ _meta_hto, hto, _meta_rna, rna -> [[id: 'test'], hto, "TRUE", rna] }
+                input[0] = [ [id: 'test'], file('${hto}'), "TRUE", file('${rna}') ]
                 """
             }
         }
