@@ -72,7 +72,7 @@ output:
       - r-nfcore.utils:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+      - 'Rscript -e ''cat(as.character(packageVersion("nfcore.utils")))''':
           type: eval
           description: The expression to obtain the version of the tool
   versions_gprofiler2:
@@ -82,7 +82,7 @@ output:
       - r-gprofiler2:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+      - 'Rscript -e ''cat(as.character(packageVersion("gprofiler2")))''':
           type: eval
           description: The expression to obtain the version of the tool
   versions_gprofilerdata:
@@ -92,7 +92,7 @@ output:
       - gprofiler-data:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+      - 'Rscript -e ''cat(gprofiler2::get_version_info()[["gprofiler_version"]])''':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -112,7 +112,7 @@ topics:
       - r-nfcore.utils:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+      - 'Rscript -e ''cat(as.character(packageVersion("nfcore.utils")))''':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -121,7 +121,7 @@ topics:
       - r-gprofiler2:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+      - 'Rscript -e ''cat(as.character(packageVersion("gprofiler2")))''':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -130,7 +130,7 @@ topics:
       - gprofiler-data:
           type: string
           description: The tool name
-      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+      - 'Rscript -e ''cat(gprofiler2::get_version_info()[["gprofiler_version"]])''':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
