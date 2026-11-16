@@ -25,25 +25,26 @@ process EUKCC_SINGLE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def genomes_arg = genomes ? [genomes].flatten().collect { genome -> "--genomes ${genome}" }.join(' ') : ''
+    def genomes_arg = genomes ? [genomes].flatten().collect { genome -> "--genomes \"${genome}\"" }.join(' ') : ''
     """
     eukcc \\
         single \\
         ${args} \\
         ${genomes_arg} \\
-        --db ${db} \\
+        --db "${db}" \\
         --threads ${task.cpus} \\
-        --out ${prefix} \\
-        ${fasta}
+        --out "${prefix}" \\
+        "${fasta}"
     """
 
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
-    printf "fasta\\tcompleteness\\tcontamination\\tncbi_lng\\tncbi_lng_names\\n" > ${prefix}/eukcc.tsv
-    touch ${prefix}/eukcc.log
-    ${args.contains('--keep') ? "mkdir ${prefix}/workdir" : ''}
+    mkdir "${prefix}"
+    printf "fasta\\tcompleteness\\tcontamination\\tncbi_lng\\tncbi_lng_names\\n" > "${prefix}/eukcc.tsv"
+    touch "${prefix}/eukcc.log"
+    ${args.contains('--extra') ? "echo \"\" | gzip > \"${prefix}/scmg_marker_table.csv.gz\"" : ''}
+    ${args.contains('--keep') ? "mkdir \"${prefix}/workdir\"" : ''}
     """
 }
