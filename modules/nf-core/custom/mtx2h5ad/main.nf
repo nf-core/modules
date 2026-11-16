@@ -8,8 +8,8 @@ process CUSTOM_MTX2H5AD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1c92aadf499f770de799ed88056aacb6a32db9f09e0230caa4329cea1ff204a4/data'
-        : 'community.wave.seqera.io/library/anndata_h5py_hdf5plugin_leidenalg_pruned:e69542b022304944'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d1/d1a483ca814756712f25aebb7b21127890e620de38480e6d6e9e284f2d2c2e58/data'
+        : 'community.wave.seqera.io/library/anndata_h5py_hdf5plugin_leidenalg_pruned:03c29b706f98b938'}"
 
     input:
     tuple val(meta), path(inputs), val(input_type)
