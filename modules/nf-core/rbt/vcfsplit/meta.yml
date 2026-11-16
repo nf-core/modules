@@ -50,7 +50,7 @@ output:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - rbt:
+      - rust-bio-tools:
           type: string
           description: The tool name
       - "rbt --version | grep -oE '[0-9]+(\\.[0-9]+)+' | head -n 1":
@@ -62,7 +62,7 @@ topics:
     - - ${task.process}:
           type: string
           description: The process the versions were collected from
-      - rbt:
+      - rust-bio-tools:
           type: string
           description: The tool name
       - "rbt --version | grep -oE '[0-9]+(\\.[0-9]+)+' | head -n 1":
