@@ -113,11 +113,12 @@ workflow BAM_TAPS_CONVERSION {
         ch_bcftools_stats = BCFTOOLS_STATS.out.stats // channel: [ val(meta), stats.txt ]
     }
     else {
-        // The rastair 0.8 modules take the BAM, BAI and trims as separate inputs: join them by sample first
-        ch_bam_bai = ch_bam.join(ch_bai)
+        // The rastair 0.8 modules take the BAM, BAI and trims as separate inputs: join them by sample first.
+        // A sample without a BAI or trims stops the run rather than being dropped or called untrimmed.
+        ch_bam_bai = ch_bam.join(ch_bai, failOnMismatch: true)
 
         if (trims) {
-            ch_trims = ch_bam.map { meta, _bam -> [ meta, trims[0], trims[1] ] }
+            ch_trims = ch_bam_bai.map { meta, _bam, _bai -> [ meta, trims[0], trims[1] ] }
         }
         else {
             ch_mbias_input = ch_bam_bai.multiMap { meta, bam, bai ->
@@ -139,17 +140,12 @@ workflow BAM_TAPS_CONVERSION {
         }
 
         ch_call_input = ch_bam_bai
-            .join(ch_trims, remainder: true)
-            .multiMap { row ->
-                def (meta, bam, bai) = row[0..2]
-                def found = row.size() == 5 && row[3] != null
-                if (!found) {
-                    log.warn("bam_taps_conversion: no M-bias trims for ${meta.id}; calling it without trimming")
-                }
+            .join(ch_trims, failOnMismatch: true)
+            .multiMap { meta, bam, bai, nOT_clip, nOB_clip ->
                 bam: [ meta, bam ]
                 bai: [ meta, bai ]
-                trim_OT: [ meta, found ? row[3] : '0,0,0,0' ]
-                trim_OB: [ meta, found ? row[4] : '0,0,0,0' ]
+                trim_OT: [ meta, nOT_clip ]
+                trim_OB: [ meta, nOB_clip ]
             }
 
         RASTAIR_CALL (

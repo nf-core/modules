@@ -156,7 +156,7 @@ nextflow_workflow {
 
         then {
             // the BAIs arrive in the opposite order to the BAMs, and the reference is passed once as a queue channel:
-            // each sample must still be called, with its own BAI and trims
+            // each sample must still be called, with its own BAI (the trims are 0,0,0,0 for both, so a trims swap is not caught)
             assert workflow.success
             assertAll(
                 { assert workflow.out.call.collect { meta, txt -> meta.id }.sort() == ['paired', 'single'] },
@@ -222,6 +222,33 @@ nextflow_workflow {
                     workflow.out.bed
                 ).match() }
             )
+        }
+    }
+
+    test("sarscov2 - two samples, one without [ bai ] - rastair 0.8 - fails - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [ [ id:'with_bai' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ],
+                    [ [ id:'without_bai' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ]
+                )
+                input[1] = channel.of([ [ id:'with_bai' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ])
+                input[2] = channel.of([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = channel.of([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[4] = false
+                input[5] = [ '0,0,10,0', '0,0,10,0' ]
+                """
+            }
+        }
+
+        then {
+            // a sample without a BAI stops the run instead of being dropped
+            assert workflow.failed
+            assert (workflow.stdout + workflow.stderr).any { line -> line.contains('Join mismatch') } || workflow.errorReport?.contains('Join mismatch')
         }
     }
 
