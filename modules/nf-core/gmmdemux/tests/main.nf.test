@@ -9,12 +9,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gmmdemux"
 
-    // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-    def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-
     test("Standard_Multiome - 10x mtx - simple") {
         def hto
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
@@ -45,6 +44,8 @@ nextflow_process {
         config "./nextflow.config"
         def hto
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
