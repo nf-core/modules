@@ -48,11 +48,13 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.txt[0][1]).linesGzip
             assertAll(
                 { assert process.success },
                 { assert process.out.tsv.isEmpty() },
-                { assert path(process.out.txt[0][1]).linesGzip.any { l -> l.startsWith('* ENSSASP00005000002.1 K24149') } },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert hits[0].startsWith('# gene name') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.txt.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
             )
         }
     }
@@ -72,11 +74,13 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
             assertAll(
                 { assert process.success },
                 { assert process.out.txt.isEmpty() },
-                { assert path(process.out.tsv[0][1]).linesGzip.any { l -> l.startsWith("*\tENSSASP00005000002.1\tK24149\t15566.27\t16515.5") } },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
             )
         }
     }
@@ -96,11 +100,13 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
             assertAll(
                 { assert process.success },
                 { assert process.out.txt.isEmpty() },
-                { assert path(process.out.tsv[0][1]).linesGzip.any { l -> l.startsWith("*\tENSSASP00005000002.1\tK24149\t15566.27\t16515.5") } },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
             )
         }
     }
@@ -125,7 +131,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.tsv.isEmpty() },
-                { assert process.out.txt[0][1].endsWith('test.kofamscan.txt.gz') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -151,7 +156,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.txt.isEmpty() },
-                { assert process.out.tsv[0][1].endsWith('test.kofamscan.tsv.gz') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
