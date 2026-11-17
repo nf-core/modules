@@ -6,27 +6,22 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "gatk4"
     tag "gatk4/createsomaticpanelofnormals"
 
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [[id:'test'], file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz", checkIfExists: true) ]
-            """
-            }
-        }
-    }
-
     test("homo sapiens - genomicsdb") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [id:'test'], file('${genomicsdb}') ]
                 input[1] = [ [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
                 ]
@@ -59,7 +54,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [id:'test'], [] ]
                 input[1] = [ [ id:'genome' ], // meta map
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
                     ]
