@@ -9,22 +9,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "msisensor2"
     tag "msisensor2/msi"
-    tag "untar"
 
     test("homo_sapiens tumor_only - bam - models") {
 
+        def models
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                """
-                input[0] = [
-                    [ id:'models_hg19_17sites' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz', checkIfExists: true)
-                ]
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            models = extract(modules_testdata_base_path + 'genomics/homo_sapiens/msisensor2/models_hg19_17sites.tar.gz').resolve('models')
         }
 
         when {
@@ -35,7 +27,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test_msisensor2.hg19.bam.bai',checkIfExists:true),
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'models_hg19_17sites' ], file('${models}') ]
                 """
             }
         }

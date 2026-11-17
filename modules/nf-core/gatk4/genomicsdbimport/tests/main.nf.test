@@ -6,7 +6,6 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "gatk4"
     tag "gatk4/genomicsdbimport"
 
@@ -48,21 +47,17 @@ nextflow_process {
 
     test("test_gatk4_genomicsdbimport_get_intervalslist") {
 
+        def genomicsdb
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz', checkIfExists: true) ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
         }
 
         when {
             process {
                 """
-                input[0] = Channel.of([ [id:"test"], [], [], [], []]).combine(UNTAR.out.untar.map{ it[1] })
+                input[0] = [ [id:"test"], [], [], [], [], file('${genomicsdb}') ]
                 // run_intlist
                 input[1] = true
                 // run_updatewspace
@@ -88,21 +83,17 @@ nextflow_process {
 
     test("test_gatk4_genomicsdbimport_update_genomicsdb") {
 
+        def genomicsdb
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([ [], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz', checkIfExists: true) ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
         }
 
         when {
             process {
                 """
-                input[0] = Channel.of([ [id:"test"], file( params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz' , checkIfExists: true), file( params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz.tbi' , checkIfExists: true), [], []]).combine(UNTAR.out.untar.map{ it[1] })
+                input[0] = [ [id:"test"], file( params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz' , checkIfExists: true), file( params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test2.genome.vcf.gz.tbi' , checkIfExists: true), [], [], file('${genomicsdb}') ]
                 // run_intlist
                 input[1] = false
                 // run_updatewspace

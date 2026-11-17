@@ -8,23 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gatk4"
     tag "gatk4/genotypegvcfs"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id:"test"],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("homo_sapiens - [gvcf, idx, [], []], fasta, fai, dict, [], []") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
@@ -67,6 +59,13 @@ nextflow_process {
     }
 
     test("homo_sapiens - [gvcf_gz, tbi, [], []], fasta, fai, dict, dbsnp, dbsnp_tbi") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
@@ -115,6 +114,13 @@ nextflow_process {
     }
 
     test("homo_sapiens - [gvcf_gz, tbi, bed, []], fasta, fai, dict, [], []") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
@@ -157,11 +163,18 @@ nextflow_process {
     }
 
     test("homo_sapiens - [gendb, [], [], []], fasta, fai, dict, [], []") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, gendb -> [ meta, gendb, [], [], []] }
+                input[0] = [ [id:"test"], file('${genomicsdb}'), [], [], [] ]
                 input[1] = [
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
@@ -193,19 +206,24 @@ nextflow_process {
     }
 
     test("homo_sapiens - [gendb, bed, [], []], fasta, fai, dict, [], []") {
+        def genomicsdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            genomicsdb = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test_genomicsdb.tar.gz').resolve('test_genomicsdb')
+        }
+
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, gendb ->
-                    [
-                        meta,
-                        gendb,
-                        [],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
-                        []
-                    ]
-                }
+                input[0] = [
+                    [id:"test"],
+                    file('${genomicsdb}'),
+                    [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
+                    []
+                ]
                 input[1] = [
                     [id:"fasta"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
