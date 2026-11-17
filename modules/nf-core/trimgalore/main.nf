@@ -6,9 +6,9 @@ process TRIMGALORE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e00369598bd6b7b34a7c83d5496c381104bf8b885c31a4b65b92e6ea2059fbb3/data' :
-        'community.wave.seqera.io/library/trim-galore:2.3.0--6a38a479b4972363'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14f298259504414e87dcf496685db6aa74a9ccded8ce39825139706de095038e/data'
+        : 'community.wave.seqera.io/library/trim-galore:2.5.0--e26c3be09dac93c9'}"
 
     input:
     tuple val(meta), path(reads)
