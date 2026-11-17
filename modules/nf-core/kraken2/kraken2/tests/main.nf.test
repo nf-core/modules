@@ -7,14 +7,14 @@ nextflow_process {
     tag "kraken2"
     tag "kraken2/kraken2"
 
-    def db
-    setup {
-        // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-        def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-        db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
-    }
-
     test("sarscov2 illumina single end [fastq]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             process {
                 """
@@ -47,6 +47,13 @@ nextflow_process {
     }
 
     test("sarscov2 illumina paired end [fastq]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -96,6 +103,13 @@ nextflow_process {
     }
 
     test("sarscov2 illumina single end [fastq] + save_reads_assignment") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"

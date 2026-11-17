@@ -15,14 +15,14 @@ nextflow_workflow {
     tag "kraken2"
     tag "seqtk"
 
-    def db
-    setup {
-        // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-        def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-        db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
-    }
-
     test("sarscov2 - fastq - 25000 - krakendb") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             workflow {
                 """
@@ -43,6 +43,13 @@ nextflow_workflow {
         }
     }
     test("sarscov2 - fastq - [12500, 25000] - krakendb") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             workflow {
                 """
@@ -72,7 +79,7 @@ nextflow_workflow {
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
                 ])
                 input[1] = channel.of(12500,25000)
-                input[2] = file('${db}')
+                input[2] = []
                 """
             }
         }

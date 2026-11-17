@@ -8,14 +8,14 @@ nextflow_process {
     tag "krakenuniq"
     tag "krakenuniq/preloadedkrakenuniq"
 
-    def db
-    setup {
-        // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-        def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-        db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
-    }
-
     test("sarscov2 - FASTA") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -59,6 +59,13 @@ nextflow_process {
     }
 
     test("sarscov2 - FASTA - ramchunksize") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
 
         config './nextflow.config'
 
@@ -109,6 +116,13 @@ nextflow_process {
     }
 
     test("sarscov2 - FASTA - extra args") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
 
         config './nextflow.config'
 
@@ -157,6 +171,13 @@ nextflow_process {
     }
 
     test("sarscov2 - FASTA - no optional outputs") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -193,6 +214,13 @@ nextflow_process {
     }
 
     test("sarscov2 - Illumina FASTQ single") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -236,6 +264,13 @@ nextflow_process {
     }
 
     test("sarscov2 - Illumina FASTQ paired-end") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -281,6 +316,13 @@ nextflow_process {
     }
 
     test("sarscov2 - FASTA - stub") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         options "-stub-run"
 
         when {
@@ -298,7 +340,7 @@ nextflow_process {
                     ['sample_1', 'sample.2']
                 ]
                 input[1] = 'fasta'
-                input[2] = file('${db}')
+                input[2] = []
                 input[3] = true
                 input[4] = true
                 input[5] = true
@@ -326,6 +368,13 @@ nextflow_process {
     }
 
     test("sarscov2 - Illumina FASTQ single - stub") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         options "-stub-run"
 
         when {
@@ -343,7 +392,7 @@ nextflow_process {
                     ['sample_1', 'sample.2']
                 ]
                 input[1] = 'fastq'
-                input[2] = file('${db}')
+                input[2] = []
                 input[3] = true
                 input[4] = true
                 input[5] = true
@@ -371,6 +420,13 @@ nextflow_process {
     }
 
     test("sarscov2 - Illumina FASTQ paired-end - stub") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/krakenuniq.tar.gz').resolve('krakenuniq')
+        }
+
         options "-stub-run"
 
         when {
@@ -390,7 +446,7 @@ nextflow_process {
                     ['sample_1', 'sample.2']
                 ]
                 input[1] = 'fastq'
-                input[2] = file('${db}')
+                input[2] = []
                 input[3] = true
                 input[4] = true
                 input[5] = true
