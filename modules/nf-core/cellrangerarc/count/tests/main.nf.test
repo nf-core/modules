@@ -43,9 +43,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
@@ -179,9 +176,6 @@ nextflow_process {
     test("test_cellrangerarc_count - stub") {
         options "-stub"
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [

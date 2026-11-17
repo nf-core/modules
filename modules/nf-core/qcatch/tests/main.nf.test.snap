@@ -1,24 +1,31 @@
 {
     "test_qcatch - 1k_pbmc_v3": {
         "content": [
-            true,
-            [
-                [
-                    {
-                        "id": "1k_pbmc_v3"
-                    },
-                    "1k_pbmc_v3_filtered_quants.h5ad:md5,7e27940bb5286e04addc1c85b20a6986"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "1k_pbmc_v3"
-                    },
-                    "1k_pbmc_v3_metrics_summary.csv:md5,22deb2f3aea4e4abf476970576362428"
-                ]
-            ],
             {
+                "filtered_h5ad": [
+                    [
+                        {
+                            "id": "1k_pbmc_v3"
+                        },
+                        "1k_pbmc_v3_filtered_quants.h5ad:md5,7e27940bb5286e04addc1c85b20a6986"
+                    ]
+                ],
+                "metrics_summary": [
+                    [
+                        {
+                            "id": "1k_pbmc_v3"
+                        },
+                        "1k_pbmc_v3_metrics_summary.csv:md5,22deb2f3aea4e4abf476970576362428"
+                    ]
+                ],
+                "report": [
+                    [
+                        {
+                            "id": "1k_pbmc_v3"
+                        },
+                        "1k_pbmc_v3_qcatch_report.html"
+                    ]
+                ],
                 "versions_anndata": [
                     [
                         "QCATCH",
@@ -35,10 +42,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-11T10:29:18.411517",
+        "timestamp": "2026-11-17T08:13:59.58954",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.2"
+            "nextflow": "26.10.6"
         }
     },
     "test_qcatch - stub": {
