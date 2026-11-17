@@ -1,0 +1,94 @@
+name: "circlator_all"
+description: >
+  Runs the full Circlator pipeline to circularise genome assemblies from long reads.
+  Sequentially runs: mapreads, bam2reads, assemble, merge, clean, and fixstart.
+keywords:
+  - circlator
+  - genome assembly
+  - circularisation
+  - long reads
+  - genomics
+tools:
+  - "circlator":
+      description: "A tool to circularise genome assemblies using long sequencing reads."
+      homepage: "https://github.com/sanger-pathogens/circlator"
+      documentation: "https://github.com/sanger-pathogens/circlator/wiki"
+      tool_dev_url: "https://github.com/sanger-pathogens/circlator"
+      doi: "10.1186/s13059-015-0849-0"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: Input genome assembly in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for reads
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Long reads in FASTA or FASTQ format (PacBio or Oxford
+          Nanopore)
+        pattern: "*.{fasta,fa,fastq,fq}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+          - edam: "http://edamontology.org/format_1930"
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}:
+          type: directory
+          description: Directory containing all intermediate and final output
+            files from Circlator
+          pattern: "*"
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/*.fasta:
+          type: file
+          description: Final circularised genome assembly in FASTA format
+          pattern: "*.fasta"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929"
+  versions_circlator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circlator:
+          type: string
+          description: The name of the tool
+      - circlator version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circlator:
+          type: string
+          description: The name of the tool
+      - circlator version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@cwoodside1278"
+maintainers:
+  - "@cwoodside1278"
