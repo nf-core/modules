@@ -22,7 +22,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[id:'HMTFYDRXX', lane:1], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), file('${run_dir}')])
+                input[0] = channel.of([[id:'HMTFYDRXX', lane:1], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), file('${run_dir}')])
                 input[1] = "bclconvert"
                 """
             }
@@ -64,7 +64,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([[id:'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), file('${run_dir}')])
+                input[0] = channel.of([[id:'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), file('${run_dir}')])
                 input[1] = "bcl2fastq"
                 """
             }

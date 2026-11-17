@@ -16,7 +16,7 @@ nextflow_process {
         when {
             process {
                 """
-                ch_input = Channel.of ([
+                ch_input = channel.of ([
                     [ id:'sim-data'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
                     file('${fastq_dir}')
