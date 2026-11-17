@@ -42,17 +42,12 @@ nextflow_process {
     }
 
     test("homo_sapiens - prg - stub") {
-        def prg
-        setup {
-            prg = java.nio.file.Files.createTempDirectory('PRG_test')
-        }
-
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [ [ id:'test'], file('${prg}') ]
+                input[0] = [ [ id:'test'], file('${moduleTestDir}') ]
                 """
             }
         }
@@ -60,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["graph"])).match() }
             )
         }
 

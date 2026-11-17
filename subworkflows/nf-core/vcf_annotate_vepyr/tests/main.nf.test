@@ -277,11 +277,6 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - vcf - normalise - stub") {
-        def cache
-        setup {
-            cache = java.nio.file.Files.createTempDirectory('cache')
-        }
-
 
         config "./nextflow.config"
 
@@ -295,7 +290,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
                     []
                 ])
-                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('cache') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
