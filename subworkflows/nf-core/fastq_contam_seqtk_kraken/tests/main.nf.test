@@ -26,11 +26,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test', single_end:true],
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
                 ])
-                input[1] = Channel.of(25000)
+                input[1] = channel.of(25000)
                 input[2] = file('${db}')
                 """
             }
@@ -46,11 +46,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test', single_end:true],
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
                 ])
-                input[1] = Channel.of(12500,25000)
+                input[1] = channel.of(12500,25000)
                 input[2] = file('${db}')
                 """
             }
@@ -67,11 +67,11 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test', single_end:true],
                     [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)],
                 ])
-                input[1] = Channel.of(12500,25000)
+                input[1] = channel.of(12500,25000)
                 input[2] = file('${db}')
                 """
             }
