@@ -59,6 +59,10 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta_fai
         )
         ch_alignment = FASTQ_ALIGN_BWA.out.bam
+        ch_alignment_index = FASTQ_ALIGN_BWA.out.index
+        ch_stats = FASTQ_ALIGN_BWA.out.stats
+        ch_flagstat = FASTQ_ALIGN_BWA.out.flagstat
+        ch_idxstats = FASTQ_ALIGN_BWA.out.idxstats
     }
     if (!skip_deduplication) {
         /*

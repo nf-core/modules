@@ -24,7 +24,8 @@ process CELLRANGERATAC_COUNT {
         error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def sample_arg = meta.samples.unique().join(",")
+    // cellranger-atac only accepts FASTQs named {sample}_S{n}[_L{lane}]_{R,I}{n}_001.fastq.gz
+    def sample_arg = reads.collect { fastq -> fastq.name.replaceFirst(/_S\d+(_L\d{3})?_[RI]\d_\d{3}\.f(ast)?q\.gz$/, '') }.unique().join(",")
     def reference_name = reference.name
     """
     cellranger-atac \\

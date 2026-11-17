@@ -155,6 +155,9 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                // without deduplication the alignment's own index and samtools stats are emitted
+                { assert workflow.out.index.size() == 1 },
+                { assert workflow.out.samtools_stats.size() == 1 },
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
                     workflow.out.index.collect { meta, index -> file(index).name },

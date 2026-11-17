@@ -58,7 +58,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["rma6", "log"])).match() },
+                // Alignment order varies between multi-threaded runs, so compare sorted content
+                { assert snapshot(
+                    path(process.out.alignments[0][1]).linesGzip.sort().join('\n').md5(),
+                    sanitizeOutput(process.out, unstableKeys:["rma6", "log", "alignments"])
+                ).match() },
                 { assert path(process.out.log[0][1]).readLines().last().contains("Peak memory") },
             )
         }

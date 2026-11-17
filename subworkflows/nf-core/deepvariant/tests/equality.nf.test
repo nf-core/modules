@@ -108,4 +108,47 @@ nextflow_workflow {
             )
         }
     }
+
+    test("ensure that the subworkflow and DEEPVARIANT_RUNDEEPVARIANT have the same output - ont - phasing") {
+        config "./ont_profile.config"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                )
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                input[4] = [
+                    [],[]
+                ]
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                // An empty switches file means that no phased reads were loaded
+                { assert path(workflow.out.wf_phased_reads_switches[0][1]).readLines().size() > 0 },
+                { assert path(workflow.out.wf_vcf[0][1]).vcf.variantsMD5 == path(workflow.out.pc_vcf[0][1]).vcf.variantsMD5 },
+                { assert path(workflow.out.wf_gvcf[0][1]).vcf.variantsMD5 == path(workflow.out.pc_gvcf[0][1]).vcf.variantsMD5 },
+            )
+        }
+    }
 }

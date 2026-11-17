@@ -21,13 +21,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
+    - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6
       with:
         distribution: "temurin"
         java-version: "25"
 
     - name: Set up Nextflow
-      uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+      uses: nf-core/setup-nextflow@c66f1bfa2dc817ae23f4b34eaa26fa5f1453ca71 # v3
       with:
         version: "${{ env.NXF_VER }}"
 
