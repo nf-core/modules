@@ -35,7 +35,7 @@ workflow BAM_QC_RNASEQ {
     PRESEQ_LCEXTRAP (
         ch_genome_bam
             .filter { 'preseq' in tools }
-            .map { meta, bam -> record(id: meta.id, meta: record(meta), single_end: meta.single_end, bam: bam) }
+            .map { meta, bam -> record(id: meta.id, meta: record(meta), single_end: meta.single_end ?: false, bam: bam) }
     )
     ch_preseq_lc_extrap = PRESEQ_LCEXTRAP.out.map { result -> [ result.meta, result.lc_extrap ] }
     ch_preseq_log       = PRESEQ_LCEXTRAP.out.map { result -> [ result.meta, result.log ] }
