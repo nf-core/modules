@@ -3,18 +3,19 @@ nextflow_process {
     name "Test Process XENIUMRANGER_RELABEL"
     script "../main.nf"
     process "XENIUMRANGER_RELABEL"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/relabel"
 
-    def bundle
-    setup {
-        bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
-    }
-
     test("xeniumranger relabel") {
+        def bundle
+        setup {
+            bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
+        }
+
         when {
             process {
                 """
@@ -44,8 +45,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test_xeniumranger_relabel"],
-                    file('${bundle}'),
-                    file('${bundle}/gene_panel.json')
+                    [],
+                    []
                 ]
                 """
             }

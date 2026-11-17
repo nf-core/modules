@@ -11,12 +11,12 @@ nextflow_process {
     tag "cellranger"
     tag "cellranger/mkfastq"
 
-    def bcl_dir
-    setup {
-        bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz').resolve('cellranger-tiny-bcl-1.2.0')
-    }
-
     test("cellranger - tiny - simple") {
+
+        def bcl_dir
+        setup {
+            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz').resolve('cellranger-tiny-bcl-1.2.0')
+        }
 
         when {
             process {
@@ -43,6 +43,11 @@ nextflow_process {
     }
 
     test("cellranger - tiny - illumina") {
+
+        def bcl_dir
+        setup {
+            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-1.2.0.tar.gz').resolve('cellranger-tiny-bcl-1.2.0')
+        }
 
         when {
             process {
@@ -75,7 +80,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id: 'test', lane:1 ], file("https://cf.10xgenomics.com/supp/cell-exp/cellranger-tiny-bcl-simple-1.2.0.csv", checkIfExists: true), file('${bcl_dir}') ]
+                input[0] = [ [ id: 'test', lane:1 ], [], [] ]
                 """
             }
         }

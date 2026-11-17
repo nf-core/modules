@@ -9,12 +9,12 @@ nextflow_process {
     tag "xeniumranger"
     tag "xeniumranger/rename"
 
-    def bundle
-    setup {
-        bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
-    }
-
     test("xeniumranger rename") {
+        def bundle
+        setup {
+            bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
+        }
+
         when {
             process {
                 """
@@ -52,7 +52,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test_xeniumranger_rename"],
-                    file('${bundle}'),
+                    [],
                     "test_region",
                     "test_cassette"
                 ]

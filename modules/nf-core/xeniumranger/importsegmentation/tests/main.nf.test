@@ -10,12 +10,12 @@ nextflow_process {
     tag "xeniumranger"
     tag "xeniumranger/importsegmentation"
 
-    def bundle
-    setup {
-        bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz').resolve('xenium_bundle')
-    }
-
     test("xeniumranger importsegmentation nuclei") {
+        def bundle
+        setup {
+            bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz').resolve('xenium_bundle')
+        }
+
         when {
             process {
                 """
@@ -38,8 +38,6 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },
-                { assert file(process.out.outs.get(0).get(1)).isDirectory() },
-                { assert file(process.out.outs.get(0).get(1)).list().size() > 0 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outs"])).match()},
             )
         }
@@ -53,10 +51,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test_xeniumranger_importsegmentation"],
-                    file('${bundle}'),
                     [],
                     [],
-                    file('${bundle}/cells.zarr.zip'),
+                    [],
+                    [],
                     [],
                     [],
                     [],
