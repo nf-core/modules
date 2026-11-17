@@ -54,11 +54,12 @@ nextflow_process {
 
 
     test("test_cellrangeratac_mkfastq_simple -- stub") {
+
         options '-stub'
         when {
             process {
                 """
-                input[0] = file('${moduleTestDir}')
+                input[0] = file('cellranger-atac-tiny-bcl-1.0.0')
                 input[1] = []
                 """
             }
@@ -71,11 +72,12 @@ nextflow_process {
 
 
     test("test_cellrangeratac_mkfastq_illumina -- stub") {
+
         options '-stub'
         when {
             process {
                 """
-                input[0] = file('${moduleTestDir}')
+                input[0] = file('cellranger-atac-tiny-bcl-1.0.0')
                 input[1] = []
                 """
             }
