@@ -1,0 +1,200 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaproviz_processingfilter"
+description: >-
+  Flag metabolite features for removal. Three options are available. Modified (the default) flags a feature with too
+  many missing values in at least one condition. Standard flags a feature with too many missing values across all
+  samples. Manual flags the features of a custom list or of a TRUE/FALSE column. The flags are added to the feature
+  metadata and all features stay in the output data. If the input lacks what an option needs, the module falls back
+  to a simpler option (Manual > Modified > Standard) and the report says so. Pool and QC samples must be removed from
+  the data beforehand.
+keywords:
+  - metabolomics
+  - preprocessing
+  - feature filtering
+  - MetaProViz
+tools:
+  - "metaproviz":
+      description: "MetaProViz — Metabolomics Processing, functional analysis and Visualization."
+      homepage: "https://saezlab.github.io/MetaProViz/"
+      documentation: "https://saezlab.github.io/MetaProViz/"
+      tool_dev_url: "https://github.com/saezlab/MetaProViz"
+      doi: "10.1038/s44320-026-00231-8"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - se_rds:
+        type: file
+        description: >-
+          A SummarizedExperiment saved as RDS. The assay holds the numerical values of the metabolites, the rowData the feature
+          metadata and the colData the sample metadata. Both NA and 0 count as not detected. The Modified option needs a
+          Conditions column in the colData with at least two conditions, the Manual option a custom list of features or a
+          TRUE/FALSE column in the rowData. Use either this input or the
+          three inputs data_matrix, feature_matrix and sample_matrix, not both.
+        pattern: "*.rds"
+        optional: true
+        ontologies: []
+    - data_matrix:
+        type: file
+        description: >-
+          Numerical values of the metabolites as TSV or CSV file, with the features in rows and the samples in columns.
+          The first column holds the feature IDs. Empty cells, NA and 0 count as not detected. Required together with feature_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - feature_matrix:
+        type: file
+        description: >-
+          Feature metadata as TSV or CSV file. The first column holds the feature IDs, matching the rows of data_matrix.
+          The Manual option can read a TRUE/FALSE column from it (TRUE flags a feature). Required
+          together with data_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - sample_matrix:
+        type: file
+        description: >-
+          Sample metadata as TSV or CSV file. The first column holds the sample IDs, matching the columns of
+          data_matrix. It holds the Conditions column of the Modified option. Required together with data_matrix and feature_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+
+  - output_format:
+      type: string
+      description: >-
+        Format of the output with the flagged features. `se` (or an empty value) writes the SummarizedExperiment as
+        RDS, `tsv` or `csv` write it as three tables (data_matrix, feature_matrix and sample_matrix).
+output:
+  se:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.flagged.rds":
+          type: file
+          description: >-
+            SummarizedExperiment with all features and unchanged values. One column is added to the feature metadata (named
+            FilteredFeaturesFlag by default), which is TRUE for the flagged features and FALSE for the others. An existing
+            column of the same name is kept with the suffix `_original`. Written if output_format is `se` or empty.
+          pattern: "*.flagged.rds"
+          optional: true
+          ontologies: []
+  flagged_matrices:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.flagged.*_matrix.{tsv,csv}":
+          type: file
+          description: >-
+            The same data as three tables with the same shape as the input: data_matrix, feature_matrix and sample_matrix.
+            The feature_matrix has one added column with the flags (named FilteredFeaturesFlag by default, TRUE for the
+            flagged features), and an existing column of the same name is kept with the suffix `_original`. Written if
+            output_format is `tsv` or `csv`.
+          pattern: "*.flagged.*_matrix.{tsv,csv}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+  flagged_features:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.flagged_features.tsv":
+          type: file
+          description: >-
+            Table with one row per flagged feature. The first column holds the feature name, the other columns the
+            percentage of samples in which the feature is missing (NA or 0): one column per condition for the Modified
+            option, one overall column for Standard and Manual. Header only if no feature was flagged.
+          pattern: "*.flagged_features.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.report.html":
+          type: file
+          description: >-
+            HTML report with the run summary, the parameters of this run, the flagged features and the R session info.
+          pattern: "*.report.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: INFO/WARN log.
+          pattern: "*.log"
+          ontologies: []
+  versions_metaproviz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.0:
+          type: string
+          description: The version of MetaProViz
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.0:
+          type: string
+          description: The version of MetaProViz
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+authors:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+maintainers:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
