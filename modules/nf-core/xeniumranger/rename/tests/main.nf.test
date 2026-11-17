@@ -8,32 +8,22 @@ nextflow_process {
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/rename"
-    tag "unzip"
-
-    setup {
-            run("UNZIP") {
-                script "modules/nf-core/unzip/main.nf"
-                process {
-                    """
-                    input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
-                    """
-                }
-            }
-    }
 
     test("xeniumranger rename") {
+        def bundle
+        setup {
+            bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
+        }
+
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
-                    .map { _, bundle ->
-                        [
-                            [id: "test_xeniumranger_rename"],
-                            bundle,
-                            "test_region",
-                            "test_cassette"
-                        ]
-                    }
+                input[0] = [
+                    [id: "test_xeniumranger_rename"],
+                    file('${bundle}'),
+                    "test_region",
+                    "test_cassette"
+                ]
                 """
             }
         }
@@ -60,15 +50,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
-                    .map { meta, bundle ->
-                        [
-                            [id: "test_xeniumranger_rename"],
-                            bundle,
-                            "test_region",
-                            "test_cassette"
-                        ]
-                    }
+                input[0] = [
+                    [id: "test_xeniumranger_rename"],
+                    [],
+                    "test_region",
+                    "test_cassette"
+                ]
                 """
             }
         }

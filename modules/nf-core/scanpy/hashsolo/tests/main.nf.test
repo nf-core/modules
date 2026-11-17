@@ -9,7 +9,6 @@ nextflow_process {
     tag "hashsolo"
     tag "scanpy/hashsolo"
     tag "scanpy"
-    tag "untar"
 
     // ext.args
     def priors                   = [0.20, 0.8, 0.19]
@@ -22,15 +21,11 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        def hto
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
             params{
@@ -40,9 +35,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files ->
-                    [ [ id: 'test' ], files, [] ]
-                }
+                input[0] = [ [ id: 'test' ], file('${hto}'), [] ]
                 """
             }
         }
@@ -59,15 +52,11 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        def hto
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
 
@@ -83,9 +72,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files ->
-                    [ [ id: 'test' ], files, [] ]
-                }
+                input[0] = [ [ id: 'test' ], file('${hto}'), [] ]
                 """
             }
         }
@@ -105,23 +92,11 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
-        }
         when {
 
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files ->
-                    [ [ id: 'test' ], files, [] ]
-                }
+                input[0] = [ [ id: 'test' ], [], [] ]
                 """
             }
         }
