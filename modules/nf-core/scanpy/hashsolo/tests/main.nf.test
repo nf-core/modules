@@ -10,9 +10,6 @@ nextflow_process {
     tag "scanpy/hashsolo"
     tag "scanpy"
 
-    // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-    def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-
     // ext.args
     def priors                   = [0.20, 0.8, 0.19]
     def pre_existing_clusters    = null
@@ -26,6 +23,8 @@ nextflow_process {
 
         def hto
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
@@ -55,6 +54,8 @@ nextflow_process {
 
         def hto
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
@@ -91,15 +92,11 @@ nextflow_process {
 
         options "-stub"
 
-        def hto
-        setup {
-            hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
-        }
         when {
 
             process {
                 """
-                input[0] = [ [ id: 'test' ], file('${hto}'), [] ]
+                input[0] = [ [ id: 'test' ], [], [] ]
                 """
             }
         }

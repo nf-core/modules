@@ -28,12 +28,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.report[0][1]).size(),
-                    process.out.filtered_h5ad,
-                    process.out.metrics_summary,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                // Report embeds UMAP coordinates, which vary with the platform's numerical libraries
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() },
+                { assert path(process.out.report[0][1]).text.contains('Number of retained cells') }
             )
         }
     }

@@ -8,16 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hasheddrops"
 
-    def hto
-    def rna
-    setup {
-        // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-        def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-        hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
-        rna = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz').resolve('rna')
-    }
-
     test("hto_matrix - runEmptyDrops:false - rna_matrix") {
+        def hto
+        def rna
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
+            rna = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/rna.tar.gz').resolve('rna')
+        }
 
         when {
             process {
@@ -43,7 +42,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [id: 'test'], file('${hto}'), "TRUE", file('${rna}') ]
+                input[0] = [ [id: 'test'], [], "TRUE", [] ]
                 """
             }
         }

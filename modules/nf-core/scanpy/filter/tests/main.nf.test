@@ -16,15 +16,10 @@ nextflow_process {
 
         options '-stub'
 
-        def zarr
-        setup {
-            zarr = extract(modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz').resolve('test.zarr')
-        }
-
         when {
             process {
                 """
-                input[0] = [ [ id: 'test_zarr' ], file('${zarr}') ]
+                input[0] = [ [ id: 'test_zarr' ], file('test.zarr') ]
                 input[1] = 0
                 input[2] = 0
                 input[3] = 0

@@ -7,30 +7,20 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "bases2fastq"
-    tag "untar"
 
-    setup {
-        run("UNTAR") {
-            script "../../untar/main.nf"
+    test("sim-data.tar.gz - bcl") {
+        def run_dir
+        setup {
+            run_dir = extract('https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/sim-data.tar.gz').resolve('20230404-bases2fastq-sim-151-151-9-9')
+        }
+        when {
             process {
                 """
                 input[0] = [
                     [id:'sim-data'],
-                    file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/sim-data.tar.gz", checkIfExists:true)
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/RunManifest.csv", checkIfExists:true),
+                    file('${run_dir}')
                 ]
-                """
-            }
-        }
-    }
-
-    test("sim-data.tar.gz - bcl") {
-        when {
-            process {
-                """
-                input[0] = Channel.of([
-                    [id:'sim-data'],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/RunManifest.csv", checkIfExists:true)
-                ]).join(UNTAR.out.untar)
                 """
             }
         }
