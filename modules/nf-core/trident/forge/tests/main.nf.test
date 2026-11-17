@@ -44,7 +44,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+                // The POSEIDON.yml includes a date stamp, making it unstable, so only check for file existence, but not checksum.
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns:['**/POSEIDON.yml'])).match() }
             )
         }
 
