@@ -12,27 +12,17 @@ nextflow_workflow {
     tag "bclconvert"
     tag "bcl2fastq"
     tag "multiqcsav"
-    tag "untar"
 
     test("bclconvert") {
+        def run_dir
         setup {
-            run("UNTAR") {
-                script "../../../../modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.value([
-                    [id:'HMTFYDRXX', lane:1],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz")
-                ])
-                """
-                }
-            }
+            run_dir = extract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz').resolve('200624_A00834_0183_BHMTFYDRXX')
         }
 
         when {
             workflow {
                 """
-                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), bcl] }
+                input[0] = Channel.of([[id:'HMTFYDRXX', lane:1], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), file('${run_dir}')])
                 input[1] = "bclconvert"
                 """
             }
@@ -66,24 +56,15 @@ nextflow_workflow {
     }
 
     test("bcl2fastq") {
+        def run_dir
         setup {
-            run("UNTAR") {
-                script "../../../../modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.value([
-                    [id:'test', lane:1 ],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz")
-                ])
-                """
-                }
-            }
+            run_dir = extract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz').resolve('220422_M11111_0222_000000000-K9H97')
         }
 
         when {
             workflow {
                 """
-                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), bcl] }
+                input[0] = Channel.of([[id:'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), file('${run_dir}')])
                 input[1] = "bcl2fastq"
                 """
             }
