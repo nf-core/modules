@@ -6,9 +6,9 @@ process HMTNOTE_ANNOTATE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1':
-        'quay.io/biocontainers/hmtnote:0.7.2--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a900304b834f8965ad77c0976311b69f97be9f96f03cb04e83082ca0d265bdd7/data'
+        : 'community.wave.seqera.io/library/hmtnote_python:6774601e4144aa5d'}"
 
     input:
     tuple val(meta), path(vcf)

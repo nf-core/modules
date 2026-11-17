@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "kled"
-description: "An ultra-fast and sensitive structural variant detection tool for
-  long-read sequencing data."
+description: "An ultra-fast and sensitive structural variant detection tool for long-read sequencing data."
 keywords:
   - genomics
   - longread
@@ -9,8 +7,7 @@ keywords:
   - variants
 tools:
   - "kled":
-      description: "An ultra-fast and sensitive structural variant detection tool for
-        long-read sequencing data."
+      description: "An ultra-fast and sensitive structural variant detection tool for long-read sequencing data."
       homepage: "https://github.com/CoREse/kled"
       documentation: "https://github.com/CoREse/kled/blob/master/README.md"
       tool_dev_url: "https://github.com/CoREse/kled"
@@ -87,3 +84,27 @@ authors:
   - "@tetedange13"
 maintainers:
   - "@tetedange13"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/kled:1.2.11--a7971124dab5bfc1
+      build_id: bd-a7971124dab5bfc1_2
+      scan_id: sc-7aac619c69725311_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/kled:1.2.11--5acfc45087909514
+      build_id: bd-5acfc45087909514_2
+      scan_id: sc-8a260e4edf5a873c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/kled:1.2.11--bebe7510152c94b5
+      build_id: bd-bebe7510152c94b5_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4fba464c03d0ffcae1ca63550a453577da41a7975da60d011ce0c04a6d9da16/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kled:1.2.11--1a374f5dc7963f28
+      build_id: bd-1a374f5dc7963f28_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eb9594b1026dfe8488841c804e7ceea2b91d71e5428a973b556df2bc4831b0b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kled/.conda-lock/linux_amd64-bd-5acfc45087909514_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/kled/.conda-lock/linux_arm64-bd-a7971124dab5bfc1_2.txt

@@ -6,9 +6,9 @@ process IGVREPORTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0':
-        'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c589d67493545138c9f66a3b073b1f0b3f497896df2cbeb2e4364a80166b9894/data'
+        : 'community.wave.seqera.io/library/igv-reports:1.12.0--e6c93b58b88bcf3c'}"
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indices)

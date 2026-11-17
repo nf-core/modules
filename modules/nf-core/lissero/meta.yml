@@ -64,3 +64,17 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/lissero_python_setuptools:cd14be39fe2fb07a
+      build_id: bd-cd14be39fe2fb07a_1
+      scan_id: sc-00550486ec8631c0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/lissero_python_setuptools:9e57bca4da266a55
+      build_id: bd-9e57bca4da266a55_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d01259103ce477a73daf284e6d14d0d3f6d5d5e61e7b2ff1cb25d6468b0b706c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/lissero/.conda-lock/linux_amd64-bd-cd14be39fe2fb07a_1.txt

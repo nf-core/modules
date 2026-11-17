@@ -7,8 +7,7 @@ keywords:
   - genomics
 tools:
   - "eagle2":
-      description: "The Eagle software estimates haplotype phase either within a genotyped
-        cohort or using a phased reference panel."
+      description: "The Eagle software estimates haplotype phase either within a genotyped cohort or using a phased reference panel."
       homepage: "https://alkesgroup.broadinstitute.org/Eagle/"
       documentation: "https://alkesgroup.broadinstitute.org/Eagle/"
       tool_dev_url: "https://github.com/poruloh/Eagle"
@@ -92,3 +91,17 @@ authors:
   - "@LouisLeNezet"
 maintainers:
   - "@LouisLeNezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/eagle2:2.4.1--d1c1375e35ddb68b
+      build_id: bd-d1c1375e35ddb68b_1
+      scan_id: sc-e1b74b90b9febf92_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/eagle2:2.4.1--9df83bc7141c72a2
+      build_id: bd-9df83bc7141c72a2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/728a05bf8f9095424da613d399448cc2179bb7ef62cf8c440a36135e7580b8d4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/eagle2/.conda-lock/linux_amd64-bd-d1c1375e35ddb68b_1.txt
