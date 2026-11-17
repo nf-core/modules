@@ -4,6 +4,7 @@ nextflow_process {
 
     script "../main.nf"
     process "CUTESV"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -18,6 +19,7 @@ nextflow_process {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
+                    [],
                 ])
                 input[1] = channel.of([
                     [id:'fasta'],
@@ -29,6 +31,37 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - fasta - regions") {
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
+                ]).combine(channel.of("chr22\t18000\t21000").collectFile(name: 'regions.bed', newLine: true))
+                input[1] = channel.of([
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',checkIfExists:true)
+                ])
+                """
+            }
+        }
+        then {
+            def records = path(process.out.vcf.get(0).get(1)).readLines().findAll { line -> !line.startsWith("#") }
+            assertAll(
+                { assert process.success },
+                { assert records.size() > 0 },
+                { assert records.every { line -> line.split("\t")[1].toInteger() in 18000..21000 } },
                 { assert snapshot(
                     process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] },
                     process.out.findAll { key, val -> key.startsWith('versions') }
@@ -49,6 +82,7 @@ nextflow_process {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
+                    [],
                 ])
                 input[1] = channel.of([
                     [id:'fasta'],

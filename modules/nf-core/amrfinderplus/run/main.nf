@@ -6,12 +6,12 @@ process AMRFINDERPLUS_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.2.7--hf69ffd2_0':
-        'quay.io/biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00cad0bb4c7cb85b0906f357e5197bcabb32569f9b48ff049f081b5bafd04aca/data'
+        : 'community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--01f7d2a8fad0d3aa'}"
 
     input:
-    tuple val(meta), path(fasta)
+    tuple val(meta), path(fasta), val(organism), val(is_proteins)
     path db
 
     output:
@@ -31,14 +31,9 @@ process AMRFINDERPLUS_RUN {
     def is_compressed_fasta = fasta.getName().endsWith(".gz") ? true : false
     def is_compressed_db = db.getName().endsWith(".gz") ? true : false
 
-    organism_param = meta.containsKey("organism") ? "--organism ${meta.organism} --mutation_all ${prefix}-mutations.tsv" : ""
-    fasta_name = fasta.getName().replace(".gz", "")
-    fasta_param = "-n"
-    if (meta.containsKey("is_proteins")) {
-        if (meta.is_proteins) {
-            fasta_param = "-p"
-        }
-    }
+    def organism_param = organism ? "--organism ${organism} --mutation_all ${prefix}-mutations.tsv" : ""
+    def fasta_name = fasta.getName().replace(".gz", "")
+    def fasta_param = is_proteins ? "-p" : "-n"
     """
     if [ "${is_compressed_fasta}" == "true" ]; then
         gzip -c -d ${fasta} > ${fasta_name}
@@ -70,7 +65,7 @@ process AMRFINDERPLUS_RUN {
     echo ${args}
 
     touch ${prefix}.tsv
-    ${meta.containsKey("organism") ? "touch ${prefix}-mutations.tsv" : ""}
+    ${organism ? "touch ${prefix}-mutations.tsv" : ""}
 
     VER=\$(amrfinder --version)
     DBVER="2026-01-01.1"

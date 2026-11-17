@@ -9,9 +9,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h2a3209d_3':
-        'quay.io/biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8be5342445021f1804a5772fabfbd401b8a0dea39616a2f3dbe746792f78384/data'
+        : 'community.wave.seqera.io/library/circularmapper:1.93.5--971f1a9d9b285bbc'}"
 
     input:
     tuple val(meta), path(reference)

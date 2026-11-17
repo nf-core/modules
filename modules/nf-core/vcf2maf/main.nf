@@ -6,11 +6,12 @@ process VCF2MAF {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    // WARN: Version information not provided by tool on CLI. Please update version strings below when bumping container versions.
+    // ensembl-vep 113.4 still reports "113.0" on the CLI.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7cbf9421f0bee23a93a35c5d0c7166ac1e89a40008d8e474cecfddb93226bf65/data':
-        'community.wave.seqera.io/library/ensembl-vep_vcf2maf:2d40b60b4834af73' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd6d05067c8171db981b0a2e914561ba7ec4340719ffa8e4d39fcef7004fb230/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_vcf2maf:032bb9f304259c9c'}"
 
     input:
     tuple val(meta), path(vcf) // Use an uncompressed VCF file!
@@ -20,7 +21,7 @@ process VCF2MAF {
     output:
     tuple val(meta), path("*.maf"), emit: maf
     tuple val("${task.process}"), val('vcf2maf'), val("1.6.22"), emit: versions_vcf2maf, topic: versions
-    tuple val("${task.process}"), val('ensemblvep'), eval('vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"'), emit: versions_ensemblvep, topic: versions
+    tuple val("${task.process}"), val('ensemblvep'), val("113.4"), emit: versions_ensemblvep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -17,8 +17,8 @@ process GLIMPSE2_PHASE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
-        : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6db4ab0bf9cdc87502f93289dc3eb4f3ff28a7125703bcc778ff88d4bd4dd2a/data'
+        : 'community.wave.seqera.io/library/glimpse-bio:2.0.1--13883817364cf3d3'}"
 
     input:
     tuple val(meta), path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)

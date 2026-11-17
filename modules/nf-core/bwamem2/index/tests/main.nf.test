@@ -17,6 +17,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -24,7 +25,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out) + [index_dir: process.out.index.collect { file(it[1]).name }]).match() }
             )
         }
     }
@@ -37,6 +38,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -44,7 +46,29 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out) + [index_dir: process.out.index.collect { file(it[1]).name }]).match() }
+            )
+        }
+    }
+
+    test("fasta - index_dir_name") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = 'sarscov2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out) + [index_dir: process.out.index.collect { file(it[1]).name }]).match() }
             )
         }
     }
@@ -60,6 +84,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -67,7 +92,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out) + [index_dir: process.out.index.collect { file(it[1]).name }]).match() }
             )
         }
     }
@@ -82,6 +107,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -89,7 +115,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out) + [index_dir: process.out.index.collect { file(it[1]).name }]).match() }
             )
         }
     }

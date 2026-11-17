@@ -6,9 +6,9 @@ process CHEWBBACA_CREATESCHEMA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.5--pyhdfd78af_0':
-        'quay.io/biocontainers/chewbbaca:3.3.5--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d39fb0629de237b2e3f1c9faf7e093a3ca96a23bb94439dfe15a1f2bd6e552/data'
+        : 'community.wave.seqera.io/library/chewbbaca_libmamba:de41ca94d8b05ad2'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_genomes/*")

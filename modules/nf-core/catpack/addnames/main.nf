@@ -7,8 +7,8 @@ process CATPACK_ADDNAMES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1fc8ea63d90f6b164b197ef1077183c909391ef70e65955b9e5fee54ffcfe3d5/data'
+        : 'community.wave.seqera.io/library/cat:6.0.1--45eb3de71f06f426'}"
 
     input:
     tuple val(meta), path(input)

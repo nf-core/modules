@@ -68,3 +68,27 @@ maintainers:
   - "@sateeshperi"
   - "@mjcipriano"
   - "@eit-maxlcummins"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/assembly-scan:1.0.0--fdab3a3c6ba9bbd0
+      build_id: bd-fdab3a3c6ba9bbd0_1
+      scan_id: sc-735c8e6b15e9d204_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/assembly-scan:1.0.0--cf146413e794c21e
+      build_id: bd-cf146413e794c21e_1
+      scan_id: sc-295ab38b6769f202_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/assembly-scan:1.0.0--fe825275bfd9e54d
+      build_id: bd-fe825275bfd9e54d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8b13fe9789963debbbbe0e934aea5e96cfef77277299e3152726738fb81444a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/assembly-scan:1.0.0--a02bb1b94b87dd05
+      build_id: bd-a02bb1b94b87dd05_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be98d42ee8bdaa1355ba3544018ecad14f49ea71dfd3898b91e9afb17d932c37/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/assemblyscan/.conda-lock/linux_amd64-bd-fdab3a3c6ba9bbd0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/assemblyscan/.conda-lock/linux_arm64-bd-cf146413e794c21e_1.txt

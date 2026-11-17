@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process ISESCAN"
+    script "../main.nf"
+    process "ISESCAN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isescan"
+
+    test("pUTI89 - fna.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/plasmids/pUTI89/pUTI89.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("pUTI89 - fna.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/plasmids/pUTI89/pUTI89.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

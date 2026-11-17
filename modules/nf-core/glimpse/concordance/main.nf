@@ -7,8 +7,8 @@ process GLIMPSE_CONCORDANCE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--h0303221_3'
-        : 'quay.io/biocontainers/glimpse-bio:1.1.1--h0303221_3'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f722eb1dd56d995b28e1ec47f7808450bf6477e0b4ec28ec5f294c1a66fd479e/data'
+        : 'community.wave.seqera.io/library/glimpse-bio:1.1.1--26d63752054f98c5'}"
 
     input:
     tuple val(meta), path(estimate), path(estimate_index), path(freq), path(freq_index), path(truth), path(truth_index), val(region)
@@ -49,10 +49,10 @@ process GLIMPSE_CONCORDANCE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo | gzip > ${prefix}.error.cal.txt.gz
-    echo | gzip > ${prefix}.error.grp.txt.gz
-    echo | gzip > ${prefix}.error.spl.txt.gz
-    echo | gzip > ${prefix}.rsquare.grp.txt.gz
-    echo | gzip > ${prefix}.rsquare.spl.txt.gz
+    echo "" | gzip > ${prefix}.error.cal.txt.gz
+    echo "" | gzip > ${prefix}.error.grp.txt.gz
+    echo "" | gzip > ${prefix}.error.spl.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.grp.txt.gz
+    echo "" | gzip > ${prefix}.rsquare.spl.txt.gz
     """
 }

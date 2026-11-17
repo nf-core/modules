@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process HGTSITE_CALL"
+    script "../main.nf"
+    process "HGTSITE_CALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hgtsite"
+    tag "hgtsite/call"
+
+    test("sarscov2 - bam - classifications") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.reads.txt', checkIfExists: true)
+                ]
+                // Every read in that file is classified as SARS-CoV-2, which is
+                // also what the reads are aligned to. Naming a different taxon as
+                // the host is what makes them foreign, and so gives the process
+                // something to cluster and test.
+                input[2] = 9606
+                input[3] = true
+                input[4] = true
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tsv.get(0).get(1)).readLines()[0].startsWith("chrom\tstart\tend") },
+                // Two candidate positions are found and neither clears the
+                // enrichment test on three foreign reads, so the BED of passing
+                // sites is legitimately empty and is checked rather than
+                // snapshotted.
+                { assert path(process.out.bed.get(0).get(1)).readLines().size() == 0 },
+                // The VCF header carries the date and the command, so only its
+                // records are compared.
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["vcf", "tbi", "bed"]),
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - classifications - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/test_1.kraken2.reads.txt', checkIfExists: true)
+                ]
+                input[2] = 9606
+                input[3] = true
+                input[4] = true
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

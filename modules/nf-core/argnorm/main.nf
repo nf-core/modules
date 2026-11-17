@@ -6,8 +6,8 @@ process ARGNORM {
     label 'process_low'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/argnorm:0.8.0--pyhdfd78af_0'
-        : 'quay.io/biocontainers/argnorm:0.8.0--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f2c4d089c21f0fefaf6692b45f2cacdc1cef258beecad3481d51958395ed579/data'
+        : 'community.wave.seqera.io/library/argnorm:0.8.0--c4110b014bf1acbe'}"
 
     input:
     tuple val(meta), path(input_tsv)

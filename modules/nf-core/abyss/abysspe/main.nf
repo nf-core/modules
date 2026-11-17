@@ -6,9 +6,9 @@ process ABYSS_ABYSSPE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/abyss:2.3.10--hf316886_1':
-        'quay.io/biocontainers/abyss:2.3.10--hf316886_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fe4b5f24c0e57c0be7a5b3d77959049b8ad114ec580643b4bc0c24247d16c33/data'
+        : 'community.wave.seqera.io/library/abyss:2.3.10--5e1b4f9539e92f5d'}"
 
     input:
     tuple val(meta), path(reads), path(merged)
@@ -57,8 +57,8 @@ process ABYSS_ABYSSPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo "" | gzip -n > ${prefix}-contigs.fa.gz
-    echo "" | gzip -n > ${prefix}-scaffolds.fa.gz
+    echo "" | gzip > ${prefix}-contigs.fa.gz
+    echo "" | gzip > ${prefix}-scaffolds.fa.gz
     touch ${prefix}-stats
     touch ${prefix}-abyss.log
     """

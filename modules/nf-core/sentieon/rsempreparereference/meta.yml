@@ -6,15 +6,47 @@ keywords:
   - index
   - sentieon
 tools:
-  - rseqc:
+  - sentieon:
+      description: |
+        Sentieon® provides complete solutions for secondary DNA/RNA analysis for a variety of sequencing platforms, including short and long reads.
+        Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
+      homepage: https://www.sentieon.com/
+      documentation: https://www.sentieon.com/
+      doi: "10.1101/115717"
+      publication:
+        author: "Freed, D., Aldana, R., Weber, J. A. & Edwards, J. S."
+        year: 2017
+        title: "The Sentieon Genomics Tools - A fast and accurate solution to variant calling from next-generation sequence data"
+        source: "bioRxiv"
+      identifier: ""
+  - rsem:
       description: |
         RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome
       homepage: https://github.com/deweylab/RSEM
       documentation: https://github.com/deweylab/RSEM
       doi: 10.1186/1471-2105-12-323
+      publication:
+        author: "Li, B. & Dewey, C. N."
+        year: 2011
+        title: "RSEM: accurate transcript quantification from RNA-Seq data with or without a reference genome"
+        source: "BMC Bioinformatics"
       licence:
         - "GPL-3.0-or-later"
       identifier: biotools:rsem
+  - star:
+      description: |
+        STAR is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: https://github.com/alexdobin/STAR
+      doi: "10.1093/bioinformatics/bts635"
+      publication:
+        author: "Dobin, A., Davis, C. A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M. & Gingeras, T. R."
+        year: 2012
+        title: "STAR: ultrafast universal RNA-seq aligner"
+        source: "Bioinformatics"
+      manual: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
+      licence: ["MIT"]
+      identifier: biotools:star
 input:
   - fasta:
       type: file

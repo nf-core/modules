@@ -12,7 +12,12 @@ tools:
         and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
-      doi: 10.1158/1538-7445.AM2017-3590
+      doi: "10.1101/gr.107524.110"
+      publication:
+        author: "McKenna, A., Hanna, M., Banks, E., Sivachenko, A., Cibulskis, K., Kernytsky, A., Garimella, K., Altshuler, D., Gabriel, S., Daly, M. & DePristo, M. A."
+        year: 2010
+        title: "The Genome Analysis Toolkit: A MapReduce framework for analyzing next-generation DNA sequencing data"
+        source: "Genome Research"
       licence: ["Apache-2.0"]
       identifier: ""
 input:
@@ -95,10 +100,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
+      - "${prefix}.vcf.gz":
           type: file
           description: Compressed VCF file
-          pattern: "*.vcf.gz"
+          pattern: "${prefix}.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
@@ -107,10 +112,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}.vcf.gz.tbi":
           type: file
           description: Index of VCF file
-          pattern: "*.vcf.gz.tbi"
+          pattern: "${prefix}.vcf.gz.tbi"
           ontologies: []
   bam:
     - - meta:

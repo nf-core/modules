@@ -6,9 +6,9 @@ process CHEWBBACA_ALLELECALL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.10--pyhdfd78af_0':
-        'quay.io/biocontainers/chewbbaca:3.3.10--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5ad49ac1eb7a9cd3b4b71198abb42744c318f0004388b423409fd0180517d9e7/data'
+        : 'community.wave.seqera.io/library/chewbbaca:3.3.10--093b1970054ad1b4'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_dir/*")

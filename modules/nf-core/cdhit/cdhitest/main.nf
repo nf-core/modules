@@ -6,9 +6,9 @@ process CDHIT_CDHITEST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7':
-        'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b8a3599d3f069ef59e0f0826b09e847d08d1d30d8dbe463188512a25a5a98be/data'
+        : 'community.wave.seqera.io/library/cd-hit:4.8.1--2cbab405453b19db'}"
 
     input:
     tuple val(meta), path(sequences)

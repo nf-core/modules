@@ -44,7 +44,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--annotate --examine_coding_effect"
+                module_args = '--annotate --examine_coding_effect --STAR_xtra_params "--limitSjdbInsertNsj 4000000"'
             }
             process {
                 """

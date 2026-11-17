@@ -22,14 +22,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - refaln:
         type: file
-        description: reference alignment in any supported format including phylip
-          and fasta, may be gzipped
+        description: reference alignment in any supported format including phylip and fasta, may be gzipped
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
         ontologies: []
     - fullaln:
         type: file
-        description: full alignment in any supported format to split into
-          reference and query alignments
+        description: full alignment in any supported format to split into reference and query alignments
         pattern: "*.{faa,fna,fa,fasta,fa,phy,aln,alnfaa,alnfna,alnfa,mfa,faa.gz,fna.gz,fa.gz,fasta.gz,fa.gz,phy.gz,aln.gz,alnfaa.gz,alnfna.gz,alnfa.gz,mfa.gz}"
         ontologies: []
 output:
@@ -78,3 +76,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/epa-ng:0.3.8--0ea85830a0313489
+      build_id: bd-0ea85830a0313489_1
+      scan_id: sc-62c6616468c0ef9a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/epa-ng:0.3.8--b7414cbf4b37d776
+      build_id: bd-b7414cbf4b37d776_1
+      scan_id: sc-4b75d2d313c7ea68_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/epa-ng:0.3.8--21deb0a2f1c782ae
+      build_id: bd-21deb0a2f1c782ae_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c9cfcd2715502423179b33e1ac685473cf995f9cf0c323a952c967c747488ff2/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/epa-ng:0.3.8--b981691513925266
+      build_id: bd-b981691513925266_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5227fa1db763e3ed8267ff4f9e48d02b6a8a595a065607fd1a8f0b7fb8b17bb1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/epang/split/.conda-lock/linux_amd64-bd-b7414cbf4b37d776_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/epang/split/.conda-lock/linux_arm64-bd-0ea85830a0313489_1.txt

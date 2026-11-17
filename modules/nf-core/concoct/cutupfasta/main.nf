@@ -7,8 +7,8 @@ process CONCOCT_CUTUPFASTA {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/concoct:1.1.0--py39h8907335_8'
-        : 'quay.io/biocontainers/concoct:1.1.0--py39h8907335_8'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b414706a0ce09cd26055f920ea4d7db8e6e0a4845f806f0918e9792a2c847f95/data'
+        : 'community.wave.seqera.io/library/concoct_setuptools:7d62fa8e6704b1fe'}"
 
     input:
     tuple val(meta), path(fasta)

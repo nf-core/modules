@@ -76,3 +76,27 @@ authors:
 maintainers:
   - "@timslittle"
   - "@Puumanamana"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cd-hit:4.8.1--2cbab405453b19db
+      build_id: bd-2cbab405453b19db_1
+      scan_id: sc-5a229b3bd9a65bbb_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/cd-hit:4.8.1--316a5ef644674b39
+      build_id: bd-316a5ef644674b39_1
+      scan_id: sc-fc514977179f4778_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cd-hit:4.8.1--b097462c90dcebf0
+      build_id: bd-b097462c90dcebf0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b8a3599d3f069ef59e0f0826b09e847d08d1d30d8dbe463188512a25a5a98be/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cd-hit:4.8.1--0a2b488967767aaa
+      build_id: bd-0a2b488967767aaa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e03e8a4930a84d507f1698c1fe3c95c3c8d1b8b6fc44b2cf6732e0431e153757/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cdhit/cdhit/.conda-lock/linux_amd64-bd-2cbab405453b19db_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cdhit/cdhit/.conda-lock/linux_arm64-bd-316a5ef644674b39_1.txt
