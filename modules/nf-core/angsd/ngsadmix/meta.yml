@@ -1,0 +1,95 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "angsd_ngsadmix"
+description: Estimate individual admixture proportions and ancestral allele frequencies from genotype likelihoods with NGSadmix
+keywords:
+  - angsd
+  - ngsadmix
+  - admixture
+  - genotype likelihoods
+  - population structure
+  - genomics
+tools:
+  - "ngsadmix":
+      description: "NGSadmix: estimates individual admixture proportions from
+        genotype likelihoods of low-depth NGS data. Distributed with ANGSD."
+      homepage: "https://www.popgen.dk/software/index.php/NgsAdmix"
+      documentation: "https://www.popgen.dk/software/index.php/NgsAdmix"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1534/genetics.113.154138"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample set information
+          e.g. [ id:'test', samples:'sample IDs' ]
+    - beagle_file:
+        type: file
+        description: Beagle genotype likelihood file produced by ANGSD
+        pattern: "*.beagle.gz"
+        ontologies: []
+    - k:
+        type: integer
+        description: Number of ancestral populations (K)
+output:
+  qopt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.qopt":
+          type: file
+          description: |
+            Admixture proportions (n samples x K), in the sample order of the Beagle file
+          pattern: "*.qopt"
+          ontologies: []
+  fopt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.fopt.gz":
+          type: file
+          description: Estimated allele frequencies of the K ancestral populations at each site
+          pattern: "*.fopt.gz"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.log":
+          type: file
+          description: NGSadmix log file, including the final log likelihood
+          pattern: "*.log"
+          ontologies: []
+  versions_angsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "angsd":
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "angsd":
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"
