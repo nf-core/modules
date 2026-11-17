@@ -1,0 +1,110 @@
+name: "spatialcontinuumtranslational_gist"
+description: "Calculate uncalibrated research-only GIST phenotype risk scores from cohort data (TSV, CSV, JSON)."
+keywords:
+  - oncology
+  - gist
+  - spatial
+  - risk stratification
+  - phenotype
+tools:
+  - "spatial-continuum-translational":
+      description: "Deterministic GIST phenotype research profile CLI supporting validated TSV, CSV, and JSON cohort inputs."
+      homepage: "https://github.com/Lukecele/spatial-continuum-translational"
+      documentation: "https://github.com/Lukecele/spatial-continuum-translational#readme"
+      tool_dev_url: "https://github.com/Lukecele/spatial-continuum-translational"
+      doi: "10.21203/rs.3.rs-11633521/v1"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: Input file containing GIST clinical/histological features (TSV, CSV, or JSON)
+        pattern: "*.{tsv,csv,json}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3464" # JSON
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_gist.json":
+          type: file
+          description: GIST phenotype research profile score in JSON format
+          pattern: "*_gist.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_gist.tsv":
+          type: file
+          description: GIST phenotype research profile score in TSV format
+          pattern: "*_gist.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_spatialcontinuumtranslational:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "spatial-continuum-translational":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-continuum-translational''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spatial-continuum-translational:
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-continuum-translational''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/spatial-continuum-translational:0.1.53--0294c8866e09c2cc
+      build_id: bd-0294c8866e09c2cc_1
+      scan_id: sc-73888b00daa36206_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/spatial-continuum-translational:0.1.53--ee1f749133648d82
+      build_id: bd-ee1f749133648d82_1
+      scan_id: sc-4419d9d8f229abc8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/spatial-continuum-translational:0.1.53--675aa3ddf6ea796b
+      build_id: bd-675aa3ddf6ea796b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a50a8bbb2134cf3a6b6aa7214ba42989fda33ed2804a1bf0bcf2d24dd5f62cce/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/spatial-continuum-translational:0.1.53--3a67bc579cad8fec
+      build_id: bd-3a67bc579cad8fec_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a528285ab9fc9c41a4ecfe414933dea426d32b9188dce13c29bec17490c10d74/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/spatialcontinuumtranslational/gist/.conda-lock/linux_amd64-bd-ee1f749133648d82_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/spatialcontinuumtranslational/gist/.conda-lock/linux_arm64-bd-0294c8866e09c2cc_1.txt
