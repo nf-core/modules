@@ -8,6 +8,8 @@ nextflow_process {
     tag "preseq"
     tag "preseq/lcextrap"
 
+    topics "versions"
+
     test("sarscov2 - single_end") {
         when {
             process {
@@ -20,7 +22,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] }).match() }
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
@@ -38,7 +43,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out, topics).match() }
             )
         }
     }
@@ -55,7 +60,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] }).match() }
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
@@ -73,7 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out, topics).match() }
             )
         }
     }
@@ -90,7 +98,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] }).match() }
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
