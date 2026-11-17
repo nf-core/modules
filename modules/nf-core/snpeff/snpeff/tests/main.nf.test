@@ -15,17 +15,18 @@ nextflow_process {
         when {
             process {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.105' ],
                     file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
                 ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
+                input[3] = []
                 """
             }
         }
@@ -34,11 +35,44 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.genes_txt[0][3]),
-                    file(process.out.report[0][3]).name,
-                    file(process.out.summary_html[0][3]).name,
-                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "report", "summary_html"])
+                ).match() }
+            )
+        }
+    }
+
+    test("SNPEFF annotate with WBcel235.105 - canon_list") {
+
+        // NOTE: this test only checks that a canonical transcript list is staged and accepted
+        // by `snpEff ann -canonList`. No C. elegans VCF is available in nf-core/test-datasets,
+        // and the sarscov2 VCF does not overlap any WBcel235 gene (including WBGene00000001),
+        // so the output is expected to be identical to the default test.
+        when {
+            process {
+                """
+                snpeff_cache = channel.of([
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                ]).collect()
+
+                input[0] = channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
+                ])
+                input[1] = params.snpeff_db
+                input[2] = snpeff_cache
+                input[3] = channel.of("WBGene00000001\\tY110A7A.10.1\\n").collectFile(name: 'canon_list.txt')
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "report", "summary_html"])
                 ).match() }
             )
         }
@@ -51,17 +85,18 @@ nextflow_process {
         when {
             process {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.105' ],
                     file("${projectDir}")
                 ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
+                input[3] = []
                 """
             }
         }
@@ -69,13 +104,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.genes_txt[0][3]),
-                    file(process.out.report[0][3]),
-                    file(process.out.summary_html[0][3]),
-                    file(process.out.vcf[0][1]),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
