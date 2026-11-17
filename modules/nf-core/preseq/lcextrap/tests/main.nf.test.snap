@@ -1,146 +1,94 @@
 {
     "sarscov2 - single_end": {
         "content": [
-            {
-                "lc_extrap": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.lc_extrap.txt:md5,1fa5cdd601079329618f61660bee00de"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.command.log"
-                    ]
-                ],
-                "versions_preseq": [
-                    [
-                        "PRESEQ_LCEXTRAP",
-                        "preseq",
-                        "3.2.0"
-                    ]
-                ]
-            }
+            [
+                {
+                    "id": "test",
+                    "meta": null,
+                    "lc_extrap": "test.lc_extrap.txt:md5,1fa5cdd601079329618f61660bee00de",
+                    "log": "test.command.log"
+                }
+            ]
         ],
-        "timestamp": "2026-08-06T18:56:26.182115744",
+        "timestamp": "2026-11-17T14:43:41.029468404",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.0"
         }
     },
     "sarscov2 - single_end - stub": {
         "content": [
             {
-                "lc_extrap": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.lc_extrap.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.command.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "versions_preseq": [
-                    [
-                        "PRESEQ_LCEXTRAP",
-                        "preseq",
-                        "3.2.0"
-                    ]
+                "0": [
+                    {
+                        "id": "test",
+                        "lc_extrap": "test.lc_extrap.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "log": "test.command.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "meta": null
+                    }
                 ]
             }
         ],
-        "timestamp": "2026-08-06T18:56:32.934103559",
+        "timestamp": "2026-11-17T14:43:45.301940544",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - single_end - meta, output_prefix and args": {
+        "content": [
+            [
+                {
+                    "id": "test",
+                    "meta": {
+                        "condition": "a",
+                        "id": "test"
+                    },
+                    "lc_extrap": "custom.lc_extrap.txt:md5,8796359e75420038dd4de208f62fe8a1",
+                    "log": "custom.command.log"
+                }
+            ]
+        ],
+        "timestamp": "2026-11-17T14:43:58.103062122",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "sarscov2 - paired_end": {
         "content": [
-            {
-                "lc_extrap": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.lc_extrap.txt:md5,10e5ea860e87fb6f5dc10f4f20c62040"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.command.log"
-                    ]
-                ],
-                "versions_preseq": [
-                    [
-                        "PRESEQ_LCEXTRAP",
-                        "preseq",
-                        "3.2.0"
-                    ]
-                ]
-            }
+            [
+                {
+                    "id": "test",
+                    "meta": null,
+                    "lc_extrap": "test.lc_extrap.txt:md5,10e5ea860e87fb6f5dc10f4f20c62040",
+                    "log": "test.command.log"
+                }
+            ]
         ],
-        "timestamp": "2026-08-06T18:56:39.598779047",
+        "timestamp": "2026-11-17T14:43:49.556510578",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.0"
         }
     },
     "sarscov2 - paired_end - stub": {
         "content": [
             {
-                "lc_extrap": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.lc_extrap.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.command.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "versions_preseq": [
-                    [
-                        "PRESEQ_LCEXTRAP",
-                        "preseq",
-                        "3.2.0"
-                    ]
+                "0": [
+                    {
+                        "id": "test",
+                        "lc_extrap": "test.lc_extrap.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "log": "test.command.log:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "meta": null
+                    }
                 ]
             }
         ],
-        "timestamp": "2026-08-06T18:56:46.202436427",
+        "timestamp": "2026-11-17T14:43:53.804334078",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.04.0"
         }
     }
 }
