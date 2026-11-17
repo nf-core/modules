@@ -6,9 +6,9 @@ process NGMERGE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngmerge:0.3--ha92aebf_1':
-        'quay.io/biocontainers/ngmerge:0.3--ha92aebf_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c13e2a4a1cfe3fb14a0db0c04f099959036f1cf0de30e1a53193e4ef2c7f2897/data'
+        : 'community.wave.seqera.io/library/ngmerge:0.3--b244ad1892587927'}"
 
     input:
     tuple val(meta), path(reads)

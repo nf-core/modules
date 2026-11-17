@@ -6,9 +6,9 @@ process FASTAGUARD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastaguard:1.1.0--hfa8f182_0':
-        'quay.io/biocontainers/fastaguard:1.1.0--hfa8f182_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e76cd33dcff373007f86b4704c30c6aa0005b861debe63a9293fb15b577f9f8d/data'
+        : 'community.wave.seqera.io/library/fastaguard:1.1.0--7f884e70d672a16c'}"
 
     input:
     tuple val(meta), path(fasta)

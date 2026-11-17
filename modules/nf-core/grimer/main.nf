@@ -6,9 +6,9 @@ process GRIMER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/grimer:1.1.0--pyhdfd78af_0':
-        'quay.io/biocontainers/grimer:1.1.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3fa7bb19679b70a3d63ba7724d9357d557249b8ef3d2e2bcc34cf1b654f028c9/data'
+        : 'community.wave.seqera.io/library/grimer:1.1.0--3eb74a39b6c2707f'}"
 
     input:
     tuple val(meta), path(input_table)

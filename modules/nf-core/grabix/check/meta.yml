@@ -52,3 +52,27 @@ authors:
   - "@MartaSantanaSilva"
 maintainers:
   - "@MartaSantanaSilva"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/grabix:0.1.8--10b827349d23cb56
+      build_id: bd-10b827349d23cb56_1
+      scan_id: sc-68e988baf5a0cd2a_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/grabix:0.1.8--c6d1f7f3af3386e7
+      build_id: bd-c6d1f7f3af3386e7_1
+      scan_id: sc-9dc23cdf70c0e305_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/grabix:0.1.8--530aae1019e6504d
+      build_id: bd-530aae1019e6504d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f28fcf385db87c5850651ac4600bdd85a749bf67fd55e672541c632ab51d648d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/grabix:0.1.8--153f06efe3f2b553
+      build_id: bd-153f06efe3f2b553_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d3/d3cbff00e96f42faf0dc181e69b13c7c54345ee68a308c7d3bb382560c645363/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/grabix/check/.conda-lock/linux_amd64-bd-10b827349d23cb56_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/grabix/check/.conda-lock/linux_arm64-bd-c6d1f7f3af3386e7_1.txt

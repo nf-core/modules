@@ -6,9 +6,9 @@ process STARAMR_SEARCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/staramr:0.10.0--pyhdfd78af_0':
-        'quay.io/biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02718d049d5a1f303ec4ef1f889aa3c96b33924133150862bd65420da000eb2a/data'
+        : 'community.wave.seqera.io/library/mlst_staramr_biopython_numpy_pandas:f28fd6fb415e425b'}"
 
     input:
     tuple val(meta), path(genome_fasta) // genome as a fasta file

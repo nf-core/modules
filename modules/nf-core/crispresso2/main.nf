@@ -6,9 +6,9 @@ process CRISPRESSO2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crispresso2:2.3.4--py312hfcd9dac_0' :
-        'quay.io/biocontainers/crispresso2:2.3.4--py312hfcd9dac_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0829ff2732cbe3e253e6f9ce84021c34f9d294c6bd6cd96f3bc188b42e874ddf/data'
+        : 'community.wave.seqera.io/library/crispresso2:2.3.4--8db4f82d6aa49797'}"
 
     input:
     tuple val(meta), path(reads)
@@ -19,7 +19,7 @@ process CRISPRESSO2 {
     tuple val(meta), path("CRISPResso_on_*")        , emit: results
     tuple val(meta), path("*.html")                 , emit: html
     tuple val(meta), path("CRISPResso_on_*/*.txt")  , emit: txt
-    tuple val("${task.process}"), val('crispresso2'), eval("CRISPResso --version 2>&1 | sed 's/CRISPResso //'"), emit: versions_crispresso2, topic: versions
+    tuple val("${task.process}"), val('crispresso2'), eval("CRISPResso --version 2>&1 | sed -n 's/^CRISPResso //p'"), emit: versions_crispresso2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
