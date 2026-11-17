@@ -108,7 +108,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert index_files == ['genome.fasta.amb', 'genome.fasta.ann', 'genome.fasta.meth.amb', 'genome.fasta.meth.ann', 'genome.fasta.meth.bwt.2bit.64', 'genome.fasta.meth.pac', 'genome.fasta.pac'] },
-                { assert snapshot(process.out.versions_bwamem3).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
