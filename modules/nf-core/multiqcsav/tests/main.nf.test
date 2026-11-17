@@ -6,22 +6,30 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
+    tag "untar"
     tag "multiqcsav"
 
     config "./nextflow.config"
 
     test("NovaSeq6000") {
-        def run_dir
         setup {
-            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            run_dir = extract(modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz').resolve('200624_A00834_0183_BHMTFYDRXX')
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id: 'NovaSeq6000' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
         }
 
         when {
             process {
                 """
-                ch_sav_in = Channel.of([ [ id: 'NovaSeq6000' ], file('${run_dir}') ]).map{ meta, untar ->
+                ch_sav_in = UNTAR.out.untar.map{ meta, untar ->
 
                     def xml = []
                     untar.eachFileRecurse { file ->
