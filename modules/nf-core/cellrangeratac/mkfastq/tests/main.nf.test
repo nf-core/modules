@@ -10,12 +10,12 @@ nextflow_process {
     tag "cellrangeratac"
     tag "cellrangeratac/mkfastq"
 
-    def bcl_dir
-    setup {
-        bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-1.0.0.tar.gz').resolve('cellranger-atac-tiny-bcl-1.0.0')
-    }
-
     test("test_cellrangeratac_mkfastq_simple") {
+        def bcl_dir
+        setup {
+            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-1.0.0.tar.gz').resolve('cellranger-atac-tiny-bcl-1.0.0')
+        }
+
 
         when {
             process {
@@ -32,6 +32,11 @@ nextflow_process {
     }
 
     test("test_cellrangeratac_mkfastq_illumina") {
+        def bcl_dir
+        setup {
+            bcl_dir = extract('https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-1.0.0.tar.gz').resolve('cellranger-atac-tiny-bcl-1.0.0')
+        }
+
 
         when {
             process {
@@ -53,8 +58,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file('${bcl_dir}')
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-simple-1.0.0.csv", checkIfExists:true)
+                input[0] = file('${moduleTestDir}')
+                input[1] = []
                 """
             }
         }
@@ -70,8 +75,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file('${bcl_dir}')
-                input[1] = file("https://cf.10xgenomics.com/supp/cell-atac/cellranger-atac-tiny-bcl-samplesheet-1.0.0.csv",checkIfExists:true)
+                input[0] = file('${moduleTestDir}')
+                input[1] = []
                 """
             }
         }
