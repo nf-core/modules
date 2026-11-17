@@ -7,23 +7,15 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "universc"
     tag "seqtk/sample"
 
     test("universc_10x") {
+        def reference
         setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: "homo_sapiens_chr22_reference"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/universc/homo_sapiens_chr22_reference.tar.gz', checkIfExists:true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            reference = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/universc/homo_sapiens_chr22_reference.tar.gz').resolve('homo_sapiens_chr22_reference')
             run("SEQTK_SAMPLE", alias: "SAMPLE_READ1") {
                 script "../../seqtk/sample/main.nf"
                 process {
@@ -59,7 +51,7 @@ nextflow_process {
                     .combine(SAMPLE_READ1.out.reads.map { meta, read -> read } )
                     .combine(SAMPLE_READ2.out.reads.map { meta, read -> read } )
                     .map { meta, read1, read2 -> [meta, [read1, read2]] }
-                input[1] = UNTAR.out.untar
+                input[1] = [ [id: "homo_sapiens_chr22_reference"], file('${reference}') ]
                 input[2] = "10x"
                 """
             }
