@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process SPATIALSANCTUARY_SIMULATE"
+    script "../main.nf"
+    process "SPATIALSANCTUARY_SIMULATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spatialsanctuary"
+    tag "spatialsanctuary/simulate"
+
+    test("homosapiens - [ modality, c0, theta, r_ox ] - json") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    'tki',
+                    40.0,
+                    0.35,
+                    200.0
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - [ modality, c0, theta, r_ox ] - json - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    'tki',
+                    40.0,
+                    0.35,
+                    200.0
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
