@@ -54,11 +54,16 @@ nextflow_process {
 
 
     test("test_cellrangeratac_mkfastq_simple -- stub") {
+        def bcl_dir
+        setup {
+            bcl_dir = java.nio.file.Files.createTempDirectory('cellranger-atac-tiny-bcl')
+        }
+
         options '-stub'
         when {
             process {
                 """
-                input[0] = file('${moduleTestDir}')
+                input[0] = file('${bcl_dir}')
                 input[1] = []
                 """
             }
@@ -71,11 +76,16 @@ nextflow_process {
 
 
     test("test_cellrangeratac_mkfastq_illumina -- stub") {
+        def bcl_dir
+        setup {
+            bcl_dir = java.nio.file.Files.createTempDirectory('cellranger-atac-tiny-bcl')
+        }
+
         options '-stub'
         when {
             process {
                 """
-                input[0] = file('${moduleTestDir}')
+                input[0] = file('${bcl_dir}')
                 input[1] = []
                 """
             }
