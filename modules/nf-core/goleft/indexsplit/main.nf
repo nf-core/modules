@@ -6,9 +6,9 @@ process GOLEFT_INDEXSPLIT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1':
-        'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95b388cf83447fc133e87737248025aeca3e8f05bf545c4f5010ad553338ee0a/data'
+        : 'community.wave.seqera.io/library/goleft:0.2.6--3aecf4b0548543d2'}"
 
     input:
     tuple val(meta) , path(bai)

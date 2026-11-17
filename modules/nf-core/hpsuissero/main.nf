@@ -7,9 +7,9 @@ process HPSUISSERO {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hpsuissero%3A1.0.1--hdfd78af_0':
-        'quay.io/biocontainers/hpsuissero:1.0.1--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0fee7a136e639cf997aab046016a0afa4956e37e57a69bd9cc21119e149f07f/data'
+        : 'community.wave.seqera.io/library/hpsuissero:1.0.1--dd750fae8720a55c'}"
 
     input:
     tuple val(meta), path(fasta)

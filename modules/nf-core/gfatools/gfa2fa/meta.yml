@@ -66,3 +66,17 @@ authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gfatools:0.5--d580643976f2e334
+      build_id: bd-d580643976f2e334_1
+      scan_id: sc-3e8e5afeffb04f7f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gfatools:0.5--434803384d83d7da
+      build_id: bd-434803384d83d7da_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/590e92e087843842a825609903dc3b83bba5077f768aafd48af0f551ddb143e8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gfatools/gfa2fa/.conda-lock/linux_amd64-bd-d580643976f2e334_1.txt

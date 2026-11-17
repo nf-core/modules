@@ -6,9 +6,9 @@ process HYPO {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hypo:1.0.3--h9a82719_1':
-        'quay.io/biocontainers/hypo:1.0.3--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13780867e01535dbfb55bc66e19de88b396d9c21d1077ef52f7134f7c14253c3/data'
+        : 'community.wave.seqera.io/library/hypo:1.0.3--6e4b00f92bd33cc2'}"
 
     input:
     tuple val(meta), path(sr_bam)

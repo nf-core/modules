@@ -6,9 +6,9 @@ process ISMAPPER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ismapper:2.0.2--pyhdfd78af_1' :
-        'quay.io/biocontainers/ismapper:2.0.2--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8db3e77ec9865b4d89d154d39f4d918a9eb1d91b446f92d21d836634b98d682/data'
+        : 'community.wave.seqera.io/library/ismapper_python_setuptools_samtools:e034790cb6b187c4'}"
 
     input:
     tuple val(meta), path(reads), path(reference), path(query)

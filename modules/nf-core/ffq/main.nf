@@ -6,9 +6,9 @@ process FFQ {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ffq:0.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/ffq:0.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f651420b3d10407351f47545bb8d274e3be9d98c709a348696de84101e36a95c/data'
+        : 'community.wave.seqera.io/library/ffq_python:1b4df44896918bd7'}"
 
     input:
     val ids

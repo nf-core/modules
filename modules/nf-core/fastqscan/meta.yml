@@ -62,3 +62,25 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastq-scan:1.0.1--107ab5ca81ecea03
+      build_id: bd-107ab5ca81ecea03_1
+      scan_id: sc-6f4987052dc1765f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fastq-scan:1.0.1--97bcc3cbc8ad6e03
+      build_id: bd-97bcc3cbc8ad6e03_1
+      scan_id: sc-da6a1e48959c92d4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fastq-scan:1.0.1--633e4f85a9beef94
+      build_id: bd-633e4f85a9beef94_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46e4476ee48e2dcd5d6edb99e767f771d3ed282fa48b61cb6aa0203cb3e99557/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastq-scan:1.0.1--e05b714a151f24cc
+      build_id: bd-e05b714a151f24cc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e87ef091f75815b874e21b0923c667168cae5e3443b6d5a469dc30b572a669c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastqscan/.conda-lock/linux_amd64-bd-107ab5ca81ecea03_1.txt

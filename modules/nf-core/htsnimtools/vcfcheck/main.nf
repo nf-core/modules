@@ -6,9 +6,9 @@ process HTSNIMTOOLS_VCFCHECK {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hts-nim-tools:0.3.11--hbeb723e_0':
-        'quay.io/biocontainers/hts-nim-tools:0.3.11--hbeb723e_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e83030e0fd490b217e51050658481e37370e4b2e6dc68576467eb504626708d/data'
+        : 'community.wave.seqera.io/library/hts-nim-tools:0.3.31--e705f8578bf971e8'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
