@@ -36,8 +36,7 @@ input:
         ontologies: []
     - preprocess_dir:
         type: directory
-        description: GRIDSS preprocessing working directories from the
-          GRIDSS_PREPROCESS step
+        description: GRIDSS preprocessing working directories from the GRIDSS_PREPROCESS step
         pattern: "*.gridss.working/"
   - - meta2:
         type: map
@@ -57,8 +56,7 @@ input:
         ontologies: []
     - bwa_index:
         type: directory
-        description: Directory containing the GRIDSS/BWA index files for the
-          reference genome
+        description: Directory containing the GRIDSS/BWA index files for the reference genome
         pattern: "*"
   - - meta3:
         type: map
@@ -79,8 +77,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.gridss.working":
           type: directory
-          description: GRIDSS assembly working directory containing assembled
-            breakend contigs
+          description: GRIDSS assembly working directory containing assembled breakend contigs
           pattern: "*.gridss.working"
       - "*.sv.assembly.bam":
           type: file
@@ -113,3 +110,27 @@ authors:
   - "@imsarath"
 maintainers:
   - "@imsarath"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--5af3ed2877afedd8
+      build_id: bd-5af3ed2877afedd8_1
+      scan_id: sc-68b9a9cca85d2ff2_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--7b2fca026d981d95
+      build_id: bd-7b2fca026d981d95_1
+      scan_id: sc-ee4fad98ff53b683_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--4f176b7e2408fede
+      build_id: bd-4f176b7e2408fede_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6eb03d21e6da5af38f5f2dcae878eb1e7cd627ac3f7c83bda21ceff993b941d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--2caca012e5090729
+      build_id: bd-2caca012e5090729_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8bb0dcadc1e65bdd7efe79eda9e18c7cd01e5513698b8ff69a756ed084be123/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gridss/assemble/.conda-lock/linux_amd64-bd-7b2fca026d981d95_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gridss/assemble/.conda-lock/linux_arm64-bd-5af3ed2877afedd8_1.txt
