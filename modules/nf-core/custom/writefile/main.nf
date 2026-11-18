@@ -25,12 +25,5 @@ process CUSTOM_WRITEFILE {
     )
 
     exec:
-    def path = task.workDir.resolve("${task.ext.prefix}.${extension}")
-    path.delete()
-    items.each { item ->
-        path << item
-        if (newLine) {
-            path << '\n'
-        }
-    }
+    task.workDir.resolve("${task.ext.prefix}.${extension}").text = newLine ? items.collect { item -> "${item}\n" }.join() : items.join()
 }
