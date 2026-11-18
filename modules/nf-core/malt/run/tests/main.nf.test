@@ -10,36 +10,28 @@ nextflow_process {
     tag "malt"
     tag "malt/run"
     tag "malt/build"
-    tag "unzip"
-
-        setup {
-        run("UNZIP") {
-            script "../../../unzip/main.nf"
-            config './nextflow.config'
-            process {
-                """
-                input[0] = [[], file("s3://nf-core-test-datasets/modules/data/delete_me/malt/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
-                """
-            }
-        }
-        run("MALT_BUILD") {
-            script "../../../malt/build/main.nf"
-            config './nextflow.config'
-            process {
-                """
-                input[0] = [
-                    [id: "genome"],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-                ]
-                input[1] = []
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
-                input[3] = 'mdb'
-                """
-            }
-        }
-    }
 
     test("sarscov2 - fastq") {
+
+        def mapping_db
+        setup {
+            mapping_db = extract('s3://nf-core-test-datasets/modules/data/delete_me/malt/megan-nucl-Feb2022.db.zip')
+            run("MALT_BUILD") {
+                script "../../../malt/build/main.nf"
+                config './nextflow.config'
+                process {
+                    """
+                    input[0] = [
+                        [id: "genome"],
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = file('${mapping_db}')
+                    input[3] = 'mdb'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -82,7 +74,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/fastq/test_1.fastq.gz", checkIfExists: true)
                     ]
                 ]
-                input[1] = MALT_BUILD.out.index
+                input[1] = [ [id: 'genome'], [] ]
                 """
             }
         }

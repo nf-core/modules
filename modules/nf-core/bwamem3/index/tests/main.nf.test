@@ -86,6 +86,34 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - chr21 fasta - meth") {
+
+        when {
+            params {
+                module_args = '--meth'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            // A mid-sized reference: without --max-memory, bwa-mem3 kept half of the task memory in reserve and failed
+            def index_files = file(process.out.index[0][1]).listFiles().collect { it.name }.sort()
+            assertAll(
+                { assert process.success },
+                { assert index_files == ['genome.fasta.amb', 'genome.fasta.ann', 'genome.fasta.meth.amb', 'genome.fasta.meth.ann', 'genome.fasta.meth.bwt.2bit.64', 'genome.fasta.meth.pac', 'genome.fasta.pac'] },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - meth - custom prefix") {
 
         when {

@@ -44,6 +44,19 @@ input:
       pattern: "*.{txt,csv}"
       ontologies:
         - edam: http://edamontology.org/format_3752
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sites information
+          e.g. [ id:'hg38' ]
+    - sites:
+        type: file
+        description: |
+          Optional sites VCF with INFO/AF matching the sites used for extract. Required by
+          somalier >= 0.3.2 for correct hom-ref/hom-alt counts and contamination_charr.
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
 output:
   html:
     - - meta:
