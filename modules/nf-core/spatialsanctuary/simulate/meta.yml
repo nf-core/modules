@@ -19,23 +19,11 @@ tools:
       identifier: ""
 
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - modality:
-        type: string
-        description: Therapeutic modality ('tki' for small molecule or 'adc' for antibody-drug conjugate)
-    - c0:
-        type: float
-        description: Boundary unbound drug concentration in nM (e.g. 40.0)
-    - theta:
-        type: float
-        description: Subclonal eradication threshold fraction C/C0 (e.g. 0.35 for IC50 threshold)
-    - r_ox:
-        type: float
-        description: Krogh cylinder oxygen viability limit radius in micrometers (e.g. 200.0)
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
 
 output:
   json:
@@ -63,10 +51,10 @@ output:
 
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
-      - spatial-sanctuary:
+      - "spatial-sanctuary":
           type: string
           description: The name of the tool
       - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-sanctuary''))"':

@@ -11,7 +11,7 @@ process SPATIALSANCTUARY_SIMULATE {
         : 'community.wave.seqera.io/library/spatial-sanctuary:2.2.2--da11ed94efb15111'}"
 
     input:
-    tuple val(meta), val(modality), val(c0), val(theta), val(r_ox)
+    val(meta)
 
     output:
     tuple val(meta), path("*_sanctuary.json"), emit: json
@@ -25,10 +25,6 @@ process SPATIALSANCTUARY_SIMULATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     spatial-sanctuary simulate \\
-        --modality "${modality}" \\
-        --c0 "${c0}" \\
-        --theta "${theta}" \\
-        --r-ox "${r_ox}" \\
         --json \\
         --out "${prefix}_sanctuary.json" \\
         ${args}

@@ -3,24 +3,19 @@ nextflow_process {
     name "Test Process SPATIALSANCTUARY_SIMULATE"
     script "../main.nf"
     process "SPATIALSANCTUARY_SIMULATE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "spatialsanctuary"
     tag "spatialsanctuary/simulate"
 
-    test("homosapiens - [ modality, c0, theta, r_ox ] - json") {
+    test("homosapiens - json") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_sample' ],
-                    'tki',
-                    40.0,
-                    0.35,
-                    200.0
-                ]
+                input[0] = [ id:'test_sample' ]
                 """
             }
         }
@@ -34,20 +29,14 @@ nextflow_process {
 
     }
 
-    test("homosapiens - [ modality, c0, theta, r_ox ] - json - stub") {
+    test("homosapiens - json - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test_sample' ],
-                    'tki',
-                    40.0,
-                    0.35,
-                    200.0
-                ]
+                input[0] = [ id:'test_sample' ]
                 """
             }
         }
