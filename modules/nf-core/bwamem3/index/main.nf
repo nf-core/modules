@@ -25,6 +25,9 @@ process BWAMEM3_INDEX {
     script:
     def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
+    // Without --max-memory, bwa-mem3 holds back max(2 GB, 5%) of the memory it detects, up to half,
+    // which leaves too little of a small task's request (e.g. a --meth index of human chr21).
+    def max_memory = task.memory && !args.contains('--max-memory') ? "--max-memory ${task.memory.toMega()}M" : ''
     if (args.contains('--meth')) {
         // `index --meth` rejects -p and writes next to its input, so index a symlink named after the prefix.
         // `mem --meth` needs neither the symlink, the intermediate <prefix>.meth.fa nor the plain <prefix>.bwt.2bit.64
@@ -35,6 +38,7 @@ process BWAMEM3_INDEX {
         bwa-mem3 \\
             index \\
             $args \\
+            ${max_memory} \\
             -t ${task.cpus} \\
             bwamem3/${prefix}
         rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa bwamem3/${prefix}.bwt.2bit.64
@@ -45,6 +49,7 @@ process BWAMEM3_INDEX {
         bwa-mem3 \\
             index \\
             $args \\
+            ${max_memory} \\
             -t ${task.cpus} \\
             -p bwamem3/${prefix} \\
             $fasta

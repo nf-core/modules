@@ -41,18 +41,19 @@ workflow BAM_TAPS_CONVERSION {
     ch_bcftools_stats = channel.empty()
     ch_mbias_html    = channel.empty()
     ch_mbias_cutoffs = channel.empty()
+    ch_trims         = channel.empty()
 
     if (trims && !(trims.size() == 2 && trims.every { trim -> trim ==~ /\d+,\d+,\d+,\d+/ })) {
         error("bam_taps_conversion: trims must be [] or [ nOT, nOB ], each as 'r1_start,r1_end,r2_start,r2_end' (got ${trims})")
     }
 
-    if (use_rastair2) {
-        // One reference for every sample, whether it is passed once or once per sample
-        ch_reference = ch_fasta
-            .combine(ch_fasta_index)
-            .map { meta, fasta, _meta2, fai -> [ meta, fasta, fai ] }
-            .first()
+    // One reference for every sample, whether it is passed once or once per sample
+    ch_reference = ch_fasta
+        .combine(ch_fasta_index)
+        .map { meta, fasta, _meta2, fai -> [ meta, fasta, fai ] }
+        .first()
 
+    if (use_rastair2) {
         ch_bam_bai = ch_bam.join(ch_bai)
 
         if (trims) {
@@ -112,15 +113,23 @@ workflow BAM_TAPS_CONVERSION {
         ch_bcftools_stats = BCFTOOLS_STATS.out.stats // channel: [ val(meta), stats.txt ]
     }
     else {
+        // The rastair 0.8 modules take the BAM, BAI and trims as separate inputs: join them by sample first.
+        // A sample without a BAI or trims stops the run rather than being dropped or called untrimmed.
+        ch_bam_bai = ch_bam.join(ch_bai, failOnMismatch: true)
+
         if (trims) {
-            ch_trims = ch_bam.map { meta, _bam -> [ meta, trims[0], trims[1] ] }
+            ch_trims = ch_bam_bai.map { meta, _bam, _bai -> [ meta, trims[0], trims[1] ] }
         }
         else {
+            ch_mbias_input = ch_bam_bai.multiMap { meta, bam, bai ->
+                bam: [ meta, bam ]
+                bai: [ meta, bai ]
+            }
             RASTAIR_MBIAS (
-                ch_bam,
-                ch_bai,
-                ch_fasta,
-                ch_fasta_index,
+                ch_mbias_input.bam,
+                ch_mbias_input.bai,
+                ch_reference.map { meta, fasta, _fai -> [ meta, fasta ] },
+                ch_reference.map { meta, _fasta, fai -> [ meta, fai ] },
             )
             ch_rastair_mbias = RASTAIR_MBIAS.out.txt // channel: [ val(meta), txt ]
 
@@ -130,13 +139,22 @@ workflow BAM_TAPS_CONVERSION {
             ch_trims = RASTAIR_MBIASPARSER.out.mbias_processed_str // channel: [ val(meta), nOT_clip, nOB_clip ]
         }
 
+        ch_call_input = ch_bam_bai
+            .join(ch_trims, failOnMismatch: true)
+            .multiMap { meta, bam, bai, nOT_clip, nOB_clip ->
+                bam: [ meta, bam ]
+                bai: [ meta, bai ]
+                trim_OT: [ meta, nOT_clip ]
+                trim_OB: [ meta, nOB_clip ]
+            }
+
         RASTAIR_CALL (
-            ch_bam,
-            ch_bai,
-            ch_fasta,
-            ch_fasta_index,
-            ch_trims.map{ meta, nOT_clip, _nOB_clip -> [ meta, nOT_clip ] },
-            ch_trims.map{ meta, _nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
+            ch_call_input.bam,
+            ch_call_input.bai,
+            ch_reference.map { meta, fasta, _fai -> [ meta, fasta ] },
+            ch_reference.map { meta, _fasta, fai -> [ meta, fai ] },
+            ch_call_input.trim_OT,
+            ch_call_input.trim_OB,
         )
         ch_rastair_call = RASTAIR_CALL.out.txt // channel: [ val(meta), txt ]
 
@@ -157,4 +175,5 @@ workflow BAM_TAPS_CONVERSION {
     bcftools_stats = ch_bcftools_stats        // channel: [ val(meta), path("*stats.txt") ] rastair 2
     mbias_html     = ch_mbias_html            // channel: [ val(meta), path("*.mbias.html") ] rastair 2
     mbias_cutoffs  = ch_mbias_cutoffs         // channel: [ val(meta), path("*.cutoffs.txt") ] rastair 2
+    mbias_trims    = ch_trims                 // channel: [ val(meta), val(nOT), val(nOB) ] rastair 0.8
 }

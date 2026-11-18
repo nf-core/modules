@@ -13,6 +13,7 @@ process SOMALIER_RELATE {
     input:
     tuple val(meta), path(extract), path(ped)
     path(sample_groups)
+    tuple val(meta2), path(sites)
 
     output:
     tuple val(meta), path("*.html"),          emit: html
@@ -29,6 +30,7 @@ process SOMALIER_RELATE {
     def prefix = task.ext.prefix ?: "$meta.id"
     def sample_groups_command = sample_groups ? "-g $sample_groups" : ""
     def ped_command = ped ? "-p $ped" : ""
+    def sites_command = sites ? "-s $sites" : ""
 
     """
     somalier relate \\
@@ -36,7 +38,8 @@ process SOMALIER_RELATE {
         ${input_list} \\
         ${args} \\
         ${sample_groups_command} \\
-        ${ped_command}
+        ${ped_command} \\
+        ${sites_command}
     """
 
     stub:

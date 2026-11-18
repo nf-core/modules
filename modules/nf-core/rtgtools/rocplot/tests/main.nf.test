@@ -8,42 +8,34 @@ nextflow_process {
     tag "rtgtools"
     tag "rtgtools/rocplot"
     tag "rtgtools/vcfeval"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        run("RTGTOOLS_VCFEVAL") {
-            script "modules/nf-core/rtgtools/vcfeval/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
-                ]
-                input[1] = UNTAR.out.untar
-                println(projectDir)
-                """
-            }
-        }
-    }
 
     test("homo_sapiens - tsv") {
+        def sdf
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            sdf = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz').resolve('genome_sdf')
+
+            run("RTGTOOLS_VCFEVAL") {
+                script "modules/nf-core/rtgtools/vcfeval/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.ann.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                    ]
+                    input[1] = [ [id:'test'], file('${sdf}') ]
+                    println(projectDir)
+                    """
+                }
+            }
+        }
+
 
         when {
             params {
@@ -78,7 +70,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = RTGTOOLS_VCFEVAL.out.weighted_roc
+                input[0] = [ [ id:'test' ], [] ]
                 """
             }
         }

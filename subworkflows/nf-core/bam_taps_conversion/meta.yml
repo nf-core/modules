@@ -123,6 +123,13 @@ output:
         RASTAIR2_MBIAS `ext.args` to choose (and to keep memory down on large genomes).
         Structure: [ val(meta), path(cutoffs) ]
       pattern: "*.cutoffs.txt"
+  - mbias_trims:
+      type: string
+      description: |
+        Bases to ignore at read ends, as used by rastair 0.8 call: from `trims` if
+        given, otherwise from the M-bias estimate. Each value is
+        'r1_start,r1_end,r2_start,r2_end'.
+        Structure: [ val(meta), val(nOT), val(nOB) ]
 authors:
   - "@eduard-watchmaker"
 maintainers:

@@ -14,6 +14,7 @@ components:
   - hmmer/eslreformat
   - clustalo/align
   - mafft/align
+  - epang/filterquery
   - epang/place
   - epang/split
   - gappa/examinegraft
@@ -32,6 +33,11 @@ input:
         - `hmmfile` is an optional HMM file to use for alignment; implies that refseqfile is not aligned
         - `model` is the phylogenetic model to use in placement, e.g. 'LG+F' or 'GTR+I+F'
         - `taxonomy` is a tab separated file with taxonomy information for the reference sequences
+        - `min_query_columns` is optional, the minimum number of residues a query must have in the
+          reference alignment columns that are not all gaps; defaults to 1, the lowest value EPA-ng accepts.
+          A sample where no query passes gets no placement outputs, only a warning and the `filterquery_table`
+        - `min_reference_coverage` is optional, the minimum fraction of those columns a query must have
+          a residue in, between 0 and 1; defaults to 0
 
         Structure: [
           meta: val(meta),
@@ -42,7 +48,9 @@ input:
             refphylogeny: path("*.newick"),
             hmmfile:      path("*.hmm"),
             model:        "LG",
-            taxonomy:     path("*.tsv")
+            taxonomy:     path("*.tsv"),
+            min_query_columns:      1,
+            min_reference_coverage: 0
           ]
         ]
   - compress_alignment:
@@ -72,6 +80,16 @@ output:
 
         Structure: [ path(log) ]
       pattern: "*.epa_info.log"
+  - filterquery_table:
+      type: file
+      description: |
+        Tab separated file with one row per query sequence: the number of columns of the reference
+        alignment with a residue, the number of those the query has a residue in, the coverage, the
+        number of those columns with an unambiguous residue (not ?, N, X or O) and whether the query
+        passed the filter and was placed.
+
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.filterquery.tsv"
   - grafted_phylogeny:
       type: file
       description: |
