@@ -34,6 +34,60 @@ nextflow_process {
 
     }
 
+    test("homosapiens - csv - tsv") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.csv")
+                test_file.text = "sample_id,mitoses_per_50_hpf,site,tumor_rupture,mutation,tumor_size_cm\\nsample1,3.5,gastric,false,kit_exon11,4.2\\n"
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - json - tsv") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.json")
+                test_file.text = '[{"sample_id":"sample1","mitoses_per_50_hpf":3.5,"site":"gastric","tumor_rupture":false,"mutation":"kit_exon11","tumor_size_cm":4.2}]\\n'
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("homosapiens - tsv - json - stub") {
 
         options "-stub"

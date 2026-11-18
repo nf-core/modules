@@ -39,10 +39,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_gist.json":
+      - "${prefix}_gist.json":
           type: file
-          description: GIST phenotype research profile score in JSON format
-          pattern: "*_gist.json"
+          description: "(Optional) GIST phenotype research profile score in JSON format"
+          pattern: "${prefix}_gist.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
   tsv:
@@ -51,10 +51,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_gist.tsv":
+      - "${prefix}_gist.tsv":
           type: file
-          description: GIST phenotype research profile score in TSV format
-          pattern: "*_gist.tsv"
+          description: "(Optional) GIST phenotype research profile score in TSV format"
+          pattern: "${prefix}_gist.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   versions_spatialcontinuumtranslational:

@@ -14,8 +14,8 @@ process SPATIALCONTINUUMTRANSLATIONAL_GIST {
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("*_gist.json"), emit: json, optional: true
-    tuple val(meta), path("*_gist.tsv"),  emit: tsv,  optional: true
+    tuple val(meta), path("${prefix}_gist.json"), emit: json, optional: true
+    tuple val(meta), path("${prefix}_gist.tsv") , emit: tsv,  optional: true
     tuple val("${task.process}"), val('spatial-continuum-translational'), eval("python3 -c \"import importlib.metadata; print(importlib.metadata.version('spatial-continuum-translational'))\""), topic: versions, emit: versions_spatialcontinuumtranslational
 
     when:
@@ -23,8 +23,9 @@ process SPATIALCONTINUUMTRANSLATIONAL_GIST {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def format = args.contains('--format tsv') ? 'tsv' : 'json'
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def format_match = (args =~ /(?:--format|-f)[=\s]+['"]?([a-zA-Z0-9]+)['"]?/)
+    def format = format_match ? format_match[0][1].toLowerCase() : 'json'
     """
     spatial-continuum-gist \\
         --input "${input}" \\
@@ -34,8 +35,9 @@ process SPATIALCONTINUUMTRANSLATIONAL_GIST {
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def format = args.contains('--format tsv') ? 'tsv' : 'json'
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def format_match = (args =~ /(?:--format|-f)[=\s]+['"]?([a-zA-Z0-9]+)['"]?/)
+    def format = format_match ? format_match[0][1].toLowerCase() : 'json'
     """
     touch "${prefix}_gist.${format}"
     """
