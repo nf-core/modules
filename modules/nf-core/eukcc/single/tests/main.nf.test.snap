@@ -18,6 +18,14 @@
                         "scmg_marker_table.csv.gz:md5,5d4e9b09ce1a682adb5d269c617f8839"
                     ]
                 ],
+                "savestate": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "savestate.json.gz"
+                    ]
+                ],
                 "tsv": [
                     [
                         {
@@ -37,7 +45,7 @@
                     [
                         "EUKCC_SINGLE",
                         "eukcc",
-                        "2.3.0"
+                        "2.3.1"
                     ]
                 ],
                 "versions_gzip": [
@@ -78,7 +86,7 @@
             ],
             true
         ],
-        "timestamp": "2026-11-16T12:12:12.094509",
+        "timestamp": "2026-11-18T09:55:25.391838",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -103,6 +111,14 @@
                         "scmg_marker_table.csv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
+                "savestate": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "savestate.json.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
                 "tsv": [
                     [
                         {
@@ -122,7 +138,7 @@
                     [
                         "EUKCC_SINGLE",
                         "eukcc",
-                        "2.3.0"
+                        "2.3.1"
                     ]
                 ],
                 "versions_gzip": [
@@ -165,13 +181,13 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-16T12:12:25.557192",
+        "timestamp": "2026-11-18T09:56:35.374555",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "fungi - fasta": {
+    "fungi - faa - genomes": {
         "content": [
             {
                 "log": [
@@ -184,6 +200,14 @@
                 ],
                 "marker_table": [
                     
+                ],
+                "savestate": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "savestate.json.gz"
+                    ]
                 ],
                 "tsv": [
                     [
@@ -204,7 +228,183 @@
                     [
                         "EUKCC_SINGLE",
                         "eukcc",
-                        "2.3.0"
+                        "2.3.1"
+                    ]
+                ],
+                "versions_gzip": [
+                    [
+                        "EUKCC_SINGLE",
+                        "gzip",
+                        "1.15"
+                    ]
+                ],
+                "versions_hmmer": [
+                    [
+                        "EUKCC_SINGLE",
+                        "hmmer",
+                        "3.3.2"
+                    ]
+                ],
+                "versions_metaeuk": [
+                    [
+                        "EUKCC_SINGLE",
+                        "metaeuk",
+                        "4.a0f584d"
+                    ]
+                ],
+                "versions_pplacer": [
+                    [
+                        "EUKCC_SINGLE",
+                        "pplacer",
+                        "1.1.alpha19"
+                    ]
+                ],
+                "workdir": [
+                    
+                ]
+            },
+            [
+                "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
+                "100.0\t0.0\tNA\tNA"
+            ],
+            true
+        ],
+        "timestamp": "2026-11-18T09:55:46.748591",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "fungi - faa - use_placement": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.log"
+                    ]
+                ],
+                "marker_table": [
+                    
+                ],
+                "savestate": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "savestate.json.gz"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.tsv"
+                    ]
+                ],
+                "versions_epang": [
+                    [
+                        "EUKCC_SINGLE",
+                        "epa-ng",
+                        "0.3.8"
+                    ]
+                ],
+                "versions_eukcc": [
+                    [
+                        "EUKCC_SINGLE",
+                        "eukcc",
+                        "2.3.1"
+                    ]
+                ],
+                "versions_gzip": [
+                    [
+                        "EUKCC_SINGLE",
+                        "gzip",
+                        "1.15"
+                    ]
+                ],
+                "versions_hmmer": [
+                    [
+                        "EUKCC_SINGLE",
+                        "hmmer",
+                        "3.3.2"
+                    ]
+                ],
+                "versions_metaeuk": [
+                    [
+                        "EUKCC_SINGLE",
+                        "metaeuk",
+                        "4.a0f584d"
+                    ]
+                ],
+                "versions_pplacer": [
+                    [
+                        "EUKCC_SINGLE",
+                        "pplacer",
+                        "1.1.alpha19"
+                    ]
+                ],
+                "workdir": [
+                    
+                ]
+            },
+            [
+                "completeness\tcontamination\tncbi_lng\tncbi_lng_names",
+                "95.83\t20.83\t1-131567-2759-33154-4751-112252\troot;cellular organisms;Eukaryota;Opisthokonta;Fungi;Fungi incertae sedis"
+            ],
+            true
+        ],
+        "timestamp": "2026-11-18T09:56:20.284261",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "fungi - fasta": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.log"
+                    ]
+                ],
+                "marker_table": [
+                    
+                ],
+                "savestate": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "savestate.json.gz"
+                    ]
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "eukcc.tsv"
+                    ]
+                ],
+                "versions_epang": [
+                    [
+                        "EUKCC_SINGLE",
+                        "epa-ng",
+                        "0.3.8"
+                    ]
+                ],
+                "versions_eukcc": [
+                    [
+                        "EUKCC_SINGLE",
+                        "eukcc",
+                        "2.3.1"
                     ]
                 ],
                 "versions_gzip": [
@@ -262,7 +462,7 @@
             ],
             true
         ],
-        "timestamp": "2026-11-16T12:11:53.294555",
+        "timestamp": "2026-11-18T09:55:00.078137",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

@@ -39,6 +39,7 @@ nextflow_process {
                 ]
                 input[1] = UNTAR.out.untar
                 input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -47,7 +48,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'workdir']),
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
                     path(process.out.log[0][1]).text.contains('Wrote output to')
                 ).match() }
@@ -70,6 +71,7 @@ nextflow_process {
                 ]
                 input[1] = UNTAR.out.untar
                 input[2] = []
+                input[3] = []
                 """
             }
         }
@@ -78,9 +80,91 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'workdir']),
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
                     path(process.out.log[0][1]).text.contains('Wrote output to')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - faa - genomes") {
+
+        when {
+            params {
+                module_args = '--clade fungi --AA --set_size 10 --ignore_tree'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.log[0][1]).text.contains('Will create custom marker set based on input genomes/proteomes')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - faa - use_placement") {
+
+        setup {
+            run("EUKCC_SINGLE", alias: "EUKCC_SINGLE_SETUP") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'setup' ],
+                        file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                    ]
+                    input[1] = UNTAR.out.untar
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--AA'
+                setup_args = '--clade fungi --AA'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = []
+                input[3] = EUKCC_SINGLE_SETUP.out.savestate.map { meta, savestate -> savestate }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.log[0][1]).text.contains('Using the fungi database of the loaded set')
                 ).match() }
             )
         }
@@ -103,6 +187,7 @@ nextflow_process {
                 ]
                 input[1] = UNTAR.out.untar
                 input[2] = []
+                input[3] = []
                 """
             }
         }

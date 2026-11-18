@@ -35,10 +35,17 @@ input:
         description: EukCC database directory (e.g. from `eukcc download_db`)
   - genomes:
       type: file
-      description: Optional reference genomes or proteomes in FASTA format to define the marker gene set from (`--genomes`), instead of the tree placement; requires `--ignore_tree` in `ext.args`
+      description: Optional reference genomes in FASTA format, or proteomes with `--AA`, to define the marker gene set from (`--genomes`) instead of the tree placement; the lineage is then `NA`
       pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
       ontologies:
         - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - use_placement:
+      type: file
+      description: Optional `savestate.json.gz` of a previous run, to reuse its marker gene set and lineage (`--use_placement`)
+      pattern: "*.json.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
         - edam: http://edamontology.org/format_3989 # GZIP format
 output:
   tsv:
@@ -61,6 +68,17 @@ output:
           pattern: "eukcc.log"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Textual format
+  savestate:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/savestate.json.gz:
+          type: file
+          description: State of the run with its marker gene set, to reuse with `use_placement`
+          pattern: "savestate.json.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3989 # GZIP format
   marker_table:
     - - meta:
           type: map
@@ -203,14 +221,14 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:537c5825af8f6f76
-      build_id: bd-537c5825af8f6f76_1
-      scan_id: sc-bf26fa4d9e11a06d_1
+      name: community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:594e6049c8db4277
+      build_id: bd-594e6049c8db4277_1
+      scan_id: sc-5d1d85fd581dc3dd_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:2468e44fbc883d0c
-      build_id: bd-2468e44fbc883d0c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4644a12bcaad4ce5d083946976cbd6e0cfef498beeb183e9a9cfda149db49e7/data
+      name: oras://community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:b7e3c7ca83b3b949
+      build_id: bd-b7e3c7ca83b3b949_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b250d20483a5003159796184688df6f61b320ad838f4445af4e1654aa498728/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/eukcc/single/.conda-lock/linux_amd64-bd-537c5825af8f6f76_1.txt
+      lock_file: modules/nf-core/eukcc/single/.conda-lock/linux_amd64-bd-594e6049c8db4277_1.txt
