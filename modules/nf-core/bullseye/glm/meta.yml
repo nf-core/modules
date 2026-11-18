@@ -1,95 +1,95 @@
 name: "bullseye_glm"
 description: Test RNA-editing sites for differential editing between sample groups with Bullseye's beta-binomial (or binomial/quasibinomial) GLM
 keywords:
-- bullseye
-- rna editing
-- dart-seq
-- differential editing
-- glm
+  - bullseye
+  - rna editing
+  - dart-seq
+  - differential editing
+  - glm
 tools:
-- "bullseye":
-    description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
-    homepage: "https://github.com/mflamand/Bullseye"
-    documentation: "https://github.com/mflamand/Bullseye"
-    tool_dev_url: "https://github.com/mflamand/Bullseye"
-    licence:
-    - "MIT"
-    identifier: ""
-- "aod":
-    description: "Analysis of Overdispersed Data - provides the beta-binomial GLM (betabin) used for the default test."
-    homepage: "https://cran.r-project.org/package=aod"
-    documentation: "https://cran.r-project.org/web/packages/aod/aod.pdf"
-    licence:
-    - "GPL (>= 2)"
-    identifier: ""
+  - "bullseye":
+      description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
+      homepage: "https://github.com/mflamand/Bullseye"
+      documentation: "https://github.com/mflamand/Bullseye"
+      tool_dev_url: "https://github.com/mflamand/Bullseye"
+      licence:
+        - "MIT"
+      identifier: ""
+  - "aod":
+      description: "Analysis of Overdispersed Data - provides the beta-binomial GLM (betabin) used for the default test."
+      homepage: "https://cran.r-project.org/package=aod"
+      documentation: "https://cran.r-project.org/web/packages/aod/aod.pdf"
+      licence:
+        - "GPL (>= 2)"
+      identifier: ""
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing information about the comparison
-        e.g. `[ id:'all_sites' ]`
-  - coverage:
-      type: file
-      description: |
-        Tab-separated site x sample coverage matrix. Must contain `#chr`, `start`, `end`
-        and `strand` columns plus one column per sample, with the same columns and
-        sites (in the same order) as `mutations`.
-      pattern: "*.{tsv,txt}"
-      ontologies:
-      - edam: "http://edamontology.org/format_3475"     # TSV
-  - mutations:
-      type: file
-      description: Tab-separated site x sample mutation-count matrix, same layout as `coverage`.
-      pattern: "*.{tsv,txt}"
-      ontologies:
-      - edam: "http://edamontology.org/format_3475"     # TSV
-  - samplesheet:
-      type: file
-      description: |
-        Sample annotation with a `sample` column (matching the matrix column names) and
-        the column(s) used in the design formula. Group labels must not occur inside
-        other group or sample names.
-      pattern: "*.{tsv,csv}"
-      ontologies:
-      - edam: "http://edamontology.org/format_3475"     # TSV
-      - edam: "http://edamontology.org/format_3752"     # CSV
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information about the comparison
+          e.g. `[ id:'all_sites' ]`
+    - coverage:
+        type: file
+        description: |
+          Tab-separated site x sample coverage matrix. Must contain `#chr`, `start`, `end`
+          and `strand` columns plus one column per sample, with the same columns and
+          sites (in the same order) as `mutations`.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - mutations:
+        type: file
+        description: Tab-separated site x sample mutation-count matrix, same layout as `coverage`.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - samplesheet:
+        type: file
+        description: |
+          Sample annotation with a `sample` column (matching the matrix column names) and
+          the column(s) used in the design formula. Group labels must not occur inside
+          other group or sample names.
+        pattern: "*.{tsv,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
 
 output:
   results:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing information about the comparison
-          e.g. `[ id:'all_sites' ]`
-    - "*.glm.tsv":
-        type: file
-        description: |
-          Per-site results: pooled editing rate, coverage, called sites, log2 fold change,
-          p-value and Benjamini-Hochberg adjusted p-value (`<group>_padj`) of each group
-          against the reference level (`--reference_level` in `ext.args`, otherwise the
-          first level alphabetically). The `bin`, `quasibinomial` and `betareg` links also
-          report the GLM coefficient (`<group>_LFC`).
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information about the comparison
+            e.g. `[ id:'all_sites' ]`
+      - "*.glm.tsv":
+          type: file
+          description: |
+            Per-site results: pooled editing rate, coverage, called sites, log2 fold change,
+            p-value and Benjamini-Hochberg adjusted p-value (`<group>_padj`) of each group
+            against the reference level (`--reference_level` in `ext.args`, otherwise the
+            first level alphabetically). The `bin`, `quasibinomial` and `betareg` links also
+            report the GLM coefficient (`<group>_LFC`).
 
-          Note: `<group>_log2FoldChange` is computed directly from the raw pooled editing
-          rates (unlike the p-value, it is not pseudocount-protected), so it is `Inf`
-          whenever the reference level has zero mutations at a site - seen on roughly a
-          quarter of sites in this module's own test data. `<group>_pvalue`/`<group>_padj`
-          are unaffected and remain valid for those sites.
-        pattern: "*.glm.tsv"
-        ontologies:
-        - edam: "http://edamontology.org/format_3475"     # TSV
+            Note: `<group>_log2FoldChange` is computed directly from the raw pooled editing
+            rates (unlike the p-value, it is not pseudocount-protected), so it is `Inf`
+            whenever the reference level has zero mutations at a site - seen on roughly a
+            quarter of sites in this module's own test data. `<group>_pvalue`/`<group>_padj`
+            are unaffected and remain valid for those sites.
+          pattern: "*.glm.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   session_info:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing information about the comparison
-          e.g. `[ id:'all_sites' ]`
-    - "*.R_sessionInfo.log":
-        type: file
-        description: R session information
-        pattern: "*.R_sessionInfo.log"
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information about the comparison
+            e.g. `[ id:'all_sites' ]`
+      - "*.R_sessionInfo.log":
+          type: file
+          description: R session information
+          pattern: "*.R_sessionInfo.log"
+          ontologies: []
   versions_bullseye_glm:
     - versions.yml:
         type: file
@@ -108,9 +108,9 @@ topics:
           - edam: "http://edamontology.org/format_3750" # YAML
 
 authors:
-- "@brovolia"
+  - "@brovolia"
 maintainers:
-- "@brovolia"
+  - "@brovolia"
 containers:
   docker:
     linux/amd64:
