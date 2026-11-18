@@ -9,30 +9,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "xeniumranger"
     tag "xeniumranger/resegment"
-    tag "unzip"
-
-    setup {
-        run("UNZIP") {
-            script "modules/nf-core/unzip/main.nf"
-            process {
-                """
-                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip', checkIfExists: true)]
-                """
-            }
-        }
-    }
 
     test("xeniumranger resegment") {
+        def bundle
+        setup {
+            bundle = extract('https://raw.githubusercontent.com/nf-core/test-datasets/spatialxe/Xenium_V1_Protein_Human_Kidney_tiny_outs.zip')
+        }
+
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map {
-                    _meta, bundle ->
-                        [
-                            [id: "test_xeniumranger_resegment"],
-                            bundle
-                        ]
-                }
+                input[0] = [
+                    [id: "test_xeniumranger_resegment"],
+                    file('${bundle}')
+                ]
                 """
             }
         }
@@ -60,13 +50,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map {
-                    _meta, bundle ->
-                        [
-                            [id: "test_xeniumranger_resegment"],
-                            bundle
-                        ]
-                }
+                input[0] = [
+                    [id: "test_xeniumranger_resegment"],
+                    []
+                ]
                 """
             }
         }
