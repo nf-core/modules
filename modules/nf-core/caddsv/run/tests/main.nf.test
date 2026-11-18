@@ -13,13 +13,6 @@ nextflow_process {
 
         options "-stub" // since the actual run requires a large set of annotations, only a stub test is included.
 
-        then {
-            assert process.success
-            assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-
         when {
             process {
                 """
@@ -43,6 +36,35 @@ nextflow_process {
                 input[2] = [
                     caddsv_yml
                 ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test.tsv - seqonly - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                variants = file("test.tsv")
+                variants.text = "ACGTACGT\\tACGTTACGT\\tINS\\tvar1\\n"
+
+                annotations_dir = file("caddsv_annotations", type: "dir")
+                annotations_dir.mkdirs()
+                file(annotations_dir.toString() + "/stub.txt").text = "stub\\n"
+
+                input[0] = [ [ id:'test' ], variants ]
+                input[1] = [ annotations_dir ]
+                input[2] = []
                 """
             }
         }
