@@ -23,6 +23,7 @@ process FAIRBIOHEADERS_COMBINE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!(prefix ==~ /[A-Za-z0-9._+][A-Za-z0-9._+ -]*/) || prefix == '..') error "Unsafe output prefix '${prefix}': use only letters, digits, spaces and . _ + - (no leading space or hyphen), set prefix in module configuration to change it!"
     extension = sequence.name.tokenize('.').takeRight(sequence.extension in ['gz', 'bgz'] ? 2 : 1).join('.')
     """
     bioheaders \\
@@ -35,6 +36,7 @@ process FAIRBIOHEADERS_COMBINE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!(prefix ==~ /[A-Za-z0-9._+][A-Za-z0-9._+ -]*/) || prefix == '..') error "Unsafe output prefix '${prefix}': use only letters, digits, spaces and . _ + - (no leading space or hyphen), set prefix in module configuration to change it!"
     extension = sequence.name.tokenize('.').takeRight(sequence.extension in ['gz', 'bgz'] ? 2 : 1).join('.')
     def create = sequence.extension in ['gz', 'bgz'] ? "echo '' | gzip >" : 'touch'
     """

@@ -145,6 +145,28 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fhr - yaml - unsafe prefix - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test\$(touch PWNED)' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output prefix") } }
+            )
+        }
+
+    }
+
     test("sarscov2 - fhr - yaml - stub") {
 
         options "-stub"
