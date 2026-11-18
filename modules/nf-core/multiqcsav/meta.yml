@@ -1,6 +1,5 @@
 name: multiqcsav
-description: Aggregate results from bioinformatics analyses across many samples
-  into a single report, with support for multiqc_sav plugin
+description: Aggregate results from bioinformatics analyses across many samples into a single report, with support for multiqc_sav plugin
 keywords:
   - QC
   - bioinformatics tools
@@ -25,8 +24,7 @@ tools:
         - "GPL-3.0-or-later"
       identifier: biotools:multiqc
   - multiqcsav:
-      description: MultiQC plugin replicating the most used plots and tables
-        from Illumina's Sequencing Analysis Viewer (SAV)
+      description: MultiQC plugin replicating the most used plots and tables from Illumina's Sequencing Analysis Viewer (SAV)
       homepage: https://github.com/MultiQC/MultiQC_SAV
       documentation: https://github.com/MultiQC/MultiQC_SAV
       licence:
@@ -154,24 +152,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:37c285055226dfbd
-      build_id: bd-37c285055226dfbd_1
-      scan_id: sc-98b717f7b7e23b1d_1
+      name: community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:f5f3daf6329d2edd
+      build_id: bd-f5f3daf6329d2edd_1
+      scan_id: sc-c87f1ab18314f06a_1
     linux/arm64:
-      name: community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:7b914cce929623c6
-      build_id: bd-7b914cce929623c6_1
-      scan_id: sc-13c81eb30f86fb93_1
+      name: community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:167431ba7a1957b7
+      build_id: bd-167431ba7a1957b7_1
+      scan_id: sc-44c6e6e2de48d3cc_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:53ce74b3ea3583db
-      build_id: bd-53ce74b3ea3583db_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00c7253025cde2e4abb6ad3db75e4417dbfeb0b274449c787de6dda0f77af580/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:35f3619fa3a99804
-      build_id: bd-35f3619fa3a99804_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/27b51736887fbe5ea88fa9acbcc1e6420d239ec19a1575529b4d6fa4a72c8057/data
+      name: oras://community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:11295a2069d11075
+      build_id: bd-11295a2069d11075_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95d4d0144bea6576cc15addd019b8b4d25f90ea45f118741c3fd224e73e20259/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/multiqc_multiqc_sav_python_pip_interop:7f3f6280ea823e47
+      build_id: bd-7f3f6280ea823e47_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e0e7517631d9c224e18c92d1b33c8abc025ff14c09f013156317ae14a3311d1/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/multiqcsav/.conda-lock/linux_amd64-bd-37c285055226dfbd_1.txt
+      lock_file: modules/nf-core/multiqcsav/.conda-lock/linux_amd64-bd-f5f3daf6329d2edd_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/multiqcsav/.conda-lock/linux_arm64-bd-7b914cce929623c6_1.txt
+      lock_file: modules/nf-core/multiqcsav/.conda-lock/linux_arm64-bd-167431ba7a1957b7_1.txt
