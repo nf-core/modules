@@ -81,10 +81,10 @@ input:
         pattern: "*.{fai}"
         ontologies:
           - edam: http://edamontology.org/format_3326
-  - pipeline:
+  - chain:
       type: list
       description: |
-        List of samtools commands to execute in sequence.
+        List of samtools commands to execute in sequence. Must be > 1 command.
         Valid options: view, sort, markdup, fixmate, merge, cat, collate, fastq, fasta
 output:
   bam:
@@ -138,32 +138,6 @@ output:
           pattern: "*.{bai,csi,crai}"
           ontologies:
             - edam: http://edamontology.org/format_3326
-  fasta:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.fasta.gz":
-          type: file
-          description: FASTA files output when final command is "fasta".
-          pattern: "*.fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_1929
-            - edam: http://edamontology.org/format_3989
-  fastq:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.fastq.gz":
-          type: file
-          description: FASTQ file output when final command is "fastq".
-          pattern: "*.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_1930
-            - edam: http://edamontology.org/format_3989
   fasta_pair:
     - - meta:
           type: map
