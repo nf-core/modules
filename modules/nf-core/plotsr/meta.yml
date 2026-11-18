@@ -142,3 +142,27 @@ authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/plotsr_matplotlib_python:e5698775d5c24dcb
+      build_id: bd-e5698775d5c24dcb_1
+      scan_id: sc-3651c20a5d11d3f7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/plotsr_matplotlib_python:5179eb65b5a167ec
+      build_id: bd-5179eb65b5a167ec_1
+      scan_id: sc-89a1eb6609e33e0e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/plotsr_matplotlib_python:e078b993714e5df9
+      build_id: bd-e078b993714e5df9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/990bccd7849e384f6d0f6ec1bf53e0111072768d8c7739921fc38946745537d8/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plotsr_matplotlib_python:215d6055720ae1b8
+      build_id: bd-215d6055720ae1b8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db8f402265ea63f1a4212d71f58474b4a72cba3b17f94469e9fda39bd0439ca1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plotsr/.conda-lock/linux_amd64-bd-5179eb65b5a167ec_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/plotsr/.conda-lock/linux_arm64-bd-e5698775d5c24dcb_1.txt
