@@ -31,7 +31,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { meta, bam_file -> [ meta, bam(bam_file).getReadsMD5() ] },
+                    process.out.bam.collect { meta, bam_file -> [ meta, bam(bam_file, stringency: "silent").getReadsMD5() ] },
                     process.out.bai.collect { meta, bai -> [ meta, file(bai).name ] },
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
