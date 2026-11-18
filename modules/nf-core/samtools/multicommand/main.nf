@@ -42,9 +42,7 @@ process SAMTOOLS_MULTICOMMAND {
 
     // Subcommand configuration map
     //
-    // Each entry describes how one samtools subcommand is wired into the pipeline
-    // command built in the script block. Every entry sets every key, so each row
-    // can be read on its own without reference to any defaults.
+    // Each entry describes how one a samtools subcommand operates in terms of inputs and outputs.
     //
     // Keys:
     //
