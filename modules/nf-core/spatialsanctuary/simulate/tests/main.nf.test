@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process SPATIALSANCTUARY_SIMULATE"
+    script "../main.nf"
+    process "SPATIALSANCTUARY_SIMULATE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spatialsanctuary"
+    tag "spatialsanctuary/simulate"
+
+    test("homosapiens - json") {
+
+        when {
+            params {
+                module_args = '--modality tki --c0 40.0 --theta 0.35 --r-ox 200.0'
+            }
+            process {
+                """
+                input[0] = [ id:'test_sample' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - json - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--modality tki --c0 40.0 --theta 0.35 --r-ox 200.0'
+            }
+            process {
+                """
+                input[0] = [ id:'test_sample' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
