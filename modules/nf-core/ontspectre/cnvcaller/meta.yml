@@ -1,5 +1,5 @@
-name: "spectre_cnvcaller"
-description: Call large copy number variants (CNVs) from long-read binned coverage ( using mosdepth) and small variant calls with Spectre.
+name: "ontspectre_cnvcaller"
+description: Call large copy number variants (CNVs) from long-read binned coverage ( using mosdepth) and small variant calls with ont-Spectre, a fork developed by Oxford Nanopore Technologies.
 keywords:
   - cnv
   - copy number
@@ -8,8 +8,8 @@ keywords:
   - nanopore
   - genomics
 tools:
-  - "spectre":
-      description: "Spectre is a long-read copy number variation (CNV) caller designed to detect large CNVs (>100kb). ont-spectre adds diploid coverage estimation from heterozygous SNVs and sex chromosome karyotype prediction."
+  - "ontspectre":
+      description: "ont-Spectre is a long-read copy number variation (CNV) caller designed to detect large CNVs (>100kb). ont-spectre adds diploid coverage estimation from heterozygous SNVs and sex chromosome karyotype prediction."
       homepage: "https://github.com/epi2me-labs/ont-spectre"
       documentation: "https://github.com/epi2me-labs/ont-spectre/blob/master/README.md"
       tool_dev_url: "https://github.com/epi2me-labs/ont-spectre"

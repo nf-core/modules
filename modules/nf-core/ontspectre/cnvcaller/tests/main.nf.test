@@ -2,12 +2,12 @@ nextflow_process {
 
     name "Test Process SPECTRE_CNVCALLER"
     script "../main.nf"
-    process "SPECTRE_CNVCALLER"
+    process "ONTSPECTRE_CNVCALLER"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "spectre"
-    tag "spectre/cnvcaller"
+    tag "ontspectre"
+    tag "ontspectre/cnvcaller"
 
     test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ metadata ], [ blacklist ], [ binsize ]") {
 

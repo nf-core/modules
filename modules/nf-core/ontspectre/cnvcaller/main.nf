@@ -1,4 +1,4 @@
-process SPECTRE_CNVCALLER {
+process ONTSPECTRE_CNVCALLER {
     tag "$meta.id"
     label 'process_medium'
 
