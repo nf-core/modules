@@ -32,12 +32,23 @@ process RASTAIR2_CALL {
     if (cutoffs_files.size() > 1) {
         error("rastair2/call takes one M-bias cutoffs file per sample, got ${cutoffs_files.size()}: restrict rastair2/mbias to one contig with --region")
     }
-    def trim = cutoffs_files ? "--nOT \$(sed -n 1p ${mbias_cutoffs}) --nOB \$(sed -n 2p ${mbias_cutoffs})" : ''
+    // rastair2/mbias writes one line per strand with data, so a region covering one strand gives a
+    // one-line file: --nOB would get no value. Call such a sample without trims rather than failing.
+    def cutoffs = cutoffs_files ? "${mbias_cutoffs}" : ''
     """
+    trim=""
+    if [ -n "${cutoffs}" ]; then
+        if [ "\$(grep -c . "${cutoffs}")" -eq 2 ]; then
+            trim="--nOT \$(sed -n 1p "${cutoffs}") --nOB \$(sed -n 2p "${cutoffs}")"
+        else
+            echo "WARN: ${cutoffs} does not have M-bias cutoffs for both strands (OT and OB): calling without trims" >&2
+        fi
+    fi
+
     rastair call \\
         ${args} \\
         ${unpaired} \\
-        ${trim} \\
+        \$trim \\
         --threads ${task.cpus} \\
         --fasta-file ${fasta} \\
         --vcf ${prefix}.vcf.gz \\
