@@ -8,27 +8,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "centrifuger"
     tag "centrifuger/centrifuger"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz', checkIfExists: true) ]
-                """
-            }
-        }
-    }
 
     test("sarscov2 - fastq - single_end") {
+        def db
+        setup {
+            db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz')
+        }
+
         when {
             process {
                 """
                 input[0] = [[ id:'test', single_end: true ],
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[1] = [ [id:'sarscov2'], file('${db}') ]
                 input[2] = true
                 input[3] = true
                 input[4] = []
@@ -49,6 +42,11 @@ nextflow_process {
         }
     }
     test("sarscov2 - fastq - paired_end") {
+        def db
+        setup {
+            db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz')
+        }
+
         when {
             process {
                 """
@@ -59,7 +57,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[1] = [ [id:'sarscov2'], file('${db}') ]
                 input[2] = true
                 input[3] = true
                 input[4] = []
@@ -89,7 +87,7 @@ nextflow_process {
                 input[0] = [[ id:'test', single_end: true ],
                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[1] = [ [id:'sarscov2'], [] ]
                 input[2] = true
                 input[3] = true
                 input[4] = []

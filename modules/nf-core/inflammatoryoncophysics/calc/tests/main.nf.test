@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process INFLAMMATORYONCOPHYSICS_CALC"
+    script "../main.nf"
+    process "INFLAMMATORYONCOPHYSICS_CALC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "inflammatoryoncophysics"
+    tag "inflammatoryoncophysics/calc"
+
+    test("clinical - sample") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    2,
+                    3,
+                    4.2,
+                    12.5,
+                    34.0
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("clinical - sample - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    2,
+                    3,
+                    4.2,
+                    12.5,
+                    34.0
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

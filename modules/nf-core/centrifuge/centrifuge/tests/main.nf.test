@@ -8,23 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "centrifuge"
     tag "centrifuge/centrifuge"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [],
-                        file(params.modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-    }
 
     test("sarscov2_fastq_se") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz').resolve('minigut_cf')
+        }
+
 
         when {
             process {
@@ -33,7 +25,7 @@ nextflow_process {
                     [id: 'test', single_end: true],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = file('${db}')
                 input[2] = true
                 input[3] = true
                 """
@@ -55,6 +47,13 @@ nextflow_process {
     }
 
     test("sarscov2_fastq_pe") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz').resolve('minigut_cf')
+        }
+
 
         when {
             process {
@@ -66,7 +65,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = file('${db}')
                 input[2] = true
                 input[3] = true
                 """
@@ -98,7 +97,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = []
                 input[2] = true
                 input[3] = true
                 """
