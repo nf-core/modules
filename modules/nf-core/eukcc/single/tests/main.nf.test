@@ -50,6 +50,7 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
                     path(process.out.log[0][1]).text.contains('Wrote output to')
                 ).match() }
             )
@@ -80,8 +81,9 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
                     path(process.out.log[0][1]).text.contains('Wrote output to')
                 ).match() }
             )
@@ -112,8 +114,9 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
                     path(process.out.log[0][1]).text.contains('Will create custom marker set based on input genomes/proteomes')
                 ).match() }
             )
@@ -142,8 +145,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--AA'
-                setup_args = '--clade fungi --AA'
+                module_args = '--clade fungi --AA'
             }
             process {
                 """
@@ -162,9 +164,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
                     path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
-                    path(process.out.log[0][1]).text.contains('Using the fungi database of the loaded set')
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
+                    path(process.out.log[0][1]).text.contains('Loaded precomputed set with 24 profiles')
                 ).match() }
             )
         }
