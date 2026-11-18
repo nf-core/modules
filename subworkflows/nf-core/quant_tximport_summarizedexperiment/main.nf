@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Quantification post-processing with tximport and SummarizedExperiment
 //
@@ -103,7 +106,7 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
 
         SE_TRANSCRIPT_UNIFIED (
             ch_transcript_unified,
-            CUSTOM_TX2GENE.out.tx2gene,
+            TXIMETA_TXIMPORT.out.tx2gene_augmented,
             samplesheet
         )
 

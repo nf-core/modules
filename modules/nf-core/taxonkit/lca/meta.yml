@@ -1,0 +1,105 @@
+name: "taxonkit_lca"
+description: Compute lowest common ancestor (LCA) for taxonids
+keywords:
+  - taxonomy
+  - taxids
+  - lca
+tools:
+  - "taxonkit":
+      description: "A Cross-platform and Efficient NCBI Taxonomy Toolkit"
+      homepage: "https://bioinf.shenwei.me/taxonkit/"
+      documentation: "https://bioinf.shenwei.me/taxonkit/usage/#lca"
+      tool_dev_url: "https://github.com/shenwei356/taxonkit"
+      doi: "10.1016/j.jgg.2021.03.006"
+      licence:
+        - "MIT"
+      identifier: biotools:taxonkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxids:
+        type: string
+        description: |
+          Taxon ids to consider
+          (provide either this or taxidsfile, not both)
+    - taxidsfile:
+        type: file
+        description: |
+          File with space separated list of taxon ids to look up
+          with all ids being on the same line
+          (provide either this or name, not both)
+        ontologies: []
+  - taxdb:
+      type: file
+      description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      ontologies: []
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: |
+            TSV file with passed ids in the first column and
+            the LCA tax id in the second
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_taxonkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jcbioinformatics"
+maintainers:
+  - "@jcbioinformatics"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/taxonkit:0.20.0--73c6bc587e9e62ac
+      build_id: bd-73c6bc587e9e62ac_1
+      scan_id: sc-ff6cdc452c972e3b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/taxonkit:0.20.0--c4fea380ac90b1cf
+      build_id: bd-c4fea380ac90b1cf_1
+      scan_id: sc-ddb288c4a2445524_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/taxonkit:0.20.0--3569c1329415cdc5
+      build_id: bd-3569c1329415cdc5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c33b5ce6cec42ed5986d11c706d5726b2eb7dc0902b9c1c333a319864a3b45ea/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/taxonkit:0.20.0--366a461633f052b3
+      build_id: bd-366a461633f052b3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c009f29051832677bcbd04c15582f0a904ec435780967ac85790a4b83271355/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/taxonkit/lca/.conda-lock/linux_amd64-bd-73c6bc587e9e62ac_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/taxonkit/lca/.conda-lock/linux_arm64-bd-c4fea380ac90b1cf_1.txt

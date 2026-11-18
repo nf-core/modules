@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CIRCULARMAPPER_REALIGNSAMFILE {
     tag "$meta.id"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
-        'quay.io/biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8be5342445021f1804a5772fabfbd401b8a0dea39616a2f3dbe746792f78384/data'
+        : 'community.wave.seqera.io/library/circularmapper:1.93.5--971f1a9d9b285bbc'}"
 
     input:
     tuple val(meta), path(bam)

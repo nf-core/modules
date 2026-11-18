@@ -1,0 +1,151 @@
+name: "tobias_bindetect"
+description: Estimate transcription factor binding and differential binding from ATAC-seq footprint BigWig tracks with TOBIAS BINDetect
+keywords:
+  - ATAC-seq
+  - footprinting
+  - transcription factors
+  - differential binding
+tools:
+  - tobias:
+      description: "Transcription factor Occupancy prediction By Investigation of ATAC-seq Signal"
+      homepage: "https://github.com/loosolab/TOBIAS"
+      documentation: "https://github.com/loosolab/TOBIAS/wiki"
+      tool_dev_url: "https://github.com/loosolab/TOBIAS"
+      doi: "10.1038/s41467-020-18035-1"
+      licence: ["MIT"]
+      identifier: "biotools:tobias"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing analysis information
+          e.g. `[ id:'all_samples' ]`
+    - signals:
+        type: file
+        description: One or more BigWig tracks containing TOBIAS footprint scores, one per condition or sample
+        pattern: "*.bw"
+        ontologies:
+          - edam: "http://edamontology.org/format_3006"
+    - peaks:
+        type: file
+        description: BED file containing the consensus open-chromatin regions
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - motifs:
+        type: file
+        description: One or more transcription factor motif files in supported TOBIAS formats
+        pattern: "*"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  outdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect":
+          type: directory
+          description: Complete TOBIAS BINDetect output directory, including motif-specific results
+          pattern: "bindetect"
+          ontologies: []
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_results.txt":
+          type: file
+          description: Tab-delimited global transcription factor binding results
+          pattern: "*_results.txt"
+          ontologies: []
+  results_xlsx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_results.xlsx":
+          type: file
+          description: Excel global transcription factor binding results
+          pattern: "*_results.xlsx"
+          ontologies: []
+  distances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_distances.txt":
+          type: file
+          description: Transcription factor motif-distance summary table
+          pattern: "*_distances.txt"
+          ontologies: []
+  figures:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_figures.pdf":
+          type: file
+          description: TOBIAS BINDetect summary figure PDF
+          pattern: "*_figures.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_tobias:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/tobias_python:222bdc3e7487305e
+      build_id: bd-222bdc3e7487305e_1
+      scan_id: sc-63daf61793691df7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/tobias_python:33fc15661f1e50e6
+      build_id: bd-33fc15661f1e50e6_1
+      scan_id: sc-c79ec84d84a10916_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tobias_python:16130e67ab05beeb
+      build_id: bd-16130e67ab05beeb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb99dc2a6b4da1bed5ad4d66f889e3830d7682d9e727df26337434d784868353/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tobias_python:c522dec3f80544bf
+      build_id: bd-c522dec3f80544bf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4cf1343ef20414960e07246530fe593917981d10cc6adf113dd438033ae9d808/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tobias/bindetect/.conda-lock/linux_amd64-bd-33fc15661f1e50e6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tobias/bindetect/.conda-lock/linux_arm64-bd-222bdc3e7487305e_1.txt

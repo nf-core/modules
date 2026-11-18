@@ -7,37 +7,27 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "fqtk"
-    tag "untar"
 
     test("tsv - fastq") {
+        def fastq_dir
         setup {
-            run("UNTAR"){
-                script "../../../../modules/nf-core/untar/main.nf"
-                process {
-                        """
-                        input[0] = [
-                            [ id:'sim-data' ],
-                            file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fastq.tar.gz", checkIfExists: true)
-                        ]
-                        """
-                    }
-            }
+            fastq_dir = extract('https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fastq.tar.gz')
         }
         when {
             process {
                 """
-                ch_input = Channel.of ([
+                ch_input = channel.of ([
                     [ id:'sim-data'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
+                    file('${fastq_dir}')
                 ])
-                .combine( UNTAR.out.untar.collect{it[1]} )
                 .map { meta, sample_sheet, fastq_folder ->
-                    def fastqs = "out_L001_I1_001.fastq.gz out_L001_I2_001.fastq.gz out_L001_R1_001.fastq.gz out_L001_R2_001.fastq.gz".split("\\s+")
-                    def read_structures = "8B 8B 150T 150T".split("\\s+")
-                    def paired = []
-                    for (int i = 0; i < fastqs.size(); i++) {
-                        paired.add([fastqs[i], read_structures[i]])
-                    }
+                    def paired = [
+                        ["out_L001_I1_001.fastq.gz", "8B"],
+                        ["out_L001_I2_001.fastq.gz", "8B"],
+                        ["out_L001_R1_001.fastq.gz", "150T"],
+                        ["out_L001_R2_001.fastq.gz", "150T"]
+                    ]
                     [meta, sample_sheet, fastq_folder, paired]
                 }
                 input[0] = ch_input

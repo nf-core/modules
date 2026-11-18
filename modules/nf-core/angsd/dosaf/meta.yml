@@ -61,14 +61,12 @@ input:
           - edam: "http://edamontology.org/format_1929"
   - error_file:
       type: file
-      description: A file containing per-base substitution error rates for use
-        with the Sykes genotype likelihood model (-GL 4).
+      description: A file containing per-base substitution error rates for use with the Sykes genotype likelihood model (-GL 4).
       pattern: "*.errors"
       ontologies: []
   - inbreeding_coefficients:
       type: file
-      description: A file containing estimates of individual inbreeding
-        coefficients.
+      description: A file containing estimates of individual inbreeding coefficients.
       pattern: "*.indF"
       ontologies: []
   - soapsnp_calibration:
@@ -92,8 +90,7 @@ output:
   saf:
     - - meta:
           type: map
-          description: Groovy Map containing population information. e.g. `[
-            id:'test', population:'population id', samples:'sample IDs' ]`
+          description: Groovy Map containing population information. e.g. `[ id:'test', population:'population id', samples:'sample IDs' ]`
       - "*.saf.idx":
           type: file
           description: ANGSD site allele frequency index file
@@ -101,15 +98,13 @@ output:
           ontologies: []
       - "*.saf.pos.gz":
           type: file
-          description: Gzipped file containing genomic positions of sites in the
-            SAF
+          description: Gzipped file containing genomic positions of sites in the SAF
           pattern: "*.saf.pos.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
       - "*.saf.gz":
           type: file
-          description: Gzipped binary file containing per-site sample allele
-            frequency likelihoods
+          description: Gzipped binary file containing per-site sample allele frequency likelihoods
           pattern: "*.saf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -138,3 +133,17 @@ authors:
   - "@ASendellPrice"
 maintainers:
   - "@ASendellPrice"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd_htslib:2b83a6f633f30127
+      build_id: bd-2b83a6f633f30127_1
+      scan_id: sc-b16c592fff096f5f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd_htslib:49fded7cf1c805b7
+      build_id: bd-49fded7cf1c805b7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/63/639ce33ed86c005c940303a12fc487291ffdd096934afc1fa14dd8f45c831e3b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/dosaf/.conda-lock/linux_amd64-bd-2b83a6f633f30127_1.txt

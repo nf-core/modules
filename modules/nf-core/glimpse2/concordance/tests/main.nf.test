@@ -112,7 +112,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
                     [], [],
                     [],
-                    [], []
+                    [], [],
+                    ["chr22", "chr22"]
                 ]
                 input[1] = [
                     [id:"params"],

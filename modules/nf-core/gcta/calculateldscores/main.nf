@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GCTA_CALCULATELDSCORES {
     tag "${meta.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed2d6a4b4f43f3230014aa67bb40feb0acbd7cc41ef0b0a895002f1befc6502c/data'
-        : 'community.wave.seqera.io/library/gcta_r-base:31127c93877b38de'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3a950b9e1e326df76daf4d54d2541f4eadd6857edff1b93e0e00b6f1ed88e8b/data'
+        : 'community.wave.seqera.io/library/gcta_r-base:feb28f6163421d49'}"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)

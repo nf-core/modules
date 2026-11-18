@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process MODKIT_REPAIR"
     script "../main.nf"
     process "MODKIT_REPAIR"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"

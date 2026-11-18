@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process REPEATMASKER_RMOUTTOGFF3 {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/repeatmasker:4.1.5--pl5321hdfd78af_0':
-        'quay.io/biocontainers/repeatmasker:4.1.5--pl5321hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92d028817d6ba2afc60f0d7550b7b510395b3b5426420b7e1c6666ee38ebd5a1/data'
+        : 'community.wave.seqera.io/library/repeatmasker:4.1.5--3cc5e72bc3d6ed07'}"
 
     input:
     tuple val(meta), path(out)
 
     output:
     tuple val(meta), path("*.gff3") , emit: gff3
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('repeatmasker'), eval("RepeatMasker -v | sed 's/RepeatMasker version //1'"), topic: versions, emit: versions_repeatmasker
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +29,11 @@ process REPEATMASKER_RMOUTTOGFF3 {
     PERL5LIB=\$rm_path rmOutToGFF3.pl \\
         $out \\
         > ${prefix}.gff3
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gff3
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 }

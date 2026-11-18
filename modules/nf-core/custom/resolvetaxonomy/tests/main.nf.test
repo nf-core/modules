@@ -222,6 +222,52 @@ nextflow_process {
 
     }
 
+    // Both inputs are opened through Python's gzip, sniffed on the magic bytes. The resolved
+    // sequences keep the real format in their name: '.resolved.fasta', not '.resolved.gz'.
+    test("gzipped sequences and taxonomy") {
+
+        when {
+            process {
+                """
+                def tmp = java.nio.file.Files.createTempDirectory('resolvetaxonomy_gz')
+
+                def gzippedTax = tmp.resolve('resolvetaxonomy_plain.tax.gz')
+                new java.util.zip.GZIPOutputStream(gzippedTax.toFile().newOutputStream()).withStream { out ->
+                    out << file(params.modules_testdata_base_path + 'generic/tax/resolvetaxonomy_plain.tax', checkIfExists: true).bytes
+                }
+
+                def gzippedFasta = tmp.resolve('resolvetaxonomy_plain.fasta.gz')
+                new java.util.zip.GZIPOutputStream(gzippedFasta.toFile().newOutputStream()).withStream { out ->
+                    out << file(params.modules_testdata_base_path + 'generic/fasta/resolvetaxonomy_plain.fasta', checkIfExists: true).bytes
+                }
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(gzippedTax.toString()),
+                    file(gzippedFasta.toString()),
+                    true,
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def sequences = path(process.out.sequences[0][1])
+
+            assertAll(
+                // The same result as the uncompressed run above, not an empty or partial one.
+                { assert path(process.out.taxonomy[0][1]).text.contains('SeqGood1\tBacteria;PhylumA;ClassA') },
+                { assert path(process.out.warnings[0][1]).text.trim().isEmpty() },
+                // '.resolved.fasta', not '.resolved.gz'.
+                { assert sequences.toFile().name.endsWith('.resolved.fasta') },
+                { assert sequences.text.startsWith('>') },
+            )
+        }
+
+    }
+
     test("embedded taxonomy - stub") {
 
         options "-stub"

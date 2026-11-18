@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BAM_SORT_STATS_SAMTOOLS       } from '../../nf-core/bam_sort_stats_samtools/main'
 include { FASTQ_ALIGN_BWA               } from '../../nf-core/fastq_align_bwa/main'
 include { PICARD_ADDORREPLACEREADGROUPS } from '../../../modules/nf-core/picard/addorreplacereadgroups/main'
@@ -13,7 +16,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     use_gpu // boolean: whether to use GPU accelerated alignment
     output_fmt // string: output format for parabricks fq2bam (e.g., 'bam' or 'cram')
     interval_file // channel: [ val(meta), [ interval file ] ]
-    known_sites // channel: [ val(meta), [ known sites ] ]
+    known_sites // channel: [ val(meta), [ known sites ], [known sites index] ]
 
     main:
     ch_alignment = channel.empty()
@@ -56,6 +59,10 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_fasta_fai
         )
         ch_alignment = FASTQ_ALIGN_BWA.out.bam
+        ch_alignment_index = FASTQ_ALIGN_BWA.out.index
+        ch_stats = FASTQ_ALIGN_BWA.out.stats
+        ch_flagstat = FASTQ_ALIGN_BWA.out.flagstat
+        ch_idxstats = FASTQ_ALIGN_BWA.out.idxstats
     }
     if (!skip_deduplication) {
         /*

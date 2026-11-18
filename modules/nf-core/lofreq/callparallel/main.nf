@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LOFREQ_CALLPARALLEL {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4'
-        : 'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be2b4817a82a0a139163ce96e73a87fbacb2e01b9a9bc2bb320b1d24dff22fd6/data'
+        : 'community.wave.seqera.io/library/lofreq:2.1.5--876b9aca7bceb642'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)

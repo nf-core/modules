@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process RATTLE_POLISH"
+    script "../main.nf"
+    process "RATTLE_POLISH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rattle"
+    tag "rattle/polish"
+
+    test("synthetic consensi - fastq") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    '@transcript_cluster_0 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGA',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII',
+                    '@transcript_cluster_1 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGG',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+                ).collectFile(name: 'consensi.fq', newLine: true, sort: false)
+                .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("synthetic consensi - fastq - summary") {
+
+        when {
+            params {
+                module_args = '--summary'
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    '@transcript_cluster_0 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGA',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII',
+                    '@transcript_cluster_1 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGG',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+                ).collectFile(name: 'consensi.fq', newLine: true, sort: false)
+                .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("synthetic consensi - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    '@transcript_cluster_0 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGA',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII',
+                    '@transcript_cluster_1 gene_cluster_0 reads=1 labels=',
+                    'ACGTTGCAACCGTTACGGTACCTAGGCTAACGTTAAGCCTGATCGTACGGG',
+                    '+',
+                    'IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII'
+                ).collectFile(name: 'consensi.fq', newLine: true, sort: false)
+                .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

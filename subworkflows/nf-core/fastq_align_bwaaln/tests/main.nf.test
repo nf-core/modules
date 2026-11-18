@@ -28,6 +28,7 @@ nextflow_workflow {
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
                     ]
+                    input[1] = []
                     """
                 }
             }
@@ -64,6 +65,7 @@ nextflow_workflow {
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
                     ]
+                    input[1] = []
                     """
                 }
             }
@@ -105,6 +107,7 @@ nextflow_workflow {
                         [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
                     ]
+                    input[1] = []
                     """
                 }
             }
@@ -159,6 +162,7 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
                         ]
                     ])
+                    input[1] = []
                     """
                 }
             }
@@ -214,6 +218,7 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
                         ]
                     ])
+                    input[1] = []
                     """
                 }
             }

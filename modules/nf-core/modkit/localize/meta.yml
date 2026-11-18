@@ -1,0 +1,147 @@
+name: modkit_localize
+description: Investigate patterns of base modifications by aggregating pileup counts localized around genomic features of interest
+keywords:
+  - methylation
+  - ont
+  - long-read
+  - localize
+  - enrichment
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://github.com/nanoporetech/modkit
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bedmethyl:
+        type: file
+        description: bgzip-compressed bedMethyl file from modkit pileup
+        pattern: "*.{bed,bedmethyl}.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - tbi:
+        type: file
+        description: Tabix index for the bedMethyl file
+        pattern: "*.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3616 # tabix
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome sizes information
+          e.g. `[ id:'hg38' ]`
+    - sizes:
+        type: file
+        description: TSV of genome sizes with columns chrom and size_in_bp
+        pattern: "*.{sizes,tsv,txt,genome}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing regions BED file information
+          e.g. `[ id:'CpG_islands' ]`
+    - regions:
+        type: file
+        description: |
+          BED file of regions to calculate enrichment around. These serve
+          as the points from which the window number of bases is centered
+          (e.g. CpG islands, gene bodies, repeat elements).
+        pattern: "*.bed"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: TSV output with percent-modification vs. offset from feature midpoints
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  chart:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.html":
+          type: file
+          description: HTML document with interactive chart showing percent-modification vs. offset
+          pattern: "*.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.log":
+          type: file
+          description: Debug log written by modkit (`--log-filepath`)
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sahuno"
+maintainers:
+  - "@sahuno"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--b0cf3a2b01aa496e
+      build_id: bd-b0cf3a2b01aa496e_1
+      scan_id: sc-bd1a1a2850f5e5a1_3
+    linux/amd64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--0c623277f8775a30
+      build_id: bd-0c623277f8775a30_1
+      scan_id: sc-e1e7c8b0343af77b_3
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--3622b11f63dc1e51
+      build_id: bd-3622b11f63dc1e51_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d6b7620af280be798b98266ea5e8542a84991bec149446f2f29567bf89259da/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--b279ba2d2cbcbf95
+      build_id: bd-b279ba2d2cbcbf95_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e515e445d31be38188af5fe636e71af18abc601afacf80e9021a4752da6332/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/modkit/localize/.conda-lock/linux_amd64-bd-0c623277f8775a30_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/modkit/localize/.conda-lock/linux_arm64-bd-b0cf3a2b01aa496e_1.txt

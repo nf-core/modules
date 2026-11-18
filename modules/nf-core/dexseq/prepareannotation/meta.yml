@@ -1,0 +1,124 @@
+name: "dexseq_prepareannotation"
+description: Flatten a GTF annotation into the exonic counting bins used by DEXSeq
+keywords:
+  - dexseq
+  - exon
+  - annotation
+  - gtf
+  - alternative splicing
+  - differential exon usage
+tools:
+  - "dexseq":
+      description: "Inference of differential exon usage in RNA-Seq"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/DEXSeq.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DEXSeq/inst/doc/DEXSeq.html"
+      tool_dev_url: "https://git.bioconductor.org/packages/DEXSeq"
+      doi: "10.1101/gr.133744.111"
+      licence: ["GPL >=3"]
+      identifier: biotools:dexseq
+  - "htseq":
+      description: "HTSeq is a Python library to facilitate processing and analysis of data from high-throughput sequencing (HTS) experiments."
+      homepage: "https://htseq.readthedocs.io/en/latest/"
+      documentation: "https://htseq.readthedocs.io/en/latest/index.html"
+      doi: "10.1093/bioinformatics/btu638"
+      licence: ["GPL v3"]
+      identifier: biotools:htseq
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - gtf:
+        type: file
+        description: Gene annotation in GTF format
+        pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306"
+  - random_seed:
+      type: integer
+      description: |
+        Optional seed for the Python hash function (`PYTHONHASHSEED`), which sets the order of
+        the aggregate gene IDs and of the transcripts attribute. Pass `[]` to leave it unset,
+        in which case the order may change between runs.
+output:
+  gff:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing annotation information
+            e.g. `[ id:'genome' ]`
+      - "*.gff":
+          type: file
+          description: Flattened annotation of exonic counting bins for DEXSeq
+          pattern: "*.gff"
+          ontologies:
+            - edam: "http://edamontology.org/format_2305"
+  versions_dexseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioconductor-dexseq:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('DEXSeq')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_htseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htseq:
+          type: string
+          description: The name of the tool
+      - python -c "import HTSeq; print(HTSeq.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioconductor-dexseq:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('DEXSeq')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htseq:
+          type: string
+          description: The name of the tool
+      - python -c "import HTSeq; print(HTSeq.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@piplus2"
+maintainers:
+  - "@piplus2"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-dexseq_htseq_python:dfa2c806cf6767c6
+      build_id: bd-dfa2c806cf6767c6_1
+      scan_id: sc-ff756100b59116e1_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-dexseq_htseq_python:70a0f1dc1bc4a8c0
+      build_id: bd-70a0f1dc1bc4a8c0_1
+      scan_id: sc-ca11ab6d4762870a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq_htseq_python:cf876663f687f306
+      build_id: bd-cf876663f687f306_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12dc33fb9d91fbf709d07cd14bbf55c19e5ec034acb18da4056d7acb522cadd0/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq_htseq_python:92d0c81650091ca7
+      build_id: bd-92d0c81650091ca7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3e6fbbab7a2e4b6e1d57be3e4aa40b18810e3a72b7d6a8c0fcbb2bf0cc7c63/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dexseq/prepareannotation/.conda-lock/linux_amd64-bd-dfa2c806cf6767c6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/dexseq/prepareannotation/.conda-lock/linux_arm64-bd-70a0f1dc1bc4a8c0_1.txt

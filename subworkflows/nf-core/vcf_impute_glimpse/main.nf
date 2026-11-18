@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE_CHUNK                           } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE                           } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE                          } from '../../../modules/nf-core/glimpse/ligate/main'
@@ -66,7 +69,7 @@ workflow VCF_IMPUTE_GLIMPSE {
             ]
         }
 
-    GLIMPSE_PHASE(phase_input)
+    GLIMPSE_PHASE(phase_input, 'vcf.gz')
 
     BCFTOOLS_INDEX_PHASE(GLIMPSE_PHASE.out.phased_variants)
 
@@ -91,7 +94,7 @@ workflow VCF_IMPUTE_GLIMPSE {
             [meta, vcf, index]
         }
 
-    GLIMPSE_LIGATE(ligate_input)
+    GLIMPSE_LIGATE(ligate_input, 'vcf.gz')
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE_LIGATE.out.merged_variants)
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TCOFFEE_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75830929ed209853ab621dafcc4105618eba02408a731e4fd4aeee94ada424bc/data':
-        'community.wave.seqera.io/library/t-coffee_tmalign_pigz:be7dac2ae6aba380' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed121be7a85e6c4f964ffcda6a15ce7f341bbe6050b921e39cb69122ed34ed7b/data'
+        : 'community.wave.seqera.io/library/t-coffee_tmalign_pigz:c536fc45adb585e9'}"
 
     input:
     tuple val(meta) ,  path(fasta)

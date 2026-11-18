@@ -6,8 +6,7 @@ keywords:
   - genomics
 tools:
   - "tcoffee":
-      description: "A collection of tools for Computing, Evaluating and Manipulating
-        Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      description: "A collection of tools for Computing, Evaluating and Manipulating Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
       homepage: "https://tcoffee.org/Projects/tcoffee/index.html"
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
@@ -51,22 +50,18 @@ input:
           e.g. `[ id:'test_infos']`
     - template:
         type: file
-        description: T_coffee template file that maps sequences to the accessory
-          information files to be used.
+        description: T_coffee template file that maps sequences to the accessory information files to be used.
         ontologies:
           - edam: http://edamontology.org/format_1476 # PDB
     - accessory_information:
         type: file
-        description: Accessory files to be used in the alignment. For example, it
-          could be protein structures or secondary structures.
+        description: Accessory files to be used in the alignment. For example, it could be protein structures or secondary structures.
         ontologies:
           - edam: http://edamontology.org/format_1476 # PDB
           - edam: http://edamontology.org/format_1477 # mmCIF
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed.
-        Set to true to enable/false to disable compression. Compression is done
-        using pigz, and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed. Set to true to enable/false to disable compression. Compression is done using pigz, and is multithreaded.
 output:
   alignment:
     - - meta:
@@ -144,3 +139,27 @@ maintainers:
   - "@JoseEspinosa"
   - "@lrauschning"
   - "@alessiovignoli"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/t-coffee_tmalign_pigz:c536fc45adb585e9
+      build_id: bd-c536fc45adb585e9_1
+      scan_id: sc-7411130dce88af29_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/t-coffee_tmalign_pigz:74a2795256008cf0
+      build_id: bd-74a2795256008cf0_1
+      scan_id: sc-504beab5a39923bc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:03e09426ca07b5d9
+      build_id: bd-03e09426ca07b5d9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed121be7a85e6c4f964ffcda6a15ce7f341bbe6050b921e39cb69122ed34ed7b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/t-coffee_tmalign_pigz:1d2d7a0254d41af7
+      build_id: bd-1d2d7a0254d41af7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4e/4e08222c47cdebd15a41fd2d2b139ec7145ae38138c421b0acd1bc3e6411e7cb/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tcoffee/align/.conda-lock/linux_amd64-bd-c536fc45adb585e9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tcoffee/align/.conda-lock/linux_arm64-bd-74a2795256008cf0_1.txt

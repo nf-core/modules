@@ -168,3 +168,27 @@ authors:
   - "@kubranarci"
 maintainers:
   - "@kubranarci"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/aardvark:0.10.5--00f3f25cea7c1408
+      build_id: bd-00f3f25cea7c1408_1
+      scan_id: sc-86490c728551a0d7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/aardvark:0.10.5--50402c072fe171c0
+      build_id: bd-50402c072fe171c0_1
+      scan_id: sc-080b7e623c56b7e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/aardvark:0.10.5--a5fcbec11f134d7d
+      build_id: bd-a5fcbec11f134d7d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b1594cf6a0ecac04adf5a88a88f1da08e5a8eb0f21cd6d42024b1b343cce0870/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/aardvark:0.10.5--2634d8b3310864e0
+      build_id: bd-2634d8b3310864e0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cab6d57df89751e6cbcdd91b101855b2537ad39c0b815aaff42019e0a2c7748c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/aardvark/compare/.conda-lock/linux_amd64-bd-50402c072fe171c0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/aardvark/compare/.conda-lock/linux_arm64-bd-00f3f25cea7c1408_1.txt

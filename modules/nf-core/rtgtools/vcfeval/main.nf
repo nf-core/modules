@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RTGTOOLS_VCFEVAL {
     tag "$meta.id"
     label 'process_medium'
@@ -64,17 +67,17 @@ process RTGTOOLS_VCFEVAL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo | gzip > ${prefix}.tp.vcf.gz
+    echo "" | gzip > ${prefix}.tp.vcf.gz
     touch ${prefix}.tp.vcf.gz.tbi
-    echo | gzip > ${prefix}.fn.vcf.gz
+    echo "" | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    echo | gzip > ${prefix}.fp.vcf.gz
+    echo "" | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-baseline.vcf.gz
+    echo "" | gzip > ${prefix}.tp-baseline.vcf.gz
     touch ${prefix}.tp-baseline.vcf.gz.tbi
-    echo | gzip > ${prefix}.snp_roc.tsv.gz
-    echo | gzip > ${prefix}.non_snp_roc.tsv.gz
-    echo | gzip > ${prefix}.weighted_roc.tsv.gz
+    echo "" | gzip > ${prefix}.snp_roc.tsv.gz
+    echo "" | gzip > ${prefix}.non_snp_roc.tsv.gz
+    echo "" | gzip > ${prefix}.weighted_roc.tsv.gz
     touch ${prefix}.summary.txt
     touch ${prefix}.phasing.txt
     """

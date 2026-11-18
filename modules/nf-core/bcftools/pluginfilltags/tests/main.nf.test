@@ -68,7 +68,7 @@ nextflow_process {
                 process {
                     """
                     prog_file = Channel.of('BEGIN { FS = OFS = "\t"}; {  if (\$1 ~ /^HG/) print \$1, "HG"; else print \$1, "NA" }').collectFile(name:"program.awk")
-                    input[0] = BCFTOOLS_QUERY.out.output
+                    input[0] = BCFTOOLS_QUERY.out.output.map { meta, file -> tuple(meta, file, "") }
                     input[1] = prog_file
                     input[2] = false
                     """

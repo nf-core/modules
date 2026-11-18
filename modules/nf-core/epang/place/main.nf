@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/epa-ng:0.3.8--h9a82719_1':
-        'quay.io/biocontainers/epa-ng:0.3.8--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/5227fa1db763e3ed8267ff4f9e48d02b6a8a595a065607fd1a8f0b7fb8b17bb1/data'
+        : 'community.wave.seqera.io/library/epa-ng:0.3.8--b7414cbf4b37d776'}"
 
     input:
     tuple val(meta), path(queryaln), path(referencealn), path(referencetree)
@@ -26,11 +29,17 @@ process EPANG_PLACE {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def queryarg   = queryaln        ? "--query $queryaln"       : ""
     def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
-    def reftreearg = referencetree   ? "--tree $referencetree"   : ""
+    // epa-ng reads a gzipped MSA natively, but a gzipped tree fails with
+    // "Treeparsing failed!", so decompress that one ahead of the run.
+    def treefile   = referencetree && referencetree.name.endsWith('.gz') ? referencetree.baseName : "${referencetree}"
+    def gunzip     = referencetree && referencetree.name.endsWith('.gz') ? "gzip -cd ${referencetree} > ${treefile}" : ""
+    def reftreearg = referencetree   ? "--tree $treefile"       : ""
     def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
     def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
     if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
     """
+    $gunzip
+
     epa-ng \\
         $args \\
         --threads $task.cpus \\

@@ -1,0 +1,56 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+process TOBIAS_BINDETECT {
+    tag "$meta.id"
+    label 'process_high'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb99dc2a6b4da1bed5ad4d66f889e3830d7682d9e727df26337434d784868353/data'
+        : 'community.wave.seqera.io/library/tobias_python:33fc15661f1e50e6'}"
+
+    input:
+    tuple val(meta), path(signals), path(peaks), path(motifs), path(fasta)
+
+    output:
+    tuple val(meta), path("bindetect")                , emit: outdir
+    tuple val(meta), path("bindetect/*_results.txt")  , emit: results, optional: true
+    tuple val(meta), path("bindetect/*_results.xlsx") , emit: results_xlsx, optional: true
+    tuple val(meta), path("bindetect/*_distances.txt"), emit: distances, optional: true
+    tuple val(meta), path("bindetect/*_figures.pdf")  , emit: figures, optional: true
+    tuple val("${task.process}"), val('tobias'), eval('TOBIAS --version'), topic: versions, emit: versions_tobias
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p .matplotlib
+    export MPLCONFIGDIR="\${PWD}/.matplotlib"
+
+    TOBIAS BINDetect \\
+        --signals $signals \\
+        --motifs $motifs \\
+        --genome $fasta \\
+        --peaks $peaks \\
+        --outdir bindetect \\
+        --prefix $prefix \\
+        --cores ${task.cpus} \\
+        $args
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p bindetect/TF1/beds
+    touch bindetect/${prefix}_results.txt
+    touch bindetect/${prefix}_results.xlsx
+    touch bindetect/${prefix}_distances.txt
+    touch bindetect/${prefix}_figures.pdf
+    touch bindetect/TF1/TF1_overview.txt
+    touch bindetect/TF1/beds/TF1_all.bed
+    """
+}

@@ -6,8 +6,7 @@ keywords:
   - genomics
 tools:
   - "tcoffee":
-      description: "A collection of tools for Computing, Evaluating and Manipulating
-        Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
+      description: "A collection of tools for Computing, Evaluating and Manipulating Multiple Alignments of DNA, RNA, Protein Sequences and Structures."
       homepage: "https://tcoffee.org/Projects/tcoffee/index.html"
       documentation: "https://tcoffee.readthedocs.io/en/latest/tcoffee_main_documentation.html"
       tool_dev_url: "https://github.com/cbcrg/tcoffee"
@@ -63,3 +62,27 @@ topics:
 authors:
   - "@luisas"
   - "@JoseEspinosa"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/t-coffee:13.46.0.919e8c6b--6242390d545250f1
+      build_id: bd-6242390d545250f1_1
+      scan_id: sc-adcfa09930394521_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/t-coffee:13.46.0.919e8c6b--bf1d0cda00149941
+      build_id: bd-bf1d0cda00149941_1
+      scan_id: sc-01cd15546bad50da_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/t-coffee:13.46.0.919e8c6b--7224a37d1ffda2bf
+      build_id: bd-7224a37d1ffda2bf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f4aed8f78ff751f9682f7f17c0259de2dafc57cee4ac5bd1aa0b2af8ba8ad495/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/t-coffee:13.46.0.919e8c6b--6b66fdeaef59f5ff
+      build_id: bd-6b66fdeaef59f5ff_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/df2efb6bd73ee1c6904bed375ffa82601fa92594299717cc1315a4aefe278e28/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tcoffee/seqreformat/.conda-lock/linux_amd64-bd-6242390d545250f1_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tcoffee/seqreformat/.conda-lock/linux_arm64-bd-bf1d0cda00149941_1.txt

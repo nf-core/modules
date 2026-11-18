@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DUCKDB_TABLE2PARQUET {
     tag "$meta.id"
     label 'process_low'
@@ -26,13 +29,22 @@ process DUCKDB_TABLE2PARQUET {
     if ( ! delim ) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz or .zst")
     }
-    """
-    duckdb -c "
+    // SQL string literals escape an embedded "'" by doubling it, not with a backslash.
+    def sqlLit = { s -> s.toString().replace("'", "''") }
+    def tableSql = sqlLit.call(table)
+    def prefixSql = sqlLit.call(prefix)
+    def sql = """\
         SET threads=${task.cpus};
         SET memory_limit='${task.memory.toGiga()}GB';
         SET temp_directory='.';
-        COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true${args})) TO '${prefix}.parquet' (FORMAT PARQUET${args2});
-    "
+        COPY (SELECT * FROM read_csv('${tableSql}', delim='${delim}', header=true${args})) TO '${prefixSql}.parquet' (FORMAT PARQUET${args2});
+"""
+    // Quoted heredoc: no shell expansion in the body. The delimiter is the body's own hash, so no
+    // value in the body can contain it, and it is the same on every run, which keeps -resume working.
+    def heredocTag = "SQL_${sql.md5()}"
+    """
+    duckdb <<'${heredocTag}'
+${sql}${heredocTag}
     """
 
     stub:

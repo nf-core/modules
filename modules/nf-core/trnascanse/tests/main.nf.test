@@ -1,3 +1,4 @@
+
 nextflow_process {
 
     name "Test Process TRNASCANSE"
@@ -17,6 +18,10 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                input[4] = true
                 """
             }
         }
@@ -26,10 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.log[0][1]).readLines().first().contains("Application: tRNAscan-SE") }, // timestamped log
                 { assert path(process.out.stats[0][1]).getText().contains("scan results") }, // timestamped log
-                { assert snapshot(
-                    process.out.tsv,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "stats"])).match() }
             )
         }
 
@@ -46,6 +48,10 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                input[4] = true
                 """
             }
         }

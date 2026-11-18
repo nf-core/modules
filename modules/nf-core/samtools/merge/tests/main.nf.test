@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index'
+                module_args = ''
             }
             process {
                 """
@@ -26,6 +26,7 @@ nextflow_process {
                     []
                 ]
                 input[1] = [[],[],[],[]]
+                input[2] = ''
                 """
             }
         }
@@ -33,13 +34,36 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    file(process.out.index[0][1]).name,
-                    process.out.cram,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
+            )
+        }
+    }
+
+    test("bams_with_index") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    []
+                ]
+                input[1] = [[],[],[],[]]
+                input[2] = 'bai'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -48,7 +72,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index --output-fmt cram,version=3.0'
+                module_args = '--output-fmt cram,version=3.0'
             }
             process {
                 """
@@ -65,21 +89,51 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     []
                 ]
+                input[2] = ''
                 """
             }
         }
 
         then {
-            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/genome.fasta'
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
-                { assert snapshot(
-                    cram(process.out.cram[0][1], fasta).getReadsMD5(),
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    file(process.out.index[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], referenceFasta: fasta, unstableKeys: ['index'])).match() }
+            )
+        }
+    }
+
+    test("crams_fastq_with_index") {
+
+        when {
+            params {
+                module_args = '--output-fmt cram,version=3.0'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true) ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram.crai', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                input[2] = 'crai'
+                """
+            }
+        }
+
+        then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], referenceFasta: fasta, unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -88,7 +142,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--write-index'
+                module_args = ''
             }
             process {
                 """
@@ -105,6 +159,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.gz.gzi', checkIfExists: true)
                 ]
+                input[2] = ''
                 """
             }
         }
@@ -112,14 +167,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    //nft-bam doesn't like the fasta.gz
-                    file(process.out.cram[0][1]).name,
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    file(process.out.index[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                // nft-bam doesn't like the fasta.gz
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['cram', 'index'])).match() }
             )
         }
     }
@@ -138,6 +187,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ]
                 ]
                 input[1] = [[],[],[],[]]
+                input[2] = ''
                 """
             }
         }
@@ -145,13 +195,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
-                    process.out.cram,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -174,6 +218,38 @@ nextflow_process {
                     []
                 ]
                 input[1] = [[],[],[],[]]
+                input[2] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bams_with_index - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ],
+                    []
+                ]
+                input[1] = [[],[],[],[]]
+                input[2] = 'bai'
                 """
             }
         }
@@ -204,6 +280,7 @@ nextflow_process {
                     []
                 ]
                 input[1] = [[],[],[],[]]
+                input[2] = ''
                 """
             }
         }

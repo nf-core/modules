@@ -11,6 +11,12 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
+      doi: "10.1101/115717"
+      publication:
+        author: "Freed, D., Aldana, R., Weber, J. A. & Edwards, J. S."
+        year: 2017
+        title: "The Sentieon Genomics Tools - A fast and accurate solution to variant calling from next-generation sequence data"
+        source: "bioRxiv"
       identifier: ""
 input:
   - - meta:
@@ -72,7 +78,8 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt":
           type: file
-          description: Alignment metrics related to how many reads overlap the target/bait regions.
+          description: Alignment metrics related to how many reads overlap the
+            target/bait regions.
           pattern: "*.txt"
           ontologies: []
   versions_sentieon:
@@ -83,9 +90,8 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed 's/.*-//g':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -95,7 +101,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed 's/.*-//g':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@sppearce"

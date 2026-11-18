@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { HMMER_HMMBUILD                            } from '../../../modules/nf-core/hmmer/hmmbuild/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../../modules/nf-core/hmmer/hmmalign/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../../modules/nf-core/hmmer/hmmalign/main'
@@ -8,6 +11,7 @@ include { HMMER_ESLREFORMAT as HMMER_AFAFORMATREF   } from '../../../modules/nf-
 include { HMMER_ESLREFORMAT as HMMER_AFAFORMATQUERY } from '../../../modules/nf-core/hmmer/eslreformat/main'
 include { CLUSTALO_ALIGN                            } from '../../../modules/nf-core/clustalo/align/main'
 include { MAFFT_ALIGN                               } from '../../../modules/nf-core/mafft/align/main'
+include { EPANG_FILTERQUERY                         } from '../../../modules/nf-core/epang/filterquery/main'
 include { EPANG_PLACE                               } from '../../../modules/nf-core/epang/place/main'
 include { EPANG_SPLIT as EPANG_SPLIT_CLUSTALO       } from '../../../modules/nf-core/epang/split/main'
 include { EPANG_SPLIT as EPANG_SPLIT_MAFFT          } from '../../../modules/nf-core/epang/split/main'
@@ -19,6 +23,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     take:
     ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
+    compress_alignment // value: boolean, write the clustalo and mafft alignments gzipped
 
     main:
 
@@ -96,7 +101,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ ],
         ch_clustalo_data.map { it -> it.data.refseqfile },
         [ ],
-        false
+        compress_alignment
     )
 
     // 2.b Split the profile alignment into reference and query parts
@@ -113,7 +118,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ [], [] ],
         [ [], [] ],
         [ [], [] ],
-        false
+        compress_alignment
     )
 
     // 3.b Split the profile alignment into reference and query parts
@@ -122,7 +127,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
             .join(MAFFT_ALIGN.out.fas)
     )
 
-    // 4. Do the placement
+    // 4. Prepare the placement
     ch_epang_hmmer = ch_hmmer_data
         .map { it -> [ it.meta, it.data.model, it.data.refphylogeny ] }
         .join ( HMMER_AFAFORMATQUERY.out.seqreformated )
@@ -139,10 +144,37 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         .join ( EPANG_SPLIT_MAFFT.out.query )
         .join ( EPANG_SPLIT_MAFFT.out.reference )
 
-    ch_epang_query = ch_epang_hmmer
+    ch_epang_aligned = ch_epang_hmmer
         .mix(ch_epang_clustalo)
         .mix(ch_epang_mafft)
-        .map { it -> [ [ id:it[0].id, model:it[1] ], it[3], it[4], it[2] ] }
+
+    // 4.a Drop the queries EPA-ng cannot place, i.e. those with no residue in the columns the
+    // reference occupies: EPA-ng aborts the whole run on such a query. The thresholds are
+    // optional keys of the data map, so callers that don't set them get the defaults. A sample
+    // with no query left has no EPANG_FILTERQUERY query output and so no placement outputs.
+    EPANG_FILTERQUERY (
+        ch_epang_aligned
+            .join ( ch_pp_data.map { it -> [ it.meta, it.data.min_query_columns != null ? it.data.min_query_columns : 1, it.data.min_reference_coverage != null ? it.data.min_reference_coverage : 0 ] } )
+            .map { meta, _model, _tree, query, reference, min_query_columns, min_reference_coverage ->
+                [ meta, reference, query, min_query_columns, min_reference_coverage ]
+            }
+    )
+
+    EPANG_FILTERQUERY.out.table.subscribe { meta, table ->
+        def rows    = table.readLines().drop(1)
+        def dropped = rows.count { row -> row.endsWith('\tfalse') }
+        if ( rows.size() > 0 && dropped == rows.size() ) {
+            log.warn "EPANG_FILTERQUERY: none of the ${rows.size()} query sequences of '${meta.id}' passed the filter, so nothing is placed; see ${table.name}"
+        } else if ( dropped > 0 ) {
+            log.warn "EPANG_FILTERQUERY: ${dropped} of ${rows.size()} query sequences of '${meta.id}' were dropped before placement because of too few residues in the occupied reference columns; see ${table.name}"
+        }
+    }
+
+    // 4.b Do the placement with the queries that passed
+    ch_epang_query = ch_epang_aligned
+        .map { it -> [ it[0], it[1], it[2], it[4] ] }
+        .join ( EPANG_FILTERQUERY.out.query )
+        .map { it -> [ [ id:it[0].id, model:it[1] ], it[4], it[3], it[2] ] }
 
     EPANG_PLACE (
         ch_epang_query,
@@ -165,8 +197,11 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     emit:
     epang               = EPANG_PLACE.out.epang
     jplace              = EPANG_PLACE.out.jplace
+    epang_log           = EPANG_PLACE.out.log
+    filterquery_table   = EPANG_FILTERQUERY.out.table
     grafted_phylogeny   = GAPPA_GRAFT.out.newick
     taxonomy_profile    = GAPPA_ASSIGN.out.profile
     taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
     heattree            = GAPPA_HEATTREE.out.svg
+    hmmbuild_log        = HMMER_HMMBUILD.out.hmmbuildout
 }

@@ -1,0 +1,86 @@
+name: deeptools_computematrixoperations
+description: Modify computeMatrix output with computeMatrixOperations, e.g. filterStrand, filterValues, relabel, subset or sort. The subcommand is set with `ext.args`, its options with `ext.args2`. Subcommands that take several matrices (rbind, cbind) or write no matrix (info, dataRange) are not supported.
+keywords:
+  - genome
+  - regions
+  - genomics
+  - matrix
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence:
+        - "GPL v3"
+      identifier: biotools:deeptools
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+    - matrix:
+        type: file
+        description: gzipped matrix file produced by deeptools_computematrix
+        pattern: "*.mat.gz"
+        ontologies: []
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+      - "*.mat.gz":
+          type: file
+          description: modified gzipped matrix file needed by the plotHeatmap and plotProfile deeptools utilities
+          pattern: "*.mat.gz"
+          ontologies: []
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - deeptools --version | sed "s/deeptools //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - deeptools --version | sed "s/deeptools //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Kevin-Brockers"
+maintainers:
+  - "@Kevin-Brockers"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/deeptools:3.5.6--511a2b05870b9ec3
+      build_id: bd-511a2b05870b9ec3_1
+      scan_id: sc-69074f36bc2c74a0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/deeptools:3.5.6--da17162234746484
+      build_id: bd-da17162234746484_1
+      scan_id: sc-2df0ee3eeefc5a7a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/deeptools:3.5.6--a39c543acbc557bc
+      build_id: bd-a39c543acbc557bc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba9641d61acf134c6b989b3af5f25bcd5aadb3faf692a41c00ba4cd25f99032e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/deeptools:3.5.6--b7f4b107865d116b
+      build_id: bd-b7f4b107865d116b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3bc76cf07b5795d5e8a2cfc35b89051fbcf122c9d46f4c13e396efb3263fb1b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/deeptools/computematrixoperations/.conda-lock/linux_amd64-bd-511a2b05870b9ec3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/deeptools/computematrixoperations/.conda-lock/linux_arm64-bd-da17162234746484_1.txt

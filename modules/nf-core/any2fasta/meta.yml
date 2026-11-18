@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "any2fasta"
 description: Convert various sequence formats (GenBank, GFF, FASTQ, FASTA, CLUSTAL, Stockholm, GFA) to FASTA format. Input files may be gzip, bzip2, zip, or zstd compressed.
 keywords:
@@ -68,3 +67,27 @@ authors:
   - "@cwoodside1278"
 maintainers:
   - "@cwoodside1278"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/any2fasta:0.8.1--9a601675c761b618
+      build_id: bd-9a601675c761b618_1
+      scan_id: sc-764377c70af26a2c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/any2fasta:0.8.1--c9e72290385007c3
+      build_id: bd-c9e72290385007c3_1
+      scan_id: sc-863415ae0a7f4c24_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/any2fasta:0.8.1--f883689058391a3b
+      build_id: bd-f883689058391a3b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/767085935412cfe206a24e1ad6b98b9c6739f962868002b7e27abe53c38b7b72/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/any2fasta:0.8.1--8e449f8a5d4a3ed0
+      build_id: bd-8e449f8a5d4a3ed0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64767c4a3d350a8d10c948c089858840ee7c8b64909fb2de9a7ad6c792e7360b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/any2fasta/.conda-lock/linux_amd64-bd-c9e72290385007c3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/any2fasta/.conda-lock/linux_arm64-bd-9a601675c761b618_1.txt

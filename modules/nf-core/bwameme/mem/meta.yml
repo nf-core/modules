@@ -20,6 +20,21 @@ tools:
       licence:
         - "MIT"
       identifier: ""
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   - - meta:
         type: map
@@ -142,3 +157,9 @@ authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-meme_mbuffer_samtools:ad394c0890b933c4
+      build_id: bd-ad394c0890b933c4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ef/efc5fed20f25580975244024951582de9c90c9acba64d238d09b53374464cffa/data

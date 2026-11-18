@@ -8,8 +8,7 @@ keywords:
   - proteomics
 tools:
   - openms:
-      description: "OpenMS is an open-source software C++ library for LC-MS data management
-        and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
@@ -22,8 +21,7 @@ tools:
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       identifier: ""
   - Comet:
-      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence
-        database search tool."
+      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence database search tool."
       homepage: "http://comet-ms.sourceforge.net/"
       documentation: "http://comet-ms.sourceforge.net/"
 
@@ -114,3 +112,27 @@ authors:
   - "@jonasscheid"
 maintainers:
   - "@jonasscheid"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/openms-thirdparty:3.6.0--566f6f290d39203b
+      build_id: bd-566f6f290d39203b_1
+      scan_id: sc-a28d9c9d6bfbc9d2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/openms-thirdparty:3.6.0--d2d9f579a8433638
+      build_id: bd-d2d9f579a8433638_1
+      scan_id: sc-386a0dc7f296f5d0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/openms-thirdparty:3.6.0--bf79a98718c9095f
+      build_id: bd-bf79a98718c9095f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6475e53b3776cd3b71b8ff525f01da9c45dbe9401a00e5630d91ab976f20e8aa/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/openms-thirdparty:3.6.0--cba109fedfaf5591
+      build_id: bd-cba109fedfaf5591_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fab21993def9185648d74dc91446f5bad859dfb51f48a6fc078687a02496823a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/openmsthirdparty/cometadapter/.conda-lock/linux_amd64-bd-566f6f290d39203b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/openmsthirdparty/cometadapter/.conda-lock/linux_arm64-bd-d2d9f579a8433638_1.txt

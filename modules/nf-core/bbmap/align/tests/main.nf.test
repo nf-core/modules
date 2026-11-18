@@ -33,6 +33,7 @@ nextflow_process {
                         ]
                     ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                input[2] = [ [], [], false ]
                 """
             }
         }
@@ -40,11 +41,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -62,6 +59,7 @@ nextflow_process {
                         ]
                     ]
                 input[1] = BBMAP_INDEX.out.index
+                input[2] = [ 'bam', 'all', false ]
                 """
             }
         }
@@ -69,11 +67,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -90,6 +84,7 @@ nextflow_process {
                         ]
                     ]
                 input[1] = BBMAP_INDEX.out.index
+                input[2] = [ 'bam', 'all', false ]
                 """
             }
         }
@@ -97,11 +92,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -122,6 +113,7 @@ nextflow_process {
                         ]
                     ]
                 input[1] = BBMAP_INDEX.out.index
+                input[2] = [ 'bam', 'all', false ]
                 """
             }
         }
@@ -129,11 +121,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-					file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -151,6 +139,33 @@ nextflow_process {
                         ]
                     ]
                 input[1] = BBMAP_INDEX.out.index
+                input[2] = [ 'bam', 'all', false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2] - transcriptome - all - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'fastq.gz', 'all', false ]
                 """
             }
         }
@@ -159,10 +174,154 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-					file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
+                    process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
+                        [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
+                    } }
                     ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2] - transcriptome - unmapped - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'fastq.gz', 'unmapped', false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
+                    process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
+                        [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
+                    } }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2] - transcriptome - mapped - fastq.gz - interleaved_output") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'fastq.gz', 'mapped', true ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
+                    process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
+                        [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
+                    } }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - interleaved fastq - transcriptome - unmapped - fastq.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'fastq.gz', 'unmapped', false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
+                    process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
+                        [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
+                    } }
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - transcriptome - mapped - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'bam', 'mapped', false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - [fastq1, fastq2] - transcriptome - unmapped - fastq.gz - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                input[2] = [ 'fastq.gz', 'unmapped', false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

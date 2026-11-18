@@ -64,34 +64,6 @@ nextflow_process {
         }
     }
 
-    test("hla - bam - cplex") {
-        config "./optitype_cplex.config"
-        when {
-            process {
-                """
-                input[0] = [ [ id:'test', seq_type:'dna' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/example_hla_pe.sorted.bam.bai', checkIfExists: true)
-                     ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(file(process.out.hla_type[0][1])
-                    .readLines()[1]
-                    .toString()
-                    // the calls seem not to be stable for locus A for this input data, therefore skip the results for HLA locus A
-                    .split('\t')[3..7])
-                    .match("bam_cplex_hla_type") },
-                { assert snapshot(file(process.out.coverage_plot[0][1]).name).match("bam_cplex_coverage_plot") },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("bam_cplex_versions") }
-            )
-        }
-    }
-
     test("hla - bam - stub") {
         options "-stub"
         config "./nextflow.config"

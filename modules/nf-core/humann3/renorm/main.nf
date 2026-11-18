@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HUMANN3_RENORM {
     tag "$meta.id"
     label 'process_low'
@@ -35,14 +38,11 @@ process HUMANN3_RENORM {
         $args
 
     gzip -n ${prefix}_renorm.tsv
-
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}_renorm.tsv.gz
-
     """
 }

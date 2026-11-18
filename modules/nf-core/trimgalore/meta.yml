@@ -57,6 +57,18 @@ output:
           pattern: "*report.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*report.json":
+          type: file
+          description: trimgalore JSON report, consumed by MultiQC's trim_galore module
+          pattern: "*report.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
   unpaired:
     - - meta:
           type: map
@@ -90,8 +102,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.zip":
           type: file
-          description: FastQC report output zip after trimming when the --fastqc flag
-            is used
+          description: FastQC report output zip after trimming when the --fastqc flag is used
           pattern: "*_fastqc.zip"
           ontologies:
             - edam: http://edamontology.org/format_3987 # ZIP format
@@ -127,3 +138,27 @@ maintainers:
   - "@ewels"
   - "@FelixKrueger"
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/trim-galore:2.5.0--e26c3be09dac93c9
+      build_id: bd-e26c3be09dac93c9_1
+      scan_id: sc-43d21891d0d5760e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/trim-galore:2.5.0--d8ea5ac383402c11
+      build_id: bd-d8ea5ac383402c11_1
+      scan_id: sc-1e605a6e34ea0805_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/trim-galore:2.5.0--c3fa3438e9ddd6ce
+      build_id: bd-c3fa3438e9ddd6ce_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14f298259504414e87dcf496685db6aa74a9ccded8ce39825139706de095038e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/trim-galore:2.5.0--7984595b64b43a28
+      build_id: bd-7984595b64b43a28_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e50ac40412ac7183d9e5b81743daf92a2f9a74ee209ac54e885d46d76e04940/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_amd64-bd-e26c3be09dac93c9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_arm64-bd-d8ea5ac383402c11_1.txt
