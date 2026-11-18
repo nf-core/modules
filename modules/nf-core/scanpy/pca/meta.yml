@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: scanpy_pca
 description: Perform principal component analysis (PCA) on single-cell RNA-seq data using Scanpy
 keywords:
@@ -82,24 +84,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:aa957a937fe82215
-      build_id: bd-aa957a937fe82215_1
-      scan_id: sc-0026e10e35b102dc_1
+      name: community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:6894405af4484f98
+      build_id: bd-6894405af4484f98_1
+      scan_id: sc-d953aec22afb1f26_1
     linux/arm64:
-      name: community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:1cbb3f64ce5e2d13
-      build_id: bd-1cbb3f64ce5e2d13_1
-      scan_id: sc-ed1cf6a040334f4b_1
+      name: community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:a826b0d0b41ee9f6
+      build_id: bd-a826b0d0b41ee9f6_1
+      scan_id: sc-3fc6f190722d5b39_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:1a9107d0ffa3c880
-      build_id: bd-1a9107d0ffa3c880_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/44faaace40167832efdab4f410d5a5c8df0eac82702e27b0ac7cb5a5c490cdc3/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:0a634bc98c9d28a5
-      build_id: bd-0a634bc98c9d28a5_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a7fe990b2cc3034fc56a9d75d5455eb59f8c6b410109de8ce24cbba6510dedd/data
+      name: oras://community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:736038d358ad41d1
+      build_id: bd-736038d358ad41d1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9b488aec8cb1ba3340ca4019424321fee2d843f2c4e6ff2523da4ad6357bddc/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/anndata_python_pyyaml_scanpy:24c1ddc8f2b1b372
+      build_id: bd-24c1ddc8f2b1b372_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0fc88ced94e06da5e391a736335395c1a89dfbc1e572d8f7de81287dd1670cff/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/scanpy/pca/.conda-lock/linux_amd64-bd-aa957a937fe82215_1.txt
+      lock_file: modules/nf-core/scanpy/pca/.conda-lock/linux_amd64-bd-6894405af4484f98_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/scanpy/pca/.conda-lock/linux_arm64-bd-1cbb3f64ce5e2d13_1.txt
+      lock_file: modules/nf-core/scanpy/pca/.conda-lock/linux_arm64-bd-a826b0d0b41ee9f6_1.txt
