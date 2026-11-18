@@ -4,28 +4,17 @@ nextflow_process {
     process "KRAKEN2_KRAKEN2"
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "kraken2"
     tag "kraken2/kraken2"
 
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [],
-                    file(
-                        params.modules_testdata_base_path + "genomics/sarscov2/genome/db/kraken2.tar.gz",
-                        checkIfExists: true
-                    )
-                ])
-                """
-            }
-        }
-    }
-
     test("sarscov2 illumina single end [fastq]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             process {
                 """
@@ -36,7 +25,7 @@ nextflow_process {
                         checkIfExists: true
                     )]
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = file('${db}')
                 input[2] = true
                 input[3] = false
                 """
@@ -58,6 +47,13 @@ nextflow_process {
     }
 
     test("sarscov2 illumina paired end [fastq]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -79,7 +75,7 @@ nextflow_process {
 
                         ]
                     ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = file('${db}')
                 input[2] = true
                 input[3] = false
                 """
@@ -107,6 +103,13 @@ nextflow_process {
     }
 
     test("sarscov2 illumina single end [fastq] + save_reads_assignment") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz').resolve('kraken2')
+        }
+
         when {
             params {
                 outdir   = "$outputDir"
@@ -121,7 +124,7 @@ nextflow_process {
                         checkIfExists: true
                     )]
                 ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
+                input[1] = file('${db}')
                 input[2] = false
                 input[3] = true
                 """

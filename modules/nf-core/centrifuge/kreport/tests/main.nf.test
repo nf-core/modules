@@ -10,43 +10,35 @@ nextflow_process {
     tag "centrifuge"
     tag "centrifuge/centrifuge"
     tag "centrifuge/kreport"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [],
-                    file(params.modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-        run("CENTRIFUGE_CENTRIFUGE") {
-            script "../../../centrifuge/centrifuge/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id: 'test', single_end: true],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                ]
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = true
-                input[3] = true
-                """
-            }
-        }
-    }
 
     test("sarscov2_fastq_se") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/minigut_cf.tar.gz').resolve('minigut_cf')
+            run("CENTRIFUGE_CENTRIFUGE") {
+                script "../../../centrifuge/centrifuge/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test', single_end: true],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                    input[1] = file('${db}')
+                    input[2] = true
+                    input[3] = true
+                    """
+                }
+            }
+        }
+
 
         when {
             process {
                 """
                 input[0] = CENTRIFUGE_CENTRIFUGE.out.results
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = file('${db}')
                 """
             }
         }
@@ -70,8 +62,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CENTRIFUGE_CENTRIFUGE.out.results
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[0] = [ [id: 'test', single_end: true], [] ]
+                input[1] = []
                 """
             }
         }
