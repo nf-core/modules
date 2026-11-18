@@ -39,6 +39,9 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--format tsv'
+            }
             process {
                 """
                 def test_file = file("\${workDir}/gist_input.csv")
@@ -66,10 +69,13 @@ nextflow_process {
         config "./nextflow.config"
 
         when {
+            params {
+                module_args = '--format tsv'
+            }
             process {
                 """
                 def test_file = file("\${workDir}/gist_input.json")
-                test_file.text = '[{"sample_id":"sample1","mitoses_per_50_hpf":3.5,"site":"gastric","tumor_rupture":false,"mutation":"kit_exon11","tumor_size_cm":4.2}]\\n'
+                test_file.text = '[{"sample_id":"sample2","mitoses_per_50_hpf":6.0,"site":"duodenal","tumor_rupture":"true","mutation":"kit_exon9","tumor_size_cm":5.5}]\\n'
 
                 input[0] = [
                     [ id:'test_sample' ],
