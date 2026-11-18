@@ -13,23 +13,23 @@ process SAMTOOLS_MULTICOMMAND {
     val pipeline
 
     output:
-    // Alignment format outputs (view, sort, markdup, merge, cat, collate)
+    // Alignment format outputs (view, sort, markdup, fixmate, merge, cat, collate)
     tuple val(meta), path("*.bam"), optional: true, emit: bam
     tuple val(meta), path("*.cram"), optional: true, emit: cram
     tuple val(meta), path("*.sam"), optional: true, emit: sam
     tuple val(meta), path("*.{bai,csi,crai}"), optional: true, emit: index
 
     // Sequence outputs (fasta, fastq)
-    tuple val(meta), path("*.fasta.gz"), emit: fasta, optional: true
-    tuple val(meta), path("*.fastq.gz"), emit: fastq, optional: true
-    tuple val(meta), path("*_{1,2}.fasta.gz"), emit: fasta_pair, optional: true
-    tuple val(meta), path("*_interleaved.fasta.gz"), emit: fasta_interleaved, optional: true
-    tuple val(meta), path("*_singleton.fasta.gz"), emit: fasta_singleton, optional: true
-    tuple val(meta), path("*_other.fasta.gz"), emit: fasta_other, optional: true
-    tuple val(meta), path("*_{1,2}.fastq.gz"), emit: fastq_pair, optional: true
-    tuple val(meta), path("*_interleaved.fastq"), emit: fastq_interleaved, optional: true
-    tuple val(meta), path("*_singleton.fastq.gz"), emit: fastq_singleton, optional: true
-    tuple val(meta), path("*_other.fastq.gz"), emit: fastq_other, optional: true
+    tuple val(meta), path("*.fasta.gz"), optional: true, emit: fasta
+    tuple val(meta), path("*.fastq.gz"), optional: true, emit: fastq
+    tuple val(meta), path("*_{1,2}.fasta.gz"), optional: true, emit: fasta_pair
+    tuple val(meta), path("*_interleaved.fasta.gz"), optional: true, emit: fasta_interleaved
+    tuple val(meta), path("*_singleton.fasta.gz"), optional: true, emit: fasta_singleton
+    tuple val(meta), path("*_other.fasta.gz"), optional: true, emit: fasta_other
+    tuple val(meta), path("*_{1,2}.fastq.gz"), optional: true, emit: fastq_pair
+    tuple val(meta), path("*_interleaved.fastq"), optional: true, emit: fastq_interleaved
+    tuple val(meta), path("*_singleton.fastq.gz"), optional: true, emit: fastq_singleton
+    tuple val(meta), path("*_other.fastq.gz"), optional: true, emit: fastq_other
 
     tuple val("${task.process}"), val('samtools'), eval('samtools version | sed "1!d;s/.* //"'), emit: versions_samtools, topic: versions
 
@@ -38,6 +38,38 @@ process SAMTOOLS_MULTICOMMAND {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def single_end = meta?.single_end ?: false
+
+    // Subcommand configuration map
+    //
+    // Each entry describes how one samtools subcommand is wired into the pipeline
+    // command built in the script block. Every entry sets every key, so each row
+    // can be read on its own without reference to any defaults.
+    //
+    // Keys:
+    //
+    //   stdout             Output flag used when the command is NOT the last in the pipeline,
+    //                      so that its output streams to the next command. '' if no flag is needed.
+    //
+    //   out                Flag placed before the output path when the command IS the last in
+    //                      the pipeline. '' if no flag is needed (the path is positional, or unused).
+    //
+    //   threads            The command can accept the -@ threading argument.
+    //
+    //   uncompressed       Add "-u" (uncompressed output) when the command is not the last.
+    //
+    //   output_format_type Output format type, either 'alignment' (BAM/CRAM/SAM) or 'sequence' (FASTA/FASTQ).
+    def SUBCOMMAND_CONFIG = [
+        view: [stdout: '', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        sort: [stdout: '', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        markdup: [stdout: '-', out: '', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        fixmate: [stdout: '-', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        merge: [stdout: '-', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        cat: [stdout: '', out: '-o', threads: false, uncompressed: false, output_format_type: 'alignment'],
+        collate: [stdout: '-O', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        fasta: [stdout: '', out: '', threads: true, uncompressed: true, output_format_type: 'sequence'],
+        fastq: [stdout: '', out: '', threads: true, uncompressed: true, output_format_type: 'sequence'],
+    ]
 
     // Only allow pipelines with at least two commands
     def n_commands = pipeline.size()
@@ -47,47 +79,48 @@ process SAMTOOLS_MULTICOMMAND {
 
     // Validate pipeline commands
     // Check that all tools requested are allowed and that fasta/fastq fall at the end of the pipeline only
-    def valid_options = ['view', 'sort', 'markdup', 'fixmate', 'merge', 'cat', 'collate', 'fastq', 'fasta']
     pipeline
         .withIndex()
-        .collect { subcommand, idx ->
-            if (!(subcommand in valid_options)) {
-                error("Error: ${subcommand} not a valid pipeline argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${valid_options.join(", ")}")
+        .each { subcommand, idx ->
+            if (!SUBCOMMAND_CONFIG.containsKey(subcommand)) {
+                error("Error: ${subcommand} not a valid pipeline argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${SUBCOMMAND_CONFIG.keySet().join(", ")}")
             }
-            if (subcommand in ["fastq", "fasta"] && idx != pipeline.size() - 1) {
+            if (SUBCOMMAND_CONFIG[subcommand].output_format_type == 'sequence' && idx != n_commands - 1) {
                 error("Error: ${subcommand} must be the last command for SAMTOOLS_MULTICOMMAND!")
             }
         }
 
-    // Input/output flags
-    def is_cram_input = fasta && input.collect { f -> f.getExtension() == "cram" }.any()
-    def is_cram_output = fasta && (get_output_extension(get_args(task.ext, n_commands - 1)) == "cram")
+    // Extension arguments for each command: args for the first, args2 ... argsN for the rest
+    def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
+
+    // Output format comes from --output-fmt in the final command's args, defaulting to BAM
+    def output_extension = ["sam", "cram"].find { fmt -> all_args[-1].contains("--output-fmt ${fmt}") } ?: "bam"
+    def is_cram_input = fasta && input.any { f -> f.getExtension() == "cram" }
+    def is_cram_output = fasta && output_extension == "cram"
+
+    // Output flag for a command, depending on whether it is last in the pipeline
+    def output_option = { subcommand, cfg, is_last_command ->
+        if (!is_last_command) {
+            return cfg.stdout
+        }
+        if (cfg.output_format_type == 'sequence') {
+            def seq_ext = "${subcommand}.gz"
+            return [
+                "-0 ${prefix}_other.${seq_ext}",
+                "-1 ${prefix}_1.${seq_ext}",
+                single_end ? "" : "-2 ${prefix}_2.${seq_ext}",
+                "-s ${prefix}_singleton.${seq_ext}",
+            ].findAll().join(" ")
+        }
+        return "${cfg.out} ${prefix}.${output_extension}".trim()
+    }
 
     // Build the pipeline command
     //
-    // Note: The functions used to compile the pipeline are defined below the process definition.
-    // They have been separated into different concerns in order to effectively capture exceptions
-    // to the normal operation of samtools commands - for example, samtools collate uses
-    // "-O" to write to stdout rather than "-". This makes capturing further exceptions easier to manage
-    // without requiring complex conditional logic.
+    // Options that differ per subcommand come from SUBCOMMAND_CONFIG. The rest depends on position
+    // in the pipeline: the first command reads the input, the last writes the output, and
+    // CRAM references are added where needed.
     //
-    def pipeline_command = pipeline
-        .withIndex()
-        .collect { subcommand, idx ->
-            def is_first_command = (idx == 0)
-            def is_last_command = (idx == n_commands - 1)
-
-            def cmd_args = get_args(task.ext, idx)
-            def cmd_threads = get_threads(subcommand, task.cpus, cmd_args)
-            def cmd_input = is_first_command ? "${input}" : get_stdin()
-            def cmd_output = is_last_command ? get_file_output(subcommand, cmd_args, prefix, meta?.single_end ?: false) : get_stdout(subcommand)
-            def uncompressed = !is_last_command ? get_uncompressed_flag(subcommand) : ""
-            def reference = get_reference(is_first_command, is_last_command, is_cram_input, is_cram_output, fasta)
-
-            return ["samtools", subcommand, cmd_threads, uncompressed, cmd_args, reference, cmd_input, cmd_output].findAll().join(" ")
-        }
-        .join(" |\\\n")
-
     // EXAMPLE:
     //
     // This module will construct a samtools pipeline command from an input list of
@@ -99,167 +132,51 @@ process SAMTOOLS_MULTICOMMAND {
     //
     // The args are numbered sequentially for each tool in the sequence and CRAM references
     // are automatically applied if needed. FASTA and FASTQ outputs are also available.
+    def pipeline_command = pipeline
+        .withIndex()
+        .collect { subcommand, idx ->
+            def cfg = SUBCOMMAND_CONFIG[subcommand]
+            def cmd_args = all_args[idx]
+            def is_first_command = idx == 0
+            def is_last_command = idx == n_commands - 1
+
+            def threads = (cfg.threads && !cmd_args.contains("-@")) ? "-@ ${task.cpus}" : ""
+            def uncompressed = (!is_last_command && cfg.uncompressed) ? "-u" : ""
+            def reference = ((is_first_command && is_cram_input) || (is_last_command && is_cram_output)) ? "--reference ${fasta}" : ""
+            def cmd_input = is_first_command ? "${input}" : "-"
+            def cmd_output = output_option.call(subcommand, cfg, is_last_command)
+
+            return ["samtools", subcommand, threads, uncompressed, cmd_args, reference, cmd_input, cmd_output].findAll().join(" ")
+        }
+        .join(" |\\\n")
+
     """
     ${pipeline_command}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def single_end = meta?.single_end ?: false
+    def n_commands = pipeline.size()
+    def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
+    def output_extension = ["sam", "cram"].find { fmt -> all_args[-1].contains("--output-fmt ${fmt}") } ?: "bam"
     def final_command = pipeline[-1]
-    def final_args = get_args(task.ext, pipeline.size() - 1)
 
     def stub_outputs = []
 
-    if (final_command in ['view', 'sort', 'merge', 'cat', 'markdup', 'fixmate', 'collate']) {
-        stub_outputs << "touch ${prefix}.${get_output_extension(final_args)}"
-    }
-    else if (final_command in ['fasta', 'fastq']) {
+    if (final_command in ['fasta', 'fastq']) {
         def ext = final_command == 'fasta' ? 'fasta.gz' : 'fastq.gz'
         stub_outputs << "echo | bgzip > ${prefix}_1.${ext}"
-        if (!meta.single_end) {
+        if (!single_end) {
             stub_outputs << "echo | bgzip > ${prefix}_2.${ext}"
         }
         stub_outputs << "echo | bgzip > ${prefix}_singleton.${ext}"
         stub_outputs << "echo | bgzip > ${prefix}_other.${ext}"
     }
+    else {
+        stub_outputs << "touch ${prefix}.${output_extension}"
+    }
     """
     ${stub_outputs.join("\n")}
     """
-}
-
-// ============================================================================
-// Helper Functions
-// ============================================================================
-
-/**
- * Returns stdin redirection symbol for piping between samtools commands.
- * @return String "-" for stdin
- */
-def get_stdin() {
-    return "-"
-}
-
-/**
- * Determines stdout redirection flag for a samtools subcommand.
- * @param subcommand The samtools subcommand (e.g. 'view', 'sort', 'collate')
- * @return String Redirection flag: "-O" for collate, "" for view/sort/cat, "-" otherwise
- */
-def get_stdout(subcommand) {
-    if (subcommand == "collate") {
-        return "-O"
-    }
-    else if (subcommand in ["view", "sort", "cat"]) {
-        return ""
-    }
-    return "-"
-}
-
-/**
- * Determines output file format based on task arguments.
- * @param args Task extension arguments string
- * @return String Output format: 'sam', 'cram', or 'bam' (default)
- */
-def get_output_extension(args) {
-    if (args.contains("--output-fmt sam")) {
-        return "sam"
-    }
-    else if (args.contains("--output-fmt cram")) {
-        return "cram"
-    }
-    return "bam"
-}
-
-/**
- * Generates output file arguments for a samtools subcommand.
- * @param subcommand The samtools subcommand
- * @param args Task extension arguments string
- * @param prefix Output file prefix
- * @param single_end Whether input is single-end
- * @return String Output file argument(s) for the subcommand
- */
-def get_file_output(subcommand, args, prefix, single_end) {
-    def extension = get_output_extension(args)
-
-    if (subcommand in ['view', 'sort', 'merge', 'cat', 'fixmate', 'collate']) {
-        return "-o ${prefix}.${extension}"
-    }
-    else if (subcommand == "markdup") {
-        return "${prefix}.${extension}"
-    }
-    else if (subcommand == "fasta") {
-        def output = "-0 ${prefix}_other.fasta.gz"
-        if (!single_end) {
-            output += " -1 ${prefix}_1.fasta.gz -2 ${prefix}_2.fasta.gz -s ${prefix}_singleton.fasta.gz"
-        }
-        else {
-            output += " -1 ${prefix}_1.fasta.gz -s ${prefix}_singleton.fasta.gz"
-        }
-        return output
-    }
-    else if (subcommand == "fastq") {
-        def output = "-0 ${prefix}_other.fastq.gz"
-        if (!single_end) {
-            output += " -1 ${prefix}_1.fastq.gz -2 ${prefix}_2.fastq.gz -s ${prefix}_singleton.fastq.gz"
-        }
-        else {
-            output += " -1 ${prefix}_1.fastq.gz -s ${prefix}_singleton.fastq.gz"
-        }
-        return output
-    }
-
-    error("Trying to get output for unsupported subcommand: ${subcommand}")
-}
-
-/**
- * Retrieves task extension arguments for a given pipeline step index.
- * @param task Nextflow task object
- * @param idx Zero-based pipeline step index
- * @return String Task extension arguments, or empty string if not defined
- */
-def get_args(ext, idx) {
-    def argsKey = idx == 0 ? "args" : "args${idx + 1}"
-    return ext[argsKey] ?: ""
-}
-
-/**
- * Generates thread argument for a samtools subcommand.
- * @param subcommand The samtools subcommand
- * @param task Nextflow task object
- * @return String Thread argument (e.g. "-@ 4"), or empty string for cat
- */
-def get_threads(subcommand, cpus, args) {
-    if (subcommand != "cat") {
-        if (!args.contains("-@")) {
-            return "-@ ${cpus}"
-        }
-    }
-    return ""
-}
-
-/**
- * Determines whether to add uncompressed output flag for intermediate commands.
- * @param subcommand The samtools subcommand
- * @return String Uncompressed flag "-u", or empty string for cat
- */
-def get_uncompressed_flag(subcommand) {
-    if (subcommand != "cat") {
-        return "-u"
-    }
-    return ""
-}
-
-/**
- * Generates reference FASTA argument if needed for CRAM input or output.
- * @param is_first_command Whether this is the first command in the pipeline
- * @param is_last_command Whether this is the last command in the pipeline
- * @param is_cram_input Whether the input is CRAM format
- * @param is_cram_output Whether the output is CRAM format
- * @param fasta Path to reference FASTA file
- * @return String Reference argument (e.g. "--reference file.fa"), or empty string if not needed
- */
-def get_reference(is_first_command, is_last_command, is_cram_input, is_cram_output, fasta) {
-    if ((is_cram_input && is_first_command) || (is_cram_output && is_last_command)) {
-        return "--reference ${fasta}"
-    }
-    return ""
 }
