@@ -1,0 +1,450 @@
+nextflow_process {
+
+    name "Test Process EPANG_FILTERQUERY"
+    script "../main.nf"
+    process "EPANG_FILTERQUERY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "epang"
+    tag "epang/filterquery"
+
+    // The reference has 5 occupied columns (1-4 and 10). q_full has a residue in all 5, q_half in 2
+    // (coverage 0.4), q_edge in 1 (0.2), and q_none only in unoccupied columns (0).
+
+    test("min 1 column and no coverage limit drops only the query without residues in occupied columns") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines() == [
+                    'query\treference_columns\tquery_columns\treference_coverage\tunambiguous_columns\tkept',
+                    'q_full\t5\t5\t1.000000\t5\ttrue',
+                    'q_half\t5\t2\t0.400000\t2\ttrue',
+                    'q_none\t5\t0\t0.000000\t0\tfalse',
+                    'q_edge\t5\t1\t0.200000\t1\ttrue'
+                ] },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full', '>q_half', '>q_edge'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("min 3 columns drops the queries with fewer residues in occupied columns") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 3, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_half', 'q_none', 'q_edge'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("a query with exactly min_query_columns residues is kept") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 2, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full', '>q_half'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_none', 'q_edge'] }
+            )
+        }
+    }
+
+    test("min 0.3 reference coverage drops the queries covering less of the occupied columns") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0.3 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full', '>q_half'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_none', 'q_edge'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("a query with exactly min_reference_coverage is kept") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0.4 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full', '>q_half'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_none', 'q_edge'] }
+            )
+        }
+    }
+
+    test("both thresholds must pass: enough columns but too little coverage") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 2, 0.5 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_half', 'q_none', 'q_edge'] }
+            )
+        }
+    }
+
+    test("both thresholds must pass: enough coverage but too few columns") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 3, 0.3 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full'] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\tfalse') }.collect { it.tokenize('\t')[0] } == ['q_half', 'q_none', 'q_edge'] }
+            )
+        }
+    }
+
+    // Occupied columns are 1, 2, 4, 5 and 10: column 3 only has gaps and column 5 only an N, which
+    // counts as a residue for the thresholds but not as an unambiguous one. q_amb and q_amb_lower
+    // pass both thresholds but would abort EPA-ng, since they have no unambiguous residue.
+    test("EPA-ng's ambiguity codes count for the thresholds but a query with nothing else is dropped") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nAC.E------\\n>r2\\nAC-E-----F\\n>r3\\n----N-----\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_gaps\\n..-.-----.\\n>q_lower\\nacde-----f\\n>q_amb\\nNNXXOO????\\n>q_amb_lower\\nnnxxoo????\\n>q_mixed\\nNCXE-----?\\n>q_unoccupied\\n--.--KK---\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines() == [
+                    'query\treference_columns\tquery_columns\treference_coverage\tunambiguous_columns\tkept',
+                    'q_gaps\t5\t0\t0.000000\t0\tfalse',
+                    'q_lower\t5\t4\t0.800000\t4\ttrue',
+                    'q_amb\t5\t5\t1.000000\t0\tfalse',
+                    'q_amb_lower\t5\t5\t1.000000\t0\tfalse',
+                    'q_mixed\t5\t4\t0.800000\t2\ttrue',
+                    'q_unoccupied\t5\t0\t0.000000\t0\tfalse'
+                ] },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_lower', '>q_mixed'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    // The reference is detected as nucleotide (r2 has a U), so N and ? are gaps. Column 6 only has an
+    // N in the reference and is not occupied, leaving 5 occupied columns. q_mostly_n has residues in
+    // 2 of them, 0.4 of the occupied columns, and would have 1.0 if N counted as a residue.
+    test("nucleotides: N is a gap, IUPAC codes are residues, and a column with only N is not occupied") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACGT------\\n>r2\\nAC-U-----A\\n>r3\\n-----N----\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_dna\\nACGT-----A\\n>q_iupac\\nRYGT-----A\\n>q_mostly_n\\nACNN-----N\\n>q_n\\nNNNN-----N\\n>q_n_col\\n-----A----\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0.5 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines() == [
+                    'query\treference_columns\tquery_columns\treference_coverage\tunambiguous_columns\tkept',
+                    'q_dna\t5\t5\t1.000000\t5\ttrue',
+                    'q_iupac\t5\t5\t1.000000\t5\ttrue',
+                    'q_mostly_n\t5\t2\t0.400000\t2\tfalse',
+                    'q_n\t5\t0\t0.000000\t0\tfalse',
+                    'q_n_col\t5\t0\t0.000000\t0\tfalse'
+                ] },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_dna', '>q_iupac'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    // The reference is detected as protein (78% of its residues are in A, C, G, T, U or N), so column
+    // 6 with only an N is occupied: 6 occupied columns. q_asn_only has an N in 5 of them but nothing
+    // that EPA-ng reads as a residue, so it would abort EPA-ng. Column 6 is not one EPA-ng keeps.
+    test("protein: N is asparagine and counts as a residue, but a query with nothing else is dropped") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDN------\\n>r2\\nAC-N-----F\\n>r3\\n-----N----\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_asn_only\\nNNNN-----N\\n>q_asn_some\\nACDN-----N\\n>q_col6\\n-----N----\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines() == [
+                    'query\treference_columns\tquery_columns\treference_coverage\tunambiguous_columns\tkept',
+                    'q_asn_only\t6\t5\t0.833333\t0\tfalse',
+                    'q_asn_some\t6\t5\t0.833333\t3\ttrue',
+                    'q_col6\t6\t1\t0.166667\t0\tfalse'
+                ] },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_asn_some'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("gzipped input and a sequence wrapped over several lines") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta.gz'); ref.deleteOnExit()
+                def ref_out = new java.util.zip.GZIPOutputStream(new FileOutputStream(ref)); ref_out.write('>r1\\nACDE--\\n----\\n>r2\\nAC-E--\\n---F\\n'.getBytes()); ref_out.close()
+                def query = File.createTempFile('query', '.fasta.gz'); query.deleteOnExit()
+                def query_out = new java.util.zip.GZIPOutputStream(new FileOutputStream(query)); query_out.write('>q_full\\nACDE--\\n---F\\n>q_none\\n-----K\\nK---\\n'.getBytes()); query_out.close()
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.query[0][1]).linesGzip == ['>q_full', 'ACDE-----F'] },
+                { assert path(process.out.table[0][1]).readLines().collect { it.tokenize('\t')[0] + ' ' + it.tokenize('\t')[-1] } == ['query kept', 'q_full true', 'q_none false'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Windows line endings do not end up in the table or the kept sequences") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\r\\nACDE------\\r\\n>r2\\r\\nAC-E-----F\\r\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full extra\\r\\nACDE-----F\\r\\n>q_none\\r\\n-----KK---\\r\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines().drop(1).collect { it.tokenize('\t')[0] } == ['q_full', 'q_none'] },
+                { assert path(process.out.query[0][1]).linesGzip == ['>q_full extra', 'ACDE-----F'] }
+            )
+        }
+    }
+
+    test("a query record without a sequence is dropped") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_empty\\n>q_full\\nACDE-----F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.table[0][1]).readLines().drop(1).collect { it.tokenize('\t')[0] + ' ' + it.tokenize('\t')[-1] } == ['q_empty false', 'q_full true'] },
+                { assert path(process.out.query[0][1]).linesGzip.findAll { it.startsWith('>') } == ['>q_full'] }
+            )
+        }
+    }
+
+    test("an empty query file gives a table with only the header and no query file") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = ''
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.query == [] },
+                { assert path(process.out.table[0][1]).readLines() == ['query\treference_columns\tquery_columns\treference_coverage\tunambiguous_columns\tkept'] }
+            )
+        }
+    }
+
+    test("no query passes: no query file is written but the table is") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 6, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.query == [] },
+                { assert path(process.out.table[0][1]).readLines().findAll { it.endsWith('\ttrue') }.size() == 0 },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("a query with another width than the reference fails with a message") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_short\\nACDE-----\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains('query q_short has 9 columns, the reference has 10')
+        }
+    }
+
+    test("a reference with another width in one sequence fails with a message") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains('reference sequence r2 has 9 columns, expected 10')
+        }
+    }
+
+    test("a minimum of 0 columns is rejected") {
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE------\\n>r2\\nAC-E-----F\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q_full\\nACDE-----F\\n>q_half\\nAC--------\\n>q_none\\n-----KK---\\n>q_edge\\n---------F\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 0, 0 ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains('min_query_columns must be at least 1')
+        }
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def ref = File.createTempFile('ref', '.fasta'); ref.deleteOnExit(); ref.text = '>r1\\nACDE\\n'
+                def query = File.createTempFile('query', '.fasta'); query.deleteOnExit(); query.text = '>q1\\nACDE\\n'
+                input[0] = [ [ id:'test' ], ref.toPath(), query.toPath(), 1, 0 ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

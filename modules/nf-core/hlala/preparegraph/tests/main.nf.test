@@ -8,31 +8,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hlala"
     tag "hlala/preparegraph"
-    tag "unzip"
 
     test("homo_sapiens - prg") {
         config "./nextflow.config"
 
+        def prg
         setup {
-
-            run("UNZIP"){
-                script "../../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/PRG_test.zip', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            prg = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/PRG_test.zip').resolve('PRG_test')
         }
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map{ meta, filepath ->
-                    [meta, "\$filepath/PRG_\${filepath.toString().split("/").last()}"]
-                }
+                input[0] = [ [ id:'test'], file('${prg}') ]
                 """
             }
         }
@@ -53,28 +42,12 @@ nextflow_process {
     }
 
     test("homo_sapiens - prg - stub") {
-
         options "-stub"
-        setup {
-
-            run("UNZIP"){
-                script "../../../unzip/main.nf"
-                options "-stub"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/PRG_test.zip', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
 
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive
+                input[0] = [ [ id:'test'], file('${moduleTestDir}') ]
                 """
             }
         }
@@ -82,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["graph"])).match() }
             )
         }
 

@@ -9,42 +9,36 @@ nextflow_process {
     tag "modules_nfcore"
     tag "centrifuger"
     tag "centrifuger/quantification"
-    tag "untar"
     tag "centrifuger/centrifuger"
 
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
+    test("sarscov2 - fastq_se") {
+        def db
+        setup {
+            db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz')
+            run("CENTRIFUGER_CENTRIFUGER") {
+
+            script "../../../centrifuger/centrifuger/main.nf"
                 process {
                     """
-                    input[0]=[ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz', checkIfExists: true) ]
+                    input[0] = [
+                            [id: 'test', single_end: true],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                        ]
+                    input[1] = [ [id:'sarscov2'], file('${db}') ]
+                    input[2] = true
+                    input[3] = true
+                    input[4] = []
+                    input[5] = []
                     """
                 }
             }
-        run("CENTRIFUGER_CENTRIFUGER") {
-
-        script "../../../centrifuger/centrifuger/main.nf"
-            process {
-                """
-                input[0] = [
-                        [id: 'test', single_end: true],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ]
-                input[1] = UNTAR.out.untar.map{  meta, db -> [ [id:'sarscov2'], db] }
-                input[2] = true
-                input[3] = true
-                input[4] = []
-                input[5] = []
-                """
-            }
         }
-    }
-    test("sarscov2 - fastq_se") {
+
         when {
             process {
                 """
                 input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file.map { meta, file -> [[id: 'quant'], file] }
-                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[1] = [ [id:'sarscov2'], file('${db}') ]
                 input[2] = []
                 input[3] = []
                 input[4] = []
@@ -72,8 +66,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = CENTRIFUGER_CENTRIFUGER.out.classification_file.map { meta, file -> [[id: 'quant'], file] }
-                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[0] = [ [id: 'quant'], [] ]
+                input[1] = [ [id:'sarscov2'], [] ]
                 input[2] = []
                 input[3] = []
                 input[4] = []

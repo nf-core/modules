@@ -39,6 +39,7 @@ nextflow_process {
                     }
                     | combine(ref_panel)
                     | combine(ch_map)
+                input[1] = 'vcf.gz'
                 """
             }
         }
@@ -71,6 +72,7 @@ nextflow_process {
                     [], [],
                     [], []
                 ]
+                input[1] = 'vcf.gz'
                 """
             }
         }

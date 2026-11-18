@@ -11,10 +11,30 @@ tools:
         STAR is a software package for mapping DNA sequences against
         a large reference genome, such as the human genome.
       homepage: https://github.com/alexdobin/STAR
+      doi: "10.1093/bioinformatics/bts635"
+      publication:
+        author: "Dobin, A., Davis, C. A., Schlesinger, F., Drenkow, J., Zaleski, C., Jha, S., Batut, P., Chaisson, M. & Gingeras, T. R."
+        year: 2012
+        title: "STAR: ultrafast universal RNA-seq aligner"
+        source: "Bioinformatics"
       manual: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
-      doi: 10.1093/bioinformatics/bts635
       licence: ["MIT"]
       identifier: biotools:star
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
+      licence: ["MIT"]
+      identifier: biotools:samtools
 input:
   - - meta:
         type: map

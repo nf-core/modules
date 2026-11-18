@@ -16,7 +16,29 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
+      doi: "10.1101/115717"
+      publication:
+        author: "Freed, D., Aldana, R., Weber, J. A. & Edwards, J. S."
+        year: 2017
+        title: "The Sentieon Genomics Tools - A fast and accurate solution to variant calling from next-generation sequence data"
+        source: "bioRxiv"
       identifier: ""
+  - bwa:
+      description: |
+        BWA is a software package for mapping DNA sequences against
+        a large reference genome, such as the human genome.
+      homepage: http://bio-bwa.sourceforge.net/
+      documentation: https://bio-bwa.sourceforge.net/bwa.shtml
+      doi: "10.1093/bioinformatics/btp324"
+      publication:
+        author: "Li, H. & Durbin, R."
+        year: 2009
+        title: "Fast and accurate short read alignment with Burrows–Wheeler transform"
+        source: "Bioinformatics"
+      arxiv: arXiv:1303.3997
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: "biotools:bwa"
 input:
   - - meta:
         type: map
