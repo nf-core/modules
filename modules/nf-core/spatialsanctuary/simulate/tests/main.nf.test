@@ -13,6 +13,9 @@ nextflow_process {
     test("homosapiens - json") {
 
         when {
+            params {
+                module_args = '--modality tki --c0 40.0 --theta 0.35 --r-ox 200.0'
+            }
             process {
                 """
                 input[0] = [ id:'test_sample' ]
@@ -34,6 +37,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = '--modality tki --c0 40.0 --theta 0.35 --r-ox 200.0'
+            }
             process {
                 """
                 input[0] = [ id:'test_sample' ]
