@@ -1,12 +1,12 @@
 name: "samtools_multicommand"
 description: |
-  Execute a series of samtools commands in a pipeline, allowing flexible composition of
+  Execute a series of samtools commands in a chain, allowing flexible composition of
   samtools operations such as view, sort, markdup, merge, fastq conversion and more.
 
-  The exact order of operations is specified by the pipeline input, which takes a list such as
+  The exact order of operations is specified by the `chain` input, which takes a list such as
   [view, sort, markdup]. This is then interpolated to a script where the output of each command
-  is streamed to the next before being written to disk. The script can handle references being passed,
-  as well as writing indexes, outputting in CRAM format, and conversion to FASTA and FASTQ.
+  is streamed to the next before being written to disk. The script can handle references being passed
+  when you want CRAM inputs or outputs, as well as writing indexes and conversion to FASTA and FASTQ.
 
   By default, the threads for each tool are set to the total number of available cpus.
   However, it may be desirable to configure the number of threads used for each step,
