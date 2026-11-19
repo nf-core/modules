@@ -9,6 +9,7 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "orthofinder"
+    tag "untar"
 
     test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome") {
 
@@ -66,11 +67,19 @@ nextflow_process {
 
 
     test("sarscov2 - candidatus_portiera_aleyrodidarum - proteome - resume") {
-        def prior_run
+
+
         setup {
-            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
-            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            prior_run = extract(modules_testdata_base_path + 'delete_me/orthofinder/WorkingDirectory.tar.gz')
+            run("UNTAR") {
+                script "../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test1' ], // meta map
+                        file(params.modules_testdata_base_path + 'delete_me/orthofinder/WorkingDirectory.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
         }
 
         when {
@@ -80,11 +89,12 @@ nextflow_process {
                     .copyTo("${workDir}/sarscov2.fasta")
 
                 def file_a = file("https://raw.githubusercontent.com/nf-core/test-datasets/proteinfold/testdata/sequences/H1065.fasta")
+                def file_c = UNTAR.out.untar
                 input[0] = [
                     [ id:'test_2', single_end:false ],
                     [ file_a ]
                 ]
-                input[1] = [ [ id:'test1' ], file('${prior_run}') ]
+                input[1] = UNTAR.out.untar
                 """
             }
         }
