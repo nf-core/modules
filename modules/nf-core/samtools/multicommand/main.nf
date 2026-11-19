@@ -21,12 +21,10 @@ process SAMTOOLS_MULTICOMMAND {
 
     // Sequence outputs (fasta, fastq)
     tuple val(meta), path("*_{1,2}.fasta.gz"), optional: true, emit: fasta_pair
-    tuple val(meta), path("*_interleaved.fasta.gz"), optional: true, emit: fasta_interleaved
     tuple val(meta), path("*_singleton.fasta.gz"), optional: true, emit: fasta_singleton
     tuple val(meta), path("*_other.fasta.gz"), optional: true, emit: fasta_other
 
     tuple val(meta), path("*_{1,2}.fastq.gz"), optional: true, emit: fastq_pair
-    tuple val(meta), path("*_interleaved.fastq"), optional: true, emit: fastq_interleaved
     tuple val(meta), path("*_singleton.fastq.gz"), optional: true, emit: fastq_singleton
     tuple val(meta), path("*_other.fastq.gz"), optional: true, emit: fastq_other
 
