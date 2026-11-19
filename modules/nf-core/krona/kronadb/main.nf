@@ -32,20 +32,4 @@ process KRONA_KRONADB {
         taxonomy/
 
     """
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/krona/ktupdatetaxonomy instead.
-
-    Reason:
-    This module has been superseded by the krona/ktupdatetaxonomy module.
-    """
-    assert false: deprecation_message
-
-    """
-    mkdir taxonomy
-
-    touch taxonomy/taxonomy.tab
-
-    """
 }

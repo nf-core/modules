@@ -41,14 +41,4 @@ via a boolean switch, making 'getchromsizes' unnecessary.
         getchromsizes: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
     END_VERSIONS
     """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/samtools/faidx.
-
-Reason:
-Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
-via a boolean switch, making 'getchromsizes' unnecessary.
-"""
-    assert false: deprecation_message
 }

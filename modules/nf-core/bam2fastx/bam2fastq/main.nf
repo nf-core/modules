@@ -22,7 +22,7 @@ process BAM2FASTX_BAM2FASTQ {
 
     script:
     def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/bam2fastq
+WARNING: This module has been deprecated. Please use nf-core/modules/pbtk/bam2fastq
 
 Reason:
 This module is no longer fit for purpose because bam2fastx has been deprecated by PacificBiosciences

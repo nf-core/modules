@@ -75,33 +75,4 @@ process ANTISMASH_ANTISMASHLITE {
         --databases ${databases} \\
         ${sequence_input}
     """
-
-    stub:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
-
-        Reason:
-        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
-        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-    """
-
-    assert false: deprecation_message
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    mkdir -p ${prefix}/css
-    mkdir ${prefix}/images
-    mkdir ${prefix}/js
-    touch ${prefix}/NZ_CP069563.1.region001.gbk
-    touch ${prefix}/NZ_CP069563.1.region002.gbk
-    touch ${prefix}/css/bacteria.css
-    touch ${prefix}/genome.gbk
-    touch ${prefix}/genome.json
-    touch ${prefix}/genome.zip
-    touch ${prefix}/images/about.svg
-    touch ${prefix}/index.html
-    touch ${prefix}/js/antismash.js
-    touch ${prefix}/js/jquery.js
-    touch ${prefix}/regions.js
-    touch ${prefix}/test.log
-    """
 }

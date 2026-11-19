@@ -62,27 +62,4 @@ process FASTAVALIDATOR {
             > "${prefix}.success.log"
     fi
     """
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated.
-
-    Reason:
-    This module is no longer recommended for use to validate FASTA files as it is not
-    maintained by the original developers.
-    It is recommended to use fa-lint
-    - nf-core/modules/falint
-
-    """
-    assert false: deprecation_message
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
-    }
-
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    echo "Validation successful..." \\
-        > "${prefix}.success.log"
-    """
 }

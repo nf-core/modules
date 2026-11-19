@@ -23,7 +23,7 @@ process OPENMS_IDMASSACCURACY {
 
     script:
     def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/path/to/new/module
+    WARNING: This module has been deprecated.
 
     Reason:
     This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
@@ -40,22 +40,6 @@ process OPENMS_IDMASSACCURACY {
         -out_fragment ${prefix}_frag_mass_err.tsv \\
         -threads $task.cpus \\
         $args
-
-    """
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/path/to/new/module
-
-    Reason:
-    This module is no longer fit for purpose because not part of openms 3.5.0 version anymore
-    """
-    assert false: deprecation_message
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    """
-    touch ${prefix}_frag_mass_err.tsv
-    touch ${prefix}_prec_mass_err.tsv
 
     """
 }

@@ -5,10 +5,9 @@ process FCS_FCSGX {
     tag "$meta.id"
     label 'process_low'
 
-    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.4.0--h4ac6f70_2':
-        'quay.io/biocontainers/ncbi-fcs-gx:0.4.0--h4ac6f70_2' }"
+        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.4.0/fcs-gx.sif':
+        'docker.io/ncbi/fcs-gx:0.4.0' }"
 
     input:
     tuple val(meta), path(assembly), val(taxid)
@@ -46,26 +45,5 @@ This module is now renamed as FCSGX_RUNGX and as been updated to the latest vers
         --gx-db ./${gxdb[0].baseName} \\
         --tax-id ${taxid} \\
         ${args}
-    """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx
-
-Reason:
-This module is now renamed as FCSGX_RUNGX and as been updated to the latest version
-"""
-    // Comment out this block to disable the deprecation warning
-    assert false: deprecation_message
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    mkdir -p out
-    touch out/${prefix}.fcs_gx_report.txt
-    touch out/${prefix}.taxonomy.rpt
     """
 }
