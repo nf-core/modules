@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SVDSS_SEARCH"
     script "../main.nf"
     process "SVDSS_SEARCH"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -28,6 +29,9 @@ nextflow_process {
     test("homo_sapiens - pacbio - bam, fmd") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -48,11 +52,67 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - pacbio - fastq, fmd") {
+
+        when {
+            params {
+                // FASTX mode segfaults when --bsize exceeds the read count (100)
+                module_args = '--bsize 100'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq', checkIfExists: true)
+                ]
+                input[1] = SVDSS_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - fastq.gz, fmd") {
+
+        when {
+            params {
+                module_args = '--bsize 100'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/alz.ccs.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = SVDSS_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("homo_sapiens - pacbio - bam, fmd - stub") {
 
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
