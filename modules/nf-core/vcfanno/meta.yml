@@ -105,25 +105,25 @@ maintainers:
   - "@nvnieuwk"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/htslib_vcfanno:680ad92b8154e54c
-      build_id: bd-680ad92b8154e54c_1
-      scan_id: sc-2833a3113ef6bce8_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_vcfanno:45841ba023524097
-      build_id: bd-45841ba023524097_1
-      scan_id: sc-71707e42e8d9bb3b_1
+      name: community.wave.seqera.io/library/htslib_vcfanno:7ac3a954ec1a227e
+      build_id: bd-7ac3a954ec1a227e_1
+      scan_id: sc-061cd090fb3a64bc_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vcfanno:f83d76e34f8d09e0
+      build_id: bd-f83d76e34f8d09e0_1
+      scan_id: sc-b3619e41d294a171_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_vcfanno:5ba60ddc80813a17
-      build_id: bd-5ba60ddc80813a17_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b87398769a3d9ed0bb3f2604d5ee9d024a636e5312cfbfd9ec105a5de2b59282/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_vcfanno:2d3608b08c8c205c
-      build_id: bd-2d3608b08c8c205c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4dfbd18cafada90478cf28fcdd1df0933e2fc87a24b8a95b537f7302b0b8e5b4/data
+      name: oras://community.wave.seqera.io/library/htslib_vcfanno:1dc049d6c2157db9
+      build_id: bd-1dc049d6c2157db9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d44ea9f2453d12a22337a318aac311b7f5f69deb21ff0f6300f6231dfb10b3eb/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_vcfanno:155a9d31eae841fb
+      build_id: bd-155a9d31eae841fb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae01aba9334cde7a4a6f718930a7d158108332228f593140b52a2ec2727c336c/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_amd64-bd-45841ba023524097_1.txt
+      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_amd64-bd-7ac3a954ec1a227e_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_arm64-bd-680ad92b8154e54c_1.txt
+      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_arm64-bd-f83d76e34f8d09e0_1.txt
