@@ -5,9 +5,9 @@ process CHECKV_UPDATEDATABASE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
-        'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fb71a9ba838eae927761d0c123653534b4a83ef7a9b8fafe3c1de11b5ec71a4/data'
+        : 'community.wave.seqera.io/library/checkv_diamond:49f136fbaa08f899'}"
 
     input:
     tuple val(meta), path (fasta)
