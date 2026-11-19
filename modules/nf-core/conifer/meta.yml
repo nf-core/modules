@@ -69,3 +69,25 @@ authors:
 maintainers:
   - "@icaromsc"
   - "@rpetit3"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/conifer:1.0.2--3c943238cc63ded4
+      build_id: bd-3c943238cc63ded4_1
+      scan_id: sc-fd9c35c3936db8fb_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/conifer:1.0.2--d9e7201487c31241
+      build_id: bd-d9e7201487c31241_1
+      scan_id: sc-e5016bd145501c19_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/conifer:1.0.2--c380584d51698620
+      build_id: bd-c380584d51698620_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc53c94256fb2b27b0b0a17c5aaa7629bb5f9fb75ba127cf6eaaba93943c9dd7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/conifer:1.0.2--a82c62d9a2e93d63
+      build_id: bd-a82c62d9a2e93d63_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/576ba13de662023dd213ed6356b70fe47e6228c81b8d48544938a3acd0924464/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/conifer/.conda-lock/linux_amd64-bd-d9e7201487c31241_1.txt

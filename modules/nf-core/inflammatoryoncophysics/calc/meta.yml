@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "inflammatoryoncophysics_calc"
+description: "Bedside Host-Tumor Biophysical Index (HTBI) calculator, ctDNA lead time kinetics, and recurrence risk stratification engine (RUO)."
+keywords:
+  - oncology
+  - biophysics
+  - reaction-diffusion
+  - ctdna
+  - htbi
+  - precision oncology
+tools:
+  - "inflammatory-onco-physics":
+      description: "Continuous reaction-diffusion solver and survival pipeline for microvascular pharmacological sanctuaries."
+      homepage: "https://github.com/Lukecele/inflammatory-onco-physics"
+      documentation: "https://github.com/Lukecele/inflammatory-onco-physics#readme"
+      tool_dev_url: "https://github.com/Lukecele/inflammatory-onco-physics"
+      doi: "10.21203/rs.3.rs-11695210/v1"
+      licence:
+        - "MIT"
+      identifier: "biotools:inflammatory-onco-physics"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - stage:
+        type: integer
+        description: Pathologic TNM Stage (1, 2, or 3)
+    - grade:
+        type: integer
+        description: Histological differentiation grade (1, 2, or 3)
+    - nlr:
+        type: float
+        description: Complete blood count neutrophil-to-lymphocyte ratio
+    - crp:
+        type: float
+        description: Serum high-sensitivity C-reactive protein (hs-CRP) in mg/L
+    - alb:
+        type: float
+        description: Serum albumin concentration in g/L
+
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Bedside Host-Tumor Biophysical Index (HTBI) risk stratification and ctDNA lead time report (RUO)
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_inflammatoryoncophysics:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "inflammatory-onco-physics":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''inflammatory-onco-physics''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - inflammatory-onco-physics:
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''inflammatory-onco-physics''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/inflammatory-onco-physics:1.1.2--ebd750e646daac4b
+      build_id: bd-ebd750e646daac4b_1
+      scan_id: sc-7bafb8ebe6b3350d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/inflammatory-onco-physics:1.1.2--b2972c171ba3d1ee
+      build_id: bd-b2972c171ba3d1ee_1
+      scan_id: sc-9c6c2458557fea4d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/inflammatory-onco-physics:1.1.2--b98454cbc8d09352
+      build_id: bd-b98454cbc8d09352_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/69015543f83041aebf808b0a6c411cfedba10764ec0ff871a2d6c3d5e8a93922/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/inflammatory-onco-physics:1.1.2--e6d72f5e02901b75
+      build_id: bd-e6d72f5e02901b75_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/473d7b7aa247236404d727371607fd3db52ad207b9f3b60e6bd84297aefb23f7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/inflammatoryoncophysics/calc/.conda-lock/linux_amd64-bd-b2972c171ba3d1ee_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/inflammatoryoncophysics/calc/.conda-lock/linux_arm64-bd-ebd750e646daac4b_1.txt

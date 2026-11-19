@@ -7,9 +7,7 @@ keywords:
   - compression
 tools:
   - "scramble":
-      description: "Staden Package 'io_lib' (sometimes referred to as libstaden-read
-        by distributions). This contains code for reading and writing a variety of Bioinformatics
-        / DNA Sequence formats."
+      description: "Staden Package 'io_lib' (sometimes referred to as libstaden-read by distributions). This contains code for reading and writing a variety of Bioinformatics / DNA Sequence formats."
       homepage: "https://github.com/jkbonfield/io_lib"
       documentation: "https://github.com/jkbonfield/io_lib/blob/master/README.md"
       tool_dev_url: "https://github.com/jkbonfield/io_lib"
@@ -84,3 +82,27 @@ authors:
   - "@matthdsm"
 maintainers:
   - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/staden_io_lib:1.15.1--cdbf259bf64228b4
+      build_id: bd-cdbf259bf64228b4_1
+      scan_id: sc-1c4eb9a8f3197a2d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/staden_io_lib:1.15.1--2455ed4f3ab61bb7
+      build_id: bd-2455ed4f3ab61bb7_1
+      scan_id: sc-285729f2c675f3e4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/staden_io_lib:1.15.1--747a224fa0a09d22
+      build_id: bd-747a224fa0a09d22_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bfbe485c5c0d092b8532e958dced472ea368bd87676876b066d45e025e5e28e6/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/staden_io_lib:1.15.1--da2a62921c2ea129
+      build_id: bd-da2a62921c2ea129_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/deffb1131242d30a8e6f760a5f9ee85846b0cc74563bcea3fd22c1743ef396fe/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/stadeniolib/scramble/.conda-lock/linux_amd64-bd-cdbf259bf64228b4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/stadeniolib/scramble/.conda-lock/linux_arm64-bd-2455ed4f3ab61bb7_1.txt

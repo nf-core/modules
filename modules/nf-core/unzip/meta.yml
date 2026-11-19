@@ -7,8 +7,7 @@ keywords:
   - archiving
 tools:
   - unzip:
-      description: p7zip is a quick port of 7z.exe and 7za.exe (command line
-        version of 7zip, see www.7-zip.org) for Unix.
+      description: p7zip is a quick port of 7z.exe and 7za.exe (command line version of 7zip, see www.7-zip.org) for Unix.
       homepage: https://sourceforge.net/projects/p7zip/
       documentation: https://sourceforge.net/projects/p7zip/
       tool_dev_url: https://sourceforge.net/projects/p7zip"
@@ -63,3 +62,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/p7zip:16.02--8f317b695e2373ad
+      build_id: bd-8f317b695e2373ad_1
+      scan_id: sc-61e8a8120c43f634_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/p7zip:16.02--ade3159adb6fb783
+      build_id: bd-ade3159adb6fb783_1
+      scan_id: sc-727743cd2015f35d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/p7zip:16.02--dc0bb46dac87052a
+      build_id: bd-dc0bb46dac87052a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/11/116a4471ab3510a409f146f5616f5641e926da51ae88114b29e242bcdd8d6300/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/p7zip:16.02--28435d65eef9bdec
+      build_id: bd-28435d65eef9bdec_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0fc79355472aecc78e65e35a53be3badbe2068359b5cbf5b80c042abaf97f3dd/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/unzip/.conda-lock/linux_amd64-bd-8f317b695e2373ad_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/unzip/.conda-lock/linux_arm64-bd-ade3159adb6fb783_1.txt

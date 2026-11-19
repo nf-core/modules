@@ -103,3 +103,17 @@ authors:
   - "@priyanka-surana"
 maintainers:
   - "@priyanka-surana"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/crumble_htslib:7794eee7eca9bbfb
+      build_id: bd-7794eee7eca9bbfb_1
+      scan_id: sc-77262c74d437a894_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/crumble_htslib:0e2abfa5976b48da
+      build_id: bd-0e2abfa5976b48da_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0a1346c2b14945ca6fdd5f0ad16793359bda5515adb73ec9bc8fba29667f1c15/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/crumble/.conda-lock/linux_amd64-bd-7794eee7eca9bbfb_1.txt

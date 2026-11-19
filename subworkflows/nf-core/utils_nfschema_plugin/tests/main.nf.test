@@ -72,7 +72,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('ERROR ~ Validation of pipeline parameters failed!') } }
+                { assert (workflow.stdout + workflow.stderr).any { it.contains('ERROR ~ Validation of pipeline parameters failed!') } }
             )
         }
     }
@@ -138,7 +138,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('ERROR ~ Validation of pipeline parameters failed!') } }
+                { assert (workflow.stdout + workflow.stderr).any { it.contains('ERROR ~ Validation of pipeline parameters failed!') } }
             )
         }
     }

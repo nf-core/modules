@@ -6,9 +6,9 @@ process PCANGSD_INBREEDING {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pcangsd:1.36.4--py313h5d164f8_1':
-        'quay.io/biocontainers/pcangsd:1.36.4--py313h5d164f8_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/853e9d09d2da49363420f6c4a9bc1617145b73ee9dd651add902e5fb5fbdbb9d/data'
+        : 'community.wave.seqera.io/library/pcangsd:1.36.4--ef9ce72a07cdfbbd'}"
 
     input:
     tuple val(meta), path(beagle_file)
