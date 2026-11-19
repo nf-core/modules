@@ -47,9 +47,11 @@ workflow BAM_TAPS_CONVERSION {
         error("bam_taps_conversion: trims must be [] or [ nOT, nOB ], each as 'r1_start,r1_end,r2_start,r2_end' (got ${trims})")
     }
 
-    // One reference for every sample, whether it is passed once or once per sample
+    // One reference for every sample, whether it is passed once or once per sample. Take the first of
+    // each input before combining: combining per-sample copies would make n x n items.
     ch_reference = ch_fasta
-        .combine(ch_fasta_index)
+        .first()
+        .combine(ch_fasta_index.first())
         .map { meta, fasta, _meta2, fai -> [ meta, fasta, fai ] }
         .first()
 
