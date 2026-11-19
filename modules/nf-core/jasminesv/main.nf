@@ -70,7 +70,7 @@ process JASMINESV {
         echo "The file is empty, using the header of the first VCF with the samples of all VCFs as output file"
         {
             grep '^##' ${first_vcf}
-            grep '^#CHROM' ${first_vcf} | cut -f 1-9 | tr -d '\\n'
+            printf '#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\tFORMAT'
             index=0
             while read -r vcf; do
                 for sample in \$(grep '^#CHROM' "\${vcf}" | cut -f 10-); do
