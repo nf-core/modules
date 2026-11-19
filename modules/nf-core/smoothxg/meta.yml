@@ -1,6 +1,5 @@
 name: smoothxg
-description: Linearize and simplify variation graph in GFA format using blocked
-  partial order alignment
+description: Linearize and simplify variation graph in GFA format using blocked partial order alignment
 keywords:
   - gfa
   - graph
@@ -45,8 +44,7 @@ output:
   maf:
     - "*.maf":
         type: file
-        description: write the multiple sequence alignments (MSAs) in MAF format
-          in this file (optional)
+        description: write the multiple sequence alignments (MSAs) in MAF format in this file (optional)
         pattern: "*.{maf}"
         ontologies: []
   versions_smoothxg:
@@ -74,3 +72,27 @@ authors:
   - "@heuermh, @subwaystation"
 maintainers:
   - "@heuermh, @subwaystation"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/smoothxg:0.8.2--45b06f1c3462cd04
+      build_id: bd-45b06f1c3462cd04_1
+      scan_id: sc-3b67c1a2163acdb5_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/smoothxg:0.8.2--49c8fc69d4748df5
+      build_id: bd-49c8fc69d4748df5_1
+      scan_id: sc-afb2adb0d0784595_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/smoothxg:0.8.2--7513678957bb4ece
+      build_id: bd-7513678957bb4ece_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b9fdcd26aa8b82cdf91b6d9afa9b092be7d5eabc810b462e410e6b501b53ce1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/smoothxg:0.8.2--6df0b15a31c81ed6
+      build_id: bd-6df0b15a31c81ed6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bffc35b836e12136e3c74f7b7a9df47435a892cd3a917dedf8b83798ac9f910/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/smoothxg/.conda-lock/linux_amd64-bd-49c8fc69d4748df5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/smoothxg/.conda-lock/linux_arm64-bd-45b06f1c3462cd04_1.txt

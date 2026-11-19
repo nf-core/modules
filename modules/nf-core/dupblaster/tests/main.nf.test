@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process DUPBLASTER"
     script "../main.nf"
     process "DUPBLASTER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,6 +12,10 @@ nextflow_process {
     test("sarscov2 - paired_end bam") {
 
         when {
+            params {
+                // The test reads have SRA names, without flowcell, lane and tile
+                module_args = '--sequencing-duplicate-detection off'
+            }
             process {
                 """
                 input[0] = [
@@ -25,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys:["bam",])).match()
+                    sanitizeOutput(process.out, readsMD5Keys:["bam",], unstableKeys:["pdf"])).match()
                 }
             )
         }
@@ -37,6 +42,10 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                // The test reads have SRA names, without flowcell, lane and tile
+                module_args = '--sequencing-duplicate-detection off'
+            }
             process {
                 """
                 input[0] = [

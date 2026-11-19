@@ -6,9 +6,9 @@ process SMOOTHXG {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoothxg:0.8.0--h40c17d1_0' :
-        'quay.io/biocontainers/smoothxg:0.8.0--h40c17d1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4b9fdcd26aa8b82cdf91b6d9afa9b092be7d5eabc810b462e410e6b501b53ce1/data'
+        : 'community.wave.seqera.io/library/smoothxg:0.8.2--49c8fc69d4748df5'}"
 
     input:
     tuple val(meta), path(gfa)

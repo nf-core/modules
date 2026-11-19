@@ -6,9 +6,9 @@ process CONIFER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/conifer%3A1.0.2--he4a0461_0':
-        'quay.io/biocontainers/conifer:1.0.2--he4a0461_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc53c94256fb2b27b0b0a17c5aaa7629bb5f9fb75ba127cf6eaaba93943c9dd7/data'
+        : 'community.wave.seqera.io/library/conifer:1.0.2--d9e7201487c31241'}"
 
     input:
     tuple val(meta), path(kraken_result)

@@ -10,27 +10,54 @@
                         "test.bam:md5Reads,762e859a3d0ed1553655cde77665c940"
                     ]
                 ],
-                "stats": [
+                "conversion_matrix": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.stats.tsv:md5,86bfb92e82d7ce3984d6ebc5521a047b"
+                        "test.conversion-matrix.tsv:md5,5c47eecd8ec420ad29474d77c3659a98"
+                    ]
+                ],
+                "mbias": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mbias.tsv:md5,7b33fabc96cdb8d507262c9a860f458e"
+                    ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.conversion-matrix.pdf",
+                            "test.mbias.pdf"
+                        ]
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summary.tsv:md5,e8366c11b72c86ca2c61045afa31e9ab"
                     ]
                 ],
                 "versions_methylsieve": [
                     [
                         "METHYLSIEVE",
                         "methylsieve",
-                        "0.1.0"
+                        "0.3.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-25T13:11:05.228968",
+        "timestamp": "2026-11-18T11:34:10.858238",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.5"
         }
     },
     "sarscov2 - paired_end bam - stub": {
@@ -44,27 +71,54 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "stats": [
+                "conversion_matrix": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.stats.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.conversion-matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "mbias": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mbias.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.conversion-matrix.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.mbias.pdf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.summary.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_methylsieve": [
                     [
                         "METHYLSIEVE",
                         "methylsieve",
-                        "0.1.0"
+                        "0.3.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-26T14:52:22.33429",
+        "timestamp": "2026-11-18T11:34:20.783583",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.5"
         }
     }
 }
