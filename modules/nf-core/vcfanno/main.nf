@@ -7,8 +7,8 @@ process VCFANNO {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b87398769a3d9ed0bb3f2604d5ee9d024a636e5312cfbfd9ec105a5de2b59282/data'
-        : 'community.wave.seqera.io/library/htslib_vcfanno:45841ba023524097'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae01aba9334cde7a4a6f718930a7d158108332228f593140b52a2ec2727c336c/data'
+        : 'community.wave.seqera.io/library/htslib_vcfanno:7ac3a954ec1a227e'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)
