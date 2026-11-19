@@ -75,12 +75,13 @@ nextflow_process {
         }
         then {
             def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
             assertAll(
                 { assert process.success },
                 { assert process.out.txt.isEmpty() },
                 { assert hits[0].startsWith('#\tgene name\tKO') },
                 { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
-                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
             )
         }
     }
@@ -101,12 +102,13 @@ nextflow_process {
         }
         then {
             def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
             assertAll(
                 { assert process.success },
                 { assert process.out.txt.isEmpty() },
                 { assert hits[0].startsWith('#\tgene name\tKO') },
                 { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
-                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
             )
         }
     }
