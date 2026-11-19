@@ -1,0 +1,149 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: treemix
+description: Infer a population tree with migration edges from allele counts with TreeMix
+keywords:
+  - treemix
+  - population tree
+  - admixture
+  - migration
+  - population genetics
+tools:
+  - treemix:
+      description: TreeMix is a population genetics tool developed by Joseph K. Pickrell and Jonathan K.
+        Pritchard for inferring population splits and admixture from genome-wide allele frequency data.
+      homepage: https://bitbucket.org/nygcresearch/treemix
+      documentation: https://bitbucket.org/nygcresearch/treemix/wiki/Home
+      doi: 10.1371/journal.pgen.1002967
+      licence:
+        - GPL-3.0-or-later
+      identifier: biotools:treemix
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+    - input:
+        type: file
+        description: One gzip-compressed TreeMix allele-count file. The header contains population names;
+          each remaining row contains comma-separated allele counts for one SNP.
+        pattern: "*.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - tree:
+        type: file
+        description: Optional starting tree in Newick format (-tf). Pass an empty list to infer the topology
+          from the allele counts.
+        pattern: "*.{nwk,newick,tre,tree,gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1910
+output:
+  llik:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.llik":
+          type: file
+          description: Log-likelihoods before and after adding migration edges
+          pattern: "*.llik"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  treeout:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.treeout.gz":
+          type: file
+          description: Tree in Newick format plus one line per migration edge
+          pattern: "*.treeout.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  vertices:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.vertices.gz":
+          type: file
+          description: Vertices of the graph
+          pattern: "*.vertices.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  edges:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.edges.gz":
+          type: file
+          description: Edges of the graph
+          pattern: "*.edges.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  cov:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.cov.gz":
+          type: file
+          description: Sample covariance matrix
+          pattern: "*.cov.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  modelcov:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.modelcov.gz":
+          type: file
+          description: Covariance matrix fitted by the model
+          pattern: "*.modelcov.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  covse:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.covse.gz":
+          type: file
+          description: Standard errors of the sample covariance; this output is optional.
+          pattern: "*.covse.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+      - "*.log":
+          type: file
+          description: "TreeMix standard output and error, including the SEED: line"
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  versions_treemix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - treemix:
+          type: string
+          description: The name of the tool
+      - treemix -h 2>&1 | sed -n 's/^TreeMix v[.] *//p':
+          type: eval
+          description: The expression to obtain the version of TreeMix
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - treemix:
+          type: string
+          description: The name of the tool
+      - treemix -h 2>&1 | sed -n 's/^TreeMix v[.] *//p':
+          type: eval
+          description: The expression to obtain the version of TreeMix
+authors:
+  - "@NouraMalharbi"
+  - "@Othmanaljurayyad"
+  - "@malghurayb"
+  - "@AroobAlhumaidy"
+  - "@AlmuhayyaA"
+maintainers:
+  - "@NouraMalharbi"
+  - "@Othmanaljurayyad"
+  - "@malghurayb"
