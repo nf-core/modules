@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVDSS_SEARCH {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdss:2.1.1--he17396a_0' :
-        'quay.io/biocontainers/svdss:2.1.1--he17396a_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8357bb6a78ac936810ecc7528fa4b53a8deea7e7d8abb31afb8ed7e14a05fdc3/data'
+        : 'community.wave.seqera.io/library/svdss:2.1.1--5e16609dd2159d4e'}"
 
     input:
     tuple val(meta), path(reads)
