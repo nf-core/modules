@@ -113,3 +113,17 @@ authors:
   - "@krannich479"
 maintainers:
   - "@krannich479"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/samtools_svdss:a3b4ff04ffb34c8c
+      build_id: bd-a3b4ff04ffb34c8c_1
+      scan_id: sc-dc59d908ec2d1263_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/samtools_svdss:4a9e31ca1b7fa68f
+      build_id: bd-4a9e31ca1b7fa68f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/daa86b771119a67c6dfc0892e58015effe34df2c82754aad558d53253b074600/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/svdss/smooth/.conda-lock/linux_amd64-bd-a3b4ff04ffb34c8c_1.txt
