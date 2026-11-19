@@ -144,7 +144,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert command },
-                { assert !command.contains('--nOT') && !command.contains('--nOB') }
+                { assert !command.contains('--nOT') && !command.contains('--nOB') },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
+                    process.out.tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.bed,
+                    process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
