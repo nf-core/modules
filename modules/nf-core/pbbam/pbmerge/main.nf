@@ -23,7 +23,7 @@ process PBBAM_PBMERGE {
 
     script:
     def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+WARNING: This module has been deprecated. Please use nf-core/modules/pbtk/pbmerge
 
 Reason:
 This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
@@ -37,22 +37,6 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
         -o ${prefix}.bam \\
         $args \\
         *.bam
-
-    """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
-
-Reason:
-This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
-
-"""
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
-    """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.pbi
 
     """
 }

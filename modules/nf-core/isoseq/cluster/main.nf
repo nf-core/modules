@@ -39,14 +39,4 @@ process ISOSEQ_CLUSTER {
     is faster and has no memory constraints on large read counts.
     """
     assert false: deprecation_message
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/cluster2
-
-    Reason:
-    isoseq cluster is being phased out upstream in favour of cluster2, which
-    is faster and has no memory constraints on large read counts.
-    """
-    assert false: deprecation_message
 }
