@@ -8,19 +8,28 @@ nextflow_process {
     tag "modules_nfcore"
     tag "foldmason"
     tag "foldmason/createdb"
+    tag  "untar"
+
+    setup {
+
+        run("UNTAR") {
+            script "../../../../../modules/nf-core/untar/main.nf"
+                process {
+                    """
+                        archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/af2_structures/seatoxin-ref.tar.gz", checkIfExists: true)
+                        input[0] = Channel.of(tuple([id:'test'], archive))
+                    """
+                }
+        }
+    }
 
     test("seatoxin") {
-
-        def structures
-        setup {
-            structures = extract('https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/af2_structures/seatoxin-ref.tar.gz').resolve('seatoxin-ref')
-        }
 
         when {
 
             process {
                 """
-                    input[0] = [ [ id:'test' ], file('${structures}').listFiles().collect() ]
+                    input[0] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
                 """
             }
         }
@@ -36,13 +45,11 @@ nextflow_process {
 
     test("seatoxin - stub ") {
 
-        options "-stub"
-
         when {
 
             process {
                 """
-                    input[0] = [ [ id:'test' ], [ file('dummy.pdb', checkIfExists: false) ] ]
+                    input[0] = UNTAR.out.untar.map { meta,dir -> [meta, file(dir).listFiles().collect()]}
                 """
             }
         }
