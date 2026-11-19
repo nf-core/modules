@@ -7,8 +7,8 @@ process PLOTSR {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/plotsr:1.1.1--pyh7cba7a3_0'
-        : 'quay.io/biocontainers/plotsr:1.1.1--pyh7cba7a3_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db8f402265ea63f1a4212d71f58474b4a72cba3b17f94469e9fda39bd0439ca1/data'
+        : 'community.wave.seqera.io/library/plotsr_matplotlib_python:5179eb65b5a167ec'}"
 
     input:
     tuple val(meta), path(syri)

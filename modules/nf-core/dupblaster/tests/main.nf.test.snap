@@ -10,27 +10,49 @@
                         "test.bam:md5Reads,762e859a3d0ed1553655cde77665c940"
                     ]
                 ],
-                "stats": [
+                "metrics": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.dupblaster.tsv:md5,c0a7f17287f7b941c9082920ab5cef30"
+                        "test.duplicate-metrics.tsv:md5,c1176a9e9765a8658bcfb279fc1420f2"
                     ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.duplication-sampled.pdf"
+                    ]
+                ],
+                "sampled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.duplication-sampled.tsv:md5,007cbb7ac61d564272f49c383e90dd99"
+                    ]
+                ],
+                "sequencing_units": [
+                    
+                ],
+                "spectrum": [
+                    
                 ],
                 "versions_dupblaster": [
                     [
                         "DUPBLASTER",
                         "dupblaster",
-                        "0.1.1"
+                        "0.3.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-25T13:08:45.927008",
+        "timestamp": "2026-11-18T11:49:09.76103",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.5"
         }
     },
     "sarscov2 - paired_end bam - stub": {
@@ -44,27 +66,54 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "stats": [
+                "metrics": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.dupblaster.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.duplicate-metrics.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.duplication-sampled.pdf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sampled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.duplication-sampled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sequencing_units": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.sequencing-units.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "spectrum": [
+                    
                 ],
                 "versions_dupblaster": [
                     [
                         "DUPBLASTER",
                         "dupblaster",
-                        "0.1.1"
+                        "0.3.1"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-26T14:49:30.962066",
+        "timestamp": "2026-11-18T11:49:18.816497",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.5"
         }
     }
 }
