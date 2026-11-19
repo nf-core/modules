@@ -338,4 +338,41 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - [vcf, vcf_gz], [], [], [], [], [], [] - output_genotypes - empty vcf") {
+
+        when {
+            params {
+                args = "min_support=2 --output_genotypes"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:"test" ],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists:true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/empty.vcf.gz", checkIfExists:true),
+                    ],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [[],[]]
+                input[2] = [[],[]]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.vcf[0][1]).vcf.header.getSampleNamesInOrder()
+                ).match() }
+            )
+        }
+
+    }
+
 }
