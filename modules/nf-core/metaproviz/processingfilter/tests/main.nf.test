@@ -1,0 +1,380 @@
+nextflow_process {
+
+    name "Test Process METAPROVIZ_PROCESSINGFILTER"
+    script "../main.nf"
+    process "METAPROVIZ_PROCESSINGFILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaproviz"
+    tag "metaproviz/processingfilter"
+
+    test("processing_filter - cellular se rds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.se[0][1]).exists() },
+                { assert !path(process.out.log[0][1]).text.contains("WARN") },
+                { assert path(process.out.report[0][1]).text.contains("The parameters selected for this run") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Modified</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--cutoff_featurefilt 0.8</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("a number between 0 and 1 (0.8 = 80%)") },
+                { assert path(process.out.report[0][1]).text.contains("<strong>In this run the conditions have 10 to 12 samples") },
+                { assert path(process.out.report[0][1]).text.contains("sample metadata (<code>colData</code> of <code>SE.RData</code>)") },
+                { assert path(process.out.report[0][1]).text.contains("182 features, ") },
+                { assert path(process.out.report[0][1]).text.contains("flagged for removal") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Modified</code> therefore cannot tell the two apart") },
+                { assert path(process.out.report[0][1]).text.contains("Please cite MetaProViz, base R and the dependencies listed here and in the Citations section") },
+                { assert !path(process.out.report[0][1]).text.contains('class="graybox"') },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - cellular csv matrices") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/data_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).text.contains("sample metadata (<code>sample_matrix.csv</code>)") },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - Standard filter across all samples") {
+
+        when {
+            params {
+                module_args = "--featurefilt Standard"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !path(process.out.log[0][1]).text.contains("WARN") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Standard</code> (default: Modified)") },
+                { assert path(process.out.report[0][1]).text.contains("across all samples and independent of the conditions (Bijlsma et al., 2006)") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--cutoff_featurefilt 0.8</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Standard</code> therefore cannot tell the two apart") },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - no Conditions column falls back to Standard") {
+
+        when {
+            params {
+                module_args = "--conditions_col not_a_column"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("Using Standard") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Modified</code> could not be used, therefore <code>--featurefilt Standard</code> is used as fallback.") },
+                { assert path(process.out.report[0][1]).text.contains("<strong>Fallback from Modified:</strong> <code>--featurefilt Modified</code> cannot be used because there is no column <code>not_a_column</code> in the sample metadata (<code>colData</code> of <code>SE.RData</code>).") },
+                { assert !path(process.out.report[0][1]).text.contains("<code>--conditions_col not_a_column</code>") },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - Manual list of feature names") {
+
+        when {
+            params {
+                module_args = "--featurefilt Manual --features_to_flag valine-d8,hippuric acid-d5"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !path(process.out.log[0][1]).text.contains("WARN") },
+                { assert path(process.out.log[0][1]).text.contains("Features to flag (2): valine-d8, hippuric acid-d5") },
+                { assert path(process.out.flagged_features[0][1]).readLines()*.split("\t")*.getAt(0) == ["Metabolite", "valine-d8", "hippuric acid-d5"] },
+                { assert path(process.out.report[0][1]).text.contains("<code>--features_to_flag</code>: a list of feature names. The listed features are flagged for removal (TRUE), all other features are kept (FALSE).") },
+                { assert path(process.out.report[0][1]).text.contains("flags exactly the features given in <code>--features_to_flag</code>") },
+                { assert path(process.out.report[0][1]).text.contains("No cutoff is used") },
+                { assert !path(process.out.report[0][1]).text.contains("minimum required detection rate") },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - Manual list warns about a name that is not in the data") {
+
+        when {
+            params {
+                module_args = "--featurefilt Manual --features_to_flag valine-d8,not_a_feature"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("1 feature(s) of --features_to_flag are not in the data: not_a_feature.") },
+                { assert path(process.out.report[0][1]).text.contains("<strong>1 name is not in the data:</strong> <code>not_a_feature</code>.") },
+                { assert path(process.out.flagged_features[0][1]).readLines()*.split("\t")*.getAt(0) == ["Metabolite", "valine-d8"] }
+            )
+        }
+    }
+
+    test("processing_filter - Manual falls back through Modified to Standard") {
+
+        when {
+            params {
+                module_args = "--featurefilt Manual --conditions_col not_a_column"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("Using Modified instead") },
+                { assert path(process.out.log[0][1]).text.contains("Using Standard") },
+                { assert path(process.out.report[0][1]).text.contains("<strong>Fallback from Manual, then Modified:</strong>") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--featurefilt Manual</code> and <code>--featurefilt Modified</code> could not be used, therefore <code>--featurefilt Standard</code> is used as fallback.") },
+                { assert snapshot(
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - output format csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'csv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.se.isEmpty() },
+                { assert process.out.flagged_matrices[0][1].size() == 3 },
+                { assert path(process.out.flagged_matrices[0][1].find { it.toString().endsWith("data_matrix.csv") }).text.readLines().size() == 183 },
+                { assert path(process.out.flagged_matrices[0][1].find { it.toString().endsWith("sample_matrix.csv") }).text.readLines().size() == 59 },
+                { assert path(process.out.flagged_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }).text.readLines()[0].contains('"FilteredFeaturesFlag"') },
+                { assert path(process.out.report[0][1]).text.contains("feature metadata (<code>test.flagged.feature_matrix.csv</code>)") },
+                { assert snapshot(
+                    flagged_matrices: process.out.flagged_matrices,
+                    flagged_features: process.out.flagged_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - output format tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.se.isEmpty() },
+                { assert process.out.flagged_matrices[0][1].every { it.toString().endsWith(".tsv") } },
+                { assert path(process.out.report[0][1]).text.contains("feature metadata (<code>test.flagged.feature_matrix.tsv</code>)") },
+                { assert snapshot(
+                    flagged_matrices: process.out.flagged_matrices,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processing_filter - unknown featurefilt fails") {
+
+        when {
+            params {
+                module_args = "--featurefilt Foo"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("--featurefilt must be 'Standard', 'Modified' or 'Manual', got 'Foo'") }
+            )
+        }
+    }
+
+    test("processing_filter - unknown output format fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'xlsx'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("output_format must be se, tsv or csv") }
+            )
+        }
+    }
+
+    test("processing_filter - cellular se rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
