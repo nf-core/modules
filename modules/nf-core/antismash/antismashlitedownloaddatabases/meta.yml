@@ -1,7 +1,5 @@
 name: antismash_antismashlitedownloaddatabases
-description: antiSMASH allows the rapid genome-wide identification, annotation and
-  analysis of secondary metabolite biosynthesis gene clusters. This module downloads
-  the antiSMASH databases for conda and docker/singularity runs.
+description: antiSMASH allows the rapid genome-wide identification, annotation and analysis of secondary metabolite biosynthesis gene clusters. This module downloads the antiSMASH databases for conda and docker/singularity runs.
 deprecated: true
 keywords:
   - secondary metabolites
@@ -84,3 +82,27 @@ authors:
   - "@jasmezz"
 maintainers:
   - "@jasmezz"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/antismash-lite:7.1.0--9ae8ceb97e6d123a
+      build_id: bd-9ae8ceb97e6d123a_1
+      scan_id: sc-2ccca003f6648f81_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/antismash-lite:7.1.0--a3b217e2bd16df9c
+      build_id: bd-a3b217e2bd16df9c_1
+      scan_id: sc-d5b6ef7a052d418c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/antismash-lite:7.1.0--7b8810ab44001734
+      build_id: bd-7b8810ab44001734_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc6d66406ec944b47551bf8bb01df1305b6eb84decf18d449b395709f94f9c38/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/antismash-lite:7.1.0--ceba18fefbf1d73c
+      build_id: bd-ceba18fefbf1d73c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6f7f92d5dd5f62027bc641625749fd1cb1450b96793a49231164b21000621051/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/antismash/antismashlitedownloaddatabases/.conda-lock/linux_amd64-bd-9ae8ceb97e6d123a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/antismash/antismashlitedownloaddatabases/.conda-lock/linux_arm64-bd-a3b217e2bd16df9c_1.txt
