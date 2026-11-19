@@ -12,7 +12,6 @@ nextflow_workflow {
     tag "deseq2/differential"
     tag "propr/propd"
     tag "affy/justrma"
-    tag "untar"
     tag "variancepartition/dream"
 
     test("dream") {
@@ -30,18 +29,18 @@ nextflow_workflow {
                     samplesheet_file: 'SRP254919.samplesheet.csv'
                 ]
 
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
+                ch_contrasts =  channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'dream',  // analysis method
@@ -85,18 +84,18 @@ nextflow_workflow {
                     samplesheet_file: 'SRP254919.samplesheet.csv'
                 ]
 
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
+                ch_contrasts =  channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ treatment + (1 | sample_number)', 'comparison': 'treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'dream',  // analysis method
@@ -141,18 +140,18 @@ nextflow_workflow {
                     samplesheet_file: 'SRP254919.samplesheet.csv'
                 ]
 
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts =  Channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
+                ch_contrasts =  channel.of(['id': 'treatment_mCherry_hND6', 'formula':'~ 0 + treatment + sample_number', 'comparison':'treatmenthND6 - treatmentmCherry'])
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'dream',  // analysis method
@@ -197,19 +196,19 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',  // analysis method
@@ -248,28 +247,20 @@ nextflow_workflow {
         config './limma_basic_microarray.config'
         tag "limma_basic_microarray"
 
+        def celfiles
         setup {
-            run("UNTAR") {
-                script "../../../../modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
             run("AFFY_JUSTRMA") {
                 script "../../../../modules/nf-core/affy/justrma/main.nf"
                 process {
                     """
-                    ch_samplesheet = Channel.of([
-                        [ id:'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
-                        ]
-                    )
-                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true),
+                        file('${celfiles}')
+                    ]
                     input[1] = [[],[]]
                     """
                 }
@@ -287,13 +278,13 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
-                ch_contrasts = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
+                ch_contrasts = channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -347,19 +338,19 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'limma',
@@ -409,22 +400,22 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([
+                ch_transcript_lengths = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.lengths_file)
                 ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',
@@ -475,19 +466,19 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'propd',  // analysis method
@@ -532,7 +523,7 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
@@ -544,7 +535,7 @@ nextflow_workflow {
                         [ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison
                     ]}
                     .groupTuple()
-                ch_input = Channel.of(
+                ch_input = channel.of(
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
@@ -605,7 +596,7 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
@@ -617,7 +608,7 @@ nextflow_workflow {
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of(
+                ch_input = channel.of(
                     [
                         [ id:'test' ],
                         file(testData.expression_test_data_dir + testData.abundance_file),
@@ -688,19 +679,19 @@ nextflow_workflow {
                 ]
 
                 // Define inputs
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.of([ [], [] ])
-                ch_control_features = Channel.of([ [], [] ])
+                ch_transcript_lengths = channel.of([ [], [] ])
+                ch_control_features = channel.of([ [], [] ])
                 ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
                     .groupTuple()
-                ch_input = Channel.of([
+                ch_input = channel.of([
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.abundance_file),
                     'deseq2',

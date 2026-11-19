@@ -7,28 +7,22 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "vuegen"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../untar/main.nf"
-            process {
-                """
-                archive = file(params.modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz', checkIfExists: true)
-                input[0] = Channel.of(tuple([id:'vuegen_test'], archive))
-                """
-            }
-        }
-    }
 
     // Test VueGen with a directory (Streamlit report)
     test("vuegen - directory (Streamlit report)") {
+        def report_dir
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+        }
+
         when {
             process {
                 """
-                input[0] = Channel.of("directory")                     // input_type
-                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
-                input[2] = Channel.of("streamlit")                          // report_type
+                input[0] = channel.of("directory")                     // input_type
+                input[1] = file('${report_dir}')                      // input_path
+                input[2] = channel.of("streamlit")                          // report_type
                 """
             }
         }
@@ -58,12 +52,19 @@ nextflow_process {
 
     // Test VueGen with a directory (HTML report)
     test("vuegen - directory (HTML report)") {
+        def report_dir
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+        }
+
         when {
             process {
                 """
-                input[0] = Channel.of("directory")                     // input_type
-                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
-                input[2] = Channel.of("html")                          // report_type
+                input[0] = channel.of("directory")                     // input_type
+                input[1] = file('${report_dir}')                      // input_path
+                input[2] = channel.of("html")                          // report_type
                 """
             }
         }
@@ -89,12 +90,19 @@ nextflow_process {
 
     // Test VueGen with a directory (PDF report)
     test("vuegen - directory (PDF report)") {
+        def report_dir
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+        }
+
         when {
             process {
                 """
-                input[0] = Channel.of("directory")                     // input_type
-                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
-                input[2] = Channel.of("pdf")                          // report_type
+                input[0] = channel.of("directory")                     // input_type
+                input[1] = file('${report_dir}')                      // input_path
+                input[2] = channel.of("pdf")                          // report_type
                 """
             }
         }
@@ -124,9 +132,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of("directory")                     // input_type
-                input[1] = UNTAR.out.untar.map { meta, dir -> file(dir) }  // input_path
-                input[2] = Channel.of("html")                          // report_type
+                input[0] = channel.of("directory")                     // input_type
+                input[1] = []                                        // input_path
+                input[2] = channel.of("html")                          // report_type
                 """
             }
         }

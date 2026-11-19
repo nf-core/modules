@@ -9,31 +9,22 @@ nextflow_process {
     tag "custom/tx2gene"
     tag "tximeta"
     tag "tximeta/tximport"
-    tag "untar"
 
     test("saccharomyces_cerevisiae - kallisto - gtf") {
-
+        def kallisto
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                     input[2] = 'kallisto'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name'
@@ -45,7 +36,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'kallisto'
                 """
@@ -73,28 +64,20 @@ nextflow_process {
     }
 
     test("saccharomyces_cerevisiae - kallisto - gtf - extra_attributes") {
-
+        def kallisto
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                     input[2] = 'kallisto'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name,gene_biotype'
@@ -106,7 +89,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'kallisto'
                 """
@@ -139,8 +122,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([ [], [] ])
-                input[1] = Channel.of([ [], [] ])
+                input[0] = channel.of([ [], [] ])
+                input[1] = channel.of([ [], [] ])
                 input[2] = 'kallisto'
                 """
             }
@@ -156,28 +139,20 @@ nextflow_process {
 
     }
     test("saccharomyces_cerevisiae - salmon - gtf") {
-
+        def salmon
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            salmon = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[1] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
                     input[2] = 'salmon'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name'
@@ -189,7 +164,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[0] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'salmon'
                 """
@@ -218,28 +193,20 @@ nextflow_process {
     }
 
     test("saccharomyces_cerevisiae - salmon - gtf - mismatched_transcripts") {
-
+        def salmon
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            salmon = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[1] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
                     input[2] = 'salmon'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name'
@@ -251,7 +218,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[0] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
                 // Remove half the entries from tx2gene to simulate FASTA/GTF mismatch
                 input[1] = CUSTOM_TX2GENE.out.tx2gene.map { meta, tx2gene ->
                     def lines = tx2gene.readLines()
@@ -300,40 +267,11 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
-            run("CUSTOM_TX2GENE") {
-                script "../../../custom/tx2gene/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
-                    ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
-                    input[2] = 'salmon'
-                    input[3] = 'gene_id'
-                    input[4] = 'gene_name'
-                    """
-                }
-            }
-        }
-
         when {
             process {
                 """
-                input[0] = Channel.of([ [], [] ])
-                input[1] = Channel.of([ [], [] ])
+                input[0] = channel.of([ [], [] ])
+                input[1] = channel.of([ [], [] ])
                 input[2] = 'salmon'
                 """
             }
@@ -348,34 +286,20 @@ nextflow_process {
     }
 
     test("saccharomyces_cerevisiae - rsem - gtf") {
-
+        def rsem
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            rsem = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir ->
-                        def results = []
-                        dir.eachFileRecurse { f ->
-                            if (f.name.endsWith('.isoforms.results')) results << f
-                        }
-                        [ meta, results ]
-                    }
+                    input[1] = [ [ id:'test' ], files('${rsem}/*/*.isoforms.results') ]
                     input[2] = 'rsem'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name'
@@ -387,13 +311,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, dir ->
-                    def results = []
-                    dir.eachFileRecurse { f ->
-                        if (f.name.endsWith('.isoforms.results')) results << f
-                    }
-                    [ meta, results ]
-                }
+                input[0] = [ [ id:'test' ], files('${rsem}/*/*.isoforms.results') ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'rsem'
                 """
@@ -426,8 +344,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([ [id:'test'], [] ])
-                input[1] = Channel.of([ [id:'test'], [] ])
+                input[0] = channel.of([ [id:'test'], [] ])
+                input[1] = channel.of([ [id:'test'], [] ])
                 input[2] = 'rsem'
                 """
             }
@@ -446,28 +364,20 @@ nextflow_process {
     test("saccharomyces_cerevisiae - kallisto - gtf - custom_column_names") {
 
         config "./nextflow.config"
-
+        def kallisto
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id:'test'], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
             run("CUSTOM_TX2GENE") {
                 script "../../../custom/tx2gene/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test'], // meta map
                         file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                     ])
-                    input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                     input[2] = 'kallisto'
                     input[3] = 'gene_id'
                     input[4] = 'gene_name,gene_biotype'
@@ -480,7 +390,7 @@ nextflow_process {
             process {
                 """
                 // Uses ext.args = '--gene_name_col gene_biotype' from nextflow.config
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'kallisto'
                 """
