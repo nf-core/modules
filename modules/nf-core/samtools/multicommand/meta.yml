@@ -84,7 +84,7 @@ input:
   - chain:
       type: list
       description: |
-        List of samtools commands to execute in sequence. Must be > 1 command.
+        List of samtools command names (strings) to execute in sequence. Must be > 1 command.
         Valid commands: view, sort, markdup, fixmate, merge, cat, collate, fastq, fasta
 output:
   bam:
