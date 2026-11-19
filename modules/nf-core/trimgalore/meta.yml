@@ -140,25 +140,25 @@ maintainers:
   - "@vagkaratzas"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/trim-galore:2.5.0--e26c3be09dac93c9
-      build_id: bd-e26c3be09dac93c9_1
-      scan_id: sc-43d21891d0d5760e_1
     linux/arm64:
-      name: community.wave.seqera.io/library/trim-galore:2.5.0--d8ea5ac383402c11
-      build_id: bd-d8ea5ac383402c11_1
-      scan_id: sc-1e605a6e34ea0805_1
+      name: community.wave.seqera.io/library/trim-galore:2.6.0--eb5d304e5d70d4fb
+      build_id: bd-eb5d304e5d70d4fb_1
+      scan_id: sc-99c14874d14a2e8c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/trim-galore:2.6.0--da99b872b7cff766
+      build_id: bd-da99b872b7cff766_1
+      scan_id: sc-c005319608f98ea5_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/trim-galore:2.5.0--c3fa3438e9ddd6ce
-      build_id: bd-c3fa3438e9ddd6ce_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14f298259504414e87dcf496685db6aa74a9ccded8ce39825139706de095038e/data
+      name: oras://community.wave.seqera.io/library/trim-galore:2.6.0--8942db3c2d3e5df8
+      build_id: bd-8942db3c2d3e5df8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f661248fb4305d2f4481faed98af6fff222a2ee73b23fe8518244d82aaf151e6/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/trim-galore:2.5.0--7984595b64b43a28
-      build_id: bd-7984595b64b43a28_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e50ac40412ac7183d9e5b81743daf92a2f9a74ee209ac54e885d46d76e04940/data
+      name: oras://community.wave.seqera.io/library/trim-galore:2.6.0--5194e7608a533b16
+      build_id: bd-5194e7608a533b16_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e157684eba2687e7cd8a9e9ae1957a4a285b46186368536a5e6d55f74ba5b98/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_amd64-bd-e26c3be09dac93c9_1.txt
+      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_amd64-bd-da99b872b7cff766_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_arm64-bd-d8ea5ac383402c11_1.txt
+      lock_file: modules/nf-core/trimgalore/.conda-lock/linux_arm64-bd-eb5d304e5d70d4fb_1.txt

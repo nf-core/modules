@@ -39,18 +39,4 @@ been discontinued, it can no longer work with conda.
         ${prefix}_annotated.vcf \\
         ${args}
     """
-
-    stub:
-        def deprecation_message = """
-WARNING: This module has been deprecated.
-
-Reason:
-This tool is no longer maintained by its author and, as its database hosting service has
-been discontinued, it can no longer work with conda.
-"""
-    assert false: deprecation_message
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}_annotated.vcf
-    """
 }

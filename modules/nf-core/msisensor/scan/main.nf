@@ -22,7 +22,7 @@ process MSISENSOR_SCAN {
 
     script:
     def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/scan or nf-core/modules/nf-core/msisensorpro/scan
+        WARNING: This module has been deprecated. Please use nf-core/modules/msisensorpro/scan
 
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
@@ -39,13 +39,4 @@ process MSISENSOR_SCAN {
         $args
 
     """
-
-    stub:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/scan or nf-core/modules/nf-core/msisensorpro/scan
-
-        Reason:
-        This module is no longer fit for purpose as it is now archived and no longer maintained.
-    """
-    assert false: deprecation_message
 }

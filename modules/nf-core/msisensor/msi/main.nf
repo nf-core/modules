@@ -25,7 +25,7 @@ process MSISENSOR_MSI {
 
     script:
     def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/msi or nf-core/modules/nf-core/msisensorpro/msisomatic
+        WARNING: This module has been deprecated. Please use nf-core/modules/msisensor2/msi or nf-core/modules/msisensorpro/msisomatic
 
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
@@ -44,13 +44,4 @@ process MSISENSOR_MSI {
         $args
 
     """
-
-    stub:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/nf-core/msisensor2/msi or nf-core/modules/nf-core/msisensorpro/msisomatic
-
-        Reason:
-        This module is no longer fit for purpose as it is now archived and no longer maintained.
-    """
-    assert false: deprecation_message
 }
