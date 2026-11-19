@@ -20,7 +20,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+        description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
     - input:
         type: file
         description: One gzip-compressed TreeMix allele-count file. The header contains population names;
@@ -39,7 +39,7 @@ output:
   llik:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.llik":
           type: file
           description: Log-likelihoods before and after adding migration edges
@@ -49,7 +49,7 @@ output:
   treeout:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.treeout.gz":
           type: file
           description: Tree in Newick format plus one line per migration edge
@@ -59,7 +59,7 @@ output:
   vertices:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.vertices.gz":
           type: file
           description: Vertices of the graph
@@ -69,7 +69,7 @@ output:
   edges:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.edges.gz":
           type: file
           description: Edges of the graph
@@ -79,7 +79,7 @@ output:
   cov:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.cov.gz":
           type: file
           description: Sample covariance matrix
@@ -89,7 +89,7 @@ output:
   modelcov:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.modelcov.gz":
           type: file
           description: Covariance matrix fitted by the model
@@ -99,7 +99,7 @@ output:
   covse:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.covse.gz":
           type: file
           description: Standard errors of the sample covariance; this output is optional.
@@ -109,7 +109,7 @@ output:
   log:
     - - meta:
           type: map
-          description: Groovy Map containing dataset information e.g. [ id:'goat' ]
+          description: Groovy Map containing dataset information e.g. [ id:'dataset' ]
       - "*.log":
           type: file
           description: "TreeMix standard output and error, including the SEED: line"
