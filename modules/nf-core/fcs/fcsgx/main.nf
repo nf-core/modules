@@ -5,9 +5,10 @@ process FCS_FCSGX {
     tag "$meta.id"
     label 'process_low'
 
+    conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.4.0/fcs-gx.sif':
-        'docker.io/ncbi/fcs-gx:0.4.0' }"
+        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.4.0--h4ac6f70_2':
+        'quay.io/biocontainers/ncbi-fcs-gx:0.4.0--h4ac6f70_2' }"
 
     input:
     tuple val(meta), path(assembly), val(taxid)

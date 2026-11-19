@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process BAM2FASTX_BAM2FASTQ"
@@ -10,26 +9,21 @@ nextflow_process {
     tag "bam2fastx"
     tag "bam2fastx/bam2fastq"
 
-    test("test-bam2fastx-bam2fastq") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam', checkIfExists: true),
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.bam.pbi', checkIfExists: true)
-				]
-
+                input[0] = [ [ id:'test' ], file('bam'), file('index') ]
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.failed }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }
-
 }

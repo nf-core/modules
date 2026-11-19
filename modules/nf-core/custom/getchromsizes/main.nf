@@ -24,7 +24,7 @@ process CUSTOM_GETCHROMSIZES {
 
     script:
     def deprecation_message = """
-WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/faidx.
 
 Reason:
 Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)
@@ -44,7 +44,7 @@ via a boolean switch, making 'getchromsizes' unnecessary.
 
     stub:
     def deprecation_message = """
-WARNING: The getchromsizes process has been deprecated. Please use nf-core/modules/samtools/faidx.
+WARNING: This module has been deprecated. Please use nf-core/modules/samtools/faidx.
 
 Reason:
 Getting chromosome sizes was added to samtools/faidx (https://github.com/nf-core/modules/pull/7041)

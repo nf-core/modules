@@ -21,7 +21,7 @@ process ANTISMASH_ANTISMASHLITE {
     input:
     tuple val(meta), path(sequence_input)
     path databases
-    path antismash_dir // Optional input: AntiSMASH installation folder. It is not needed for using this module with conda, but required for docker/singularity (see meta.yml).
+    path antismash_dir
     path gff
 
     output:

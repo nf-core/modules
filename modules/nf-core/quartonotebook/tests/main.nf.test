@@ -8,18 +8,15 @@ nextflow_process {
     tag "modules_nfcore"
     tag "quartonotebook"
 
-    test("test module deprecation") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [], // Meta map
-                    []  // Notebook
-                ]
-                input[1] = [:] // Parameters
-                input[2] = []  // Input files
-                input[3] = []  // Extensions
+                input[0] = [ [ id:'test' ], file('notebook') ]
+                input[1] = []
+                input[2] = file('input_files')
+                input[3] = file('extensions')
                 """
             }
         }
@@ -27,10 +24,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
-
     }
-
 }

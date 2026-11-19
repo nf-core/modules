@@ -9,17 +9,12 @@ nextflow_process {
     tag "vcf2zarr"
     tag "vcf2zarr/convert"
 
-    test("sarscov2 - vcf") {
-
+    test("deprecated") {
 
         when {
             process {
                 """
-
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                ]
+                input[0] = [ [ id:'test' ], file('vcf') ]
                 """
             }
         }
@@ -27,35 +22,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
-
     }
-
-    // test("sarscov2 - vcf - stub") {
-
-    //     options "-stub"
-
-    //     when {
-    //         process {
-    //             """
-
-    //             input[0] = [
-    //                 [ id:'test' ], // meta map
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-    //             ]
-    //             """
-    //         }
-    //     }
-
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(sanitizeOutput(process.out)).match() }
-    //         )
-    //     }
-
-    // }
-
 }

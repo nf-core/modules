@@ -23,10 +23,6 @@ process FASTAVALIDATOR {
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
-    }
     def deprecation_message = """
     WARNING: This module has been deprecated.
 
@@ -38,6 +34,10 @@ process FASTAVALIDATOR {
 
     """
     assert false: deprecation_message
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
+    }
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -64,10 +64,6 @@ process FASTAVALIDATOR {
     """
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
-    }
     def deprecation_message = """
     WARNING: This module has been deprecated.
 
@@ -79,6 +75,10 @@ process FASTAVALIDATOR {
 
     """
     assert false: deprecation_message
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "Fastavalidator module does not support Conda. Please use Docker / Singularity instead."
+    }
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

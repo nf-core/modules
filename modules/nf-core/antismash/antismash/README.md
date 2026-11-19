@@ -16,10 +16,10 @@ _Thanks to @mberacochea for finding the solution and providing the Dockerfile be
 Updating the antiSMASH version in the container and pushing the update to Dockerhub needs to be done manually.
 
 1. Ensure the user that will push the container has access to the nf-core organization on Dockerhub.
-2. Change into the `modules/nf-core/antismash` directory:
+2. Change into the `modules/nf-core/antismash/antismash` directory:
 
    ```bash
-   cd modules/nf-core/antismash
+   cd modules/nf-core/antismash/antismash
    ```
 
 3. Create and test the container:

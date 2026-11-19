@@ -9,16 +9,13 @@ nextflow_process {
     tag "dastool"
     tag "dastool/scaffolds2bin"
 
-    test("dastool fastatocontig2bin - bacteroides fragilis") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = input[0] = Channel.of([
-                    [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + "genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz", checkIfExists: true)
-                ])
-                input[1] = 'fa'
+                input[0] = [ [ id:'test' ], file('fasta') ]
+                input[1] = []
                 """
             }
         }
@@ -26,8 +23,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
-
     }
 }

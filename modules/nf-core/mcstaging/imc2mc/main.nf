@@ -35,6 +35,13 @@ Renamed module to match the tool/subtool convention
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc
+
+Reason:
+Renamed module to match the tool/subtool convention
+"""
+    assert false: deprecation_message
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."

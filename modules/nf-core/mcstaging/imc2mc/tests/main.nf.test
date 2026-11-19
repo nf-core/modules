@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process MCSTAGING_IMC2MC"
     script "../main.nf"
-    config "./nextflow.config"
     process "MCSTAGING_IMC2MC"
 
     tag "modules"
@@ -10,14 +9,12 @@ nextflow_process {
     tag "mcstaging"
     tag "mcstaging/imc2mc"
 
-    test("acquisition - txt") {
+    test("deprecated") {
+
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'imaging/staging/imaging_mass_cytometry/acquisition.txt', checkIfExists: true),
-                ]
+                input[0] = [ [ id:'test' ], file('txtfile') ]
                 """
             }
         }
@@ -25,9 +22,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }
-
 }
