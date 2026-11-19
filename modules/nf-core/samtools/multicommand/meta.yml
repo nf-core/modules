@@ -4,7 +4,7 @@ description: |
   samtools operations such as view, sort, markdup, merge, fastq conversion and more.
 
   The exact order of operations is specified by the `chain` input, which takes a list such as
-  [view, sort, markdup]. This is then interpolated to a script where the output of each command
+  ["view", "sort", "markdup"]. This is then interpolated to a script where the output of each command
   is streamed to the next before being written to disk. The script can handle references being passed
   when you want CRAM inputs or outputs, as well as writing indexes and conversion to FASTA and FASTQ.
 
@@ -85,7 +85,7 @@ input:
       type: list
       description: |
         List of samtools commands to execute in sequence. Must be > 1 command.
-        Valid options: view, sort, markdup, fixmate, merge, cat, collate, fastq, fasta
+        Valid commands: view, sort, markdup, fixmate, merge, cat, collate, fastq, fasta
 output:
   bam:
     - - meta:

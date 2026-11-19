@@ -61,8 +61,8 @@ process SAMTOOLS_MULTICOMMAND {
         view: [stdout: '', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
         sort: [stdout: '', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
         markdup: [stdout: '-', out: '', threads: true, uncompressed: true, output_format_type: 'alignment'],
-        fixmate: [stdout: '-', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
-        merge: [stdout: '-', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        fixmate: [stdout: '-', out: '', threads: true, uncompressed: true, output_format_type: 'alignment'],
+        merge: [stdout: '-o -', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
         cat: [stdout: '', out: '-o', threads: false, uncompressed: false, output_format_type: 'alignment'],
         collate: [stdout: '-O', out: '-o', threads: true, uncompressed: true, output_format_type: 'alignment'],
         fasta: [stdout: '', out: '', threads: true, uncompressed: true, output_format_type: 'sequence'],
@@ -83,6 +83,9 @@ process SAMTOOLS_MULTICOMMAND {
             if (!SUBCOMMAND_CONFIG.containsKey(subcommand)) {
                 error("Error: ${subcommand} not a valid argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${SUBCOMMAND_CONFIG.keySet().join(", ")}")
             }
+            if (subcommand in ['merge', 'cat'] && idx != 0) {
+                error("Error: ${subcommand} must be the first command for SAMTOOLS_MULTICOMMAND!")
+            }
             if (SUBCOMMAND_CONFIG[subcommand].output_format_type == 'sequence' && idx != n_commands - 1) {
                 error("Error: ${subcommand} must be the last command for SAMTOOLS_MULTICOMMAND!")
             }
@@ -92,9 +95,14 @@ process SAMTOOLS_MULTICOMMAND {
     def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
 
     // Output format comes from --output-fmt in the final command's args, defaulting to BAM
-    def output_extension = ["sam", "cram"].find { fmt -> all_args[-1].contains("--output-fmt ${fmt}") } ?: "bam"
+    def output_extension = (all_args[-1] =~ /(?i)(?:--output-fmt[ =]|-O\s*)(sam|bam|cram)/).with { m -> m.find() ? m.group(1).toLowerCase() : "bam" }
     def is_cram_input = fasta && input.any { f -> f.getExtension() == "cram" }
     def is_cram_output = fasta && output_extension == "cram"
+
+    def staged_names = [input].flatten().collect { f -> f.name }
+    if (SUBCOMMAND_CONFIG[chain[-1]].output_format_type == 'alignment' && "${prefix}.${output_extension}" in staged_names) {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
     // Output flag for a command, depending on whether it is last in the chain
     def output_option = { subcommand, cfg, is_last_command ->
@@ -149,6 +157,7 @@ process SAMTOOLS_MULTICOMMAND {
         .join(" |\\\n")
 
     """
+    set -o pipefail
     ${chained_command}
     """
 
@@ -157,7 +166,7 @@ process SAMTOOLS_MULTICOMMAND {
     def single_end = meta?.single_end ?: false
     def n_commands = chain.size()
     def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
-    def output_extension = ["sam", "cram"].find { fmt -> all_args[-1].contains("--output-fmt ${fmt}") } ?: "bam"
+    def output_extension = (all_args[-1] =~ /(?i)(?:--output-fmt[ =]|-O\s*)(sam|bam|cram)/).with { m -> m.find() ? m.group(1).toLowerCase() : "bam" }
     def final_command = chain[-1]
 
     def stub_outputs = []
