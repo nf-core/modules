@@ -149,18 +149,6 @@ output:
           description: Compressed FASTA file(s) with reads with either the READ1 or READ2 flag set in separate files.
           pattern: "*_{1,2}.fasta.gz"
           ontologies: []
-  fasta_interleaved:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_interleaved.fasta.gz":
-          type: file
-          description: Compressed FASTA file with reads with either the READ1 or READ2 flag set in a combined file. Needs collated input file.
-          pattern: "*_interleaved.fasta.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
   fasta_singleton:
     - - meta:
           type: map
@@ -196,18 +184,6 @@ output:
           description: Compressed FASTQ file(s) with reads with either the READ1 or READ2 flag set in separate files.
           pattern: "*_{1,2}.fastq.gz"
           ontologies: []
-  fastq_interleaved:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_interleaved.fastq":
-          type: file
-          description: Compressed FASTQ file with reads with either the READ1 or READ2 flag set in a combined file. Needs collated input file.
-          pattern: "*_interleaved.fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989
   fastq_singleton:
     - - meta:
           type: map
@@ -259,25 +235,25 @@ maintainers:
   - "@prototaxites"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/htslib_samtools:1.24--4ad84953d0a6965b
-      build_id: bd-4ad84953d0a6965b_1
-      scan_id: sc-2105ba85de281338_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_samtools:1.24--84fe6b04a60dfab2
-      build_id: bd-84fe6b04a60dfab2_1
-      scan_id: sc-5cbc7a4fd2a2c7dd_1
+      name: community.wave.seqera.io/library/htslib_samtools:1.25--704fb80d75745bd4
+      build_id: bd-704fb80d75745bd4_7
+      scan_id: sc-03641d545f6d3bac_3
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.25--944a4060c62320c2
+      build_id: bd-944a4060c62320c2_8
+      scan_id: sc-6655c495363315c2_3
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools:1.24--b75d2385b98b4033
-      build_id: bd-b75d2385b98b4033_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24bce03b37817d335921ac9bf9d9ca0d485d3b18926413f643b10e45ec1f5c6b/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools:1.24--780d5da12d0c564c
-      build_id: bd-780d5da12d0c564c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.25--2d67558d8613e11c
+      build_id: bd-2d67558d8613e11c_8
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87660348a4d032cc08d6ac8101ff9d4d27164300d39c9472043bb5001f9ba801/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.25--3b9e70f96c37875a
+      build_id: bd-3b9e70f96c37875a_8
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/514f17bd9e1c013214957c34ea8bc446a86e4350bb6da41c126f55a27618932d/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/samtools/multicommand/.conda-lock/linux_amd64-bd-84fe6b04a60dfab2_1.txt
+      lock_file: modules/nf-core/samtools/multicommand/.conda-lock/linux_amd64-bd-704fb80d75745bd4_7.txt
     linux/arm64:
-      lock_file: modules/nf-core/samtools/multicommand/.conda-lock/linux_arm64-bd-4ad84953d0a6965b_1.txt
+      lock_file: modules/nf-core/samtools/multicommand/.conda-lock/linux_arm64-bd-944a4060c62320c2_8.txt
