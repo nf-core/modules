@@ -33,7 +33,7 @@ nextflow_process {
         }
     }
 
-    test("test_kofamscan_txt") {
+    test("kofamscan - txt") {
 
         when {
             params {
@@ -48,15 +48,18 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.txt[0][1]).linesGzip
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.tsv.isEmpty() },
+                { assert hits[0].startsWith('# gene name') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.txt.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
             )
         }
     }
 
-    test("test_kofamscan_tsv") {
+    test("kofamscan - tsv") {
 
         when {
             params {
@@ -71,15 +74,46 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tsv.get(0).get(1)).exists() },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.txt.isEmpty() },
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
             )
         }
     }
 
-    test("test_kofamscan_txt - stub") {
+    test("kofamscan - tsv - gzipped fasta") {
+
+        when {
+            params {
+                module_args = '--format detail-tsv'
+            }
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz',checkIfExists: true)]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                input[2] = GUNZIP.out.gunzip.map{it[1]}
+                """
+            }
+        }
+        then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt.isEmpty() },
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
+            )
+        }
+    }
+
+    test("kofamscan - txt - stub") {
 
         options "-stub"
 
@@ -98,8 +132,33 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.tsv.isEmpty() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("kofamscan - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--format detail-tsv'
+            }
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists: true)]
+                input[1] = UNTAR.out.untar.map{it[1]}
+                input[2] = GUNZIP.out.gunzip.map{it[1]}
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt.isEmpty() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
