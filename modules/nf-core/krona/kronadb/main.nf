@@ -32,12 +32,4 @@ process KRONA_KRONADB {
         taxonomy/
 
     """
-
-    stub:
-    """
-    mkdir taxonomy
-
-    touch taxonomy/taxonomy.tab
-
-    """
 }

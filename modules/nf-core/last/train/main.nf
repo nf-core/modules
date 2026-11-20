@@ -52,7 +52,6 @@ process LAST_TRAIN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
     touch ${prefix}.train
     touch ${prefix}.train.tsv
     """

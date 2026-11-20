@@ -8,43 +8,27 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "homer"
-    tag "unzip"
     tag "homer/findpeaks"
     tag "homer/maketagdirectory"
 
-    setup {
-        run("HOMER_MAKETAGDIRECTORY") {
-            script "../../maketagdirectory/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
-                    ]
-                ]
-                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                """
-            }
-        }
-        run("UNZIP") {
-            script "../../../unzip/main.nf"
-            process {
-                """
-                url = 'https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip'
-
-                input[0] = [
-                    [:],
-                    file(url, checkIfExists: true)
-                ]
-                """
-
-            }
-        }
-    }
-
     test("sarscov2 - tagdir") {
+        setup {
+            run("HOMER_MAKETAGDIRECTORY") {
+                script "../../maketagdirectory/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -71,7 +55,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
+                input[0] = [ [ id:'test' ], [] ]
                 input[1] = []
                 """
             }
@@ -86,11 +70,32 @@ nextflow_process {
     }
 
     test("sarscov2 - tagdir - uniqmap") {
+        def uniqmap
+        setup {
+            run("HOMER_MAKETAGDIRECTORY") {
+                script "../../maketagdirectory/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test2.bed', checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    """
+                }
+            }
+            // HOMER names the peaks file after the uniqmap directory
+            uniqmap = extract('https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/uniqmap.GRCh38_chr21.50nt.zip', extractDir: "${launchDir}/uniqmap.GRCh38_chr21.50nt")
+        }
+
         when {
             process {
                 """
                 input[0] = HOMER_MAKETAGDIRECTORY.out.tagdir
-                input[1] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[1] = file('${uniqmap}')
                 """
             }
         }

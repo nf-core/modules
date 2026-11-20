@@ -61,15 +61,73 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  results:
+  formatted_input:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - caddsv_results:
-          type: directory
-          description: CADD-SV output directory containing input, intermediate, and scored results.
+      - caddsv_results/input/id_*:
+          type: file
+          description: Input BED/TSV as normalised by CADD-SV before scoring.
+          optional: true
+          pattern: "id_*.{bed,tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+            - edam: "http://edamontology.org/format_3475" # TSV
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - caddsv_results/beds/*/*.bed*:
+          type: file
+          description: Intermediate annotation and feature BED files, including the upstream/downstream flank files (`*.bedup*`, `*.beddown*`).
+          optional: true
+          pattern: "*.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  h5:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - caddsv_results/beds/*/*.h5:
+          type: file
+          description: SegmentNT probabilities for sample and reference sequences (`--seqresolved` and `--seqonly` only).
+          optional: true
+          pattern: "*.h5"
+          ontologies:
+            - edam: "http://edamontology.org/format_3590" # HDF5
+  raw_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - caddsv_results/beds/*/output/*:
+          type: file
+          description: Model scores before final formatting (BED for coordinate input, TSV for `--seqonly`).
+          optional: true
+          pattern: "*.{bed,tsv}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+            - edam: "http://edamontology.org/format_3475" # TSV
+  snakemake_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - caddsv_results/.snakemake/log/*.snakemake.log:
+          type: file
+          description: Log of the internal CADD-SV Snakemake workflow.
+          optional: true
+          pattern: "*.snakemake.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text file
   log:
     - - meta:
           type: map
@@ -113,14 +171,14 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/caddsv_snakemake_pulp_bedops_pruned:799f9464989eb8fe
-      build_id: bd-799f9464989eb8fe_1
-      scan_id: sc-55f9316108db721c_1
+      name: community.wave.seqera.io/library/bedops_bedtools_caddsv_htslib_pruned:ee3857ad3388d6b5
+      build_id: bd-ee3857ad3388d6b5_1
+      scan_id: sc-4b9ab28554ddba7f_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/caddsv_snakemake_pulp_bedops_pruned:c829199550260c5d
-      build_id: bd-c829199550260c5d_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2fd85e11209001044c0b5f8cd663e8058cf006b8e6a0d8712a50857677ab664/data
+      name: oras://community.wave.seqera.io/library/bedops_bedtools_caddsv_htslib_pruned:6f931208f004c935
+      build_id: bd-6f931208f004c935_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1b0959d5012eaa6e532c20e40555e189cd76b2a145640f91e130c693f2bb5565/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/caddsv/run/.conda-lock/linux_amd64-bd-799f9464989eb8fe_1.txt
+      lock_file: modules/nf-core/caddsv/run/.conda-lock/linux_amd64-bd-ee3857ad3388d6b5_1.txt

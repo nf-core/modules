@@ -27,12 +27,11 @@ process RASTAIR2_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Single-end reads carry no pairing flags: strand comes from the alignment direction alone.
     def unpaired = meta.single_end ? '--unpaired' : ''
-    // Bases to ignore at read ends, as suggested by rastair2/mbias: line 1 is --nOT, line 2 --nOB
-    def cutoffs_files = mbias_cutoffs instanceof List ? mbias_cutoffs : [mbias_cutoffs]
-    if (cutoffs_files.size() > 1) {
-        error("rastair2/call takes one M-bias cutoffs file per sample, got ${cutoffs_files.size()}: restrict rastair2/mbias to one contig with --region")
+    if (mbias_cutoffs instanceof List && mbias_cutoffs.size() > 1) {
+        error("rastair2/call takes one M-bias cutoffs file per sample, got ${mbias_cutoffs.size()}: restrict rastair2/mbias to one contig with --region")
     }
-    def trim = cutoffs_files ? "--nOT \$(sed -n 1p ${mbias_cutoffs}) --nOB \$(sed -n 2p ${mbias_cutoffs})" : ''
+    // rastair2/mbias writes one line per strand with data (OT, then OB): trim only when both are there
+    def trim = mbias_cutoffs ? "\$([ \$(grep -c . ${mbias_cutoffs}) -eq 2 ] && sed '1s/^/--nOT /; 2s/^/--nOB /' ${mbias_cutoffs})" : ''
     """
     rastair call \\
         ${args} \\

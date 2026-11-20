@@ -24,13 +24,13 @@ WARNING: This module has been deprecated. Please use nf-core/modules/phenoimager
 Reason:
 Renamed module to match the tool/subtool convention
 """
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Phenoimager2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
     """
     python /phenoimager2mc/scripts/phenoimager2mc.py \
         -i ${tiles} \
@@ -38,23 +38,5 @@ Renamed module to match the tool/subtool convention
         $args
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.tif
-    """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/phenoimager2mc
-
-Reason:
-Renamed module to match the tool/subtool convention
-"""
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Phenoimager2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
-    }
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
-    """
-    touch input
-    touch "${prefix}.tif"
     """
 }
