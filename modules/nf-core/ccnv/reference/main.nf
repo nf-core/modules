@@ -8,7 +8,7 @@ process CCNV_REFERENCE {
         'quay.io/biocontainers/ccnv:1.0.0' }"
 
     input:
-    tuple val(meta), path(cohort_yaml), path(cohort_ccnv), path(fasta), path(fai)
+    tuple val(meta), path(cohort_yaml), path(cohort_ccnv, stageAs: 'samples/*'), path(fasta), path(fai)
     tuple val(meta2), path(mappability)
     tuple val(meta3), path(gc_content), path(gc_content_index)
 
