@@ -31,6 +31,19 @@ input:
         type: file
         description: Tab-delimited file with sample names in column 1 and sample group/phenotype assignments in column 2
         pattern: "*.txt"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - exons:
+        type: file
+        description: |
+          Optional table of known exons, tab-delimited with a header and the columns
+          chr, start, end, strand and gene_name, as written by leafcutter-gtf-to-exons.
+          Used to label the clusters with genes. Pass `[]` to leave them unlabelled.
+        pattern: "*.{txt,txt.gz}"
+        optional: true
 
 output:
   cluster_significance:

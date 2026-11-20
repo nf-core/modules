@@ -8,25 +8,12 @@ nextflow_process {
     tag "modules_nfcore"
     tag "checkv"
     tag "checkv/updatedatabase"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = channel.of(
-                    [
-                        [ id:'checkv_minimal_db' ],
-                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-    }
 
     test("sarscov2 - genome - genome_fasta") {
+        def checkv_db
+        setup {
+            checkv_db = extract('https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar').resolve('checkv_minimal_db')
+        }
 
         when {
             process {
@@ -35,7 +22,7 @@ nextflow_process {
                     [ id: 'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map { it[1] }
+                input[1] = file('${checkv_db}')
                 """
             }
         }
@@ -67,9 +54,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id: 'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    []
                 ]
-                input[1] = UNTAR.out.untar.map { it[1] }
+                input[1] = []
                 """
             }
         }

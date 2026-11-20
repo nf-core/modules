@@ -7,8 +7,8 @@ process BISMARK_COVERAGE2CYTOSINE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d4877a6dc7b42a4fb5086d4620cdfdba48a5e2407e81f1de27357743b4aaf1/data' :
-        'community.wave.seqera.io/library/bismark:3.2.0--3978d640d774e7f9' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59db1f1331e9bd80560221e6283dea4e9f14de41e2f028c13b71f0b9e42b8afb/data' :
+        'community.wave.seqera.io/library/bismark:3.3.0--f5ac4e7eb5a16146' }"
 
     input:
     tuple val(meta), path(coverage_file)
