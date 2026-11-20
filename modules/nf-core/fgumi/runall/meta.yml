@@ -1,0 +1,180 @@
+name: "fgumi_runall"
+description: Run several fgumi stages (extract, correct, align, zipper, sort, group, consensus, filter) as one streaming process, with no intermediate BAM
+keywords:
+  - UMIs
+  - alignment
+  - consensus
+  - bam
+  - fastq
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+  - "bwamem3":
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
+      homepage: "https://github.com/fg-labs/bwa-mem3"
+      documentation: "https://github.com/fg-labs/bwa-mem3"
+      tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
+      licence: ["MIT AND Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          FASTQ files with `start_from` set to `extract`, otherwise one BAM
+          in the state that `start_from` names
+        pattern: "*.{fastq.gz,fq.gz,bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_2572"
+    - library:
+        type: string
+        description: Library name for the read group. Only used with `start_from` set to `extract`
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file. Needed when the run aligns, or with a methylation mode
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: Reference genome FASTA index (.fai)
+        pattern: "*.fai"
+        ontologies: []
+    - dict:
+        type: file
+        description: Reference sequence dictionary (.dict)
+        pattern: "*.dict"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing index information
+          e.g. `[ id:'genome' ]`
+    - index:
+        type: directory
+        description: |
+          bwa-mem3 index, as a directory or a list of files. Needed when the run
+          aligns. It is linked next to the FASTA, so that `{ref}` in
+          `--aligner::command` finds both
+        pattern: "*"
+        ontologies: []
+  - start_from:
+      type: string
+      description: First stage to run
+      enum:
+        - "extract"
+        - "correct"
+        - "align"
+        - "sort"
+        - "group"
+        - "consensus"
+        - "filter"
+  - stop_after:
+      type: string
+      description: Last stage to run
+      enum:
+        - "extract"
+        - "correct"
+        - "zipper"
+        - "sort"
+        - "group"
+        - "consensus"
+        - "filter"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.bam":
+          type: file
+          description: Output BAM of the last stage
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_bwamem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - "bwa-mem3 version | sed -nE '1 s/^([0-9]+(\\.[0-9]+)+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - "bwa-mem3 version | sed -nE '1 s/^([0-9]+(\\.[0-9]+)+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:586e53443c420260
+      build_id: bd-586e53443c420260_1
+      scan_id: sc-d6a080a75af0e7d4_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:71ad13ee1b34247b
+      build_id: bd-71ad13ee1b34247b_1
+      scan_id: sc-f8489776c6da7459_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:4014f2b644867ff8
+      build_id: bd-4014f2b644867ff8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f5c9ad9982b305e1991119fa62a4cb3e51f85cc25d37535da335867d4df01670/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:381d0ffe43c42af6
+      build_id: bd-381d0ffe43c42af6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/4865b9ca2738d438856a2ff5e1cf66c26c1b2df70cd215cc1a029a96c1245d75/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_amd64-bd-586e53443c420260_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_arm64-bd-71ad13ee1b34247b_1.txt
