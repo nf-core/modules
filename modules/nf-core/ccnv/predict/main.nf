@@ -16,17 +16,13 @@ process CCNV_PREDICT {
 
     output:
     tuple val(meta), path("*_qc.json"), emit: qc_json
-    tuple val(meta), path("*_bins.bed.gz"), emit: bins_bed
-    tuple val(meta), path("*_bins.bed.gz.tbi"), emit: bins_bed_index
-    tuple val(meta), path("*_calls.bed.gz"), emit: calls_bed
-    tuple val(meta), path("*_calls.bed.gz.tbi"), emit: calls_bed_index
-    tuple val(meta), path("*_calls.vcf.gz"), emit: calls_vcf
-    tuple val(meta), path("*_calls.vcf.gz.tbi"), emit: calls_vcf_index
-    tuple val(meta), path("*_plot.html"), emit: plot_html
-    tuple val(meta), path("*_segments.bed.gz"), emit: segments_bed
-    tuple val(meta), path("*_segments.bed.gz.tbi"), emit: segments_bed_index
-    tuple val(meta), path("*_segments.vcf.gz"), emit: segments_vcf
-    tuple val(meta), path("*_segments.vcf.gz.tbi"), emit: segments_vcf_index
+    tuple val(meta), path("*_plot.html"), emit: plot_html, optional: true
+    tuple val(meta), path("*_bins.bed.gz"), path("*_bins.bed.gz.tbi"), emit: bins_bed
+    tuple val(meta), path("*_segments.bed.gz"), path("*_segments.bed.gz.tbi"), emit: segments_bed
+    tuple val(meta), path("*_calls.bed.gz"), path("*_calls.bed.gz.tbi"), emit: calls_bed
+    tuple val(meta), path("*_bins.vcf.gz"), path("*_bins.vcf.gz.tbi"), emit: bins_vcf, optional: true
+    tuple val(meta), path("*_segments.vcf.gz"), path("*_segments.vcf.gz.tbi"), emit: segments_vcf, optional: true
+    tuple val(meta), path("*_calls.vcf.gz"), path("*_calls.vcf.gz.tbi"), emit: calls_vcf, optional: true
     tuple val("${task.process}"), val('ccnv'), eval("ccnv --version 2>&1 | sed 's/ccnv //'"), topic: versions, emit: versions_ccnv
 
     when:
@@ -59,17 +55,17 @@ process CCNV_PREDICT {
     echo $args
 
     touch ${prefix}_qc.json
-    echo "" | gzip -c > ${prefix}_bins.bed.gz
+    echo "" | gzip > ${prefix}_bins.bed.gz
     touch ${prefix}_bins.bed.gz.tbi
-    echo "" | gzip -c >  ${prefix}_calls.bed.gz
+    echo "" | gzip >  ${prefix}_calls.bed.gz
     touch ${prefix}_calls.bed.gz.tbi
-    echo "" | gzip -c > ${prefix}_calls.vcf.gz
+    echo "" | gzip > ${prefix}_calls.vcf.gz
     touch ${prefix}_calls.vcf.gz.tbi
     touch ${prefix}_plot.html
     touch ${prefix}_qc.json
-    echo "" | gzip -c >  ${prefix}_segments.bed.gz
+    echo "" | gzip >  ${prefix}_segments.bed.gz
     touch ${prefix}_segments.bed.gz.tbi
-    echo "" | gzip -c > ${prefix}_segments.vcf.gz
+    echo "" | gzip > ${prefix}_segments.vcf.gz
     touch ${prefix}_segments.vcf.gz.tbi
     """
 }

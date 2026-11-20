@@ -1,0 +1,89 @@
+name: "ccnv_extract"
+description: Extract read count and fragment length information from BAM/CRAM/SAM files using CCNV
+keywords:
+  - ccnv
+  - cnv
+  - nips
+  - fragmentomics
+  - genomics
+tools:
+  - "ccnv":
+      description: "CCNV is a tool to extract copy number variation information from sequencing data."
+      homepage: "https://matthdsm.github.io/ccnv/"
+      documentation: "https://matthdsm.github.io/ccnv/"
+      tool_dev_url: "https://github.com/matthdsm/ccnv"
+      doi: ""
+      licence:
+        - "AGPL-3.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+    - reads_index:
+        type: file
+        description: Index file for the reads (BAM/CRAM)
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fasta,fa,fna}.fai"
+        ontologies: []
+output:
+  ccnv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.ccnv":
+          type: file
+          description: CCNV output file
+          pattern: "*.ccnv"
+          ontologies: []
+  versions_ccnv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"

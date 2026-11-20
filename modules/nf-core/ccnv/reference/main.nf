@@ -14,6 +14,7 @@ process CCNV_REFERENCE {
 
     output:
     tuple val(meta), path("*.ccnv"), emit: ccnv
+    tuple val(meta), path("*_qc.json"), emit: qc_json
     tuple val("${task.process}"), val('ccnv'), eval("ccnv --version 2>&1 | sed 's/ccnv //'"), topic: versions, emit: versions_ccnv
 
     when:

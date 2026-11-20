@@ -1,0 +1,127 @@
+name: "ccnv_reference"
+description: Generate reference information for CNV analysis using CCNV
+keywords:
+  - ccnv
+  - cnv
+  - nips
+  - fragmentomics
+  - genomics
+tools:
+  - "ccnv":
+      description: "CCNV is a tool to extract copy number variation information from sequencing data."
+      homepage: "https://matthdsm.github.io/ccnv/"
+      documentation: "https://matthdsm.github.io/ccnv/"
+      tool_dev_url: "https://github.com/matthdsm/ccnv"
+      doi: ""
+      licence:
+        - "AGPL-3.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cohort_yaml:
+        type: file
+        description: Cohort YAML file
+        pattern: "*.yaml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - cohort_ccnv:
+        type: file
+        description: ccnv files in cohort yaml
+        pattern: "*.ccnv"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Reference genome FASTA file for flat references. Superceded by cohort_ccnv if provided
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fasta,fa,fna}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing additional metadata for the reference files
+          e.g. `[ id:'reference1' ]`
+    - mappability:
+        type: file
+        description: Mappability BigWig track
+        pattern: "*.bw"
+        ontologies:
+          - edam: "http://edamontology.org/format_3006" # bigWig
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - gc_content:
+        type: file
+        description: GC content track
+        pattern: "*.{bed,bed.gz,fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - gc_content_index:
+        type: file
+        description: GC content index file
+        pattern: "*.{tbi,csi,fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # CSI
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  ccnv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'reference1' ]`
+      - "*.ccnv":
+          type: file
+          description: ccnv reference file
+          pattern: "*.ccnv"
+          ontologies: []
+  qc_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'reference1' ]`
+      - "*_qc.json":
+          type: file
+          description: QC JSON file
+          pattern: "*_qc.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_ccnv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"
