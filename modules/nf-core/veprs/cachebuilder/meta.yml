@@ -1,0 +1,94 @@
+name: veprs_cachebuilder
+description: Build the vep-rs JSON cache that veprs/vep annotates against, from a GTF or GFF3 transcript model and a genome FASTA, or from a whole Ensembl release.
+keywords:
+  - annotation
+  - cache
+  - vep
+  - gtf
+  - gff3
+tools:
+  - veprs:
+      description: |
+        vep-rs is a Rust port of Ensembl VEP release 116.2. Its vep-cache-builder
+        builds the JSON cache vep-rs reads, from a local transcript model and genome
+        FASTA or from an Ensembl release fetched with --auto.
+      homepage: https://github.com/natera-open-source/vep-rs
+      documentation: https://natera-open-source.github.io/vep-rs/
+      tool_dev_url: https://github.com/natera-open-source/vep-rs
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. [ id:'cache' ]
+    - annotation:
+        type: file
+        description: |
+          GTF or GFF3 transcript model (optional). Without it, the species' whole
+          Ensembl release is fetched with `--auto`, and fasta and fai are not read.
+        pattern: "*.{gtf,gff,gff3}{,.gz}"
+        ontologies: []
+    - fasta:
+        type: file
+        description: |
+          genome FASTA the coding sequences are read from (required with annotation)
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+    - fai:
+        type: file
+        description: |
+          index of the genome FASTA (required with annotation)
+        pattern: "*.fai"
+        ontologies: []
+  - species:
+      type: string
+      description: |
+        species name, e.g. homo_sapiens
+  - assembly:
+      type: string
+      description: |
+        genome assembly, e.g. GRCh38
+  - release:
+      type: integer
+      description: |
+        Ensembl release the cache is named for, the `cache_version` of veprs/vep
+output:
+  cache:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing cache information
+      - ${prefix}:
+          type: directory
+          description: |
+            cache root holding `<species>/<release>_<assembly>`, the directory
+            veprs/vep takes as its cache
+          pattern: "*"
+  versions_veprs:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "vep --version | sed 's/^vep //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "vep --version | sed 's/^vep //'":
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@rborkowski-natera"
+maintainers:
+  - "@rborkowski-natera"

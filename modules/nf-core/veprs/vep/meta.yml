@@ -1,0 +1,217 @@
+name: veprs_vep
+description: Annotate variants with vep-rs, a Rust port of Ensembl VEP. The output-file-format is controlled through `task.ext.args`.
+keywords:
+  - annotation
+  - vcf
+  - json
+  - tab
+tools:
+  - veprs:
+      description: |
+        vep-rs is a Rust port of Ensembl VEP release 116.2: it reads Ensembl VEP's
+        command line and writes its VCF, tab and JSON output, annotating against a
+        vep-rs JSON cache.
+      homepage: https://github.com/natera-open-source/vep-rs
+      documentation: https://natera-open-source.github.io/vep-rs/
+      tool_dev_url: https://github.com/natera-open-source/vep-rs
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+  - tabix:
+      description: Generic indexer for TAB-delimited genome position files
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: https://www.htslib.org/doc/tabix.1.html
+      tool_dev_url: https://github.com/samtools/htslib
+      doi: 10.1093/gigascience/giab007
+      publication:
+        author: "Bonfield, J. K., Marshall, J., Danecek, P., Li, H., Ohan, V., Whitwham, A., Keane, T. & Davies, R. M."
+        year: 2021
+        title: "HTSlib: C library for reading/writing high-throughput sequencing data"
+        source: "GigaScience"
+      licence: ["MIT"]
+      identifier: biotools:tabix
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: |
+          vcf to annotate
+        ontologies: []
+    - custom_extra_files:
+        type: file
+        description: |
+          extra sample-specific files to be used with the `--custom` flag to be configured with ext.args
+          (optional)
+        ontologies: []
+  - genome:
+      type: string
+      description: |
+        which genome to annotate with
+  - species:
+      type: string
+      description: |
+        which species to annotate with
+  - cache_version:
+      type: integer
+      description: |
+        which version of the cache to annotate with
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. [ id:'test' ]
+    - cache:
+        type: file
+        description: |
+          vep-rs cache root, holding `<species>/<cache_version>_<genome>` (from veprs/cachebuilder)
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fasta reference information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: |
+          reference FASTA file (optional)
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+    - fai:
+        type: file
+        description: |
+          index of the reference FASTA file (required with fasta)
+        pattern: "*.fai"
+        ontologies: []
+  - extra_files:
+      type: file
+      description: |
+        path to file(s) needed for plugins  (optional)
+      ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${prefix}.vcf.gz:
+          type: file
+          description: |
+            annotated vcf (optional)
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${prefix}.vcf.gz.tbi:
+          type: file
+          description: |
+            annotated vcf index (optional)
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  tab:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${prefix}.tab.gz:
+          type: file
+          description: |
+            tab file with annotated variants (optional)
+          pattern: "*.ann.tab.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  json:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${prefix}.json.gz:
+          type: file
+          description: |
+            json file with annotated variants (optional)
+          pattern: "*.ann.json.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  report:
+    - - meta:
+          type: map
+          description: |
+            Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
+  versions_veprs:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "vep --version | sed 's/^vep //'":
+          type: eval
+          description: The command used to generate the version of the tool
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - tabix:
+          type: string
+          description: The tool name
+      - "tabix -h 2>&1 | sed -n 's/^Version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  multiqc_files:
+    - - meta:
+          type: string
+          description: |
+            Map with sample information
+      - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: VEP report file
+          pattern: "*.html"
+          ontologies: []
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - veprs:
+          type: string
+          description: The tool name
+      - "vep --version | sed 's/^vep //'":
+          type: eval
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - tabix:
+          type: string
+          description: The tool name
+      - "tabix -h 2>&1 | sed -n 's/^Version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@rborkowski-natera"
+maintainers:
+  - "@rborkowski-natera"
