@@ -1,0 +1,117 @@
+nextflow_process {
+
+    name "Test Process SYNCON_FETCH"
+    script "../main.nf"
+    process "SYNCON_FETCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "syncon"
+    tag "syncon/decon"
+    tag "syncon/build"
+    tag "syncon/fetch"
+    tag "samtools/fasta"
+
+    config "./nextflow.config"
+
+    setup {
+        run("SYNCON_BUILD", alias: "SYNCON_BUILD_ASM") {
+            script "../../build/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "asm"],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("SAMTOOLS_FASTA") {
+            script "../../../samtools/fasta/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "reads"],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/s1.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        run("SYNCON_BUILD", alias: "SYNCON_BUILD_READS") {
+            script "../../build/main.nf"
+            process {
+                """
+                input[0] = SAMTOOLS_FASTA.out.interleaved
+                """
+            }
+        }
+
+        run("SYNCON_DECON") {
+            script "../../decon/main.nf"
+            process {
+                """
+                input[0] = SYNCON_BUILD_ASM.out.onekhash
+                    .combine(SYNCON_BUILD_ASM.out.onesyncseq)
+                    .combine(SYNCON_BUILD_READS.out.onekhash)
+                    .map { meta, asm_1khash, _meta2, asm_1syncseq, _meta3, reads_1khash ->
+                        [meta, asm_1khash, asm_1syncseq, reads_1khash]
+                    }
+                input[1] = false
+                """
+            }
+        }
+    }
+
+    test("metagenome - binning") {
+
+        when {
+            params {
+                syncon_decon_args = "-a 0 -n 0 -f 1 -m 0"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "asm"],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true)
+                ]).join(SYNCON_DECON.out.decon)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("metagenome - binning - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "asm"],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true)
+                ]).join(SYNCON_DECON.out.decon)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
