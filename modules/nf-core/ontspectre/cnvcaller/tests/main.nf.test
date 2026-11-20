@@ -1,0 +1,226 @@
+nextflow_process {
+
+    name "Test Process SPECTRE_CNVCALLER"
+    script "../main.nf"
+    process "ONTSPECTRE_CNVCALLER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ontspectre"
+    tag "ontspectre/cnvcaller"
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ metadata ], [ blacklist ], [ binsize ]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_metadata.mdr', checkIfExists: true)
+                ]
+                input[3] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_blacklist_v1.0.bed', checkIfExists: true)
+                ]
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["spc", "karyotype"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ metadata ], [ ], [ binsize ]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_metadata.mdr', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["spc", "karyotype"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ ], [ blacklist ], [ binsize ]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_blacklist_v1.0.bed', checkIfExists: true)
+                ]
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["spc", "karyotype"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ metadata ], [ blacklist ], [ binsize ] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_metadata.mdr', checkIfExists: true)
+                ]
+                input[3] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_blacklist_v1.0.bed', checkIfExists: true)
+                ]
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ metadata ], [ ], [ binsize ] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_metadata.mdr', checkIfExists: true)
+                ]
+                input[3] = []
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [ Mosdepth_Summary, Mosdepth_Regions, Regions_csi, Sniffles_VCF ], [ fasta ], [ ], [ blacklist ], [ binsize ] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.mosdepth.summary.txt', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test.regions.bed.gz.csi', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/longraredisease/spectre/test_clair3.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = [
+                    file('https://raw.githubusercontent.com/nanoporetech/ont-spectre/master/spectre/data/hg38_blacklist_v1.0.bed', checkIfExists: true)
+                ]
+                input[4] = 1000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
