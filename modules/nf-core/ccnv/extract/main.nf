@@ -23,7 +23,7 @@ process CCNV_EXTRACT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_arg = fasta ? "--fasta $fasta" : ""
     """
-    ccnv \\
+    ccnv extract\\
         --prefix ${prefix} \\
         --threads ${task.cpus} \\
         $fasta_arg \\
