@@ -202,7 +202,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = channel.of([ [], [] ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -344,7 +344,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = channel.of([ [], [] ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -409,7 +409,7 @@ nextflow_workflow {
                     file(testData.expression_test_data_dir + testData.lengths_file)
                 ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -472,7 +472,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = channel.of([ [], [] ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -527,9 +527,9 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.value([ [], [] ])
-                ch_control_features = Channel.value([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_transcript_lengths = channel.value([ [], [] ])
+                ch_control_features = channel.value([ [], [] ])
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{[
                         [ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison
@@ -600,9 +600,9 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(testData.expression_test_data_dir + testData.samplesheet_file)
                 ])
-                ch_transcript_lengths = Channel.value([ [], [] ])
-                ch_control_features = Channel.value([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_transcript_lengths = channel.value([ [], [] ])
+                ch_control_features = channel.value([ [], [] ])
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([ id:'test' ], it, it.variable, it.reference, it.target, it.formula, it.comparison)
@@ -685,7 +685,7 @@ nextflow_workflow {
                 ])
                 ch_transcript_lengths = channel.of([ [], [] ])
                 ch_control_features = channel.of([ [], [] ])
-                ch_contrasts = Channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
+                ch_contrasts = channel.fromPath(file(testData.expression_test_data_dir + testData.contrasts_file))
                     .splitCsv ( header:true, sep:',' )
                     .map{
                         tuple([id: 'test'], it, it.variable, it.reference, it.target, it.formula, it.comparison)
