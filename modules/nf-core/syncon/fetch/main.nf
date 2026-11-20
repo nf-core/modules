@@ -24,12 +24,25 @@ process SYNCON_FETCH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if (sequences.getName() == "${prefix}.fa") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
-    syncon fetch \\
-        ${args} \\
-        -i <(grep KEEP ${decon_txt}) \\
-        -o ${prefix}.fa \\
-        ${sequences} \\
+    # Grep exits 1 if no matches are found
+    grep KEEP ${decon_txt} > keep.decon.txt || test \$? = 1;
+
+    if [ ! -s keep.decon.txt ]; then
+        echo "No sequences to keep after decontamination. Creating empty fasta file."
+        touch ${prefix}.fa
+    else
+        syncon fetch \\
+            ${args} \\
+            -i keep.decon.txt \\
+            -o ${prefix}.fa \\
+            ${sequences}
+    fi
+
+    rm keep.decon.txt
     """
 
     stub:

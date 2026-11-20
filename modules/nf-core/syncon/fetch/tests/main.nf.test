@@ -65,11 +65,36 @@ nextflow_process {
         }
     }
 
-    test("metagenome - binning") {
+    test("metagenome - binning - sequences to keep") {
 
         when {
             params {
                 syncon_decon_args = "-a 0 -n 0 -f 1 -m 0"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "asm"],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true)
+                ]).join(SYNCON_DECON.out.decon)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("metagenome - binning - empty keep") {
+
+        when {
+            params {
+                syncon_decon_args = ""
             }
             process {
                 """
