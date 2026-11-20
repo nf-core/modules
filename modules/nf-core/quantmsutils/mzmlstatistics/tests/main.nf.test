@@ -8,31 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "quantmsutils"
     tag "quantmsutils/mzmlstatistics"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../../nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id:'test_sample'],
-                    file(params.modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("proteomics - mzML statistics") {
+        def mzml_dir
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            mzml_dir = extract(modules_testdata_base_path + 'proteomics/diann/RD139_Narrow_UPS1_0_1fmol_inj1.mzML.tar.gz')
+        }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ meta, dir ->
-                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
-                    [meta, mzmlFile]
-                }
+                input[0] = [[id:'test_sample'], file('${mzml_dir}/RD139_Narrow_UPS1_0_1fmol_inj1.mzML')]
                 """
             }
         }
@@ -52,10 +40,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ meta, dir ->
-                    def mzmlFile = dir.resolve('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')
-                    [meta, mzmlFile]
-                }
+                input[0] = [[id:'test_sample'], file('RD139_Narrow_UPS1_0_1fmol_inj1.mzML')]
                 """
             }
         }
