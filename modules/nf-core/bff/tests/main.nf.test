@@ -7,20 +7,15 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "bff"
-    tag "untar"
 
 
     test("hto_matrix - combined - preprocessing") {
 
+        def hto_matrix
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto_matrix = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
             params {
@@ -28,7 +23,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                input[0] = [ [ id:'test' ], file('${hto_matrix}'), "COMBINED", "TRUE" ]
                 """
             }
         }
@@ -44,15 +39,11 @@ nextflow_process {
     test("hto_matrix - combined - preprocessing - test ext.args") {
         config "./nextflow.config"
 
+        def hto_matrix
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto_matrix = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
             params {
@@ -60,7 +51,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                input[0] = [ [ id:'test' ], file('${hto_matrix}'), "COMBINED", "TRUE" ]
                 """
             }
         }
@@ -75,20 +66,16 @@ nextflow_process {
 
 
     test("hto_matrix - raw - preprocessing") {
+        def hto_matrix
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto_matrix = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "RAW", "TRUE"] }
+                input[0] = [ [ id:'test' ], file('${hto_matrix}'), "RAW", "TRUE" ]
                 """
             }
         }
@@ -103,20 +90,16 @@ nextflow_process {
 
 
     test("hto_matrix - combined - no preprocessing") {
+        def hto_matrix
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            hto_matrix = extract(modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz').resolve('hto')
         }
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "FALSE"] }
+                input[0] = [ [ id:'test' ], file('${hto_matrix}'), "COMBINED", "FALSE" ]
                 """
             }
         }
@@ -135,20 +118,10 @@ nextflow_process {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                """
-                input[0] = Channel.of([ [],file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/hto.tar.gz", checkIfExists: true)   ])
-                """
-                }
-            }
-        }
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, files -> [ [ id:'test'], files, "COMBINED", "TRUE"] }
+                input[0] = [ [ id:'test' ], [], "COMBINED", "TRUE" ]
                 """
             }
         }
