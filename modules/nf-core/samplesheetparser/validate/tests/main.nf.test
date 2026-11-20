@@ -18,6 +18,7 @@ nextflow_process {
                     [ id: 'test_v1' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -39,6 +40,29 @@ nextflow_process {
                     [ id: 'test_v2' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true)
                 ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("V2 sheet - validate against a custom JSON schema") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_schema' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{"\$schema":"https://json-schema.org/draft/2020-12/schema","type":"object"}').collectFile(name: 'custom_schema.json')
                 """
             }
         }
@@ -62,6 +86,7 @@ nextflow_process {
                     [ id: 'test_stub' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
