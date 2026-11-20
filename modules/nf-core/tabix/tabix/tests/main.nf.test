@@ -9,57 +9,21 @@ nextflow_process {
     tag "tabix"
     tag "tabix/tabix"
 
-    config "./nextflow.config"
+    test("deprecated") {
 
-    test("sarscov2 - bed gz - deprecated") {
         when {
-            params {
-                module_args = '-p bed'
-            }
             process {
                 """
-                input[0] = [
-                                [ id:'tbi_bed' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true),
-                                [],
-                                []
-                            ]
+                input[0] = [ [ id:'test' ], file('tab'), file('tai'), file('regions') ]
                 """
             }
         }
 
         then {
-            assertAll (
+            assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/htslib/bgziptabix instead.") }
             )
         }
     }
-
-    test("sarscov2 - bed gz - deprecated - stub") {
-        options "-stub"
-        when {
-            params {
-                module_args = '-p bed'
-            }
-            process {
-                """
-                input[0] = [
-                                [ id:'tbi_bed_stub' ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed.gz', checkIfExists: true),
-                                [],
-                                []
-                            ]
-                """
-            }
-        }
-
-        then {
-            assertAll (
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
-            )
-        }
-    }
-
 }

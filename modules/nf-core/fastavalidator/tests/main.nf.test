@@ -8,15 +8,12 @@ nextflow_process {
     tag "modules_nfcore"
     tag "fastavalidator"
 
-    test("sarscov2-fasta-valid") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                ]
+                input[0] = [ [ id:'test' ], file('fasta') ]
                 """
             }
         }
@@ -24,34 +21,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
-
     }
-
-    // test("sarscov2-gff3-invalid") {
-
-    //     when {
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test', single_end:false ], // meta map
-    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
-    //             ]
-    //             """
-    //         }
-    //     }
-
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(process.out).match() },
-    //             { assert process.out.success_log == [] },
-    //             { assert process.out.error_log != null },
-    //             { assert path(process.out.error_log.get(0).get(1)).getText().contains("genome.gff3 does not start with a >") }
-    //         )
-    //     }
-
-    // }
 }

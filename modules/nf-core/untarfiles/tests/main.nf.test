@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process UNTARFILES"
@@ -9,88 +8,21 @@ nextflow_process {
     tag "modules_nfcore"
     tag "untarfiles"
 
-    test("test-untarfiles") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [id: 'test'],
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
-				]
-
+                input[0] = [ [ id:'test' ], file('archive') ]
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.failed }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }
-
-    test("test-untarfiles-subdirectories") {
-
-        when {
-            process {
-                """
-                input[0] = [
-				    [id: 'test'],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz', checkIfExists: true)
-				]
-
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.failed }
-            )
-        }
-    }
-
-    test("test-untarfiles-onlyfiles") {
-
-        when {
-            process {
-                """
-                input[0] = [
-				    [id: 'test'],
-				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)
-				]
-
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.failed }
-            )
-        }
-    }
-
-    test("test-untarfiles-onlyfiles-stub") {
-        options '-stub'
-        when {
-            process {
-                """
-                input[0] = [
-				    [id: 'test'],
-				    file(params.modules_testdata_base_path + 'generic/tar/hello.tar.gz', checkIfExists: true)
-				]
-
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.failed }
-            )
-        }
-    }
-
 }

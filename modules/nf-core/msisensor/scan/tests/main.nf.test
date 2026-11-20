@@ -1,7 +1,6 @@
 nextflow_process {
 
     name "Test Process MSISENSOR_SCAN"
-
     script "../main.nf"
     process "MSISENSOR_SCAN"
 
@@ -10,41 +9,20 @@ nextflow_process {
     tag "msisensor"
     tag "msisensor/scan"
 
-    test("Deprecated") {
-        when {
-            process {
-                """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
-                """
-            }
-        }
-        then {
-            assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
-            )
-        }
-    }
+    test("deprecated") {
 
-    test("Deprecated -- stub") {
-        options '-stub'
         when {
             process {
                 """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true)
-                ]
+                input[0] = [ [ id:'test' ], file('fasta') ]
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated") }
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/msisensorpro/scan") }
             )
         }
     }
