@@ -27,7 +27,7 @@ process CCNV_PREDICT {
     tuple val(meta), path("*_segments.bed.gz.tbi"), emit: segments_bed_index
     tuple val(meta), path("*_segments.vcf.gz"), emit: segments_vcf
     tuple val(meta), path("*_segments.vcf.gz.tbi"), emit: segments_vcf_index
-    tuple val("${task.process}"), val('ccnv'), eval("ccnv --version"), topic: versions, emit: versions_ccnv
+    tuple val("${task.process}"), val('ccnv'), eval("ccnv --version 2>&1 | sed 's/ccnv //'"), topic: versions, emit: versions_ccnv
 
     when:
     task.ext.when == null || task.ext.when
