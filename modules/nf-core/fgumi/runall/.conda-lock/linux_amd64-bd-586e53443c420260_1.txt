@@ -14,12 +14,13 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/_r-mutex-1.0.1-anacondar_1.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/linux-64/binutils_impl_linux-64-2.46.1-default_hfdba357_103.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/binutils_linux-64-2.46.1-default_h4852527_103.conda
-      - conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.17.0-h8d53bd0_0.conda
+      - conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.18.0-h8d53bd0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/bwidget-1.10.1-hfc2019e_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/c-ares-1.34.9-hebe6cf0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cairo-1.18.6-h3c89d7e_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/coreutils-9.5-hd590300_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/curl-8.23.0-ha042cf0_0.conda
       - conda: https://conda.anaconda.org/bioconda/linux-64/fgumi-0.9.0-h54198d6_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/findutils-4.10.0-h86094a7_1.conda
@@ -163,9 +164,9 @@ packages:
   license_family: GPL
   size: 36335
   timestamp: 1791565508736
-- conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.17.0-h8d53bd0_0.conda
-  sha256: 94c5456e96d44d24b1940a94d72fd39790bfc7a6903c42c2b7d1f1b51fdf072f
-  md5: d3c2a5b8b4485b96987146d26f05e162
+- conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.18.0-h8d53bd0_0.conda
+  sha256: 2dc903d056b2bda65210891dfee4888278b6e48562e02d22e1ccb37aeab6aea6
+  md5: 33350bd79cd7f30cd42da904ba66a6b4
   depends:
   - __glibc >=2.17,<3.0.a0
   - _openmp_mutex * *_llvm
@@ -180,8 +181,8 @@ packages:
   - llvm-openmp >=23.1.5
   license: MIT AND Apache-2.0 AND Zlib
   license_family: MIT
-  size: 2403678
-  timestamp: 1794194551017
+  size: 2583998
+  timestamp: 1794887204934
 - conda: https://conda.anaconda.org/conda-forge/linux-64/bwidget-1.10.1-hfc2019e_3.conda
   sha256: 5451e5d9abe192438f9efe8c0737c6ac0ddd6cfb932cb88e2ef2f88e97fc3c3a
   md5: 38d3e0382f3f10344ac30772dec58035
@@ -244,6 +245,15 @@ packages:
   license: LGPL-2.1-only or MPL-1.1
   size: 1007110
   timestamp: 1790045358757
+- conda: https://conda.anaconda.org/conda-forge/linux-64/coreutils-9.5-hd590300_0.conda
+  sha256: 7cd3b0f55aa55bb27b045c30f32b3f6b874ecc006f3abcb274c71a3bcbacb358
+  md5: 126d457e0e7a535278e808a7d8960015
+  depends:
+  - libgcc-ng >=12
+  license: GPL-3.0-or-later
+  license_family: GPL
+  size: 3014238
+  timestamp: 1711655132451
 - conda: https://conda.anaconda.org/conda-forge/linux-64/curl-8.23.0-ha042cf0_0.conda
   sha256: c34fd476d8ad5eede00a3742f33bf52400e01b35bc2777ab2306d6fc21121949
   md5: ae85b19bbac7336f4efc4802c351effa

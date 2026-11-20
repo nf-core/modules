@@ -7,8 +7,8 @@ process FGUMI_RUNALL {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc7499ff550a8302bcb8c75d35275b45519dc42f5e810fb078c50db6ce5c54e9/data'
-        : 'community.wave.seqera.io/library/bwa-mem3_fgumi_findutils:334cfaafb9102360'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f5c9ad9982b305e1991119fa62a4cb3e51f85cc25d37535da335867d4df01670/data'
+        : 'community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:586e53443c420260'}"
 
     input:
     tuple val(meta), path(reads), val(library)

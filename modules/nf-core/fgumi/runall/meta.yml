@@ -157,24 +157,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bwa-mem3_fgumi_findutils:334cfaafb9102360
-      build_id: bd-334cfaafb9102360_1
-      scan_id: sc-18d49fdf14bfb61b_1
+      name: community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:586e53443c420260
+      build_id: bd-586e53443c420260_1
+      scan_id: sc-d6a080a75af0e7d4_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bwa-mem3_fgumi_findutils:b7124407c417f9a0
-      build_id: bd-b7124407c417f9a0_1
-      scan_id: sc-1efa92de6736e0c6_1
+      name: community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:71ad13ee1b34247b
+      build_id: bd-71ad13ee1b34247b_1
+      scan_id: sc-f8489776c6da7459_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_findutils:bfcc647edc06171e
-      build_id: bd-bfcc647edc06171e_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f85e585c99e65aa46bc38d980efdaff3af81ab9f14baf18fcb2ec2630401deef/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_findutils:3985957579d0129f
-      build_id: bd-3985957579d0129f_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc7499ff550a8302bcb8c75d35275b45519dc42f5e810fb078c50db6ce5c54e9/data
+      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:4014f2b644867ff8
+      build_id: bd-4014f2b644867ff8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f5c9ad9982b305e1991119fa62a4cb3e51f85cc25d37535da335867d4df01670/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_fgumi_coreutils_findutils:381d0ffe43c42af6
+      build_id: bd-381d0ffe43c42af6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/4865b9ca2738d438856a2ff5e1cf66c26c1b2df70cd215cc1a029a96c1245d75/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_amd64-bd-334cfaafb9102360_1.txt
+      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_amd64-bd-586e53443c420260_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_arm64-bd-b7124407c417f9a0_1.txt
+      lock_file: modules/nf-core/fgumi/runall/.conda-lock/linux_arm64-bd-71ad13ee1b34247b_1.txt
