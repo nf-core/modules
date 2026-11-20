@@ -38,7 +38,7 @@ input:
       type: boolean
       description: Whether to write per-syncmer profiles of the input assembly sequences
 output:
-  syncon_decon_txt:
+  decon:
     - - meta:
           type: map
           description: |
@@ -50,7 +50,7 @@ output:
           pattern: "*.decon.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  syncon_profile_txt:
+  profile:
     - - meta:
           type: map
           description: |
@@ -59,7 +59,7 @@ output:
       - "*.profile.txt":
           type: file
           description: Per-syncmer profiles of the input assembly sequences
-          pattern: "*.decon.txt"
+          pattern: "*.profile.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
   versions_syncon:

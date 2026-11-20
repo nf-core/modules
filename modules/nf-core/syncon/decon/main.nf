@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SYNCON_DECON {
     tag "${meta.id}"
     label 'process_low'
@@ -12,8 +15,9 @@ process SYNCON_DECON {
     val write_profile
 
     output:
-    tuple val(meta), path("*.decon.txt"), emit: syncon_decon_txt
-    tuple val(meta), path("*.profile.txt"), emit: syncon_profile_txt
+    tuple val(meta), path("*.decon.txt"), emit: decon
+    tuple val(meta), path("*.profile.txt"), emit: profile, optional: true
+    // WARN: Incorrect version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('syncon'), val("1.0"), topic: versions, emit: versions_syncon
 
     when:
