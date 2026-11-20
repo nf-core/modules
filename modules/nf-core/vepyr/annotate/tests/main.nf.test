@@ -6,28 +6,20 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "vepyr"
     tag "vepyr/annotate"
 
     // raw.githubusercontent.com serves blobs, not directory trees, so the cache
-    // is published as an archive and extracted here. UNTAR strips the single
-    // top-level directory, leaving the entity directories at the cache root.
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'116_GRCh38_ensembl' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                ])
-                """
-            }
-        }
-    }
-
+    // is published as an archive and extracted here; resolve('cache') drops its
+    // single top-level directory, leaving the entity directories at the cache root.
     test("homo_sapiens - vcf") {
+        def cache
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz').resolve('cache')
+        }
+
         when {
             process {
                 """
@@ -36,7 +28,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
                 ])
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
@@ -58,6 +50,13 @@ nextflow_process {
     }
 
     test("homo_sapiens - vcf - no index") {
+        def cache
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz').resolve('cache')
+        }
+
         when {
             process {
                 """
@@ -66,7 +65,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
                     []
                 ])
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
