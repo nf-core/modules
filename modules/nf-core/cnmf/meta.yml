@@ -1,0 +1,139 @@
+name: "cnmf"
+description: |
+  Consensus non-negative matrix factorisation (cNMF) for one rank k: runs many NMF
+  replicates, clusters their components and returns consensus gene programs (spectra)
+  and their usage per sample, with stability (silhouette) and prediction error for
+  choosing k. Supports standard cNMF preprocessing (single-cell counts) and a
+  pre-normalised mode that uses the matrix as-is.
+keywords:
+  - nmf
+  - cnmf
+  - matrix factorisation
+  - gene programs
+  - transcriptomics
+tools:
+  - "cnmf":
+      description: "Consensus matrix factorization for inferring gene expression programs from single-cell RNA-seq data."
+      homepage: "https://github.com/dylkot/cNMF"
+      documentation: "https://github.com/dylkot/cNMF"
+      tool_dev_url: "https://github.com/dylkot/cNMF"
+      doi: "10.7554/eLife.43803"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - matrix:
+        type: file
+        description: |
+          Features x samples matrix (csv, tsv or txt, optionally gzipped) with feature names
+          in the first column and sample names in the header. Must be non-negative and have
+          no missing values. Options are passed via ext.args, e.g. '--k 10 --n_iter 200
+          --seed 42': --k (required), --n_iter (default 100), --seed, --density_threshold
+          (default 0.5; 2.0 keeps all components), --local_neighborhood_size (default 0.3),
+          --numgenes (default 2000, standard mode only), --max_nmf_iter (default 1000),
+          --beta_loss (default frobenius) and --prenormalised (use the matrix as-is: no TPM,
+          all features, no unit-variance scaling, and usages are not refit on TPM).
+        pattern: "*.{csv,tsv,txt,csv.gz,tsv.gz,txt.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  feature_loadings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.feature_loadings.csv":
+          type: file
+          description: Consensus spectra (gene programs), features x patterns. In standard mode only the selected high-variance features are included.
+          pattern: "*.feature_loadings.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  sample_factors:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.sample_factors.csv":
+          type: file
+          description: Program usages, samples x patterns
+          pattern: "*.sample_factors.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  gene_spectra_score:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.gene_spectra_score.csv":
+          type: file
+          description: Z-score spectra (how specifically each feature marks each program), features x patterns
+          pattern: "*.gene_spectra_score.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  stats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.stats.csv":
+          type: file
+          description: One row with k, settings, silhouette (stability), prediction error, and a summary of the replicate statistics (mean and maximum iterations, replicates hitting --max_nmf_iter, reconstruction error spread)
+          pattern: "*.stats.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  replicate_stats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.replicate_stats.csv":
+          type: file
+          description: One row per NMF replicate with its seed, iterations used, whether it hit --max_nmf_iter, and reconstruction error. cNMF computes the iteration count but does not keep it, so the module records it.
+          pattern: "*.replicate_stats.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  merged_spectra:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.merged_spectra.df.npz":
+          type: file
+          description: All replicate components before clustering (cNMF npz format), for custom diagnostics
+          pattern: "*.merged_spectra.df.npz"
+  clustering_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.clustering.png":
+          type: file
+          description: cNMF consensus clustergram
+          pattern: "*.clustering.png"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+authors:
+  - "@Jessica-ovabor"
+maintainers:
+  - "@Jessica-ovabor"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cnmf:1.7.1--5ebca644e705ff3c
+      build_id: bd-5ebca644e705ff3c_1
+      scan_id: sc-1d41891c9162ec67_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cnmf:1.7.1--4285e598083ab879
+      build_id: bd-4285e598083ab879_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/901d99e9e0a403c38effe4db0a0e78fcb8a3516125d6a5c328ac97556c28ea11/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cnmf/.conda-lock/linux_amd64-bd-5ebca644e705ff3c_1.txt

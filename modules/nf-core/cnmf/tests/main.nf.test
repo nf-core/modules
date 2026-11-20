@@ -1,0 +1,161 @@
+nextflow_process {
+
+    name "Test Process CNMF"
+    script "../main.nf"
+    process "CNMF"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cnmf"
+
+    test("mus_musculus - counts - standard mode") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.feature_loadings[0][1]).readLines()[0] == 'feature,Pattern_1,Pattern_2' },
+                { assert path(process.out.sample_factors[0][1]).readLines().size() == 7 },
+                { assert path(process.out.stats[0][1]).readLines()[0].contains('silhouette') },
+                { assert path(process.out.replicate_stats[0][1]).readLines().size() == 11 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["merged_spectra", "clustering_plot"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - counts - prenormalised mode") {
+
+        when {
+            params {
+                module_args = '--k 2 --n_iter 10 --seed 1 --prenormalised'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.feature_loadings[0][1]).readLines().size() == 1001 },
+                { assert path(process.out.stats[0][1]).readLines()[1].contains('True') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["merged_spectra", "clustering_plot"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - counts - iteration cap reached") {
+
+        when {
+            params {
+                module_args = '--k 2 --n_iter 10 --seed 1 --prenormalised --max_nmf_iter 5'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.replicate_stats[0][1]).readLines().drop(1).every { it.split(',')[4] == 'True' } }
+            )
+        }
+    }
+
+    test("error - k missing") {
+
+        when {
+            params {
+                module_args = '--n_iter 10'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("the following arguments are required: --k") }
+            )
+        }
+    }
+
+    test("error - negative values") {
+
+        when {
+            process {
+                """
+                // Matrix with negative values (every value minus 50)
+                def counts   = file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                def negative = file("\${workDir}/negative.tsv")
+                negative.withWriter { w ->
+                    counts.eachLine { line, n ->
+                        if (n == 1) { w.write(line + '\\n'); return }
+                        def fields = line.split('\\t')
+                        w.write(([fields[0]] + fields[1..-1].collect { (it as double) - 50 }).join('\\t') + '\\n')
+                    }
+                }
+                input[0] = [ [ id:'test' ], negative ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("The matrix contains negative values") }
+            )
+        }
+    }
+
+    test("mus_musculus - counts - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
