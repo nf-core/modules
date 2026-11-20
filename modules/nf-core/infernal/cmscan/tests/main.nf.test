@@ -7,42 +7,33 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "gunzip"
-    tag "untar"
     tag "infernal"
     tag "infernal/cmscan"
 
-    setup {
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
-
     test("rfam - bacteroides fragilis") {
+        def cmdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cmdb = extract(modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz').resolve('cmdb')
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'test' ], file('${cmdb}') ]
                 input[2] = []
                 """
             }
@@ -69,6 +60,12 @@ nextflow_process {
     }
 
     test("ecoli - with clanin - gz") {
+        def cmdb
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cmdb = extract(modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz').resolve('cmdb')
+        }
 
         when {
             process {
@@ -77,7 +74,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'test' ], file('${cmdb}') ]
                 input[2] = file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.clanin', checkIfExists: true)
                 """
             }
@@ -112,10 +109,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    []
                 ]
-                input[1] = UNTAR.out.untar
-                input[2] = file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.clanin', checkIfExists: true)
+                input[1] = [ [ id:'test' ], [] ]
+                input[2] = []
                 """
             }
         }

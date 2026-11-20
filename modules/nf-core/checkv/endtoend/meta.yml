@@ -43,9 +43,7 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/quality_summary.tsv:
           type: file
-          description: CheckV's main output containing integrated results from the
-            three main modules (contamination, completeness, complete genomes)
-            with overall quality of contigs
+          description: CheckV's main output containing integrated results from the three main modules (contamination, completeness, complete genomes) with overall quality of contigs
           pattern: "${prefix}/quality_summary.tsv"
           ontologies: []
   completeness:
@@ -67,8 +65,7 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/contamination.tsv:
           type: file
-          description: CheckV's detailed overview table on estimating
-            contamination
+          description: CheckV's detailed overview table on estimating contamination
           pattern: "${prefix}/contamination.tsv"
           ontologies: []
   complete_genomes:
@@ -79,8 +76,7 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/complete_genomes.tsv:
           type: file
-          description: CheckV's detailed overview table on the identified putative
-            complete genomes
+          description: CheckV's detailed overview table on the identified putative complete genomes
           pattern: "${prefix}/complete_genomes.tsv"
           ontologies: []
   proviruses:
@@ -130,3 +126,17 @@ authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/checkv_diamond:49f136fbaa08f899
+      build_id: bd-49f136fbaa08f899_1
+      scan_id: sc-aa93c398adef3c7c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/checkv_diamond:393e06ce022e73de
+      build_id: bd-393e06ce022e73de_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fb71a9ba838eae927761d0c123653534b4a83ef7a9b8fafe3c1de11b5ec71a4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/checkv/endtoend/.conda-lock/linux_amd64-bd-49f136fbaa08f899_1.txt
