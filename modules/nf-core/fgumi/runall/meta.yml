@@ -70,8 +70,9 @@ input:
     - index:
         type: directory
         description: |
-          bwa-mem3 index directory. Needed when the run aligns. It is linked
-          next to the FASTA, so that `{ref}` in `--aligner::command` finds both
+          bwa-mem3 index, as a directory or a list of files. Needed when the run
+          aligns. It is linked next to the FASTA, so that `{ref}` in
+          `--aligner::command` finds both
         pattern: "*"
         ontologies: []
   - start_from:

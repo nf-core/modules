@@ -37,13 +37,14 @@ process FGUMI_RUNALL {
     // The aligner reads its index from the `--ref` path, so the FASTA and the index must share one prefix
     def link_reference = index
         ? """
-        INDEX=`find -L ${index}/ -name "*.amb" ! -name "*.meth.amb" | sed 's/\\.amb\$//'`
+        # The index is a directory or a list of files: search the work directory, as bwamem3/mem does
+        INDEX=`find -L ./ -name "*.amb" ! -name "*.meth.amb" | sed 's/\\.amb\$//'`
         REF=reference/`basename \$INDEX`
         mkdir reference
-        for file in \$INDEX.*; do ln -s ../\$file reference/; done
-        ln -s ../${fasta} \$REF
-        ln -s ../${fai} \$REF.fai
-        ln -s ../${dict} \$REF.dict
+        for file in \$INDEX.*; do ln -s `realpath \$file` reference/; done
+        ln -sf `realpath ${fasta}` \$REF
+        ln -sf `realpath ${fai}` \$REF.fai
+        ln -sf `realpath ${dict}` \$REF.dict
         """.stripIndent()
         : "REF=${fasta}"
     def reference = fasta ? "--ref \$REF" : ''
