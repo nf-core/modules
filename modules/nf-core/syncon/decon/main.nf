@@ -17,7 +17,7 @@ process SYNCON_DECON {
     output:
     tuple val(meta), path("*.decon.txt"), emit: decon
     tuple val(meta), path("*.profile.txt"), emit: profile, optional: true
-    // WARN: Incorrect version information not provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Incorrect version information provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('syncon'), val("1.0"), topic: versions, emit: versions_syncon
 
     when:
