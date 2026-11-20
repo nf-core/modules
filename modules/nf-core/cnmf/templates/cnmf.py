@@ -23,7 +23,17 @@ Nextflow fills in the dollar-brace placeholders before this script runs, so avoi
 literal dollar signs and backslash escapes here.
 """
 
+import argparse
+import importlib.metadata
+import multiprocessing
 import os
+import platform
+import shlex
+import shutil
+from concurrent.futures import ProcessPoolExecutor
+
+# These settings must be in place before numpy, scanpy or cNMF are imported, so those
+# packages are imported inside the functions below rather than at the top of the file.
 
 # One thread per worker: replicates run in parallel processes instead
 for _variable in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
@@ -34,30 +44,20 @@ for _variable, _folder in (("NUMBA_CACHE_DIR", "numba_cache"), ("MPLCONFIGDIR", 
     os.environ[_variable] = os.path.join(os.getcwd(), _folder)
     os.makedirs(os.environ[_variable], exist_ok=True)
 
-import argparse
-import importlib.metadata
-import multiprocessing
-import platform
-import shlex
-import shutil
-from concurrent.futures import ProcessPoolExecutor
-
-import anndata as ad
-import numpy as np
-import pandas as pd
-from cnmf import cNMF
-from cnmf.cnmf import load_df_from_npz
-
 RUN_DIR = "cnmf_run"
 
 
 def factorize_worker(run_name, worker_index, total_workers):
     """Run one share of the NMF replicates (must be top level for multiprocessing)."""
+    from cnmf import cNMF
+
     cNMF(output_dir=RUN_DIR, name=run_name).factorize(worker_i=worker_index, total_workers=total_workers)
 
 
 def read_matrix(file_name):
     """Read a features x samples matrix; feature names in the first column."""
+    import pandas as pd
+
     base_name = file_name[:-3] if file_name.endswith(".gz") else file_name
     separator = "," if base_name.endswith(".csv") else chr(9)
     return pd.read_csv(file_name, sep=separator, index_col=0)
@@ -72,6 +72,12 @@ def as_patterns(frame, axis_name):
 
 
 def main():
+    import anndata as ad
+    import numpy as np
+    import pandas as pd
+    from cnmf import cNMF
+    from cnmf.cnmf import load_df_from_npz
+
     ## ------------------------------------------------------------------
     ## Options (task.ext.args)
     ## ------------------------------------------------------------------
@@ -79,14 +85,16 @@ def main():
     parser.add_argument("--k", type=int, required=True, help="number of programs")
     parser.add_argument("--n_iter", type=int, default=100, help="number of NMF replicates")
     parser.add_argument("--seed", type=int, default=None, help="random seed")
-    parser.add_argument("--density_threshold", type=float, default=0.5,
-                        help="outlier filter on local density; 2.0 keeps all components")
+    parser.add_argument(
+        "--density_threshold", type=float, default=0.5, help="outlier filter on local density; 2.0 keeps all components"
+    )
     parser.add_argument("--local_neighborhood_size", type=float, default=0.30)
     parser.add_argument("--numgenes", type=int, default=2000, help="high-variance genes (default mode only)")
     parser.add_argument("--max_nmf_iter", type=int, default=1000)
     parser.add_argument("--beta_loss", default="frobenius", choices=["frobenius", "kullback-leibler", "itakura-saito"])
-    parser.add_argument("--prenormalised", action="store_true",
-                        help="use the matrix as-is: no TPM, all genes, no scaling, no TPM refit")
+    parser.add_argument(
+        "--prenormalised", action="store_true", help="use the matrix as-is: no TPM, all genes, no scaling, no TPM refit"
+    )
     ext_args = "${task.ext.args}"
     options = parser.parse_args(shlex.split("" if ext_args == "null" else ext_args))
 
@@ -109,13 +117,23 @@ def main():
         raise SystemExit("The matrix contains negative values; NMF needs non-negative input")
     matrix = matrix.loc[matrix.sum(axis=1) > 0]
     if options.k >= matrix.shape[1]:
-        raise SystemExit("--k (" + str(options.k) + ") must be smaller than the number of samples (" + str(matrix.shape[1]) + ")")
+        raise SystemExit(
+            "--k (" + str(options.k) + ") must be smaller than the number of samples (" + str(matrix.shape[1]) + ")"
+        )
 
     samples_by_features = matrix.T
     input_file = "cnmf_input.samples_x_features.tsv"
     samples_by_features.to_csv(input_file, sep=chr(9))
-    print("Input:", matrix.shape[0], "features x", matrix.shape[1], "samples; k =", options.k,
-          "; mode =", "prenormalised" if options.prenormalised else "standard")
+    print(
+        "Input:",
+        matrix.shape[0],
+        "features x",
+        matrix.shape[1],
+        "samples; k =",
+        options.k,
+        "; mode =",
+        "prenormalised" if options.prenormalised else "standard",
+    )
 
     ## ------------------------------------------------------------------
     ## cNMF: prepare -> factorize (parallel) -> combine -> consensus
@@ -125,40 +143,70 @@ def main():
         genes_file = "all_features.txt"
         with open(genes_file, "w") as handle:
             handle.write(chr(10).join(samples_by_features.columns))
-        run.prepare(counts_fn=input_file, components=[options.k], n_iter=options.n_iter, seed=options.seed,
-                    tpm_fn=input_file, genes_file=genes_file, beta_loss=options.beta_loss,
-                    max_NMF_iter=options.max_nmf_iter)
+        run.prepare(
+            counts_fn=input_file,
+            components=[options.k],
+            n_iter=options.n_iter,
+            seed=options.seed,
+            tpm_fn=input_file,
+            genes_file=genes_file,
+            beta_loss=options.beta_loss,
+            max_NMF_iter=options.max_nmf_iter,
+        )
         # Replace cNMF's unit-variance-scaled matrix with the input, unscaled
-        run.save_norm_counts(ad.AnnData(X=samples_by_features.values.astype(np.float64),
-                                        obs=pd.DataFrame(index=samples_by_features.index),
-                                        var=pd.DataFrame(index=samples_by_features.columns)))
+        run.save_norm_counts(
+            ad.AnnData(
+                X=samples_by_features.values.astype(np.float64),
+                obs=pd.DataFrame(index=samples_by_features.index),
+                var=pd.DataFrame(index=samples_by_features.columns),
+            )
+        )
     else:
-        run.prepare(counts_fn=input_file, components=[options.k], n_iter=options.n_iter, seed=options.seed,
-                    num_highvar_genes=options.numgenes, beta_loss=options.beta_loss,
-                    max_NMF_iter=options.max_nmf_iter)
+        run.prepare(
+            counts_fn=input_file,
+            components=[options.k],
+            n_iter=options.n_iter,
+            seed=options.seed,
+            num_highvar_genes=options.numgenes,
+            beta_loss=options.beta_loss,
+            max_NMF_iter=options.max_nmf_iter,
+        )
 
     total_workers = max(1, min(int("${task.cpus}"), options.n_iter))
     # "spawn" (not the default "fork") so the run shuts down cleanly after the workers finish
     with ProcessPoolExecutor(max_workers=total_workers, mp_context=multiprocessing.get_context("spawn")) as executor:
-        list(executor.map(factorize_worker, [prefix] * total_workers, range(total_workers), [total_workers] * total_workers))
+        list(
+            executor.map(
+                factorize_worker, [prefix] * total_workers, range(total_workers), [total_workers] * total_workers
+            )
+        )
     run.combine()
 
     # Stability and error for this k (the numbers behind cNMF's k-selection plot)
-    stats = run.consensus(options.k, density_threshold=options.density_threshold,
-                          local_neighborhood_size=options.local_neighborhood_size,
-                          skip_density_and_return_after_stats=True, show_clustering=False,
-                          close_clustergram_fig=True).stats
-    run.consensus(options.k, density_threshold=options.density_threshold,
-                  local_neighborhood_size=options.local_neighborhood_size, show_clustering=True,
-                  close_clustergram_fig=True, refit_usage=not options.prenormalised)
+    stats = run.consensus(
+        options.k,
+        density_threshold=options.density_threshold,
+        local_neighborhood_size=options.local_neighborhood_size,
+        skip_density_and_return_after_stats=True,
+        show_clustering=False,
+        close_clustergram_fig=True,
+    ).stats
+    run.consensus(
+        options.k,
+        density_threshold=options.density_threshold,
+        local_neighborhood_size=options.local_neighborhood_size,
+        show_clustering=True,
+        close_clustergram_fig=True,
+        refit_usage=not options.prenormalised,
+    )
 
     ## ------------------------------------------------------------------
     ## Outputs
     ## ------------------------------------------------------------------
     density_label = str(options.density_threshold).replace(".", "_")
     spectra = load_df_from_npz(run.paths["consensus_spectra"] % (options.k, density_label))
-    usages  = load_df_from_npz(run.paths["consensus_usages"] % (options.k, density_label))
-    scores  = load_df_from_npz(run.paths["gene_spectra_score"] % (options.k, density_label))
+    usages = load_df_from_npz(run.paths["consensus_usages"] % (options.k, density_label))
+    scores = load_df_from_npz(run.paths["gene_spectra_score"] % (options.k, density_label))
 
     as_patterns(spectra.T, "feature").to_csv(prefix + ".feature_loadings.csv")
     as_patterns(usages, "sample").to_csv(prefix + ".sample_factors.csv")
@@ -166,23 +214,31 @@ def main():
 
     # cNMF returns the statistics for one k as a series: k, density threshold, silhouette, prediction error
     stats_row = pd.Series(stats).to_dict() if not isinstance(stats, pd.DataFrame) else stats["stats"].to_dict()
-    pd.DataFrame([{
-        "k": options.k,
-        "n_iter": options.n_iter,
-        "density_threshold": options.density_threshold,
-        "local_neighborhood_size": options.local_neighborhood_size,
-        "prenormalised": options.prenormalised,
-        "silhouette": stats_row["silhouette"],
-        "prediction_error": stats_row["prediction_error"],
-    }]).to_csv(prefix + ".stats.csv", index=False)
+    pd.DataFrame(
+        [
+            {
+                "k": options.k,
+                "n_iter": options.n_iter,
+                "density_threshold": options.density_threshold,
+                "local_neighborhood_size": options.local_neighborhood_size,
+                "prenormalised": options.prenormalised,
+                "silhouette": stats_row["silhouette"],
+                "prediction_error": stats_row["prediction_error"],
+            }
+        ]
+    ).to_csv(prefix + ".stats.csv", index=False)
 
     shutil.copy(run.paths["merged_spectra"] % options.k, prefix + ".merged_spectra.df.npz")
     clustering_plot = run.paths["clustering_plot"] % (options.k, density_label)
     if os.path.exists(clustering_plot):
         shutil.copy(clustering_plot, prefix + ".clustering.png")
 
-    print("Silhouette:", round(float(stats_row["silhouette"]), 4),
-          "| prediction error:", round(float(stats_row["prediction_error"]), 2))
+    print(
+        "Silhouette:",
+        round(float(stats_row["silhouette"]), 4),
+        "| prediction error:",
+        round(float(stats_row["prediction_error"]), 2),
+    )
 
     ## versions.yml
     with open("versions.yml", "w") as handle:
