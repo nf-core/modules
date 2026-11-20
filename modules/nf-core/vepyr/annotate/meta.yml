@@ -172,25 +172,25 @@ maintainers:
   - "@mwiewior"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/htslib_vepyr:576c42addf1fb1dc
-      build_id: bd-576c42addf1fb1dc_1
-      scan_id: sc-5502b65c3a972282_1
     linux/arm64:
-      name: community.wave.seqera.io/library/htslib_vepyr:47dbdabdd2f558a8
-      build_id: bd-47dbdabdd2f558a8_1
-      scan_id: sc-fdd163a5d2ff81cf_1
+      name: community.wave.seqera.io/library/htslib_vepyr:385be92fa8c5c3ad
+      build_id: bd-385be92fa8c5c3ad_1
+      scan_id: sc-169717f7d2004a63_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_vepyr:545111e4caf30b93
+      build_id: bd-545111e4caf30b93_1
+      scan_id: sc-fe1bc240678264b8_1
   singularity:
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_vepyr:458011be0fdd548e
-      build_id: bd-458011be0fdd548e_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d9cb360509f9727f5c2393392e286c51ebbb4f525d9412e65438acf1a316e72/data
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:24831b4d1db37477
+      build_id: bd-24831b4d1db37477_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d1/d1ebb2f346edebc244083490ffa0457a689183013858777cc22c407e8c08397f/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_vepyr:2736f648fead4d48
-      build_id: bd-2736f648fead4d48_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/688a1f826e440e9bd3d0a16f4bde77fb2a82aee1c829ee27e5c0948e59bc94a4/data
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:d8fa79830bfe9f1d
+      build_id: bd-d8fa79830bfe9f1d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8fffd937b68c3828eaecf34f2ca8165a5be0e55d3e60adb03dfca5f014d2f554/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_amd64-bd-576c42addf1fb1dc_1.txt
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_amd64-bd-545111e4caf30b93_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_arm64-bd-47dbdabdd2f558a8_1.txt
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_arm64-bd-385be92fa8c5c3ad_1.txt

@@ -1,63 +1,29 @@
-
 nextflow_process {
 
     name "Test Process PBBAM_PBMERGE"
     script "../main.nf"
     process "PBBAM_PBMERGE"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "pbbam"
     tag "pbbam/pbmerge"
 
-    test("test-pbbam-pbmerge") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-				    [ id:'test' ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam', checkIfExists: true)
-				    ]
-                ]
-
+                input[0] = [ [ id:'test' ], file('bam') ]
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.failed }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/pbtk/pbmerge") }
             )
         }
     }
-
-    test("test-pbbam-pbmerge-stub") {
-        options '-stub'
-
-        when {
-            process {
-                """
-                input[0] = [
-				    [ id:'test' ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.bam', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.bam', checkIfExists: true)
-				    ]
-                ]
-
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.failed }
-            )
-        }
-    }
-
 }

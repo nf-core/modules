@@ -41,18 +41,4 @@ This module is no longer recommended for use. It is recommended to use nf-core/m
         $archive \\
         $args2
     """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated.
-
-Reason:
-This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
-"""
-    assert false: deprecation_message
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    """
-    mkdir $prefix
-    touch ${prefix}/file.txt
-    """
 }
