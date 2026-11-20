@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process SYNCON_BUILD"
+    script "../main.nf"
+    process "SYNCON_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "syncon"
+    tag "syncon/build"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["onekhash", "onesyncseq"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/binning/contigs.fasta.gz', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

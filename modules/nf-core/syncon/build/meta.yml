@@ -1,0 +1,102 @@
+name: "syncon_build"
+description: Build syncmer databases for syncon
+keywords:
+  - fasta
+  - decontamination
+  - syncmer
+tools:
+  - "syncon":
+      description: "Identifies and removes contaminant contigs from draft genome assemblies"
+      homepage: "https://github.com/c-zhou/syncon"
+      documentation: "https://github.com/c-zhou/syncon"
+      tool_dev_url: "https://github.com/c-zhou/syncon"
+      doi: ""
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sequences:
+        type: file
+        description: FASTA/FASTQ file to build syncmer database from
+        pattern: "*.{bam,cram,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+
+output:
+  onekhash:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.1khash":
+          type: file
+          description: Syncmer 1khash file
+          pattern: "*.1khash"
+          ontologies: []
+  onesyncseq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.1syncseq":
+          type: file
+          description: Syncmer 1khash file
+          pattern: "*.1syncseq"
+          ontologies: []
+  versions_syncon:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "syncon":
+          type: string
+          description: The name of the tool
+      - "syncon --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - syncon:
+          type: string
+          description: The name of the tool
+      - syncon --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/syncon:1.0--454827d120667dec
+      build_id: bd-454827d120667dec_1
+      scan_id: sc-edebc248ed4321cf_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/syncon:1.0--51b39cd869c65bf4
+      build_id: bd-51b39cd869c65bf4_1
+      scan_id: sc-eb8d8af05f677d04_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/syncon:1.0--5b2e7dd13f83f62a
+      build_id: bd-5b2e7dd13f83f62a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92257f55688e8e0ea220e912051d61956103c387ab9ec3a4c4b382bc81f269f3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/syncon:1.0--2180f1e71934c3c0
+      build_id: bd-2180f1e71934c3c0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be85cb074d7868dc6fbfcdf0e6eabde839e61021665c8c2f856aa96dcbc3e568/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/syncon/build/.conda-lock/linux_amd64-bd-454827d120667dec_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/syncon/build/.conda-lock/linux_arm64-bd-51b39cd869c65bf4_1.txt
