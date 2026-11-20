@@ -20,6 +20,13 @@ tools:
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:bismark
+  - bwamem3:
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
+      homepage: "https://github.com/fg-labs/bwa-mem3"
+      documentation: "https://github.com/fg-labs/bwa-mem3"
+      tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
+      licence: ["MIT AND Apache-2.0"]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -95,6 +102,16 @@ output:
       - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_bwamem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -106,6 +123,15 @@ topics:
       - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
@@ -114,24 +140,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bismark:3.2.0--3978d640d774e7f9
-      build_id: bd-3978d640d774e7f9_1
-      scan_id: sc-4abd35b7c26146e7_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:a48d2651f3b6d1d1
+      build_id: bd-a48d2651f3b6d1d1_1
+      scan_id: sc-f1f8d54d252b7ff5_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bismark:3.2.0--681359ad711abfb6
-      build_id: bd-681359ad711abfb6_1
-      scan_id: sc-eb526dc5796867c8_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:a00564c2539e26b4
+      build_id: bd-a00564c2539e26b4_1
+      scan_id: sc-3c9f22db2ecf969e_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bismark:3.2.0--272a01efd4049352
-      build_id: bd-272a01efd4049352_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d4877a6dc7b42a4fb5086d4620cdfdba48a5e2407e81f1de27357743b4aaf1/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:fdd4223054345883
+      build_id: bd-fdd4223054345883_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a75fb7f3673720d2d5f5d5e59776f5782797607d6cbcfdb6afd8213151e344f/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bismark:3.2.0--abc3cb88528d5b67
-      build_id: bd-abc3cb88528d5b67_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/518f237635ae7675757c23269db37b53112ada32e106a6e6523cd3311fbefc71/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:56ff160e945f4623
+      build_id: bd-56ff160e945f4623_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc41d48545d831ad4ab17ae6110b94d9d9857acfee73bda768998c48e9ad2119/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-3978d640d774e7f9_1.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-a48d2651f3b6d1d1_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-681359ad711abfb6_1.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-a00564c2539e26b4_1.txt
