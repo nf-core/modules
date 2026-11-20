@@ -10,7 +10,6 @@ nextflow_process {
     tag "limma/differential"
     tag "affy"
     tag "affy/justrma"
-    tag "untar"
 
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
         config "./nextflow.interaction.config"
@@ -18,7 +17,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
                     'formula': '~ genotype * treatment',
                     'comparison': 'genotypeWT.treatmentTreated' // should be a 'make.names() string'
@@ -27,7 +26,7 @@ nextflow_process {
                     tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                 }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id: 'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
@@ -48,28 +47,20 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        def celfiles
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
             run("AFFY_JUSTRMA") {
                 script "../../../affy/justrma/main.nf"
                 process {
                     """
-                    ch_samplesheet = Channel.of([
+                    input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
-                        ]
-                    )
-                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true),
+                        file('${celfiles}')
+                    ]
                     input[1] = [[],[]]
                     """
                 }
@@ -79,12 +70,12 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
-                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                input[0] = channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -110,28 +101,20 @@ nextflow_process {
 
         config "./nextflow.config"
 
+        def celfiles
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
             run("AFFY_JUSTRMA") {
                 script "../../../affy/justrma/main.nf"
                 process {
                     """
-                    ch_samplesheet = Channel.of([
+                    input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
-                        ]
-                    )
-                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true),
+                        file('${celfiles}')
+                    ]
                     input[1] = [[],[]]
                     """
                 }
@@ -141,12 +124,12 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
-                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'formula': '~ diagnosis', 'comparison': 'diagnosisuremia'])
+                input[0] = channel.of(['id': 'diagnosis_normal_uremia', 'formula': '~ diagnosis', 'comparison': 'diagnosisuremia'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -172,28 +155,20 @@ nextflow_process {
 
         config "./nextflow.exclude_samples.config"
 
+        def celfiles
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
             run("AFFY_JUSTRMA") {
                 script "../../../affy/justrma/main.nf"
                 process {
                     """
-                    ch_samplesheet = Channel.of([
+                    input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
-                        ]
-                    )
-                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true),
+                        file('${celfiles}')
+                    ]
                     input[1] = [[],[]]
                     """
                 }
@@ -203,12 +178,12 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
-                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                input[0] = channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -235,28 +210,20 @@ nextflow_process {
         config "./nextflow.subset_to_contrast.config"
 
 
+        def celfiles
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'test'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751_RAW.tar", checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
             run("AFFY_JUSTRMA") {
                 script "../../../affy/justrma/main.nf"
                 process {
                     """
-                    ch_samplesheet = Channel.of([
+                    input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
-                        ]
-                    )
-                    input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true),
+                        file('${celfiles}')
+                    ]
                     input[1] = [[],[]]
                     """
                 }
@@ -266,12 +233,12 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = Channel.of([
+                ch_samplesheet = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/array_expression/GSE38751.csv", checkIfExists: true)
                     ]
                 )
-                input[0] = Channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
+                input[0] = channel.of(['id': 'diagnosis_normal_uremia', 'variable': 'diagnosis', 'reference': 'normal', 'target': 'uremia'])
                     .map{
                         tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
                     }
@@ -300,9 +267,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                         .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
-                input[1] = Channel.of([[id:'test'],
+                input[1] = channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
                 """
@@ -329,9 +296,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                         .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
-                input[1] = Channel.of([[id:'test'],
+                input[1] = channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
                 """
@@ -358,9 +325,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                         .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
-                input[1] = Channel.of([[id:'test'],
+                input[1] = channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
                 """
@@ -387,9 +354,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                         .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
-                input[1] = Channel.of([[id:'test'],
+                input[1] = channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
                 """
@@ -411,9 +378,9 @@ nextflow_process {
 
         when {
             process {                """
-                input[0] = Channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'test', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                         .map{tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)}
-                input[1] = Channel.of([[id:'test'],
+                input[1] = channel.of([[id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)])
                 """

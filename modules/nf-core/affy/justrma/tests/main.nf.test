@@ -8,32 +8,23 @@ nextflow_process {
     tag "modules_nfcore"
     tag "affy"
     tag "affy/justrma"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [
-                [ id:'test' ],
-                file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar', checkIfExists: true)
-            ]
-            """
-            }
-        }
-    }
 
     test("homo_sapiens genome affy_array [celfiles]") {
+        def celfiles
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
+        }
 
         when {
             process {
                 """
-                ch_samplesheet = channel.of([
+                input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
-                ])
-                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true),
+                    file('${celfiles}')
+                ]
                 input[1] = [[],[]]
                 """
             }
@@ -55,15 +46,22 @@ nextflow_process {
 
     test("homo_sapiens genome affy_array [celfiles] - annotation") {
         config "./nextflow.config"
+
+        def celfiles
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            celfiles = extract(modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751_RAW.tar')
+        }
+
         when {
             process {
                 """
-                ch_samplesheet = channel.of([
+                input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
-                    ]
-                )
-                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true),
+                    file('${celfiles}')
+                ]
                 input[1] = [[],[]]
                 """
             }
@@ -90,12 +88,11 @@ nextflow_process {
         when {
             process {
                 """
-                ch_samplesheet = channel.of([
+                input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true)
-                    ]
-                )
-                input[0] = ch_samplesheet.join(UNTAR.out.untar)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/array_expression/GSE38751.csv', checkIfExists: true),
+                    []
+                ]
                 input[1] = [[],[]]
                 """
             }
