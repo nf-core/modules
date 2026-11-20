@@ -16,7 +16,7 @@ process SYNCON_BUILD {
     output:
     tuple val(meta), path("*.1khash"), emit: onekhash
     tuple val(meta), path("*.1syncseq"), emit: onesyncseq
-    // WARN: Incorrect version information not provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Incorrect version information provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('syncon'), val("1.0"), topic: versions, emit: versions_syncon
 
     when:
