@@ -8,22 +8,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rundbcan"
     tag "rundbcan/cazymeannotation"
-    tag "untar"
 
     test("bacteroides_fragilis - faa") {
 
+        def dbcan_db
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            dbcan_db = extract(modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz').resolve('dbcan_db')
         }
 
         when {
@@ -33,7 +25,7 @@ nextflow_process {
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map { _meta, db -> db }
+                input[1] = file('${dbcan_db}')
                 """
             }
         }
