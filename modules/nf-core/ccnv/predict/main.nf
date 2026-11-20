@@ -3,9 +3,9 @@ process CCNV_PREDICT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ccnv:1.0.0':
-        'quay.io/biocontainers/ccnv:1.0.0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3fc624233aa2648bc513082af307dd7061f5fd25f4cd53fc749f8c62050496b/data'
+        : 'community.wave.seqera.io/library/ccnv:1.0.0--c01430de16e6765e'}"
 
     input:
     tuple val(meta), path(reads), path(reads_index), path(ccnv)
@@ -37,7 +37,7 @@ process CCNV_PREDICT {
     def gc_cmd = gc_content ? "--gc $gc_content" : ""
 
     """
-    ccnv \\
+    ccnv predict \\
         $args \\
         --prefix $prefix \\
         --threads $task.cpus \\

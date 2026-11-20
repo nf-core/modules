@@ -87,3 +87,27 @@ authors:
   - "@matthdsm"
 maintainers:
   - "@matthdsm"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ccnv:1.0.0--2e9adbbbdac1fe92
+      build_id: bd-2e9adbbbdac1fe92_1
+      scan_id: sc-62568870030d708e_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ccnv:1.0.0--c01430de16e6765e
+      build_id: bd-c01430de16e6765e_1
+      scan_id: sc-92e19d4d1be75c94_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.0.0--b1e5de3b105a98d4
+      build_id: bd-b1e5de3b105a98d4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d99d0325241343f06ef941a353a1161aebe68a635ace74396ee4d1ad54752d67/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.0.0--c35456ac34eed0d8
+      build_id: bd-c35456ac34eed0d8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3fc624233aa2648bc513082af307dd7061f5fd25f4cd53fc749f8c62050496b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ccnv/extract/.conda-lock/linux_amd64-bd-c01430de16e6765e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ccnv/extract/.conda-lock/linux_arm64-bd-2e9adbbbdac1fe92_1.txt
