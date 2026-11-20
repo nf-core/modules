@@ -23,6 +23,7 @@ process FAIRBIOHEADERS_VERIFY {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!(prefix ==~ /[A-Za-z0-9._+][A-Za-z0-9._+ -]*/) || prefix == '..') error "Unsafe output prefix '${prefix}': use only letters, digits, spaces and . _ + - (no leading space or hyphen), set prefix in module configuration to change it!"
     // A group, not a pipe, so that a failed check fails the task.
     """
     {
@@ -36,6 +37,7 @@ process FAIRBIOHEADERS_VERIFY {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!(prefix ==~ /[A-Za-z0-9._+][A-Za-z0-9._+ -]*/) || prefix == '..') error "Unsafe output prefix '${prefix}': use only letters, digits, spaces and . _ + - (no leading space or hyphen), set prefix in module configuration to change it!"
     """
     touch "${prefix}.verify.txt"
     """
