@@ -15,7 +15,10 @@ Outputs (prefix = task.ext.prefix or meta.id):
   <prefix>.feature_loadings.csv    consensus spectra, features x patterns
   <prefix>.sample_factors.csv      usages, samples x patterns
   <prefix>.gene_spectra_score.csv  z-score spectra (program specificity), features x patterns
-  <prefix>.stats.csv               k, silhouette (stability), prediction error, settings
+  <prefix>.stats.csv               k, silhouette (stability), prediction error, settings,
+                                   and a summary of the replicate statistics below
+  <prefix>.replicate_stats.csv     per NMF replicate: iterations used, whether it hit
+                                   --max_nmf_iter, and reconstruction error
   <prefix>.merged_spectra.df.npz   all replicate components before clustering
   <prefix>.clustering.png          cNMF consensus clustergram (if it could be drawn)
 
@@ -48,10 +51,49 @@ RUN_DIR = "cnmf_run"
 
 
 def factorize_worker(run_name, worker_index, total_workers):
-    """Run one share of the NMF replicates (must be top level for multiprocessing)."""
-    from cnmf import cNMF
+    """Run one share of the NMF replicates (must be top level for multiprocessing).
 
-    cNMF(output_dir=RUN_DIR, name=run_name).factorize(worker_i=worker_index, total_workers=total_workers)
+    Uses cNMF unchanged, except that each replicate's iterations and reconstruction
+    error are recorded: cNMF computes the iteration count but does not keep it.
+    """
+    import numpy as np
+    from cnmf import cNMF
+    from sklearn.decomposition import non_negative_factorization
+
+    stats_file = "replicate_stats.worker" + str(worker_index) + ".tsv"
+
+    class RecordingCNMF(cNMF):
+        def _nmf(self, data, nmf_kwargs):
+            usages, spectra, n_iter = non_negative_factorization(data, **nmf_kwargs)
+            dense = data.toarray() if hasattr(data, "toarray") else np.asarray(data)
+            error = float(np.linalg.norm(dense - usages @ spectra))
+            with open(stats_file, "a") as handle:
+                fields = [nmf_kwargs["random_state"], nmf_kwargs["n_components"], n_iter, nmf_kwargs["max_iter"], error]
+                handle.write(chr(9).join(str(field) for field in fields) + chr(10))
+            return spectra, usages
+
+    RecordingCNMF(output_dir=RUN_DIR, name=run_name).factorize(worker_i=worker_index, total_workers=total_workers)
+
+
+def collect_replicate_stats(run):
+    """Combine the per-worker replicate records and label them with cNMF's replicate numbers."""
+    import glob
+
+    import pandas as pd
+    from cnmf.cnmf import load_df_from_npz
+
+    columns = ["nmf_seed", "n_components", "n_iter", "max_nmf_iter", "reconstruction_error"]
+    records = pd.concat(
+        [
+            pd.read_csv(path, sep=chr(9), header=None, names=columns)
+            for path in sorted(glob.glob("replicate_stats.worker*.tsv"))
+        ]
+    )
+    replicate_params = load_df_from_npz(run.paths["nmf_replicate_parameters"])
+    table = replicate_params.merge(records, on=["nmf_seed", "n_components"], how="inner")
+    table = table.rename(columns={"iter": "replicate"}).sort_values("replicate")
+    table["hit_max_iter"] = table["n_iter"] >= table["max_nmf_iter"]
+    return table[["replicate", "nmf_seed", "n_iter", "max_nmf_iter", "hit_max_iter", "reconstruction_error"]]
 
 
 def read_matrix(file_name):
@@ -181,6 +223,7 @@ def main():
             )
         )
     run.combine()
+    replicate_stats = collect_replicate_stats(run)
 
     # Stability and error for this k (the numbers behind cNMF's k-selection plot)
     stats = run.consensus(
@@ -214,6 +257,8 @@ def main():
 
     # cNMF returns the statistics for one k as a series: k, density threshold, silhouette, prediction error
     stats_row = pd.Series(stats).to_dict() if not isinstance(stats, pd.DataFrame) else stats["stats"].to_dict()
+    replicate_stats.to_csv(prefix + ".replicate_stats.csv", index=False)
+    errors = replicate_stats["reconstruction_error"]
     pd.DataFrame(
         [
             {
@@ -224,6 +269,14 @@ def main():
                 "prenormalised": options.prenormalised,
                 "silhouette": stats_row["silhouette"],
                 "prediction_error": stats_row["prediction_error"],
+                "max_nmf_iter": options.max_nmf_iter,
+                "mean_nmf_iterations": replicate_stats["n_iter"].mean(),
+                "max_nmf_iterations": replicate_stats["n_iter"].max(),
+                "replicates_hit_max_iter": int(replicate_stats["hit_max_iter"].sum()),
+                "reconstruction_error_min": errors.min(),
+                "reconstruction_error_max": errors.max(),
+                "reconstruction_error_std": errors.std(ddof=0),
+                "reconstruction_error_cv": errors.std(ddof=0) / errors.mean() if errors.mean() else float("nan"),
             }
         ]
     ).to_csv(prefix + ".stats.csv", index=False)
@@ -233,6 +286,12 @@ def main():
     if os.path.exists(clustering_plot):
         shutil.copy(clustering_plot, prefix + ".clustering.png")
 
+    print(
+        "Replicates hitting --max_nmf_iter:",
+        int(replicate_stats["hit_max_iter"].sum()),
+        "of",
+        len(replicate_stats),
+    )
     print(
         "Silhouette:",
         round(float(stats_row["silhouette"]), 4),

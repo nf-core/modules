@@ -78,8 +78,18 @@ output:
           description: Groovy Map containing sample information
       - "*.stats.csv":
           type: file
-          description: One row with k, settings, silhouette (stability) and prediction error
+          description: One row with k, settings, silhouette (stability), prediction error, and a summary of the replicate statistics (mean and maximum iterations, replicates hitting --max_nmf_iter, reconstruction error spread)
           pattern: "*.stats.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  replicate_stats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.replicate_stats.csv":
+          type: file
+          description: One row per NMF replicate with its seed, iterations used, whether it hit --max_nmf_iter, and reconstruction error. cNMF computes the iteration count but does not keep it, so the module records it.
+          pattern: "*.replicate_stats.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   merged_spectra:

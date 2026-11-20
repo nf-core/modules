@@ -28,6 +28,7 @@ nextflow_process {
                 { assert path(process.out.feature_loadings[0][1]).readLines()[0] == 'feature,Pattern_1,Pattern_2' },
                 { assert path(process.out.sample_factors[0][1]).readLines().size() == 7 },
                 { assert path(process.out.stats[0][1]).readLines()[0].contains('silhouette') },
+                { assert path(process.out.replicate_stats[0][1]).readLines().size() == 11 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["merged_spectra", "clustering_plot"])).match() }
             )
         }
@@ -55,6 +56,30 @@ nextflow_process {
                 { assert path(process.out.feature_loadings[0][1]).readLines().size() == 1001 },
                 { assert path(process.out.stats[0][1]).readLines()[1].contains('True') },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["merged_spectra", "clustering_plot"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - counts - iteration cap reached") {
+
+        when {
+            params {
+                module_args = '--k 2 --n_iter 10 --seed 1 --prenormalised --max_nmf_iter 5'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.replicate_stats[0][1]).readLines().drop(1).every { it.split(',')[4] == 'True' } }
             )
         }
     }

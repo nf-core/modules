@@ -15,6 +15,7 @@ process CNMF {
     tuple val(meta), path("*.sample_factors.csv")    , emit: sample_factors
     tuple val(meta), path("*.gene_spectra_score.csv"), emit: gene_spectra_score
     tuple val(meta), path("*.stats.csv")             , emit: stats
+    tuple val(meta), path("*.replicate_stats.csv")   , emit: replicate_stats
     tuple val(meta), path("*.merged_spectra.df.npz") , emit: merged_spectra
     tuple val(meta), path("*.clustering.png")        , emit: clustering_plot, optional: true
     path "versions.yml"                              , emit: versions, topic: versions
@@ -32,6 +33,7 @@ process CNMF {
     touch ${prefix}.sample_factors.csv
     touch ${prefix}.gene_spectra_score.csv
     touch ${prefix}.stats.csv
+    touch ${prefix}.replicate_stats.csv
     touch ${prefix}.merged_spectra.df.npz
 
     cat <<-END_VERSIONS > versions.yml
