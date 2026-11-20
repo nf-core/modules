@@ -154,10 +154,7 @@ kd_rep2\\tKNOCKDOWN
                 def groups_file = file("\${workDir}/groups_file.txt")
                 groups_file.text = groups_content
 
-                // Two exons whose ends meet the introns of cluster clu_1, so that the
-                // cluster is labelled with their gene and the others are not. leafcutter-ds
-                // adds a `chr` prefix to both tables before matching them, and fails on a
-                // chromosome column that is all numbers, so the exons are given on `chr6`
+                // Exon ends meet the introns of clu_1; chr6 because leafcutter-ds fails on an all-numeric chr column
                 def exons_content = '''chr\tstart\tend\tstrand\tgene_name
 chr6\t29856400\t29856519\t+\tTEST_GENE
 chr6\t29911899\t29912000\t+\tTEST_GENE
