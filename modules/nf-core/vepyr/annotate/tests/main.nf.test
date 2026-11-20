@@ -134,7 +134,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stdout.any { it.contains("VEPYR_ANNOTATE requires a reference FASTA") } }
+                { assert process.errorReport.contains("VEPYR_ANNOTATE requires a reference FASTA") }
             )
         }
     }

@@ -349,7 +349,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('set either ch_cache or val_hf_repo, not both') } }
+                { assert workflow.errorReport.contains('set either ch_cache or val_hf_repo, not both') }
             )
         }
     }
@@ -384,7 +384,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('no cache given, set ch_cache or val_hf_repo') } }
+                { assert workflow.errorReport.contains('no cache given, set ch_cache or val_hf_repo') }
             )
         }
     }
