@@ -506,7 +506,7 @@ nextflow_process {
 
             params {
                 pipeline_args = "-h -F4"
-                pipeline_args2 = "-n"
+                pipeline_args2 = "-n --write-index"
             }
 
             process {
@@ -538,7 +538,7 @@ nextflow_process {
 
             params {
                 pipeline_args = "-h -F4"
-                pipeline_args2 = "-n --output-fmt cram"
+                pipeline_args2 = "-n --output-fmt cram --write-index"
             }
 
             process {

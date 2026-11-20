@@ -150,8 +150,11 @@ process SAMTOOLS_MULTICOMMAND {
 
             def threads = (cfg.threads && !cmd_args.contains("-@")) ? "-@ ${task.cpus}" : ""
             def uncompressed = (!is_last_command && cfg.uncompressed) ? "-u" : ""
+
+            // samtools cat doesn't take --reference, we need to apply it to whatever command is downstream of it
             def decodes_input = chain[0] == 'cat' ? idx == 1 : is_first_command
             def reference = ((decodes_input && is_cram_input) || (is_last_command && is_cram_output)) ? "--reference ${fasta}" : ""
+
             def cmd_input = is_first_command ? "${input}" : "-"
             def cmd_output = output_option.call(subcommand, cfg, is_last_command)
 
