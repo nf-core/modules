@@ -75,6 +75,27 @@ nextflow_process {
         }
     }
 
+    test("V2 sheet - rejected by a custom JSON schema") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_schema_fail' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true)
+                ]
+                // The sheet projects to a JSON object, so a schema that requires
+                // a top-level array must reject it, proving the schema is applied.
+                input[1] = Channel.of('{"\$schema":"https://json-schema.org/draft/2020-12/schema","type":"array"}').collectFile(name: 'reject_schema.json')
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+        }
+    }
+
     test("V1 dual-index sheet - stub") {
 
         options "-stub"
