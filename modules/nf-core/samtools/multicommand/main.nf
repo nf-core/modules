@@ -89,6 +89,10 @@ process SAMTOOLS_MULTICOMMAND {
             }
         }
 
+    if (input.size() > 1 && !(chain[0] in ['merge', 'cat'])) {
+        error("Error: multiple input files are only supported when the first command is merge or cat!")
+    }
+
     // Extension arguments for each command: args for the first, args2 ... argsN for the rest
     def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
 
@@ -146,7 +150,8 @@ process SAMTOOLS_MULTICOMMAND {
 
             def threads = (cfg.threads && !cmd_args.contains("-@")) ? "-@ ${task.cpus}" : ""
             def uncompressed = (!is_last_command && cfg.uncompressed) ? "-u" : ""
-            def reference = ((is_first_command && is_cram_input) || (is_last_command && is_cram_output)) ? "--reference ${fasta}" : ""
+            def decodes_input = chain[0] == 'cat' ? idx == 1 : is_first_command
+            def reference = ((decodes_input && is_cram_input) || (is_last_command && is_cram_output)) ? "--reference ${fasta}" : ""
             def cmd_input = is_first_command ? "${input}" : "-"
             def cmd_output = output_option.call(subcommand, cfg, is_last_command)
 
@@ -180,6 +185,9 @@ process SAMTOOLS_MULTICOMMAND {
     }
     else {
         stub_outputs << "touch ${prefix}.${output_extension}"
+        if (all_args[-1].contains('--write-index') && output_extension != 'sam') {
+            stub_outputs << "touch ${prefix}.${output_extension}.${output_extension == 'cram' ? 'crai' : 'csi'}"
+        }
     }
     """
     ${stub_outputs.join("\n")}
