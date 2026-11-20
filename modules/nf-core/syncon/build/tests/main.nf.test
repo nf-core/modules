@@ -9,7 +9,7 @@ nextflow_process {
     tag "syncon"
     tag "syncon/build"
 
-    test("sarscov2 - bam") {
+    test("metagenome - bam") {
 
         when {
             process {
@@ -31,7 +31,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - bam - stub") {
+    test("metagenome - bam - stub") {
 
         options "-stub"
 
