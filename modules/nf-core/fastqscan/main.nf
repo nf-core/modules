@@ -6,9 +6,9 @@ process FASTQSCAN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq-scan:0.4.4--h7d875b9_0' :
-        'quay.io/biocontainers/fastq-scan:0.4.4--h7d875b9_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e87ef091f75815b874e21b0923c667168cae5e3443b6d5a469dc30b572a669c/data'
+        : 'community.wave.seqera.io/library/fastq-scan:1.0.1--107ab5ca81ecea03'}"
 
     input:
     tuple val(meta), path(reads)

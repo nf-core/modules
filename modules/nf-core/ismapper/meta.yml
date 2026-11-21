@@ -6,8 +6,7 @@ keywords:
   - bacteria
 tools:
   - ismapper:
-      description: A mapping-based tool for identification of the site and orientation
-        of IS insertions in bacterial genomes.
+      description: A mapping-based tool for identification of the site and orientation of IS insertions in bacterial genomes.
       homepage: https://github.com/jhawkey/IS_mapper
       documentation: https://github.com/jhawkey/IS_mapper
       tool_dev_url: https://github.com/jhawkey/IS_mapper
@@ -72,3 +71,17 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ismapper_python_setuptools_samtools:e034790cb6b187c4
+      build_id: bd-e034790cb6b187c4_1
+      scan_id: sc-e8c6e22bf302450d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ismapper_python_setuptools_samtools:127d5e00ffd229bf
+      build_id: bd-127d5e00ffd229bf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8db3e77ec9865b4d89d154d39f4d918a9eb1d91b446f92d21d836634b98d682/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ismapper/.conda-lock/linux_amd64-bd-e034790cb6b187c4_1.txt

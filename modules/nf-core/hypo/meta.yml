@@ -33,8 +33,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Short reads file(s). In fastq or fasta, compressed or
-          uncompressed
+        description: Short reads file(s). In fastq or fasta, compressed or uncompressed
         ontologies: []
   - draft:
       type: file
@@ -42,8 +41,7 @@ input:
       ontologies: []
   - genome_size:
       type: string
-      description: Estimated size of the genome. Number or nts or use suffixes
-        k/m/g, e.g. 5m, 3.2g
+      description: Estimated size of the genome. Number or nts or use suffixes k/m/g, e.g. 5m, 3.2g
   - reads_coverage:
       type: integer
       description: Appprimate depth of coverage of short reads.
@@ -84,3 +82,27 @@ authors:
   - "@remiolsen"
 maintainers:
   - "@remiolsen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hypo:1.0.3--6e4b00f92bd33cc2
+      build_id: bd-6e4b00f92bd33cc2_2
+      scan_id: sc-f8e71198f69a410f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hypo:1.0.3--fa83372eb8eca0aa
+      build_id: bd-fa83372eb8eca0aa_2
+      scan_id: sc-40d2f89837839c09_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hypo:1.0.3--79ef82f254ed221c
+      build_id: bd-79ef82f254ed221c_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13780867e01535dbfb55bc66e19de88b396d9c21d1077ef52f7134f7c14253c3/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hypo:1.0.3--f6e5f2daed0aeffc
+      build_id: bd-f6e5f2daed0aeffc_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0a28d9524fb6ec43f3e4451425da50b1da79f6e76d0776e723b44bca8cd887f2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hypo/.conda-lock/linux_amd64-bd-6e4b00f92bd33cc2_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hypo/.conda-lock/linux_arm64-bd-fa83372eb8eca0aa_2.txt

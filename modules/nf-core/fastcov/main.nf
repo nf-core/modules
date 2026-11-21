@@ -6,9 +6,9 @@ process FASTCOV {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastcov:0.1.3--hdfd78af_0':
-        'quay.io/biocontainers/fastcov:0.1.3--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e3a2366e265fb3fe24cd3082d005be2ab22cde7247a2be651d84a6eaeb07f3/data'
+        : 'community.wave.seqera.io/library/fastcov:0.1.3--e3e78d7eeb73e45a'}"
 
     input:
     tuple val(meta), path(bam), path(index)

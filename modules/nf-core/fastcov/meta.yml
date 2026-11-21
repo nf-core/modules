@@ -84,3 +84,27 @@ authors:
   - "@davidfischer"
 maintainers:
   - "@davidfischer"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/fastcov:0.1.3--44ddcffac9ce907d
+      build_id: bd-44ddcffac9ce907d_1
+      scan_id: sc-516f6ad948b2749a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastcov:0.1.3--e3e78d7eeb73e45a
+      build_id: bd-e3e78d7eeb73e45a_1
+      scan_id: sc-a8016fb9fafad165_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fastcov:0.1.3--638d5e6d46f957c6
+      build_id: bd-638d5e6d46f957c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7eff14a5496e349fdad584c71f6011cf54f0feb0919403d71c66972217386950/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastcov:0.1.3--05e4e75a04230617
+      build_id: bd-05e4e75a04230617_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e3a2366e265fb3fe24cd3082d005be2ab22cde7247a2be651d84a6eaeb07f3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastcov/.conda-lock/linux_amd64-bd-e3e78d7eeb73e45a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fastcov/.conda-lock/linux_arm64-bd-44ddcffac9ce907d_1.txt

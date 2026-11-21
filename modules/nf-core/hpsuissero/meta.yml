@@ -62,3 +62,17 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hpsuissero:1.0.1--dd750fae8720a55c
+      build_id: bd-dd750fae8720a55c_2
+      scan_id: sc-3601978bfe44cff3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hpsuissero:1.0.1--5ec747cd69ec6f87
+      build_id: bd-5ec747cd69ec6f87_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0fee7a136e639cf997aab046016a0afa4956e37e57a69bd9cc21119e149f07f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hpsuissero/.conda-lock/linux_amd64-bd-dd750fae8720a55c_2.txt
