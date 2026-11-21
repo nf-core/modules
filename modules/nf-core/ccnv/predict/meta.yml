@@ -1,0 +1,289 @@
+name: "ccnv_predict"
+description: Predict CNV information from BAM/CRAM/SAM files using CCNV
+keywords:
+  - ccnv
+  - cnv
+  - nips
+  - fragmentomics
+  - genomics
+tools:
+  - "ccnv":
+      description: "CCNV is a tool to extract copy number variation information from sequencing data."
+      homepage: "https://matthdsm.github.io/ccnv/"
+      documentation: "https://matthdsm.github.io/ccnv/"
+      tool_dev_url: "https://github.com/matthdsm/ccnv"
+      doi: ""
+      licence:
+        - "AGPL-3.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+    - reads_index:
+        type: file
+        description: Index file for the reads (BAM/CRAM)
+        pattern: "*.{bai,crai,csi}"
+        ontologies: []
+    - ccnv:
+        type: file
+        description: CCNV pre-converted bam/cram file
+        pattern: "*.ccnv"
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # binary
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - ccnv_reference:
+        type: file
+        description: CCNV reference file
+        pattern: "*.ccnv"
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # binary
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fasta,fa,fna}.fai"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - mappability:
+        type: file
+        description: Mappability BigWig track
+        pattern: "*.bw"
+        ontologies:
+          - edam: "http://edamontology.org/format_3006" # bigWig
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - gc_content:
+        type: file
+        description: GC content track
+        pattern: "*.{bed,bed.gz,fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - gc_content_index:
+        type: file
+        description: Index file for the GC content track
+        pattern: "*.{tbi,csi,fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616" # TABIX
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  qc_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_qc.json":
+          type: file
+          description: QC JSON file
+          pattern: "*_qc.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  plot_html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_plot.html":
+          type: file
+          description: Plot HTML file
+          pattern: "*_plot.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # HTML
+  bins_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_bins.bed.gz":
+          type: file
+          description: Bins BED file
+          pattern: "*_bins.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_bins.bed.gz.tbi":
+          type: file
+          description: Bins BED index file
+          pattern: "*_bins.bed.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  segments_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_segments.bed.gz":
+          type: file
+          description: Segments BED file
+          pattern: "*_segments.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_segments.bed.gz.tbi":
+          type: file
+          description: Segments BED index file
+          pattern: "*_segments.bed.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  calls_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_calls.bed.gz":
+          type: file
+          description: Calls BED file
+          pattern: "*_calls.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_calls.bed.gz.tbi":
+          type: file
+          description: Calls BED index file
+          pattern: "*_calls.bed.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  bins_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_bins.vcf.gz":
+          type: file
+          description: Bins VCF file
+          pattern: "*_bins.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_bins.vcf.gz.tbi":
+          type: file
+          description: Bins VCF index file
+          pattern: "*_bins.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  segments_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_segments.vcf.gz":
+          type: file
+          description: Segments VCF file
+          pattern: "*_segments.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_segments.vcf.gz.tbi":
+          type: file
+          description: Segments VCF index file
+          pattern: "*_segments.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  calls_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_calls.vcf.gz":
+          type: file
+          description: Calls VCF file
+          pattern: "*_calls.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+      - "*_calls.vcf.gz.tbi":
+          type: file
+          description: Calls VCF index file
+          pattern: "*_calls.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616" # TABIX
+  versions_ccnv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ccnv:1.0.0--c01430de16e6765e
+      build_id: bd-c01430de16e6765e_1
+      scan_id: sc-92e19d4d1be75c94_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ccnv:1.0.0--2e9adbbbdac1fe92
+      build_id: bd-2e9adbbbdac1fe92_1
+      scan_id: sc-62568870030d708e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.0.0--b1e5de3b105a98d4
+      build_id: bd-b1e5de3b105a98d4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d99d0325241343f06ef941a353a1161aebe68a635ace74396ee4d1ad54752d67/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.0.0--c35456ac34eed0d8
+      build_id: bd-c35456ac34eed0d8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3fc624233aa2648bc513082af307dd7061f5fd25f4cd53fc749f8c62050496b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ccnv/predict/.conda-lock/linux_amd64-bd-c01430de16e6765e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ccnv/predict/.conda-lock/linux_arm64-bd-2e9adbbbdac1fe92_1.txt
