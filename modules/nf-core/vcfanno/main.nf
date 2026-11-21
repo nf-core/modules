@@ -38,8 +38,9 @@ process VCFANNO {
         ${toml} \\
         ${vcf} \\
         | bgzip ${args2} --threads ${task.cpus} \\
-        > ${prefix}.vcf.gz \\
-        && tabix ${args3} ${prefix}.vcf.gz
+        > ${prefix}.vcf.gz
+
+    tabix ${args3} ${prefix}.vcf.gz
 
     """
 
