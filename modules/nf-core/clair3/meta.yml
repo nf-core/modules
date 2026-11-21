@@ -72,6 +72,11 @@ input:
         description: reference index file
         pattern: "*.fai"
         ontologies: []
+  - bed:
+      type: file
+      description: Optional BED file of regions to call (passed to --bed_fn); use [] for none
+      pattern: "*.bed"
+      ontologies: []
 output:
   vcf:
     - - meta:

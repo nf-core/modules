@@ -41,6 +41,7 @@ nextflow_process {
                     [ id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                 ]
+                input[3] = []
                 """
             }
         }
@@ -99,6 +100,59 @@ nextflow_process {
                     [ id: 'test'],
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                 ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
+                    process.out.tbi.collect { file(it[1]).name },
+                    process.out.phased_vcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
+                    process.out.phased_tbi.collect { file(it[1]).name },
+                    process.out.gvcf.collect {
+                        [file(it[1]).name, path(it[1]).vcf.summary]
+                    },
+                    process.out.gtbi.collect { file(it[1]).name },
+                    process.out.findAll { key, val -> key.startsWith('versions') })
+                    .match()}
+            )
+        }
+
+    }
+
+    test("sarscov2 - bam - packaged_model - bed") {
+
+        when {
+            params {
+                args = "--include_all_ctgs"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    'hifi_revio',
+                    [],
+                    'hifi',
+                ])
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                ]
+                input[3] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 """
             }
         }
@@ -157,6 +211,7 @@ nextflow_process {
                     [ id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                 ]
+                input[3] = []
                 """
             }
         }
@@ -200,6 +255,7 @@ nextflow_process {
                     [ id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                 ]
+                input[3] = []
                 """
             }
         }
@@ -253,6 +309,7 @@ nextflow_process {
                     [ id: 'test'],
                     file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
                 ]
+                input[3] = []
                 """
             }
         }
