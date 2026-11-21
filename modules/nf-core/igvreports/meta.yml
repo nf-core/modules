@@ -1,14 +1,12 @@
 name: "igvreports"
-description: A Python application to generate self-contained HTML reports for
-  variant review and other genomic applications
+description: A Python application to generate self-contained HTML reports for variant review and other genomic applications
 keywords:
   - vcf
   - variant
   - genomics
 tools:
   - "igvreports":
-      description: "Creates self-contained html pages for visual variant review with
-        IGV (igv.js)."
+      description: "Creates self-contained html pages for visual variant review with IGV (igv.js)."
       homepage: "https://github.com/igvteam/igv-reports"
       documentation: "https://github.com/igvteam/igv-reports"
       tool_dev_url: "https://github.com/igvteam/igv-reports"
@@ -94,3 +92,27 @@ authors:
   - "@souljamie"
 maintainers:
   - "@souljamie"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/igv-reports:1.12.0--c7d8aa39d22e30a8
+      build_id: bd-c7d8aa39d22e30a8_2
+      scan_id: sc-0a44a88291e8c027_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/igv-reports:1.12.0--e6c93b58b88bcf3c
+      build_id: bd-e6c93b58b88bcf3c_2
+      scan_id: sc-ede1796f82e04a3a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/igv-reports:1.12.0--4c75e066c713b3cc
+      build_id: bd-4c75e066c713b3cc_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c589d67493545138c9f66a3b073b1f0b3f497896df2cbeb2e4364a80166b9894/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/igv-reports:1.12.0--37195d3751c240e4
+      build_id: bd-37195d3751c240e4_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d655534ba23fef4f9afbc06c7ab2a2bb8192ffc618f224de7622d922b7c21ac1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/igvreports/.conda-lock/linux_amd64-bd-e6c93b58b88bcf3c_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/igvreports/.conda-lock/linux_arm64-bd-c7d8aa39d22e30a8_2.txt

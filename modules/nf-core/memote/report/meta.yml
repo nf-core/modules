@@ -6,8 +6,7 @@ keywords:
   - quality control
 tools:
   - memote:
-      description: Benchmark and compare genome-scale metabolic models and generate
-        HTML reports.
+      description: Benchmark and compare genome-scale metabolic models and generate HTML reports.
       homepage: https://github.com/opencobra/memote
       documentation: https://memote.readthedocs.io/
       tool_dev_url: https://github.com/opencobra/memote
@@ -71,3 +70,25 @@ authors:
   - "@brovolia"
 maintainers:
   - "@brovolia"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/memote:0.17.0--206338ee32d58ea0
+      build_id: bd-206338ee32d58ea0_3
+      scan_id: sc-6e095e1e19b678ac_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/memote:0.17.0--b413069690bf5a1a
+      build_id: bd-b413069690bf5a1a_3
+      scan_id: sc-a51b4336d9d0e3d2_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/memote:0.17.0--0e08370a464d2d11
+      build_id: bd-0e08370a464d2d11_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee25a72975760ef602555d9c16d5949315fd417447ef34e85518c5da1ff62fab/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/memote:0.17.0--fdb49c3c8f1365b0
+      build_id: bd-fdb49c3c8f1365b0_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f6ccfddd278dd7116f7d952f138132b846da902d06fcf238a0a9e5595b632bf7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/memote/report/.conda-lock/linux_amd64-bd-206338ee32d58ea0_3.txt

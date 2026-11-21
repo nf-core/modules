@@ -1,6 +1,5 @@
 name: "gvcftools_extractvariants"
-description: Removes all non-variant blocks from a gVCF file to produce a
-  smaller variant-only VCF file.
+description: Removes all non-variant blocks from a gVCF file to produce a smaller variant-only VCF file.
 keywords:
   - gvcftools
   - extract_variants
@@ -9,8 +8,7 @@ keywords:
   - vcf
 tools:
   - "gvcftools":
-      description: "gvcftools is a package of small utilities for creating and analyzing
-        gVCF files"
+      description: "gvcftools is a package of small utilities for creating and analyzing gVCF files"
       homepage: "https://sites.google.com/site/gvcftools/home"
       documentation: "https://sites.google.com/site/gvcftools/home/configuration-and-analysis"
       tool_dev_url: "https://github.com/sequencing/gvcftools"
@@ -66,3 +64,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gvcftools:0.17.0--7149cd44f22982ef
+      build_id: bd-7149cd44f22982ef_1
+      scan_id: sc-28326a85f06da4c4_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gvcftools:0.17.0--4e0c9debd0e6fb43
+      build_id: bd-4e0c9debd0e6fb43_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fdb04e4a4691f8b49b231aad66c6960651332a6db4cbafa0ffdeb520369e085a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gvcftools/extractvariants/.conda-lock/linux_amd64-bd-7149cd44f22982ef_1.txt

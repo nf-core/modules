@@ -1,6 +1,5 @@
 name: hmtnote_annotate
-description: Human mitochondrial variants annotation using HmtVar. Contains .plk
-  file with annotation, so can be run offline
+description: Human mitochondrial variants annotation using HmtVar. Contains .plk file with annotation, so can be run offline
 deprecated: true
 deprecation_date: "2026-05-24"
 deprecation_pr: "https://github.com/nf-core/modules/pull/11709"
@@ -63,3 +62,27 @@ authors:
   - "@sysbiocoder"
 maintainers:
   - "@sysbiocoder"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/hmtnote_python:e7df8738bc8ad5d4
+      build_id: bd-e7df8738bc8ad5d4_1
+      scan_id: sc-ee533f35c49c4e0b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/hmtnote_python:6774601e4144aa5d
+      build_id: bd-6774601e4144aa5d_1
+      scan_id: sc-5c8e5f1ecc9be101_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hmtnote_python:a20ba1754ec25061
+      build_id: bd-a20ba1754ec25061_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8b0df31950142e6dc4c9310ba68dd1c7323a6ebea4a79015554fb6cb67b8dbea/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hmtnote_python:705f08ac4d570089
+      build_id: bd-705f08ac4d570089_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a900304b834f8965ad77c0976311b69f97be9f96f03cb04e83082ca0d265bdd7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmtnote/annotate/.conda-lock/linux_amd64-bd-6774601e4144aa5d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmtnote/annotate/.conda-lock/linux_arm64-bd-e7df8738bc8ad5d4_1.txt

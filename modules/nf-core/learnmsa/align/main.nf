@@ -7,8 +7,8 @@ process LEARNMSA_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/learnmsa:2.0.16--pyhdfd78af_0'
-        : 'quay.io/biocontainers/learnmsa:2.0.16--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca479ece475f5b115a5e267275ad066fba450c2a4d2527cb6ca7e591a8ff8a7f/data'
+        : 'community.wave.seqera.io/library/learnmsa:2.0.16--7965085f02b1399a'}"
 
     input:
     tuple val(meta), path(fasta)

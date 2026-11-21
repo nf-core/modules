@@ -7,9 +7,9 @@ process PARACLU {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1' :
-        'quay.io/biocontainers/paraclu:10--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7373888fa81c58ac160754cb3603810d3e9babc9907184dad4646b685b3d3e/data'
+        : 'community.wave.seqera.io/library/paraclu:10--deebde97d0710127'}"
 
     input:
     tuple val(meta), path(bed)
