@@ -95,3 +95,25 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@ehsanestaji"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/fastaguard:1.1.0--17f8a8e1c719c4de
+      build_id: bd-17f8a8e1c719c4de_1
+      scan_id: sc-8ef62207fc17155c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastaguard:1.1.0--7f884e70d672a16c
+      build_id: bd-7f884e70d672a16c_1
+      scan_id: sc-7a169ef001e68f28_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastaguard:1.1.0--0a29b58e001188f5
+      build_id: bd-0a29b58e001188f5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e76cd33dcff373007f86b4704c30c6aa0005b861debe63a9293fb15b577f9f8d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fastaguard:1.1.0--2133fa443cdb9c1a
+      build_id: bd-2133fa443cdb9c1a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a5b2fc8badd565fa6b2ca53e597c2a2bd6d79647198786034119d93070faec72/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastaguard/.conda-lock/linux_amd64-bd-7f884e70d672a16c_1.txt

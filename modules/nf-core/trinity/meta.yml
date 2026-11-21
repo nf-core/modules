@@ -78,3 +78,27 @@ authors:
 maintainers:
   - "@timslittle"
   - "@gallvp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/trinity_salmon:7678061e5e2d0ca8
+      build_id: bd-7678061e5e2d0ca8_1
+      scan_id: sc-43710816eedccaed_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/trinity_salmon:9f285c80065c6fbd
+      build_id: bd-9f285c80065c6fbd_1
+      scan_id: sc-abca37ddfc0cf701_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/trinity_salmon:795a90619fa80804
+      build_id: bd-795a90619fa80804_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3cf795f9aca91b99656f28c82743c4b45bf8089400a0c4897719baf16098e16/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/trinity_salmon:db731001cfb19d22
+      build_id: bd-db731001cfb19d22_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2da1d585a5a3d22a1dcd14ee2edabba5af6a17b81a3588f36454a90946aa801/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/trinity/.conda-lock/linux_amd64-bd-7678061e5e2d0ca8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/trinity/.conda-lock/linux_arm64-bd-9f285c80065c6fbd_1.txt

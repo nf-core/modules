@@ -1,6 +1,5 @@
 name: medaka
-description: A tool to create consensus sequences and variant calls from
-  nanopore sequencing data
+description: A tool to create consensus sequences and variant calls from nanopore sequencing data
 keywords:
   - assembly
   - polishing
@@ -69,3 +68,27 @@ authors:
   - "@avantonder"
 maintainers:
   - "@avantonder"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/medaka:2.2.2--b96487e34caca488
+      build_id: bd-b96487e34caca488_2
+      scan_id: sc-3acd0f5ab62fd971_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/medaka:2.2.2--0c20cace7b8dd422
+      build_id: bd-0c20cace7b8dd422_2
+      scan_id: sc-5c9e50d442e319ec_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/medaka:2.2.2--3e006d871dbac4a3
+      build_id: bd-3e006d871dbac4a3_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0ce7379270fc4117dc20ec9bc7abfcf2e3e69df208cd698c68b66fd3060be883/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/medaka:2.2.2--96b4aad04d5c4272
+      build_id: bd-96b4aad04d5c4272_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b2dc6b24d0d7df71c499d7659ace541f5e14a4ed919c56573139607b826db9b9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/medaka/.conda-lock/linux_amd64-bd-0c20cace7b8dd422_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/medaka/.conda-lock/linux_arm64-bd-b96487e34caca488_2.txt

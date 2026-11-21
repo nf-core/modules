@@ -7,8 +7,7 @@ keywords:
   - metagenome assembler
 tools:
   - "metamdbg":
-      description: "MetaMDBG: a lightweight assembler for long and accurate metagenomics
-        reads."
+      description: "MetaMDBG: a lightweight assembler for long and accurate metagenomics reads."
       homepage: "https://github.com/GaetanBenoitDev/metaMDBG"
       documentation: "https://github.com/GaetanBenoitDev/metaMDBG"
       tool_dev_url: "https://github.com/GaetanBenoitDev/metaMDBG"
@@ -24,15 +23,13 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - reads:
         type: file
-        description: Long read sequence data from ONT or HiFi in fasta format (can be
-          gzipped)
+        description: Long read sequence data from ONT or HiFi in fasta format (can be gzipped)
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
   - input_type:
       type: string
-      description: Sequencing technology for reads - either "hifi" for PacBio HiFi reads
-        or "ont" for Oxford Nanopore reads.
+      description: Sequencing technology for reads - either "hifi" for PacBio HiFi reads or "ont" for Oxford Nanopore reads.
 
 output:
   contigs:
@@ -88,3 +85,17 @@ authors:
   - "@eit-maxlcummins"
 maintainers:
   - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/metamdbg:1.4--553e8e26a319ac0d
+      build_id: bd-553e8e26a319ac0d_2
+      scan_id: sc-0998e9bf8ef965f3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/metamdbg:1.4--350abe7f61a82240
+      build_id: bd-350abe7f61a82240_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8cc5344c1450ae8914ecb76febc92ec2dbade6a79e301bd1c65e0133e5b5631f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/metamdbg/asm/.conda-lock/linux_amd64-bd-553e8e26a319ac0d_2.txt

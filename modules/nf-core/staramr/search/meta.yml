@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "staramr_search"
-description: "Scans genome contigs against the ResFinder, PlasmidFinder, and PointFinder
-  databases."
+description: "Scans genome contigs against the ResFinder, PlasmidFinder, and PointFinder databases."
 keywords:
   - amr
   - plasmid
@@ -87,8 +85,7 @@ output:
             - edam: http://edamontology.org/format_3977 # ObjTables
       - "*_results/resfinder.tsv":
           type: file
-          description: A tabular file of each AMR gene and additional BLAST information
-            from the ResFinder database, one gene per line.
+          description: A tabular file of each AMR gene and additional BLAST information from the ResFinder database, one gene per line.
           pattern: "*_results/resfinder.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -101,8 +98,7 @@ output:
             - edam: http://edamontology.org/format_3977 # ObjTables
       - "*_results/plasmidfinder.tsv":
           type: file
-          description: A tabular file of each AMR plasmid type and additional BLAST
-            information from the PlasmidFinder database, one plasmid type per line.
+          description: A tabular file of each AMR plasmid type and additional BLAST information from the PlasmidFinder database, one plasmid type per line.
           pattern: "*_results/plasmidfinder.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -115,8 +111,7 @@ output:
             - edam: http://edamontology.org/format_3977 # ObjTables
       - "*_results/mlst.tsv":
           type: file
-          description: A tabular file of each multi-locus sequence type (MLST) and it's
-            corresponding locus/alleles, one genome per line.
+          description: A tabular file of each multi-locus sequence type (MLST) and it's corresponding locus/alleles, one genome per line.
           pattern: "*_results/mlst.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -129,8 +124,7 @@ output:
             - edam: http://edamontology.org/format_3977 # ObjTables
       - "*_results/settings.txt":
           type: file
-          description: The command-line, database versions, and other settings used
-            to run staramr.
+          description: The command-line, database versions, and other settings used to run staramr.
           pattern: "*_results/settings.txt"
           ontologies: []
   pointfinder_tsv:
@@ -142,8 +136,7 @@ output:
             - edam: http://edamontology.org/format_3977 # ObjTables
       - "*_results/pointfinder.tsv":
           type: file
-          description: An optional tabular file of each AMR point mutation and additional
-            BLAST information from the PointFinder database, one gene per line.
+          description: An optional tabular file of each AMR point mutation and additional BLAST information from the PointFinder database, one gene per line.
           pattern: "*_results/pointfinder.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -172,3 +165,27 @@ authors:
   - "@apetkau"
 maintainers:
   - "@apetkau"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/mlst_staramr_biopython_numpy_pandas:6908972a5005048a
+      build_id: bd-6908972a5005048a_1
+      scan_id: sc-d71e8c5abb873e41_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mlst_staramr_biopython_numpy_pandas:f28fd6fb415e425b
+      build_id: bd-f28fd6fb415e425b_1
+      scan_id: sc-2e56e98ca036250d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mlst_staramr_biopython_numpy_pandas:c99409462dc55fd1
+      build_id: bd-c99409462dc55fd1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02718d049d5a1f303ec4ef1f889aa3c96b33924133150862bd65420da000eb2a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mlst_staramr_biopython_numpy_pandas:ab9e483caa2a0795
+      build_id: bd-ab9e483caa2a0795_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0a2be210fe871ada0f6be3c7a747d3f8d3346573ad98841f6a237a88d83f0274/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/staramr/search/.conda-lock/linux_amd64-bd-f28fd6fb415e425b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/staramr/search/.conda-lock/linux_arm64-bd-6908972a5005048a_1.txt

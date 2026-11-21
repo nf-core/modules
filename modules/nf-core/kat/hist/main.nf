@@ -6,9 +6,9 @@ process KAT_HIST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kat:2.4.2--py38hfc5f9d8_2':
-        'quay.io/biocontainers/kat:2.4.2--py38hfc5f9d8_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b722aba17c3463207a656322aab4c4a443f904fef5b305809eed489a2412489/data'
+        : 'community.wave.seqera.io/library/kat:2.4.2--75e8f5922e348f7c'}"
 
     input:
     tuple val(meta), path(reads)

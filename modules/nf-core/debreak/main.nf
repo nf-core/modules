@@ -7,9 +7,9 @@ process DEBREAK {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/debreak:1.3--h9ee0642_0':
-        'quay.io/biocontainers/debreak:1.3--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10703319a506f65370b48d639d35334a8b281ccfb9984dee22ae02ae531c3303/data'
+        : 'community.wave.seqera.io/library/debreak:1.3--7258ebe5834e7801'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

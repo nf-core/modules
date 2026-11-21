@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "crispresso2"
-description: "A software pipeline for the analysis of genome editing outcomes from
-  deep sequencing data"
+description: "A software pipeline for the analysis of genome editing outcomes from deep sequencing data"
 keywords:
   - genome editing
   - CRISPR
@@ -9,8 +7,7 @@ keywords:
   - amplicon
 tools:
   - "crispresso2":
-      description: "CRISPResso2 is a software pipeline designed to enable rapid and
-        intuitive interpretation of genome editing experiments."
+      description: "CRISPResso2 is a software pipeline designed to enable rapid and intuitive interpretation of genome editing experiments."
       homepage: "https://crispresso.pinellolab.partners.org/"
       documentation: "https://docs.crispresso.com"
       tool_dev_url: "https://github.com/pinellolab/CRISPResso2"
@@ -26,8 +23,7 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and
-          paired-end data, respectively.
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -83,7 +79,7 @@ output:
       - crispresso2:
           type: string
           description: The name of the tool
-      - CRISPResso --version 2>&1 | sed 's/CRISPResso //':
+      - CRISPResso --version 2>&1 | sed -n 's/^CRISPResso //p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -94,10 +90,34 @@ topics:
       - crispresso2:
           type: string
           description: The name of the tool
-      - CRISPResso --version 2>&1 | sed 's/CRISPResso //':
+      - CRISPResso --version 2>&1 | sed -n 's/^CRISPResso //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@sathyasjali"
 maintainers:
   - "@sathyasjali"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/crispresso2:2.3.4--8db4f82d6aa49797
+      build_id: bd-8db4f82d6aa49797_1
+      scan_id: sc-a1b65d6e20a2dca0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/crispresso2:2.3.4--10e2fc05e3d57ff5
+      build_id: bd-10e2fc05e3d57ff5_1
+      scan_id: sc-ba2a4a847641da07_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/crispresso2:2.3.4--bb4dbbe369a6762e
+      build_id: bd-bb4dbbe369a6762e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a992c5ae209446413652a606b6243aa08c24eb9c6931e11cb711c3d2fff95d86/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/crispresso2:2.3.4--5af78d784eeadace
+      build_id: bd-5af78d784eeadace_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0829ff2732cbe3e253e6f9ce84021c34f9d294c6bd6cd96f3bc188b42e874ddf/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/crispresso2/.conda-lock/linux_amd64-bd-8db4f82d6aa49797_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/crispresso2/.conda-lock/linux_arm64-bd-10e2fc05e3d57ff5_1.txt

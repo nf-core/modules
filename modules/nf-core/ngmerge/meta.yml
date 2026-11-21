@@ -90,3 +90,17 @@ authors:
 maintainers:
   - "@charlotteanne"
   - "@jsh58"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ngmerge:0.3--b244ad1892587927
+      build_id: bd-b244ad1892587927_1
+      scan_id: sc-8883d3ea0fb39590_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ngmerge:0.3--b1b38853bf76c372
+      build_id: bd-b1b38853bf76c372_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c13e2a4a1cfe3fb14a0db0c04f099959036f1cf0de30e1a53193e4ef2c7f2897/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ngmerge/.conda-lock/linux_amd64-bd-b244ad1892587927_1.txt

@@ -43,8 +43,7 @@ input:
           - edam: http://edamontology.org/format_3746
   - sample_metadata:
       type: file
-      description: Tab-separated metadata file. Rows are samples; columns are
-        metadata fields. Optional, pass [] to omit.
+      description: Tab-separated metadata file. Rows are samples; columns are metadata fields. Optional, pass [] to omit.
       pattern: "*.tsv"
       ontologies:
         - edam: http://edamontology.org/format_3475
@@ -93,3 +92,27 @@ authors:
   - "@Jonahnki"
 maintainers:
   - "@Jonahnki"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/grimer:1.1.0--f20e42caf17b8243
+      build_id: bd-f20e42caf17b8243_2
+      scan_id: sc-e193e2027b67d4a6_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/grimer:1.1.0--3eb74a39b6c2707f
+      build_id: bd-3eb74a39b6c2707f_2
+      scan_id: sc-001d090151a95dc4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/grimer:1.1.0--31e188cc9f5bab25
+      build_id: bd-31e188cc9f5bab25_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/09/09265814bf337538c7de63dfb876d388bdc61763ebc4478d0b9a0c28a3c1a2aa/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/grimer:1.1.0--a61bd61bfccfa402
+      build_id: bd-a61bd61bfccfa402_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3fa7bb19679b70a3d63ba7724d9357d557249b8ef3d2e2bcc34cf1b654f028c9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/grimer/.conda-lock/linux_amd64-bd-3eb74a39b6c2707f_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/grimer/.conda-lock/linux_arm64-bd-f20e42caf17b8243_2.txt
