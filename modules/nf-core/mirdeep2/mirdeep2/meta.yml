@@ -75,6 +75,19 @@ output:
           pattern: "result*.{bed,csv,html}"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  pdfs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. `[
+            id:'sample1', single_end:false ]`
+      - pdfs_*:
+          type: directory
+          description: Directory `pdfs_<prefix>` with one PDF per reported miRNA
+            (hairpin structure and read signature). The links in the HTML report
+            point to this directory. Not created when miRDeep2 runs with `-d`.
+          pattern: "pdfs_*"
+          ontologies:
+            - edam: http://edamontology.org/format_3508 # PDF
   versions_mirdeep2:
     - - ${task.process}:
           type: string

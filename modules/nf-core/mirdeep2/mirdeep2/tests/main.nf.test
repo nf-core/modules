@@ -67,7 +67,12 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.outputs.get(0).get(1)[2]).readLines().last().contains('</html>') },
                 { assert path(process.out.outputs.get(0).get(1)[1]).readLines().first().contains('miRDeep2 score') },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["outputs"])).match() }
+                // The structure PDFs get a stable directory name and the HTML report links point to it
+                { assert file(process.out.pdfs.get(0).get(1)).name == 'pdfs_test_reads' },
+                { assert file(process.out.pdfs.get(0).get(1)).listFiles().any { pdf -> pdf.name.endsWith('.pdf') } },
+                { assert path(process.out.outputs.get(0).get(1)[2]).text.contains('href="pdfs_test_reads/') },
+                { assert !(path(process.out.outputs.get(0).get(1)[2]).text =~ /href="pdfs_(?!test_reads\/)/) },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["outputs", "pdfs"])).match() }
             )
         }
 
