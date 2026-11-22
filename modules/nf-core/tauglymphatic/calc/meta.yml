@@ -1,0 +1,104 @@
+name: "tauglymphatic_calc"
+description: "Biophysical reaction-diffusion and perivascular glymphatic tau clearance calculator (RUO)."
+keywords:
+  - neuroscience
+  - biophysics
+  - reaction-diffusion
+  - glymphatic
+  - tauopathy
+  - dti-alps
+tools:
+  - "tau-glymphatic-continuum":
+      description: "Multiscale biophysical reaction-diffusion and perivascular glymphatic clearance engine for tau spreading."
+      homepage: "https://github.com/Lukecele/tau-glymphatic-continuum"
+      documentation: "https://github.com/Lukecele/tau-glymphatic-continuum#readme"
+      tool_dev_url: "https://github.com/Lukecele/tau-glymphatic-continuum"
+      doi: "10.5281/zenodo.24297489"
+      licence:
+        - "MIT"
+      identifier: "biotools:tau-glymphatic-continuum"
+      args_id: "$args"
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.txt":
+          type: file
+          description: Optional biophysical glymphatic clearance text report produced when --json is not set
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.json":
+          type: file
+          description: Optional structured JSON biophysical diagnostics produced when --json is set
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_tauglymphatic:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "tau-glymphatic-continuum":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''tau-glymphatic-continuum''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "tau-glymphatic-continuum":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''tau-glymphatic-continuum''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tau-glymphatic-continuum:1.1.2--19d94451d3401cc3
+      build_id: bd-19d94451d3401cc3_1
+      scan_id: sc-e57fb822c7e24b8c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/tau-glymphatic-continuum:1.1.2--233ceef5fa3cbd76
+      build_id: bd-233ceef5fa3cbd76_1
+      scan_id: sc-e66eed5158827eda_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tau-glymphatic-continuum:1.1.2--a0e4fb46100d69a9
+      build_id: bd-a0e4fb46100d69a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db230f0ed6fef58e6960f9a04a15307470749a848c165ea6c2964803d5505471/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tau-glymphatic-continuum:1.1.2--8448ea7888cadba1
+      build_id: bd-8448ea7888cadba1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e34ee7ba91e80805a7f36e30adb18f7c9ac3a970d845a832eb12e344f541f625/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tauglymphatic/calc/.conda-lock/linux_amd64-bd-19d94451d3401cc3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tauglymphatic/calc/.conda-lock/linux_arm64-bd-233ceef5fa3cbd76_1.txt

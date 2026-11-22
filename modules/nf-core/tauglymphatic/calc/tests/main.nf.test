@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process TAUGLYMPHATIC_CALC"
+    script "../main.nf"
+    process "TAUGLYMPHATIC_CALC"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tauglymphatic"
+    tag "tauglymphatic/calc"
+
+    test("human - alps - txt") {
+
+        when {
+            params {
+                module_args = '--alps 1.50 --apoe-e4 1'
+            }
+            process {
+                """
+                input[0] = [ id:'test_txt' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - alps - json") {
+
+        when {
+            params {
+                module_args = '--alps 1.15 --apoe-e4 2 --trem2-r47h --nlrp3 --json'
+            }
+            process {
+                """
+                input[0] = [ id:'test_json' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - alps - txt - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--alps 1.50 --apoe-e4 1'
+            }
+            process {
+                """
+                input[0] = [ id:'test_txt' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - alps - json - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--alps 1.15 --apoe-e4 2 --json'
+            }
+            process {
+                """
+                input[0] = [ id:'test_json' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
