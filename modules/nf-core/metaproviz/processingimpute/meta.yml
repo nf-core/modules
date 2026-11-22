@@ -1,0 +1,213 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaproviz_processingimpute"
+description: >-
+  Impute missing metabolite values. Each missing value is replaced by a percentage of the minimum of that feature in its
+  condition (default 50%, the half-minimum). This is the second module of the processing chain (processingfilter,
+  processingimpute, processingnormalize and processingoutliers). The features flagged by metaproviz/processingfilter
+  and the features with no measured value in a condition, which cannot be imputed, are removed from the output data by
+  default. Pool and QC samples must be removed from the data beforehand.
+keywords:
+  - metabolomics
+  - preprocessing
+  - missing value imputation
+  - MetaProViz
+tools:
+  - "metaproviz":
+      description: "MetaProViz — Metabolomics Processing, functional analysis and Visualization."
+      homepage: "https://saezlab.github.io/MetaProViz/"
+      documentation: "https://saezlab.github.io/MetaProViz/"
+      tool_dev_url: "https://github.com/saezlab/MetaProViz"
+      doi: "10.1038/s44320-026-00231-8"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - se_rds:
+        type: file
+        description: >-
+          A SummarizedExperiment saved as RDS, ideally the output of metaproviz/processingfilter. The assay holds the numerical
+          values of the metabolites, the rowData the feature metadata and the colData the sample metadata. Both NA and 0 count
+          as not detected. The colData needs a Conditions column. Use either
+          this input or the three inputs data_matrix, feature_matrix and sample_matrix, not both.
+        pattern: "*.rds"
+        optional: true
+        ontologies: []
+    - data_matrix:
+        type: file
+        description: >-
+          Numerical values of the metabolites as TSV or CSV file, with the features in rows and the samples in columns.
+          The first column holds the feature IDs. Empty cells, NA and 0 count as not detected. Required together with
+          feature_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - feature_matrix:
+        type: file
+        description: >-
+          Feature metadata as TSV or CSV file. The first column holds the feature IDs, matching the rows of data_matrix.
+          It can hold the TRUE/FALSE column, where TRUE flags the feature for removal. Required together with data_matrix
+          and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - sample_matrix:
+        type: file
+        description: >-
+          Sample metadata as TSV or CSV file. The first column holds the sample IDs, matching the columns of data_matrix.
+          It holds the Conditions column. Required together with data_matrix
+          and feature_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+
+  - output_format:
+      type: string
+      description: >-
+        Format of the output with the imputed values and without the removed features. `se` (or an empty value) writes the
+        SummarizedExperiment as RDS, `tsv` or `csv` write it as three tables (data_matrix, feature_matrix and
+        sample_matrix).
+output:
+  se:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.imputed.rds":
+          type: file
+          description: >-
+            SummarizedExperiment with the missing values replaced. By default, the flagged features and the features with
+            no measured value in a condition are removed. If the latter are kept, they are NA in that condition. Written if output_format is `se` or empty.
+          pattern: "*.imputed.rds"
+          optional: true
+          ontologies: []
+  imputed_matrices:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.imputed.*_matrix.{tsv,csv}":
+          type: file
+          description: >-
+            The same data as three tables with the same shape as the input: data_matrix, feature_matrix and
+            sample_matrix. Written if output_format is `tsv` or `csv`.
+          pattern: "*.imputed.*_matrix.{tsv,csv}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+  imputed_values:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.imputed_values.tsv":
+          type: file
+          description: >-
+            Table with one row per imputed value (Metabolite, Sample, Condition, Imputed value). The Imputed value is NA
+            where the feature has no measured value in the condition and cannot be imputed. Header only if nothing was
+            missing.
+          pattern: "*.imputed_values.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  removed_features:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.removed_features.tsv":
+          type: file
+          description: >-
+            Table with one row per removed feature (Feature, Reason). The Reason is `flagged` (TRUE in the
+            flag column of the feature metadata) or `unimputable` (no measured value in a condition). Header only if no feature was removed.
+          pattern: "*.removed_features.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.report.html":
+          type: file
+          description: >-
+            HTML report with the run summary, the parameters of this run, the imputed values and the R session info.
+          pattern: "*.report.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: >-
+            INFO/WARN log.
+          pattern: "*.log"
+          ontologies: []
+  versions_metaproviz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.1:
+          type: string
+          description: The version of MetaProViz
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.1:
+          type: string
+          description: The version of MetaProViz
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+authors:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+maintainers:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
