@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process FGUMI_COPYUMI"
+    script "../main.nf"
+    process "FGUMI_COPYUMI"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/copyumi"
+
+    test("sarscov2 - single_end umi_tools read names") {
+
+        when {
+            params {
+                module_args = '--field-delimiter _'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.umi.sorted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - paired_end umi_tools read names - remove umi") {
+
+        when {
+            params {
+                module_args = '--field-delimiter _ --remove-umi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.umi.sorted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired_end duplex umi in read name - default delimiter") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_in_header.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - single_end umi_tools read names - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.umi.sorted.bam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
