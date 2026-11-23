@@ -104,11 +104,11 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--blocking_variables batch --n_plot 0'
+                module_args = '--n_plot 0'
             }
             process {
                 """
-                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[0] = [ [ id:'GBR_vs_YRI', blocking:'batch' ], 'condition', 'YRI', 'GBR' ]
                 input[1] = channel.of(
                     'sample,condition,batch',
                     'ERR188383,GBR,1',
@@ -140,7 +140,7 @@ nextflow_process {
             def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
             def stable = (0..<results[0].size()).findAll { i -> results[0][i] ==~ /groupID|featureID|countData\..+/ }
             def padj = results[0].findIndexOf { col -> col == 'padj' }
-            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
+            def command_err = path(process.out.results[0][1]).parent.resolve('.command.err').text
             assertAll(
                 { assert process.success },
                 { assert command_err.contains("Full model: ~sample + exon + batch:exon + condition:exon") },
@@ -157,79 +157,21 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - chrX - GBR vs YRI - blocking with one level") {
+    test("homo_sapiens - chrX - GBR vs YRI - blocking one level and confounded") {
 
         when {
             params {
-                module_args = '--blocking_variables batch --n_plot 0'
+                module_args = '--n_plot 0'
             }
             process {
                 """
-                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[0] = [ [ id:'GBR_vs_YRI', blocking:'lane;batch' ], 'condition', 'YRI', 'GBR' ]
                 input[1] = channel.of(
-                    'sample,condition,batch',
-                    'ERR188383,GBR,1',
-                    'ERR188428,GBR,1',
-                    'ERR188454,YRI,1',
-                    'ERR204916,YRI,1'
-                )
-                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
-                    .map { samplesheet ->
-                        [
-                            [ id:'study' ],
-                            samplesheet,
-                            ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
-                                file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
-                            }
-                        ]
-                    }
-                input[2] = [
-                    [ id:'chrX' ],
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            // The fitted values depend on the OpenBLAS kernel selected for the CPU, so only IDs, counts and significant calls are snapshotted
-            def results = path(process.out.results[0][1]).readLines()*.split('\t', -1)
-            def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
-            def stable = (0..<results[0].size()).findAll { i -> results[0][i] ==~ /groupID|featureID|countData\..+/ }
-            def padj = results[0].findIndexOf { col -> col == 'padj' }
-            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
-            assertAll(
-                { assert process.success },
-                { assert command_err.contains("Blocking variable 'batch' has one level in this contrast") },
-                { assert command_err.contains("Full model: ~sample + exon + condition:exon") },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
-                    results[0],
-                    results.collect { row -> row[stable].join('\t') }.join('\n').md5(),
-                    results.tail().findAll { row -> row[padj] != 'NA' && (row[padj] as double) < 0.05 }.collect { row -> "${row[0]}:${row[1]}" },
-                    qvalues*.getAt(0).join('\n').md5(),
-                    qvalues.tail().findAll { row -> row[1] != 'NA' && (row[1] as double) < 0.05 }*.getAt(0)
-                ).match() }
-            )
-        }
-
-    }
-
-    test("homo_sapiens - chrX - GBR vs YRI - blocking confounded") {
-
-        when {
-            params {
-                module_args = '--blocking_variables batch --n_plot 0'
-            }
-            process {
-                """
-                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
-                input[1] = channel.of(
-                    'sample,condition,batch',
-                    'ERR188383,GBR,A',
-                    'ERR188428,GBR,A',
-                    'ERR188454,YRI,B',
-                    'ERR204916,YRI,B'
+                    'sample,condition,lane,batch',
+                    'ERR188383,GBR,1,A',
+                    'ERR188428,GBR,1,A',
+                    'ERR188454,YRI,1,B',
+                    'ERR204916,YRI,1,B'
                 )
                     .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
                     .map { samplesheet ->
@@ -252,7 +194,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stderr.join(' ').contains("Blocking variable 'batch' is confounded with 'condition'") }
+                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variable 'lane' has one level in this contrast") },
+                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variables batch are confounded with 'condition'") }
             )
         }
 
@@ -262,11 +205,11 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--blocking_variables donor --n_plot 0'
+                module_args = '--n_plot 0'
             }
             process {
                 """
-                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[0] = [ [ id:'GBR_vs_YRI', blocking:'donor' ], 'condition', 'YRI', 'GBR' ]
                 input[1] = channel.of(
                     'sample,condition,batch',
                     'ERR188383,GBR,1',
@@ -295,7 +238,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stderr.join(' ').contains("Blocking variables missing from the sample sheet: donor") }
+                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variables missing from the sample sheet: donor") }
             )
         }
 

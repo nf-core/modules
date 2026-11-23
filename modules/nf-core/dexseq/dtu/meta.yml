@@ -21,14 +21,10 @@ input:
         description: |
           Groovy Map containing contrast information
           e.g. `[ id:'treated_vs_control', blocking:'batch;donor' ]`.
-          Sample sheet columns to adjust for, separated by semicolons, are
-          passed in through `ext.args` like `--blocking_variables $meta.blocking`.
-          Each enters both models as an interaction with exon, e.g.
-          `~ sample + exon + batch:exon + condition:exon` against
-          `~ sample + exon + batch:exon`. A variable with one level in the
-          samples of the contrast is left out with a warning, and one that is
-          confounded with the contrast stops the module. The fold changes are
-          not adjusted for the blocking variables
+          Categorical sample sheet columns to adjust for, separated by
+          semicolons without spaces, are passed in through `ext.args` like
+          `--blocking_variables $meta.blocking`. They enter both models as
+          interactions with exon. The fold changes are not adjusted for them.
     - contrast_variable:
         type: string
         description: |
