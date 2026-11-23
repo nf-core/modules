@@ -7,8 +7,8 @@ process BISMARK_GENOMEPREPARATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data' :
-        'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/106c5858e0e1021f5eb80619e7ec56f02e5fc857d2bdbb00570d30a5add9b5e9/data' :
+        'community.wave.seqera.io/library/bismark:3.4.0--4721154cfbeba5e3' }"
 
     input:
     tuple val(meta), path(fasta, name:"BismarkIndex/")

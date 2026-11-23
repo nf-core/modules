@@ -32,13 +32,13 @@ process FAIRBIOHEADERS_CONVERT {
         ${args} \\
         --to ${format} \\
         ${input} \\
-        ${prefix}.${format}
+        "${prefix}.${format}"
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_converted"
     if ("${input}" == "${prefix}.${format}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.${format}
+    touch "${prefix}.${format}"
     """
 }

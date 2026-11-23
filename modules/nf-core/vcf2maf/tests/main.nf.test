@@ -8,23 +8,15 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "vcf2maf"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test_genome_vep' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/vep_cache_113.tar.gz", checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("Run without VEP") {
+        def vep_cache
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            vep_cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/vep_cache_113.tar.gz').resolve('vep')
+        }
+
 
         when {
             params {
@@ -53,6 +45,13 @@ nextflow_process {
     }
 
     test("Run with VEP"){
+        def vep_cache
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            vep_cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/vep_cache_113.tar.gz').resolve('vep')
+        }
+
         when {
             params {
                 module_args = "--ncbi-build GRCh38 --species homo_sapiens"
@@ -64,7 +63,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
-                input[2] = UNTAR.out.untar.map { it[1] }
+                input[2] = file('${vep_cache}')
                 """
             }
         }
@@ -120,7 +119,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
                 ]
                 input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
-                input[2] = UNTAR.out.untar.map { it[1] }
+                input[2] = []
                 """
             }
         }

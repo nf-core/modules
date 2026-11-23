@@ -33,15 +33,4 @@ Renamed module to match the tool/subtool convention
         $args
 
     """
-
-    stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
-    }
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.tif
-
-    """
 }

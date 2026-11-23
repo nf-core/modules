@@ -1,14 +1,12 @@
 name: "demuxem"
-description: Demultiplexing cell nucleus hashing data, using the estimated
-  antibody background probability.
+description: Demultiplexing cell nucleus hashing data, using the estimated antibody background probability.
 keywords:
   - demultiplexing
   - hashing-based deconvoltion
   - single-cell
 tools:
   - demuxem:
-      description: "DemuxEM is the demultiplexing module of Pegasus, which works on
-        cell-hashing and nucleus-hashing genomics data."
+      description: "DemuxEM is the demultiplexing module of Pegasus, which works on cell-hashing and nucleus-hashing genomics data."
       homepage: "https://demuxEM.readthedocs.io"
       documentation: "https://demuxEM.readthedocs.io"
       tool_dev_url: "https://github.com/lilab-bcb/pegasus/tree/master"
@@ -102,3 +100,27 @@ maintainers:
   - "@maxozo"
   - "@wxicu"
   - "@Zethson"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/demuxem_numpy_pandas_python:4b7e95fdbe5cd81f
+      build_id: bd-4b7e95fdbe5cd81f_1
+      scan_id: sc-782956ad31267bc0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/demuxem_numpy_pandas_python:24f4768270179af6
+      build_id: bd-24f4768270179af6_1
+      scan_id: sc-c19f04a9d71b6cfb_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/demuxem_numpy_pandas_python:f1553fadc79493d3
+      build_id: bd-f1553fadc79493d3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7c6c63164c027a83143685618eba0cae8b814c6ffe87c2379b7c9b059402fd0/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/demuxem_numpy_pandas_python:67165d65261eb5b0
+      build_id: bd-67165d65261eb5b0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed9281332e529e8325ec9f7731916dce0cededc6aa1fb63004d3d3685e5e82b4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/demuxem/.conda-lock/linux_amd64-bd-24f4768270179af6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/demuxem/.conda-lock/linux_arm64-bd-4b7e95fdbe5cd81f_1.txt

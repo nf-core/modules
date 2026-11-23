@@ -18,35 +18,12 @@ nextflow_workflow {
     tag "samtools"
     tag "samtools/index"
     tag "samtools/sort"
-    tag "untar"
-
-    setup {
-        run("UNTAR", alias: "BOWTIE2") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [:],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        run("UNTAR", alias: "HISAT2") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [:],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("Params: bismark single-end | default") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -57,16 +34,16 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:true ],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = BOWTIE2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -98,6 +75,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark paired-end | default") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -108,19 +89,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = BOWTIE2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -151,6 +132,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark paired-end | skip_deduplication") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -160,19 +145,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = BOWTIE2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -203,6 +188,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark paired-end | cytosine_report") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bowtie2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -212,19 +201,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = BOWTIE2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -255,6 +244,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark_hisat single-end | default") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -265,16 +258,16 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:true ],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = HISAT2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -305,6 +298,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark_hisat paired-end | default") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -315,19 +312,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = HISAT2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -358,6 +355,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark_hisat paired-end | skip_deduplication") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -367,19 +368,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = HISAT2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """
@@ -410,6 +411,10 @@ nextflow_workflow {
     }
 
     test("Params: bismark_hisat paired-end | cytosine_report") {
+        def bismark_index
+        setup {
+            bismark_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Hisat2_Index.tar.gz').resolve('BismarkIndex')
+        }
 
         when {
             params {
@@ -419,19 +424,19 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:false ],
                             [
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
                                 file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
                             ]
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = HISAT2.out.untar
+                input[2] = [ [:], file('${bismark_index}') ]
                 input[3] = params.skip_deduplication
                 input[4] = params.cytosine_report
                 """

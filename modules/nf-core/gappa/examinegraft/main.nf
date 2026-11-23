@@ -6,9 +6,9 @@ process GAPPA_EXAMINEGRAFT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gappa:0.9.0--h077b44d_0':
-        'quay.io/biocontainers/gappa:0.9.0--h077b44d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4a/4a30e4444b69c99470cae4a631a9e293ed76d475a6a44812a1f38ad2b9ece7af/data'
+        : 'community.wave.seqera.io/library/gappa:0.9.0--2f0efa59bcb34481'}"
 
     input:
     tuple val(meta), path(jplace)

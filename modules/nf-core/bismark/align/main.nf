@@ -7,8 +7,8 @@ process BISMARK_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data'
-        : 'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/20bce4b3bce2e7045431676190322012e22a96cef1a53eaadd14acc89de2e232/data'
+        : 'community.wave.seqera.io/library/bismark_bwa-mem3:1eb534160cb7def7'}"
 
     input:
     tuple val(meta), path(reads)
@@ -21,6 +21,7 @@ process BISMARK_ALIGN {
     tuple val(meta), path("*report.txt"), emit: report
     tuple val(meta), path("*fq.gz"), emit: unmapped, optional: true
     tuple val("${task.process}"), val("bismark"), eval("bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), topic: versions, emit: versions_bismark
+    tuple val("${task.process}"), val('bwamem3'), eval("bwa-mem3 version | sed -nE '1 s/^([0-9]+(\\.[0-9]+)+).*/\\1/p'"), emit: versions_bwamem3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

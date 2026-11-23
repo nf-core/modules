@@ -10,49 +10,34 @@ nextflow_process {
     tag "hamronization/rgi"
     tag "rgi/main"
     tag "rgi/cardannotation"
-    tag "untar"
-
-    setup {
-
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('data.tar.gz')
-
-                input[0] = [
-                    [id: "test" ],
-                    file('https://card.mcmaster.ca/latest/data', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        run("RGI_CARDANNOTATION") {
-            script "../../../rgi/cardannotation/main.nf"
-            process {
-                """
-                input[0] = UNTAR.out.untar.map{ it[1] }
-                """
-            }
-        }
-
-        run("RGI_MAIN") {
-            script "../../../rgi/main/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
-                ]
-                input[1] = RGI_CARDANNOTATION.out.db
-                input[2] = []
-                """
-            }
-        }
-    }
 
     test("hamronization/rgi - haemophilus_influenzae - genome - fna.gz") {
+        def card
+        setup {
+            card = extract('https://card.mcmaster.ca/latest/data', compression: 'tar.bz2')
+            run("RGI_CARDANNOTATION") {
+                script "../../../rgi/cardannotation/main.nf"
+                process {
+                    """
+                    input[0] = file('${card}')
+                    """
+                }
+            }
+
+            run("RGI_MAIN") {
+                script "../../../rgi/main/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    input[1] = RGI_CARDANNOTATION.out.db
+                    input[2] = []
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -80,7 +65,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = RGI_MAIN.out.tsv
+                input[0] = [ [ id:'test' ], [] ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'
                 input[3] = '3.2.3'

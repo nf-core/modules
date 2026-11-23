@@ -12,6 +12,7 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
 
     input:
     tuple val(meta), path(counts), path(groups)
+    tuple val(meta2), path(exons)
 
     output:
     tuple val(meta), path("*_cluster_significance.txt"), emit: cluster_significance
@@ -25,6 +26,7 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def exon_file = exons ? "--exon_file ${exons}" : ''
     """
     export USER="\${USER:-nobody}"
     export PYTHONHASHSEED=0
@@ -34,6 +36,7 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
         $groups \\
         --output_prefix ${prefix} \\
         --num_threads $task.cpus \\
+        $exon_file \\
         $args
     """
 

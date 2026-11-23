@@ -3,36 +3,26 @@ nextflow_process {
     name "Test Process HUMANN3_REGROUP"
     script "../main.nf"
     process "HUMANN3_REGROUP"
-    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "humann3"
     tag "humann3/regroup"
-    tag "untar"
-    setup {
-        run("UNTAR", alias: "UNTAR_v3_util") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [],
-                    file( params.pipelines_testdata_base_path + 'data/database/humann/v3/utility_nfDEMO.tar.gz', checkIfExists: true )
-                ])
-                """
-            }
-        }
-    }
+
     test("humann3_regroup - tsv") {
+        def utility_db
+        setup {
+            utility_db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/funcprofiler/data/database/humann/v3/utility_nfDEMO.tar.gz')
+        }
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file( params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/test_genefamilies.tsv', checkIfExists: true )
                 ])
                 input[1] = "uniref90_level4ec"
-                input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
+                input[2] = file('${utility_db}')
                 """
             }
         }
@@ -52,12 +42,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file( params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/test_genefamilies.tsv', checkIfExists: true )
                 ])
                 input[1] = "uniref90_level4ec"
-                input[2] = UNTAR_v3_util.out.untar.map{ it[1] }
+                input[2] = []
                 """
             }
         }

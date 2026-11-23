@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process SAMTOOLS_GETRG"
@@ -10,23 +9,20 @@ nextflow_process {
     tag "samtools"
     tag "samtools/getrg"
 
-    test("test-samtools-getrg") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
-                ]
-
+                input[0] = [ [ id:'test' ], file('input') ]
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.failed }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/samtools/splitheader") }
             )
         }
     }

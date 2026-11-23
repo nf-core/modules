@@ -77,20 +77,31 @@ topics:
       - bigscape --version | sed 's/BiG-SCAPE //':
           type: eval
           description: The expression to obtain the version of the tool
-containers:
-  conda:
-    linux/amd64:
-      lock_file: modules/nf-core/bigscape/bigscape/.conda-lock/linux_amd64-bd-aed310da2cd1ca1d_1.txt
-  docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/bigscape:2.0.3--aed310da2cd1ca1d
-      build_id: bd-aed310da2cd1ca1d_1
-  singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/bigscape:2.0.3--aed310da2cd1ca1d
-      build_id: bd-aed310da2cd1ca1d_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acb20daff43670baa2f5599e97ef0d96f3eeeaaaeb31e7dfa7a23066c908b44a/data
 authors:
   - "@jvfe"
 maintainers:
   - "@jvfe"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bigscape_sqlalchemy:d11ab34d38b34cb6
+      build_id: bd-d11ab34d38b34cb6_1
+      scan_id: sc-d12ad664fd15810c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bigscape_sqlalchemy:ae57e8ea53af53fa
+      build_id: bd-ae57e8ea53af53fa_1
+      scan_id: sc-28c344fb7907c800_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bigscape_sqlalchemy:d47e2aaf36d1c9a0
+      build_id: bd-d47e2aaf36d1c9a0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d0ff9770fe46787912573cedac2a2c1e39333e648a6f7060992d22851f88ae7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bigscape_sqlalchemy:44aa8d16d5825957
+      build_id: bd-44aa8d16d5825957_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74d120cf70a46f90a21dd2387d3064d127f0b942b6c863ad75d2dfa51fa6de45/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bigscape/bigscape/.conda-lock/linux_amd64-bd-d11ab34d38b34cb6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bigscape/bigscape/.conda-lock/linux_arm64-bd-ae57e8ea53af53fa_1.txt

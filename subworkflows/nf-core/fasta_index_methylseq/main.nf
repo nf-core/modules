@@ -138,7 +138,8 @@ workflow FASTA_INDEX_METHYLSEQ {
         } else {
             log.info "BWA index not provided. Generating BWA index from FASTA file."
             BWA_INDEX (
-                ch_fasta
+                ch_fasta,
+                []
             )
             ch_bwamem_index = BWA_INDEX.out.index
         }

@@ -16,6 +16,16 @@
             "type": "boolean",
             "description": "Whether the module is deprecated and should not be used in new pipelines"
         },
+        "deprecation_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the module was deprecated (YYYY-MM-DD), used to plan its removal"
+        },
+        "deprecation_pr": {
+            "type": "string",
+            "pattern": "^https://github\\.com/nf-core/modules/pull/[0-9]+$",
+            "description": "Pull request that deprecated the module"
+        },
         "keywords": {
             "type": "array",
             "description": "Keywords for the module",
@@ -58,15 +68,8 @@
                             },
                             "doi": {
                                 "type": "string",
-                                "description": "DOI to cite for the tool: the publication's DOI if the tool has one, otherwise the DOI of the software archive (e.g. Zenodo)",
-                                "anyOf": [
-                                    {
-                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
-                                    },
-                                    {
-                                        "enum": ["no DOI available"]
-                                    }
-                                ]
+                                "description": "DOI to cite for the tool, without prefix: the publication's DOI if the tool has one, otherwise the DOI of the software archive (e.g. Zenodo); empty when there is none",
+                                "pattern": "^(10\\.\\d{4,9}\\/[^,\\s]+)?$"
                             },
                             "licence": {
                                 "type": "array",

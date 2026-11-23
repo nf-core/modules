@@ -68,7 +68,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
 
     SOMALIER_RELATE(
         ch_somalierrelate_input,
-        ch_sample_groups
+        ch_sample_groups,
+        ch_somalier_sites
     )
 
     emit:

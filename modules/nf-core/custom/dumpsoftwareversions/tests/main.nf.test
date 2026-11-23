@@ -3,34 +3,26 @@ nextflow_process {
     name "Test Process CUSTOM_DUMPSOFTWAREVERSIONS"
     script "../main.nf"
     process "CUSTOM_DUMPSOFTWAREVERSIONS"
+
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
-    tag "dumpsoftwareversions"
     tag "custom/dumpsoftwareversions"
 
-    test("Should run without failures") {
+    test("deprecated") {
+
         when {
             process {
                 """
-                def tool1_version = '''
-                TOOL1:
-                    tool1: 0.11.9
-                '''.stripIndent()
-
-                def tool2_version = '''
-                TOOL2:
-                    tool2: 1.9
-                '''.stripIndent()
-
-                input[0] = Channel.of(tool1_version, tool2_version).collectFile()
+                input[0] = file('versions')
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.failed }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }

@@ -100,10 +100,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
+      - "${prefix}.vcf.gz":
           type: file
           description: Compressed VCF file
-          pattern: "*.vcf.gz"
+          pattern: "${prefix}.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   tbi:
@@ -112,10 +112,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "${prefix}.vcf.gz.tbi":
           type: file
           description: Index of VCF file
-          pattern: "*.vcf.gz.tbi"
+          pattern: "${prefix}.vcf.gz.tbi"
           ontologies: []
   bam:
     - - meta:

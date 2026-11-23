@@ -20,6 +20,13 @@ tools:
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:bismark
+  - bwamem3:
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
+      homepage: "https://github.com/fg-labs/bwa-mem3"
+      documentation: "https://github.com/fg-labs/bwa-mem3"
+      tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
+      licence: ["MIT AND Apache-2.0"]
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -95,6 +102,16 @@ output:
       - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_bwamem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -106,6 +123,15 @@ topics:
       - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
@@ -114,24 +140,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4
-      build_id: bd-9557d6ab108a83e4_1
-      scan_id: sc-8d2a54959fbc873b_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:1eb534160cb7def7
+      build_id: bd-1eb534160cb7def7_2
+      scan_id: sc-34516715d42552ed_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bismark:3.1.0--f83bc6617fa3cadd
-      build_id: bd-f83bc6617fa3cadd_1
-      scan_id: sc-cf3a320dd51a3a24_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:60746007c6266ec6
+      build_id: bd-60746007c6266ec6_2
+      scan_id: sc-70a71f6c3827f515_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bismark:3.1.0--3abb485fce628c19
-      build_id: bd-3abb485fce628c19_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:c2f1948797e73d2d
+      build_id: bd-c2f1948797e73d2d_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/20bce4b3bce2e7045431676190322012e22a96cef1a53eaadd14acc89de2e232/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bismark:3.1.0--4c41a9578c1f2001
-      build_id: bd-4c41a9578c1f2001_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b84d7ddbd3e0bb2240038ce3c9ff9979287d38bf09f2945256eaafba1450096/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:1c63481bbe3e9b04
+      build_id: bd-1c63481bbe3e9b04_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/62f1fecca07a62d06cfa93d1ee63ec7a329a3d62f7ecf00abb3f7d4ac896b889/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-9557d6ab108a83e4_1.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-1eb534160cb7def7_2.txt
     linux/arm64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-f83bc6617fa3cadd_1.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-60746007c6266ec6_2.txt
