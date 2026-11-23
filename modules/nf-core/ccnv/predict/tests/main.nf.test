@@ -36,6 +36,37 @@ nextflow_process {
             )
         }
     }
+
+    test("synthetic - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.bam', checkIfExists: true),
+                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.bam.bai', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id: 'cohort_ref'],
+                    file("https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/reference/synthetic_cohort/ref_qc_warn_flat.ccnv", checkIfExists: true),
+                ]
+                input[2] = [[:],[],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["qc_json","bins_bed","segments_bed","segments_vcf","plot_html"])).match() }
+            )
+        }
+    }
+
+
     test("synthetic - bam - stub") {
         options "-stub"
         when {

@@ -133,12 +133,12 @@ output:
           description: Bins BED file
           pattern: "*_bins.bed.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: "http://edamontology.org/format_3003" # BED
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_bins.bed.gz.tbi":
+      - "*_bins.bed.gz.{tbi,csi}":
           type: file
           description: Bins BED index file
-          pattern: "*_bins.bed.gz.tbi"
+          pattern: "*_bins.bed.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   segments_bed:
@@ -152,12 +152,12 @@ output:
           description: Segments BED file
           pattern: "*_segments.bed.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: "http://edamontology.org/format_3003" # BED
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_segments.bed.gz.tbi":
+      - "*_segments.bed.gz.{tbi,csi}":
           type: file
           description: Segments BED index file
-          pattern: "*_segments.bed.gz.tbi"
+          pattern: "*_segments.bed.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   calls_bed:
@@ -171,12 +171,12 @@ output:
           description: Calls BED file
           pattern: "*_calls.bed.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_3016" # BED
+            - edam: "http://edamontology.org/format_3003" # BED
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_calls.bed.gz.tbi":
+      - "*_calls.bed.gz.{tbi,csi}":
           type: file
           description: Calls BED index file
-          pattern: "*_calls.bed.gz.tbi"
+          pattern: "*_calls.bed.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   bins_vcf:
@@ -192,10 +192,10 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_bins.vcf.gz.tbi":
+      - "*_bins.vcf.gz.{tbi,csi}":
           type: file
           description: Bins VCF index file
-          pattern: "*_bins.vcf.gz.tbi"
+          pattern: "*_bins.vcf.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   segments_vcf:
@@ -211,10 +211,10 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_segments.vcf.gz.tbi":
+      - "*_segments.vcf.gz.{tbi,csi}":
           type: file
           description: Segments VCF index file
-          pattern: "*_segments.vcf.gz.tbi"
+          pattern: "*_segments.vcf.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   calls_vcf:
@@ -230,10 +230,10 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
             - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*_calls.vcf.gz.tbi":
+      - "*_calls.vcf.gz.{tbi,csi}":
           type: file
           description: Calls VCF index file
-          pattern: "*_calls.vcf.gz.tbi"
+          pattern: "*_calls.vcf.gz.{tbi,csi}"
           ontologies:
             - edam: "http://edamontology.org/format_3616" # TABIX
   versions_ccnv:

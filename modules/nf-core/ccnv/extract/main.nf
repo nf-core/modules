@@ -22,6 +22,10 @@ process CCNV_EXTRACT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_arg = fasta ? "--fasta $fasta" : ""
+
+    if (!reads_index) {
+        error "CCNV_EXTRACT: Missing reads index file"
+    }
     """
     ccnv extract\\
         --prefix ${prefix} \\

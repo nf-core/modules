@@ -8,13 +8,13 @@ process CCNV_REFERENCE {
         : 'community.wave.seqera.io/library/ccnv:1.0.0--c01430de16e6765e'}"
 
     input:
-    tuple val(meta), path(cohort_yaml), path(cohort_ccnv, stageAs: 'samples/*'), path(fasta), path(fai)
+    tuple val(meta), path(cohort_yaml), path(cohort_ccnv), path(fasta), path(fai)
     tuple val(meta2), path(mappability)
     tuple val(meta3), path(gc_content), path(gc_content_index)
 
     output:
     tuple val(meta), path("*.ccnv"), emit: ccnv
-    tuple val(meta), path("*_qc.json"), emit: qc_json
+    tuple val(meta), path("*_qc.json"), emit: qc_json, optional: true
     tuple val("${task.process}"), val('ccnv'), eval("ccnv --version 2>&1 | sed 's/ccnv //'"), topic: versions, emit: versions_ccnv
 
     when:

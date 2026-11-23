@@ -17,12 +17,12 @@ process CCNV_PREDICT {
     output:
     tuple val(meta), path("*_qc.json"), emit: qc_json
     tuple val(meta), path("*_plot.html"), emit: plot_html, optional: true
-    tuple val(meta), path("*_bins.bed.gz"), path("*_bins.bed.gz.tbi"), emit: bins_bed
-    tuple val(meta), path("*_segments.bed.gz"), path("*_segments.bed.gz.tbi"), emit: segments_bed
-    tuple val(meta), path("*_calls.bed.gz"), path("*_calls.bed.gz.tbi"), emit: calls_bed
-    tuple val(meta), path("*_bins.vcf.gz"), path("*_bins.vcf.gz.tbi"), emit: bins_vcf, optional: true
-    tuple val(meta), path("*_segments.vcf.gz"), path("*_segments.vcf.gz.tbi"), emit: segments_vcf, optional: true
-    tuple val(meta), path("*_calls.vcf.gz"), path("*_calls.vcf.gz.tbi"), emit: calls_vcf, optional: true
+    tuple val(meta), path("*_bins.bed.gz"), path("*_bins.bed.gz.{tbi,csi}"), emit: bins_bed
+    tuple val(meta), path("*_segments.bed.gz"), path("*_segments.bed.gz.{tbi,csi}"), emit: segments_bed
+    tuple val(meta), path("*_calls.bed.gz"), path("*_calls.bed.gz.{tbi,csi}"), emit: calls_bed
+    tuple val(meta), path("*_bins.vcf.gz"), path("*_bins.vcf.gz.{tbi,csi}"), emit: bins_vcf, optional: true
+    tuple val(meta), path("*_segments.vcf.gz"), path("*_segments.vcf.gz.{tbi,csi}"), emit: segments_vcf, optional: true
+    tuple val(meta), path("*_calls.vcf.gz"), path("*_calls.vcf.gz.{tbi,csi}"), emit: calls_vcf, optional: true
     tuple val("${task.process}"), val('ccnv'), eval("ccnv --version 2>&1 | sed 's/ccnv //'"), topic: versions, emit: versions_ccnv
 
     when:
@@ -35,6 +35,10 @@ process CCNV_PREDICT {
     def fasta_cmd = fasta ? "--fasta $fasta" : ""
     def mappability_cmd = mappability ? "--mappability $mappability" : ""
     def gc_cmd = gc_content ? "--gc $gc_content" : ""
+
+    if (!reads_index && !ccnv) {
+        error "CCNV_PREDICT: Missing reads index file"
+    }
 
     """
     ccnv predict \\
@@ -57,15 +61,21 @@ process CCNV_PREDICT {
     touch ${prefix}_qc.json
     echo "" | gzip > ${prefix}_bins.bed.gz
     touch ${prefix}_bins.bed.gz.tbi
+    touch ${prefix}_bins.bed.gz.csi
     echo "" | gzip >  ${prefix}_calls.bed.gz
     touch ${prefix}_calls.bed.gz.tbi
+    touch ${prefix}_calls.bed.gz.csi
     echo "" | gzip > ${prefix}_calls.vcf.gz
     touch ${prefix}_calls.vcf.gz.tbi
+    touch ${prefix}_calls.vcf.gz.csi
+    touch ${prefix}_bins.vcf.gz.tbi
+    touch ${prefix}_bins.vcf.gz.csi
     touch ${prefix}_plot.html
-    touch ${prefix}_qc.json
     echo "" | gzip >  ${prefix}_segments.bed.gz
     touch ${prefix}_segments.bed.gz.tbi
+    touch ${prefix}_segments.bed.gz.csi
     echo "" | gzip > ${prefix}_segments.vcf.gz
     touch ${prefix}_segments.vcf.gz.tbi
+    touch ${prefix}_segments.vcf.gz.csi
     """
 }

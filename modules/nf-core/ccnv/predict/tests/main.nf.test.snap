@@ -8,7 +8,10 @@
                             "id": "test"
                         },
                         "test_bins.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_bins.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_bins.bed.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_bins.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "bins_vcf": [
@@ -20,7 +23,10 @@
                             "id": "test"
                         },
                         "test_calls.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_calls.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_calls.bed.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_calls.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "calls_vcf": [
@@ -29,7 +35,10 @@
                             "id": "test"
                         },
                         "test_calls.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_calls.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_calls.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_calls.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "plot_html": [
@@ -54,7 +63,10 @@
                             "id": "test"
                         },
                         "test_segments.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_segments.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_segments.bed.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_segments.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "segments_vcf": [
@@ -63,7 +75,10 @@
                             "id": "test"
                         },
                         "test_segments.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_segments.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test_segments.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_segments.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "versions_ccnv": [
@@ -75,10 +90,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-20T16:35:39.947919",
+        "timestamp": "2026-11-23T09:14:51.555244",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.6"
+            "nextflow": "26.10.7"
         }
     },
     "synthetic - ccnv": {
@@ -161,6 +176,88 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.6"
+        }
+    },
+    "synthetic - bam": {
+        "content": [
+            {
+                "bins_bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_bins.bed.gz",
+                        "test_bins.bed.gz.tbi"
+                    ]
+                ],
+                "bins_vcf": [
+                    
+                ],
+                "calls_bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_calls.bed.gz:md5,52c2ea4393e8aa3ba8e31c44ed6b2095",
+                        "test_calls.bed.gz.tbi:md5,ba7bcfa58c213e684162cbe00f884123"
+                    ]
+                ],
+                "calls_vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_calls.vcf.gz:md5,6be28b2d4ac6ffe399ee86188dc0936c",
+                        "test_calls.vcf.gz.tbi:md5,f4ac1b73f3279823944a5c821a709e45"
+                    ]
+                ],
+                "plot_html": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_plot.html"
+                    ]
+                ],
+                "qc_json": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_qc.json"
+                    ]
+                ],
+                "segments_bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_segments.bed.gz",
+                        "test_segments.bed.gz.tbi"
+                    ]
+                ],
+                "segments_vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_segments.vcf.gz",
+                        "test_segments.vcf.gz.tbi"
+                    ]
+                ],
+                "versions_ccnv": [
+                    [
+                        "CCNV_PREDICT",
+                        "ccnv",
+                        "1.0.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-23T09:14:45.143844",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.7"
         }
     }
 }
