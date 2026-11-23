@@ -102,22 +102,19 @@ process CNVKIT_BATCH {
         ${args}
     """
     stub:
-    def tumor_exists = tumor ? true : false
     def reference_exists = reference ? true : false
-    // identify BED naming pattern
-    def bed_prefix = reference_exists ? reference.BaseName : targets ? targets.BaseName : ""
-    def bed_suffix = reference_exists ? "-tmp.bed" : ".bed"
-    // execute samtools only when cram files are input, cnvkit runs natively on cram but is prohibitively slow
-    def out_base_name = tumor_exists ? tumor.BaseName : normal.BaseName
+    def normals = [normal].flatten()
+    // germline mode analyses the normal as the sample; panel of normals mode has no sample
+    def sample = tumor ?: (panel_of_normals ? null : normal)
+    def coverage_samples = ([sample] + (reference_exists ? [] : normals)).findAll().collect { it.BaseName }.unique()
+    def bed_files = reference_exists
+        ? ["${reference.BaseName}.target-tmp.bed", "${reference.BaseName}.antitarget-tmp.bed"]
+        : targets
+            ? ["${targets.BaseName}.target.bed", "${targets.BaseName}.antitarget.bed"]
+            : ["${fasta.BaseName}.bed", "${fasta.BaseName}.target.bed", "${fasta.BaseName}.antitarget.bed"]
+    def cnn_files = coverage_samples.collectMany { name -> ["${name}.targetcoverage.cnn", "${name}.antitargetcoverage.cnn"] } + (reference_exists ? [] : ["reference.cnn"])
+    def cn_files = sample ? ["cnr", "cns", "call.cns", "bintest.cns"].collect { ext -> "${sample.BaseName}.${ext}" } : []
     """
-    touch ${bed_prefix}.antitarget${bed_suffix}
-    touch ${bed_prefix}.target${bed_suffix}
-    touch "reference.cnn"
-    touch ${out_base_name}.antitargetcoverage.cnn
-    touch ${out_base_name}.bintest.cns
-    touch ${out_base_name}.call.cns
-    touch ${out_base_name}.cnr
-    touch ${out_base_name}.cns
-    touch ${out_base_name}.targetcoverage.cnn
+    touch ${(bed_files + cnn_files + cn_files).join(' ')}
     """
 }
