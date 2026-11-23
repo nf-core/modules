@@ -73,10 +73,11 @@ nextflow_process {
         then {
             // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
             def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
-                { assert process.stderr.join(' ').contains("Full model: ~sample + exon + batch:exon + condition:exon") },
+                { assert command_err.contains("Full model: ~sample + exon + batch:exon + condition:exon") },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
                     rounded(process.out.results[0][1]),
@@ -118,10 +119,12 @@ nextflow_process {
         then {
             // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
             def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
-                { assert process.stderr.join(' ').contains("Blocking variable 'batch' has one level in this contrast") },
+                { assert command_err.contains("Blocking variable 'batch' has one level in this contrast") },
+                { assert command_err.contains("Full model: ~sample + exon + condition:exon") },
                 { assert path(process.out.gene_qvalues[0][1]).readLines().tail().count { l -> l.split('\t')[1] != 'NA' && (l.split('\t')[1] as double) < 0.05 } == 23 },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),

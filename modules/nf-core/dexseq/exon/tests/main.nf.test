@@ -140,9 +140,10 @@ nextflow_process {
             def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
             def stable = (0..<results[0].size()).findAll { i -> results[0][i] ==~ /groupID|featureID|countData\..+/ }
             def padj = results[0].findIndexOf { col -> col == 'padj' }
+            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
             assertAll(
                 { assert process.success },
-                { assert process.stderr.join(' ').contains("Full model: ~sample + exon + batch:exon + condition:exon") },
+                { assert command_err.contains("Full model: ~sample + exon + batch:exon + condition:exon") },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
                     results[0],
@@ -196,9 +197,11 @@ nextflow_process {
             def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
             def stable = (0..<results[0].size()).findAll { i -> results[0][i] ==~ /groupID|featureID|countData\..+/ }
             def padj = results[0].findIndexOf { col -> col == 'padj' }
+            def command_err = new File(new File(process.out.results[0][1]).parentFile, '.command.err').text.replaceAll(/\s+/, ' ')
             assertAll(
                 { assert process.success },
-                { assert process.stderr.join(' ').contains("Blocking variable 'batch' has one level in this contrast") },
+                { assert command_err.contains("Blocking variable 'batch' has one level in this contrast") },
+                { assert command_err.contains("Full model: ~sample + exon + condition:exon") },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
                     results[0],
