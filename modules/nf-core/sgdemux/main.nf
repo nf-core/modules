@@ -30,6 +30,8 @@ process SGDEMUX {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
+
     sgdemux \\
         --sample-metadata ${sample_sheet} \\
         --fastqs ${fastqs_dir} \\
@@ -48,12 +50,9 @@ process SGDEMUX {
 
     for sample in \$(cut -d, -f2 ${sample_sheet} | tail -n +2 ); do
         uppercase_sample=\$(echo \$sample | tr '[:lower:]' '[:upper:]')
-        echo | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R1_001.fastq.gz
-        echo | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R2_001.fastq.gz
+        echo "" | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R1_001.fastq.gz
+        echo "" | gzip > ${prefix}/\${sample}_\${uppercase_sample}_L001_R2_001.fastq.gz
     done
-
-    echo | gzip > ${prefix}/out_L001_R1_001.fastq.gz
-    echo | gzip > ${prefix}/out_L001_R2_001.fastq.gz
 
     touch ${prefix}/metrics.tsv
     touch ${prefix}/most_frequent_unmatched.tsv
