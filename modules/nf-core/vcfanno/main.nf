@@ -31,6 +31,7 @@ process VCFANNO {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def lua_cmd = lua ? "--lua ${lua}" : ""
     """
+    set -o pipefail
     vcfanno \\
         -p ${task.cpus} \\
         ${args} \\
@@ -38,8 +39,8 @@ process VCFANNO {
         ${toml} \\
         ${vcf} \\
         | bgzip ${args2} --threads ${task.cpus} \\
-        > ${prefix}.vcf.gz \\
-        && tabix ${args3} ${prefix}.vcf.gz
+        > ${prefix}.vcf.gz
+    tabix ${args3} ${prefix}.vcf.gz
 
     """
 
