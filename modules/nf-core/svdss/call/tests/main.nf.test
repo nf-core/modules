@@ -10,6 +10,7 @@ nextflow_process {
     tag "svdss/call"
     tag "svdss/index"
     tag "svdss/search"
+    tag "svdss/smooth"
 
     setup {
         run("SVDSS_INDEX") {
@@ -24,14 +25,27 @@ nextflow_process {
                 """
             }
         }
-        run("SVDSS_SEARCH") {
-            script "../../search/main.nf"
+        run("SVDSS_SMOOTH") {
+            script "../../smooth/main.nf"
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
                 ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("SVDSS_SEARCH") {
+            script "../../search/main.nf"
+            process {
+                """
+                input[0] = SVDSS_SMOOTH.out.bam
                 input[1] = SVDSS_INDEX.out.index
                 """
             }
@@ -43,14 +57,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SVDSS_SEARCH.out.sfs.map { meta, sfs ->
-                    [
-                        meta,
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
-                        sfs
-                    ]
-                }
+                input[0] = SVDSS_SMOOTH.out.bam
+                    .join(SVDSS_SMOOTH.out.bai)
+                    .join(SVDSS_SEARCH.out.sfs)
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
@@ -78,14 +87,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = SVDSS_SEARCH.out.sfs.map { meta, sfs ->
-                    [
-                        meta,
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
-                        sfs
-                    ]
-                }
+                input[0] = SVDSS_SMOOTH.out.bam
+                    .join(SVDSS_SMOOTH.out.bai)
+                    .join(SVDSS_SEARCH.out.sfs)
                 input[1] = [
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
