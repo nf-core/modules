@@ -42,6 +42,171 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - chrX - GBR vs YRI - blocking") {
+
+        when {
+            params {
+                module_args = '--blocking_variables batch'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,1',
+                    'ERR188428,GBR,2',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
+            def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
+                { assert process.stderr.join(' ').contains("Full model: ~sample + exon + batch:exon + condition:exon") },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
+                    rounded(process.out.results[0][1]),
+                    rounded(process.out.gene_qvalues[0][1])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - blocking with one level") {
+
+        when {
+            params {
+                module_args = '--blocking_variables batch'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,1',
+                    'ERR188428,GBR,1',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,1'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
+            def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
+                { assert process.stderr.join(' ').contains("Blocking variable 'batch' has one level in this contrast") },
+                { assert path(process.out.gene_qvalues[0][1]).readLines().tail().count { l -> l.split('\t')[1] != 'NA' && (l.split('\t')[1] as double) < 0.05 } == 23 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
+                    rounded(process.out.results[0][1]),
+                    rounded(process.out.gene_qvalues[0][1])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - blocking confounded") {
+
+        when {
+            params {
+                module_args = '--blocking_variables batch'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,A',
+                    'ERR188428,GBR,A',
+                    'ERR188454,YRI,B',
+                    'ERR204916,YRI,B'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stderr.join(' ').contains("Blocking variable 'batch' is confounded with 'condition'") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - blocking missing column") {
+
+        when {
+            params {
+                module_args = '--blocking_variables donor'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,1',
+                    'ERR188428,GBR,2',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stderr.join(' ').contains("Blocking variables missing from the sample sheet: donor") }
+            )
+        }
+
+    }
+
     test("homo_sapiens - chrX - GBR vs YRI - stub") {
 
         options "-stub"

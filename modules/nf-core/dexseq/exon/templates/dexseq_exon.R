@@ -54,6 +54,127 @@ keep_valid_columns <- function(x) {
     x[, keep, drop = FALSE]
 }
 
+#' Read the blocking variables of the contrast from the sample sheet
+#'
+#' A variable with a single level in the samples of the contrast has no effect to
+#' adjust for, so it is dropped with a warning.
+#'
+#' @param sample_sheet Sample sheet holding only the samples of the contrast
+#' @param blocking_variables Semicolon-separated sample sheet columns
+#' @param contrast_variable Sample sheet column holding the contrast levels
+#'
+#' @return Named list of factors, named with make.names()
+
+read_blocking <- function(sample_sheet, blocking_variables, contrast_variable) {
+    columns <- trimws(unlist(strsplit(blocking_variables, ';', fixed = TRUE)))
+    columns <- unique(columns[columns != ''])
+
+    missing_columns <- setdiff(columns, colnames(sample_sheet))
+    if (length(missing_columns) > 0) {
+        stop(paste("Blocking variables missing from the sample sheet:", paste(missing_columns, collapse = ", ")))
+    }
+
+    names_model <- make.names(columns)
+    clashes <- columns[columns == contrast_variable | names_model %in% c('sample', 'exon', 'condition')]
+    if (length(clashes) > 0) {
+        stop(paste0(
+            "Blocking variables cannot be the contrast variable or be named 'sample', 'exon' or 'condition': ",
+            paste(clashes, collapse = ", ")
+        ))
+    }
+    if (anyDuplicated(names_model) > 0) {
+        stop(paste("Blocking variables with the same name after make.names():", paste(columns, collapse = ", ")))
+    }
+
+    blocking <- list()
+
+    for (i in seq_along(columns)) {
+        values <- as.character(sample_sheet[[columns[i]]])
+
+        if (any(is.na(values) | values == '')) {
+            stop(paste0("Blocking variable '", columns[i], "' has missing values for samples in this contrast"))
+        }
+
+        values <- factor(values)
+
+        if (nlevels(values) < 2) {
+            warning(paste0("Blocking variable '", columns[i], "' has one level in this contrast and is left out of the model"))
+            next
+        }
+
+        blocking[[names_model[i]]] <- values
+    }
+
+    blocking
+}
+
+#' Stop if the blocking variables cannot be estimated next to the contrast
+#'
+#' @param blocking Named list of factors from read_blocking()
+#' @param condition Factor of the contrast levels
+#' @param contrast_variable Sample sheet column holding the contrast levels
+
+check_blocking <- function(blocking, condition, contrast_variable) {
+    if (length(blocking) == 0) {
+        return(invisible(NULL))
+    }
+
+    design_data <- as.data.frame(c(blocking, list(condition = condition)))
+    rank_of <- function(terms) qr(model.matrix(reformulate(terms), data = design_data))[['rank']]
+    ncol_of <- function(terms) ncol(model.matrix(reformulate(terms), data = design_data))
+
+    for (b in names(blocking)) {
+        if (rank_of(c(b, 'condition')) < ncol_of(c(b, 'condition'))) {
+            stop(paste0(
+                "Blocking variable '", b, "' is confounded with '", contrast_variable,
+                "' in this contrast, so it cannot be adjusted for"
+            ))
+        }
+    }
+
+    if (rank_of(names(blocking)) < ncol_of(names(blocking))) {
+        stop(paste(
+            "The blocking variables are confounded with each other in this contrast:",
+            paste(names(blocking), collapse = ", ")
+        ))
+    }
+
+    terms <- c(names(blocking), 'condition')
+    if (rank_of(terms) < ncol_of(terms)) {
+        stop(paste0(
+            "The blocking variables together are confounded with '", contrast_variable,
+            "' in this contrast: ", paste(names(blocking), collapse = ", ")
+        ))
+    }
+    if (rank_of(terms) >= nrow(design_data)) {
+        stop(paste(
+            "Too few samples in this contrast to adjust for the blocking variables:",
+            paste(names(blocking), collapse = ", ")
+        ))
+    }
+
+    invisible(NULL)
+}
+
+#' Build the full and reduced DEXSeq models
+#'
+#' The models already have a term per sample, so the blocking variables enter as
+#' interactions with exon in both models, as the contrast does in the full model.
+#'
+#' @param blocking Named list of factors from read_blocking()
+#'
+#' @return List with the full and the reduced formula
+
+dexseq_models <- function(blocking) {
+    blocking_terms <- sprintf('%s:exon', names(blocking))
+    reduced <- c('sample', 'exon', blocking_terms)
+
+    list(
+        full = reformulate(c(reduced, 'condition:exon')),
+        reduced = reformulate(reduced)
+    )
+}
+
 #' Plot the exon usage of the genes with the smallest p-values
 #'
 #' @param x DEXSeqResults object
@@ -98,6 +219,7 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    blocking_variables = '',
     sample_id_col = 'sample',
     count_suffix = '.txt',
     n_plot = 10,
@@ -176,6 +298,17 @@ sample_data <- data.frame(
     condition = factor(sample_sheet[[opt[['contrast_variable']]]], levels = levels)
 )
 
+blocking <- read_blocking(sample_sheet, opt[['blocking_variables']], opt[['contrast_variable']])
+check_blocking(blocking, sample_data[['condition']], opt[['contrast_variable']])
+
+for (b in names(blocking)) {
+    sample_data[[b]] <- blocking[[b]]
+}
+
+models <- dexseq_models(blocking)
+message('Full model: ', paste(deparse(models[['full']], width.cutoff = 500L), collapse = ' '))
+message('Reduced model: ', paste(deparse(models[['reduced']], width.cutoff = 500L), collapse = ' '))
+
 count_files <- file.path(opt[['count_dir']], paste0(sample_data[['sample']], opt[['count_suffix']]))
 missing_files <- count_files[! file.exists(count_files)]
 
@@ -192,13 +325,13 @@ if (length(missing_files) > 0) {
 dxd <- DEXSeqDataSetFromHTSeq(
     countfiles = count_files,
     sampleData = sample_data,
-    design = ~ sample + exon + condition:exon,
+    design = models[['full']],
     flattenedfile = opt[['annotation_file']]
 )
 
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd, BPPARAM = SerialParam())
-dxd <- testForDEU(dxd, BPPARAM = BPPARAM)
+dxd <- testForDEU(dxd, fullModel = models[['full']], reducedModel = models[['reduced']], BPPARAM = BPPARAM)
 dxd <- estimateExonFoldChanges(dxd, BPPARAM = BPPARAM)
 
 results <- DEXSeqResults(dxd)
