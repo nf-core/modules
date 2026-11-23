@@ -15,7 +15,7 @@ process SYNCON_FETCH {
 
     output:
     tuple val(meta), path("*.fa"), emit: decontaminated_fasta
-    // WARN: Incorrect version information not provided by tool on CLI. Please update this string when bumping container versions.
+    // WARN: Incorrect version information provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('syncon'), val("1.0"), topic: versions, emit: versions_syncon
 
     when:
@@ -28,8 +28,7 @@ process SYNCON_FETCH {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
-    # Grep exits 1 if no matches are found
-    grep KEEP ${decon_txt} > keep.decon.txt || test \$? = 1;
+    awk 'NR > 1 && \$7 == "KEEP" { print \$1 }' ${decon_txt} > keep.decon.txt
 
     if [ ! -s keep.decon.txt ]; then
         echo "No sequences to keep after decontamination. Creating empty fasta file."

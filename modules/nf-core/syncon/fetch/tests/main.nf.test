@@ -93,9 +93,6 @@ nextflow_process {
     test("metagenome - binning - empty keep") {
 
         when {
-            params {
-                syncon_decon_args = ""
-            }
             process {
                 """
                 input[0] = channel.of([
@@ -109,6 +106,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert file(process.out.decontaminated_fasta.get(0).get(1)).size() == 0 },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["decontaminated_fasta"])).match() }
             )
         }

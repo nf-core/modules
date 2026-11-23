@@ -39,7 +39,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.fa":
           type: file
-          description: Decontamination screen of assembly based on syncmer coverage profiles built from reads.1khash
+          description: Decontaminated FASTA file, with only sequences marked "KEEP" in the input decon.txt
           pattern: "*.fa"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
@@ -70,14 +70,14 @@ maintainers:
   - "@prototaxites"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/syncon:1.0--454827d120667dec
-      build_id: bd-454827d120667dec_1
-      scan_id: sc-edebc248ed4321cf_1
     linux/arm64:
       name: community.wave.seqera.io/library/syncon:1.0--51b39cd869c65bf4
       build_id: bd-51b39cd869c65bf4_1
       scan_id: sc-eb8d8af05f677d04_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/syncon:1.0--454827d120667dec
+      build_id: bd-454827d120667dec_1
+      scan_id: sc-edebc248ed4321cf_1
   singularity:
     linux/arm64:
       name: oras://community.wave.seqera.io/library/syncon:1.0--5b2e7dd13f83f62a
@@ -89,6 +89,6 @@ containers:
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/be/be85cb074d7868dc6fbfcdf0e6eabde839e61021665c8c2f856aa96dcbc3e568/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/syncon/decon/.conda-lock/linux_amd64-bd-454827d120667dec_1.txt
+      lock_file: modules/nf-core/syncon/fetch/.conda-lock/linux_amd64-bd-454827d120667dec_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/syncon/decon/.conda-lock/linux_arm64-bd-51b39cd869c65bf4_1.txt
+      lock_file: modules/nf-core/syncon/fetch/.conda-lock/linux_arm64-bd-51b39cd869c65bf4_1.txt
