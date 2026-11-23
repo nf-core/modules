@@ -1,0 +1,227 @@
+nextflow_process {
+
+    name "Test Process METAPROVIZ_PROCESSINGNORMALIZE"
+    script "../main.nf"
+    process "METAPROVIZ_PROCESSINGNORMALIZE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaproviz"
+    tag "metaproviz/processingnormalize"
+
+    test("processingnormalize - cellular se rds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.se[0][1]).exists() },
+                { assert path(process.out.plots[0][1]).exists() },
+                { assert path(process.out.log[0][1]).text.contains("39 missing value(s) (NA or 0) in 5 feature(s)") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--conditions_col Conditions</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("sample metadata (<code>colData</code> of <code>SE.RData</code>)") },
+                { assert path(process.out.report[0][1]).text.contains("39 missing values (NA or 0) in 5 features.") },
+                { assert path(process.out.report[0][1]).text.contains("<td>AICAR</td>") },
+                { assert path(process.out.report[0][1]).text.contains("It is saved as <code>test.missing_values.tsv</code>.") },
+                { assert path(process.out.removed_samples[0][1]).readLines() == ["Sample"] },
+                { assert path(process.out.missing_values[0][1]).readLines()[0] == "Feature\tNA_values\tZero_values" },
+                { assert path(process.out.missing_values[0][1]).readLines().size() == 6 },
+                { assert snapshot(
+                    removed_samples: process.out.removed_samples,
+                    missing_values: process.out.missing_values,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingnormalize - cellular csv matrices") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/data_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).text.contains("sample metadata (<code>sample_matrix.csv</code>)") },
+                { assert path(process.out.removed_samples[0][1]).readLines() == ["Sample"] },
+                { assert snapshot(
+                    removed_samples: process.out.removed_samples,
+                    missing_values: process.out.missing_values,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingnormalize - conditions column not found") {
+
+        when {
+            params {
+                module_args = "--conditions_col not_a_column"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("Conditions column 'not_a_column' not found in colData") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--conditions_col not_a_column</code> (default: Conditions)") },
+                { assert path(process.out.report[0][1]).text.contains("There is no such column in the sample metadata, and therefore all samples are treated as one group.") },
+                { assert snapshot(
+                    removed_samples: process.out.removed_samples,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingnormalize - samples without a condition") {
+
+        when {
+            params {
+                module_args = "--conditions_col Analytical_Replicates"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("10 sample(s) have no value in the Conditions column 'Analytical_Replicates'") },
+                { assert path(process.out.report[0][1]).text.contains("10 samples have no value in the Conditions column:") },
+                { assert path(process.out.report[0][1]).text.contains("These samples are treated as one condition called 'NA'.") },
+                { assert snapshot(
+                    removed_samples: process.out.removed_samples,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingnormalize - output format csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'csv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.se.isEmpty() },
+                { assert process.out.normalized_matrices[0][1].size() == 3 },
+                { assert path(process.out.normalized_matrices[0][1].find { it.toString().endsWith("data_matrix.csv") }).text.readLines().size() == 183 },
+                { assert path(process.out.normalized_matrices[0][1].find { it.toString().endsWith("sample_matrix.csv") }).text.readLines().size() == 59 },
+                { assert new File(process.out.normalized_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }.toString()).getText("ISO-8859-1").readLines().size() == 183 },
+                // the feature matrix is only counted (as ISO-8859-1) and not in the snapshot, since the test data has two invalid UTF-8 characters that different R setups write differently
+                { assert snapshot(
+                    normalized_matrices: process.out.normalized_matrices[0][1].findAll { !it.toString().endsWith("feature_matrix.csv") },
+                    removed_samples: process.out.removed_samples,
+                    missing_values: process.out.missing_values,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingnormalize - unknown output format fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'xlsx'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("output_format must be se, tsv or csv") }
+            )
+        }
+    }
+
+    test("processingnormalize - cellular se rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
