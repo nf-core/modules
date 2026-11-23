@@ -39,8 +39,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.report,
                     process.out.assignment_report,
-                    file(process.out.samfile[0][1]).name,
-                    bam(process.out.samfile[0][1], stringency: "silent").getReadsMD5(),
+                    process.out.samfile.collect { meta, sam -> [ meta, "${file(sam).name}:md5Reads,${bam(sam, stringency: "silent").getReadsMD5()}" ] },
                     file(process.out.unclassified[0][1]).name,
                     file(process.out.unmapped[0][1]).name,
                     process.out.versions_emu,
