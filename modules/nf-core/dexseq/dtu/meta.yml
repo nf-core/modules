@@ -23,8 +23,9 @@ input:
           e.g. `[ id:'treated_vs_control', blocking:'batch;donor' ]`.
           Categorical sample sheet columns to adjust for, separated by
           semicolons without spaces, are passed in through `ext.args` like
-          `--blocking_variables $meta.blocking`. They enter both models as
-          interactions with exon. The fold changes are not adjusted for them.
+          `meta.blocking ? "--blocking_variables ${meta.blocking}" : ''`. They
+          enter both models as interactions with exon, and must have one value
+          per sample. The fold changes are not adjusted for them.
     - contrast_variable:
         type: string
         description: |

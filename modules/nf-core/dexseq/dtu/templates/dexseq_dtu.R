@@ -61,13 +61,7 @@ keep_valid_columns <- function(x) {
 #'
 #' @return Named list of factors, named with make.names()
 
-read_blocking <- function(sample_sheet, blocking_variables) {
-    columns <- setdiff(strsplit(blocking_variables, ';', fixed = TRUE)[[1]], '')
-
-    missing_columns <- setdiff(columns, colnames(sample_sheet))
-    if (length(missing_columns) > 0) {
-        stop("Blocking variables missing from the sample sheet: ", toString(missing_columns))
-    }
+read_blocking <- function(sample_sheet, columns) {
     if (anyDuplicated(c('sample', 'exon', 'condition', make.names(columns))) > 0) {
         stop("Blocking variables cannot be named 'sample', 'exon' or 'condition', or share a name after make.names(): ", toString(columns))
     }
@@ -96,8 +90,13 @@ check_blocking <- function(blocking, condition, contrast_variable) {
     design_data[names(blocking)] <- blocking
     rank_of <- function(terms) qr(model.matrix(reformulate(c('1', terms)), design_data))[['rank']]
 
-    if (rank_of(c(names(blocking), 'condition')) == rank_of(names(blocking))) {
+    full_rank <- rank_of(c(names(blocking), 'condition'))
+
+    if (full_rank == rank_of(names(blocking))) {
         stop("Blocking variables ", toString(names(blocking)), " are confounded with '", contrast_variable, "' in this contrast")
+    }
+    if (full_rank >= nrow(design_data)) {
+        stop("Blocking variables ", toString(names(blocking)), " leave no residual degrees of freedom in this contrast")
     }
 }
 
@@ -159,13 +158,23 @@ if (! is.na(opt[['cores']]) && opt[['cores']] > 1) {
 
 sample_sheet <- read_delim_flexible(opt[['sample_file']])
 
-for (column in c(opt[['sample_id_col']], opt[['contrast_variable']])) {
+blocking_columns <- setdiff(strsplit(opt[['blocking_variables']], ';', fixed = TRUE)[[1]], '')
+
+for (column in c(opt[['sample_id_col']], opt[['contrast_variable']], blocking_columns)) {
     if (! column %in% colnames(sample_sheet)) {
         stop(paste0("Column '", column, "' is not in the sample sheet"))
     }
 }
 
 # The sample sheet can have several rows per sample, e.g. for sequencing runs
+
+varying <- blocking_columns[vapply(blocking_columns, function(column) {
+    anyDuplicated(unique(sample_sheet[c(opt[['sample_id_col']], column)])[[opt[['sample_id_col']]]]) > 0
+}, logical(1))]
+
+if (length(varying) > 0) {
+    stop("Blocking variables with different values in rows of the same sample: ", toString(varying))
+}
 
 sample_sheet <- sample_sheet[! duplicated(sample_sheet[[opt[['sample_id_col']]]]), , drop = FALSE]
 
@@ -189,7 +198,7 @@ sample_data <- data.frame(
     condition = factor(sample_sheet[[opt[['contrast_variable']]]], levels = levels)
 )
 
-blocking <- read_blocking(sample_sheet, opt[['blocking_variables']])
+blocking <- read_blocking(sample_sheet, blocking_columns)
 check_blocking(blocking, sample_data[['condition']], opt[['contrast_variable']])
 sample_data[names(blocking)] <- blocking
 

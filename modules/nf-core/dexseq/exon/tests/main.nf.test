@@ -238,7 +238,94 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variables missing from the sample sheet: donor") }
+                { assert (process.stdout + process.stderr).join('\n').contains("Column 'donor' is not in the sample sheet") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - blocking no residual degrees of freedom") {
+
+        when {
+            params {
+                module_args = '--n_plot 0'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI', blocking:'donor' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,donor',
+                    'ERR188383,GBR,A',
+                    'ERR188428,GBR,B',
+                    'ERR188454,YRI,A',
+                    'ERR204916,YRI,C'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                                file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
+                            }
+                        ]
+                    }
+                input[2] = [
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variables donor leave no residual degrees of freedom in this contrast") }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - blocking varies within a sample") {
+
+        when {
+            params {
+                module_args = '--n_plot 0'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI', blocking:'batch' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,1',
+                    'ERR188383,GBR,2',
+                    'ERR188428,GBR,2',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'study' ],
+                            samplesheet,
+                            ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                                file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
+                            }
+                        ]
+                    }
+                input[2] = [
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).join('\n').contains("Blocking variables with different values in rows of the same sample: batch") }
             )
         }
 
