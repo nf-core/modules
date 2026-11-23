@@ -15,8 +15,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.bam', checkIfExists: true),
-                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam.bai', checkIfExists: true),
                 ]
                 input[1] = [
                     [:],
@@ -44,13 +44,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.cram', checkIfExists: true),
-                    file('https://github.com/matthdsm/ccnv-testdata/raw/refs/heads/main/extract/sample_data/paired_end.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.cram.crai', checkIfExists: true),
                 ]
                 input[1] = [
                     [ id: 'reference' ],
-                    file('https://raw.githubusercontent.com/matthdsm/ccnv-testdata/refs/heads/main/extract/sample_data/synthetic_ref.fa', checkIfExists: true),
-                    file('https://raw.githubusercontent.com/matthdsm/ccnv-testdata/refs/heads/main/extract/sample_data/synthetic_ref.fa.fai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/synthetic_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/synthetic_ref.fa.fai', checkIfExists: true)
                 ]
                 """
             }
