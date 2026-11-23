@@ -28,7 +28,7 @@ process SYNCON_FETCH {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
-    awk 'NR > 1 && \$7 == "KEEP" { print \$1 }' ${decon_txt} > keep.decon.txt
+    awk 'NR > 1 && \$7 == "<KEEP>" { print \$1 }' ${decon_txt} > keep.decon.txt
 
     if [ ! -s keep.decon.txt ]; then
         echo "No sequences to keep after decontamination. Creating empty fasta file."
