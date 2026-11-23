@@ -4,8 +4,8 @@ process CCNV_EXTRACT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3fc624233aa2648bc513082af307dd7061f5fd25f4cd53fc749f8c62050496b/data'
-        : 'community.wave.seqera.io/library/ccnv:1.0.0--c01430de16e6765e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cd552e195217d37801cf86348dbe875fa66ae2014147e481fd6be6e80dbbcd90/data'
+        : 'community.wave.seqera.io/library/ccnv:1.1.0--726d8b142feb0e3d'}"
 
     input:
     tuple val(meta), path(reads), path(reads_index)
