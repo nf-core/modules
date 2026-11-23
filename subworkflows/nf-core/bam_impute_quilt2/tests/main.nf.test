@@ -90,8 +90,9 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true)
                 ])
                 input[2] = channel.of(
-                    [[id: "1000GP", chr: "chr22"], "chr22", "16570000", "16610000"]
-                )
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16570065, 16592216],
+                    [[chr: "chr22", id: "1000GP"], "chr22", 16592229, 16609999]
+                ) // chunks
                 input[3] = channel.of([
                     [id: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists: true)
