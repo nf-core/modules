@@ -7,8 +7,8 @@ process BISMARK_DEDUPLICATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59db1f1331e9bd80560221e6283dea4e9f14de41e2f028c13b71f0b9e42b8afb/data' :
-        'community.wave.seqera.io/library/bismark:3.3.0--f5ac4e7eb5a16146' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/106c5858e0e1021f5eb80619e7ec56f02e5fc857d2bdbb00570d30a5add9b5e9/data' :
+        'community.wave.seqera.io/library/bismark:3.4.0--4721154cfbeba5e3' }"
 
     input:
     tuple val(meta), path(bam)

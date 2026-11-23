@@ -10,12 +10,12 @@ environments:
     packages:
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-8_kmp_llvm.conda
-      - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.3.0-hb05d258_0.conda
+      - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.4.0-hb05d258_0.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bowtie2-2.5.5-h54003ff_2.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bwa-mem3-0.18.0-h9200417_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/bzip2-1.0.8-h4777abc_10.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/c-ares-1.34.9-h29ee22c_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.11.20-hbd8a1cb_0.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/hisat2-2.2.3-h2705416_1.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/htslib-1.25-h190289e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/icu-79.1-py313h6ffeb17_0.conda
@@ -65,9 +65,9 @@ packages:
   license_family: BSD
   size: 8050
   timestamp: 1788046407214
-- conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.3.0-hb05d258_0.conda
-  sha256: 63f80240d5f56ddaf5075cfb71e6fa5741ee9bbddb022b5f6674a51e53659913
-  md5: 5adb722263e0e8ee8f1c2f3d686f65bc
+- conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.4.0-hb05d258_0.conda
+  sha256: 0660caf77bb66591eb7aee5493d8db17ad0e3ac35a2fdcb59062cb5c111ae3fe
+  md5: 5488397761bdd89ae2768e7488055b31
   depends:
   - bowtie2 >=2.5.5
   - bwa-mem3 >=0.16.0
@@ -78,8 +78,8 @@ packages:
   - __glibc >=2.17
   license: GPL-3.0-only
   license_family: GPL3
-  size: 3049108
-  timestamp: 1795113704865
+  size: 3076965
+  timestamp: 1795303912286
 - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bowtie2-2.5.5-h54003ff_2.conda
   sha256: a3d7f4dd46d42031ada1afb99b7c467f266e5e5364b735251ec5dcd2e33d2a2c
   md5: 37d2350984a2341d569ac4f53675b376
@@ -132,14 +132,14 @@ packages:
   license_family: MIT
   size: 246798
   timestamp: 1792507030564
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
-  sha256: 95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3
-  md5: 3fd02989038a1e1cee627c14c2d73f29
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.11.20-hbd8a1cb_0.conda
+  sha256: 8c104262bf331b14478e36c6cedd63b558d4b7ff96f218742a91878353edeed1
+  md5: 05f63e1cbcb57e737619f989a2b8c8b3
   depends:
   - __unix
   license: ISC
-  size: 130057
-  timestamp: 1792772446739
+  size: 123617
+  timestamp: 1795239311426
 - conda: https://conda.anaconda.org/bioconda/linux-aarch64/hisat2-2.2.3-h2705416_1.conda
   sha256: 28feeeeca7fde2ee4fcedbf50abc09e34acb73a06429a96a6d12003e8393b8cd
   md5: 1e785743efe90b9bb71d710d0ac85aaf
@@ -425,6 +425,7 @@ packages:
   - intel-openmp <0.0a0
   - openmp 23.1.6|23.1.6.*
   license: Apache-2.0 WITH LLVM-exception
+  license_family: APACHE
   size: 5845689
   timestamp: 1795041848988
 - conda: https://conda.anaconda.org/bioconda/linux-aarch64/minimap2-2.31-he84ed4f_0.conda
