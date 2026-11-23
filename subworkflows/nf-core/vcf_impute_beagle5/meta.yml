@@ -72,7 +72,10 @@ input:
             pattern: "*.map"
 output:
   - vcf_index:
-      description: Channel with imputed and phased VCF files
+      description: |
+        Channel emitting imputed VCF/BCF files and their indexes.
+        Regions imputed in multiple chunks are ligated into a single file.
+        Regions imputed as a single chunk are emitted unchanged.
       structure:
         - meta:
             type: map
