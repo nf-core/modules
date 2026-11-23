@@ -16,7 +16,7 @@ process GRIDSS_EXTRACTOVERLAPPINGFRAGMENTS {
 
     output:
     tuple val(meta), path("${prefix}.bam"),       emit: bam
-    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
+    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | grep -v 'Picked up' | tail -n 1 | sed 's/-gridss//'"), topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when

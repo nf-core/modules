@@ -64,7 +64,7 @@ output:
       - gridss:
           type: string
           description: The tool name
-      - CallVariants --version 2>&1 | sed 's/-gridss//':
+      - CallVariants --version 2>&1 | grep -v 'Picked up' | tail -n 1 | sed 's/-gridss//':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -75,7 +75,7 @@ topics:
       - gridss:
           type: string
           description: The tool name
-      - CallVariants --version 2>&1 | sed 's/-gridss//':
+      - CallVariants --version 2>&1 | grep -v 'Picked up' | tail -n 1 | sed 's/-gridss//':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
