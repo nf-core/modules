@@ -50,7 +50,9 @@ input:
           e.g. [ id:'test', single_end:false ]
     - index:
         type: directory
-        description: Bismark genome index directory
+        description: |
+          Bismark genome index directory. Pass [] to use the folder holding the
+          fasta input as the genome.
         pattern: "BismarkIndex"
 output:
   coverage:

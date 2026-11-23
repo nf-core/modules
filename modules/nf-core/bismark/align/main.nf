@@ -15,6 +15,7 @@ process BISMARK_ALIGN {
     tuple val(meta2), path(fasta, stageAs: 'tmp/*')
     // This change mounts as directory containing the FASTA file to prevent nested symlinks
     tuple val(meta3), path(index)
+    tuple val(meta4), path(bwamem3_index, stageAs: 'bwamem3_index/*')
 
     output:
     tuple val(meta), path("*bam"), emit: bam
@@ -32,6 +33,31 @@ process BISMARK_ALIGN {
         args += " --prefix ${task.ext.prefix}"
     }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
+
+    // 5-Base and TAPS align to the unconverted genome, so the staged FASTA folder can stand in for the index
+    def bwamem3_mode = (args =~ /(^|\s)--(bwamem3|taps)(\s|$)/).find()
+    def five_base = bwamem3_mode || (args =~ /(^|\s)--(illumina_5base|five_base)(\s|$)/).find()
+    if (bwamem3_index && !bwamem3_mode) {
+        error("bismark/align: bwamem3_index needs --illumina_5base --bwamem3 or --taps in ext.args")
+    }
+    if (bwamem3_index && args.contains('--five_base_index')) {
+        error("bismark/align: give the bwa-mem3 index as the bwamem3_index input or as --five_base_index in ext.args, not both")
+    }
+    if (bwamem3_mode && !index && !bwamem3_index && !args.contains('--five_base_index')) {
+        error("bismark/align: --bwamem3/--taps needs bwamem3_index, --five_base_index in ext.args, or an index folder holding Bwamem3_Index/")
+    }
+    def genome = index ?: (five_base ? 'tmp' : '')
+    if (!genome) {
+        error("bismark/align: index is required")
+    }
+    def resolve_index = bwamem3_index ? """
+    PREFIX=\$(find -L bwamem3_index/ -name '*.meth.amb' | sed 's/\\.meth\\.amb\$//')
+    if [ "\$(printf '%s\\n' "\$PREFIX" | grep -c .)" -ne 1 ]; then
+        echo "bwamem3_index must hold exactly one bwa-mem3 --meth index (*.meth.amb), found: \${PREFIX:-none}" >&2
+        exit 1
+    fi
+    """ : ''
+    def index_arg = bwamem3_index ? '--five_base_index "$PREFIX"' : ''
 
     // Give each strand instance `-p = cpus / n_instances` threads (one index load per strand,
     // byte-identical) instead of forking N --multicore chunks that each re-load the index.
@@ -67,6 +93,12 @@ process BISMARK_ALIGN {
             }
         }
     }
+    else if (bwamem3_mode) {
+        // One bwa-mem3 instance; bismark requires -p >= 2
+        if (!(args =~ /(^|\s)(--multicore|--parallel|--threads|-p)(\s|=|\d|$)/).find()) {
+            args += " -p ${Math.max(2, (task.cpus ?: 2) as int)}"
+        }
+    }
     else if (!args.contains('--multicore') && !args.contains('--parallel') && !args.contains('-p ') && task.cpus) {
 
         def n_instances = 2
@@ -85,10 +117,12 @@ process BISMARK_ALIGN {
         }
     }
     """
+    ${resolve_index}
     bismark \\
         ${fastq} \\
-        --genome ${index} \\
+        --genome ${genome} \\
         --bam \\
+        ${index_arg} \\
         ${args}
     """
 
