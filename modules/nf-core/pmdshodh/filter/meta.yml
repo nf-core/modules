@@ -1,0 +1,111 @@
+name: "pmdshodh_filter"
+description: Keep ancient DNA reads by post-mortem damage (PMD) score, scoring SAM, BAM or CRAM directly
+keywords:
+  - aDNA
+  - ancient DNA
+  - damage
+  - pmd
+  - filter
+  - bam
+tools:
+  - "pmdshodh":
+      description: |
+        Per-read post-mortem damage (PMD) scoring and filtering of ancient DNA alignments,
+        compatible with PMDtools. Reads reference bases from MD tags or from an indexed FASTA,
+        so no samtools calmd step is needed.
+      homepage: "https://github.com/dpatel511/pmdshodh"
+      documentation: "https://github.com/dpatel511/pmdshodh/blob/main/README.md"
+      tool_dev_url: "https://github.com/dpatel511/pmdshodh"
+      doi: "10.1073/pnas.1318934111"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: |
+          SAM, BAM or CRAM file. Without a reference, every mapped read needs an MD tag.
+          CRAM needs the reference it was written against.
+        pattern: "*.{sam,bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+  - threshold:
+      type: float
+      description: Keep reads with a PMD score of at least this value (commonly 3)
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: |
+          Optional reference FASTA (pass `[]` to use MD tags). With it, reference bases come
+          from the FASTA and MD tags are checked against it. Required for CRAM input.
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index of the reference FASTA, from samtools faidx
+        pattern: "*.fai"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM with the kept reads, unchanged and in input order, plus an @PG line
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: |
+            Run summary: read counts, skipped reads by reason, score and length
+            histograms, and damage tables by position
+          pattern: "*.pmdshodh.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_pmdshodh:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdshodh:
+          type: string
+          description: The name of the tool
+      - pmdshodh --version | sed 's/^pmdshodh //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdshodh:
+          type: string
+          description: The name of the tool
+      - pmdshodh --version | sed 's/^pmdshodh //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dpatel511"
+maintainers:
+  - "@dpatel511"
