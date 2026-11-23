@@ -119,8 +119,14 @@ workflow VCF_IMPUTE_BEAGLE5 {
             def meta = groupKeyObj.getGroupTarget()
             [meta, vcf, index]
         }
+        .branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }
 
-    GLIMPSE2_LIGATE(ligate_input)
+    GLIMPSE2_LIGATE(ligate_input.more)
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE2_LIGATE.out.merged_variants)
 
@@ -129,6 +135,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
         BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
+    ).mix(
+        ligate_input.one
     )
 
     emit:

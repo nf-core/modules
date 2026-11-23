@@ -74,6 +74,12 @@ workflow BAM_IMPUTE_QUILT {
             def meta = groupKeyObj.getGroupTarget()
             [meta, vcf, index]
         }
+        /*.branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }*/
 
     GLIMPSE2_LIGATE(ligate_input)
 
