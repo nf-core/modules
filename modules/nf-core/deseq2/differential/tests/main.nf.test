@@ -738,6 +738,102 @@ nextflow_process {
             )
         }
     }
+    test("mouse - contrasts - matrix - norm only") {
+
+        config './contrasts_matrix_norm_only.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                // Only the matrices, size factors and model are produced
+                { assert process.out.results.size() == 0 },
+                { assert process.out.rdata.size() == 0 },
+                { assert process.out.dispersion_plot_png.size() == 0 },
+                // File names and checksums only: these match the full run above
+                { assert snapshot(
+                    process.out.size_factors.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.normalised_counts.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.rlog_counts.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.model.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("mouse - contrasts - matrix - no matrices") {
+
+        config './contrasts_matrix_no_matrices.config'
+
+        when {
+            process {
+                """
+                expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
+
+                ch_contrasts = Channel.fromPath(file(expression_test_data_dir + 'SRP254919.contrasts.csv', checkIfExists: true))
+                    .splitCsv ( header:true, sep:',' )
+                    .map{
+                        tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison)
+                    }
+                ch_matrix = [
+                    [id: 'test'],
+                    file(expression_test_data_dir + 'SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(expression_test_data_dir + 'SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ]
+                ch_spikes = [[],[]]
+                ch_lengths = [[],[]]
+
+                input[0] = ch_contrasts
+                input[1] = ch_matrix
+                input[2] = ch_spikes
+                input[3] = ch_lengths
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                // The differential outputs are produced, the matrices are not
+                { assert process.out.normalised_counts.size() == 0 },
+                { assert process.out.rlog_counts.size() == 0 },
+                { assert process.out.dispersion_plot_png.size() == 2 },
+                { assert process.out.rdata.size() == 2 },
+                // File names and checksums only: these match the full run above
+                { assert snapshot(
+                    process.out.results.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.size_factors.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.model.collect { meta, f -> "${file(f).name}:md5,${path(f).md5}" }.sort(),
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
     test("mouse - contrasts - matrix - stub") {
 
         config './contrasts_matrix.config'
