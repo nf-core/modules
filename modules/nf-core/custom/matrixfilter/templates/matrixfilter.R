@@ -206,28 +206,28 @@ if (is.null(opt\$minimum_samples_not_na)) {
     opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
 }
 
-# Define the tests
+# Apply the tests to all features at once and store the result in a boolean
+# matrix with one column per test. Working on a matrix rather than pulling
+# each row out of the data frame in turn keeps this to a fraction of a second
+# however many samples there are.
 
-tests <- list(
-    'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
+abundance_values <- as.matrix(abundance_matrix)
+samples_not_na <- rowSums(!is.na(abundance_values))
+
+# check if enough values in row are not NA
+boolean_matrix <- cbind(
+    na = samples_not_na == ncol(abundance_values) | samples_not_na >= opt\$minimum_samples_not_na
 )
 
 # Only apply abundance filter if a threshold was provided
 if (!is.null(opt\$minimum_abundance)) {
-    tests[["abundance"]] = function(x) sum(x >= opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
+    boolean_matrix <- cbind(
+        boolean_matrix,
+        abundance = rowSums(abundance_values >= opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
+    )
 }
 
-# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
-
-boolean_matrix <- do.call(
-    rbind,
-    lapply(seq_len(nrow(abundance_matrix)), function(i) {
-        vapply(tests, function(f) f(abundance_matrix[i, ]), logical(1))
-    })
-)
-
 rownames(boolean_matrix) <- rownames(abundance_matrix)
-colnames(boolean_matrix) <- names(tests)
 # Apply the 'most_variant_test' function to identify the most variant rows and add
 # the result to the boolean matrix
 

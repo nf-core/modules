@@ -46,19 +46,4 @@ This module is no longer maintained by the authors
     ls -l
 
     """
-
-    stub:
-    def deprecation_message = """
-WARNING: This module has been deprecated. Please use nf-core/modules/merqury/merqury
-
-Reason:
-This module no longer works in conda due to glibc incompatibilities with plotting libraries
-This module is no longer maintained by the authors
-"""
-    def prefix    = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
-    """
-    touch ${prefix}.hist
-
-    """
 }

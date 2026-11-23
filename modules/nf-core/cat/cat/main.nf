@@ -35,19 +35,6 @@ process CAT_CAT {
 
     def file_list = files_in.collect { file -> file.toString() }
     prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/find/concatenate
-
-    Reason:
-    This module passes all input files as shell arguments, which can exceed the UNIX ARG_MAX
-    limit when concatenating large numbers of files. The find/concatenate module resolves this
-    by staging files into a directory and enumerating them with `find`, and also enforces
-    consistent input compression (all gzipped or all uncompressed). Also enables faster, parallel
-    decompression with pigz.
-    """
-    assert false: deprecation_message
 }
 
 // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz

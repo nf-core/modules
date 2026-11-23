@@ -7,8 +7,8 @@ process BWAMEM3_MEM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6c7e01f3fbb256f4cb63f77d5630fe44f9c41557cd25abccf1da96fd693bbbf8/data'
-        : 'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:ac58207ad8b29268'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/422b80bc94f6f4edc5ffb4278dad266325ee5c42393d1f59b6723fbd1b3c7f93/data'
+        : 'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:f285d7570c11554b'}"
 
     input:
     tuple val(meta), path(reads)

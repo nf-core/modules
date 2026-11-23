@@ -30,10 +30,16 @@ nextflow_process {
                 { assert snapshot(
                         process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
+                        file(process.out.rejected_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report,
                         process.out.pre_normalisation_coverage_report,
-                        process.out.post_normalisation_coverage_report
+                        process.out.post_normalisation_coverage_report,
+                        process.out.qc_summary,
+                        process.out.qc_amplicons,
+                        process.out.qc_primer_pairs,
+                        process.out.qc_split_reads,
+                        process.out.qc_overlaps
                     ).match()
                 }
             )
@@ -61,10 +67,16 @@ nextflow_process {
                 { assert snapshot(
                         process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
+                        file(process.out.rejected_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report,
                         process.out.pre_normalisation_coverage_report,
-                        process.out.post_normalisation_coverage_report
+                        process.out.post_normalisation_coverage_report,
+                        process.out.qc_summary,
+                        process.out.qc_amplicons,
+                        process.out.qc_primer_pairs,
+                        process.out.qc_split_reads,
+                        process.out.qc_overlaps
                     ).match()
                 }
             )
@@ -92,10 +104,16 @@ nextflow_process {
                 { assert snapshot(
                         process.out.findAll { key, val -> key.startsWith('versions') },
                         file(process.out.primertrimmed_bam.get(0).get(1)).name,
+                        file(process.out.rejected_bam.get(0).get(1)).name,
                         process.out.align_trim_report,
                         process.out.amp_depth_report,
                         process.out.pre_normalisation_coverage_report,
-                        process.out.post_normalisation_coverage_report
+                        process.out.post_normalisation_coverage_report,
+                        process.out.qc_summary,
+                        process.out.qc_amplicons,
+                        process.out.qc_primer_pairs,
+                        process.out.qc_split_reads,
+                        process.out.qc_overlaps
                     ).match()
                 }
             )
