@@ -34,6 +34,6 @@ process FOLDMASON_CREATEDB {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}
+    touch ${prefix}{,_ca,_h,_ss}{,.dbtype,.index} ${prefix}.lookup ${prefix}.source
     """
 }
