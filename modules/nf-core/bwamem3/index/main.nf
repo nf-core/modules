@@ -9,8 +9,8 @@ process BWAMEM3_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa51b6d8b6924f5ccb76a0b6d5380899901edbe821bf1440a3517029f198593a/data'
-        : 'community.wave.seqera.io/library/bwa-mem3:0.17.0--dfd4e361b022ff06'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d69df8cc3749b0a3a3f687d76d9772beff6ef1aa75e2bcf47c451b6c86bbed88/data'
+        : 'community.wave.seqera.io/library/bwa-mem3:0.18.0--a6470642c1454740'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -28,33 +28,21 @@ process BWAMEM3_INDEX {
     // Without --max-memory, bwa-mem3 holds back max(2 GB, 5%) of the memory it detects, up to half,
     // which leaves too little of a small task's request (e.g. a --meth index of human chr21).
     def max_memory = task.memory && !args.contains('--max-memory') ? "--max-memory ${task.memory.toMega()}M" : ''
-    if (args.contains('--meth')) {
-        // `index --meth` rejects -p and writes next to its input, so index a symlink named after the prefix.
-        // `mem --meth` needs neither the symlink, the intermediate <prefix>.meth.fa nor the plain <prefix>.bwt.2bit.64
-        // (it still reads the plain .amb, .ann and .pac), so a methylation index can't be used for plain alignment.
-        """
-        mkdir bwamem3
-        ln -s ../${fasta} bwamem3/${prefix}
-        bwa-mem3 \\
-            index \\
-            $args \\
-            ${max_memory} \\
-            -t ${task.cpus} \\
-            bwamem3/${prefix}
-        rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa bwamem3/${prefix}.bwt.2bit.64
-        """
-    } else {
-        """
-        mkdir bwamem3
-        bwa-mem3 \\
-            index \\
-            $args \\
-            ${max_memory} \\
-            -t ${task.cpus} \\
-            -p bwamem3/${prefix} \\
-            $fasta
-        """
-    }
+    // A --meth build skips the plain FM-index, which `mem --meth` never reads, and writes its scratch FASTA to the work dir.
+    def meth_only = args.contains('--meth') && !args.contains('--meth-only') ? '--meth-only' : ''
+    def tmp_dir = args.contains('--meth') && !args.contains('--tmp-dir') ? '--tmp-dir .' : ''
+    """
+    mkdir bwamem3
+    bwa-mem3 \\
+        index \\
+        $args \\
+        ${meth_only} \\
+        ${tmp_dir} \\
+        ${max_memory} \\
+        -t ${task.cpus} \\
+        -p bwamem3/${prefix} \\
+        $fasta
+    """
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta}"

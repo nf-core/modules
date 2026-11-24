@@ -8,39 +8,21 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/createtaxdb"
-    tag "untar"
-
-    setup {
-        run("UNTAR", alias: "UNTAR_MMSEQS_DB") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-        run("UNTAR", alias: "UNTAR_TAXDUMP") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [id: 'taxdump'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
-
     test("sarscov2 - mmseqs db") {
+        def db
+        def taxdump
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz').resolve('mmseqs')
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
         when {
             process {
                 """
-                input[0] = UNTAR_MMSEQS_DB.out.untar
-                input[1] = UNTAR_TAXDUMP.out.untar
+                input[0] = [ [id:'test'], file('${db}') ]
+                input[1] = [ [id:'taxdump'], file('${taxdump}') ]
                 input[2] = [[], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/nucl2tax.map', checkIfExists: true)]
                 """
             }
@@ -75,14 +57,20 @@ nextflow_process {
     }
 
     test("sarscov2 - mmseqs db - stub") {
+        def db
+        setup {
+            db = new File("${launchDir}/mmseqs")
+            db.mkdirs()
+        }
+
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = UNTAR_MMSEQS_DB.out.untar
-                input[1] = UNTAR_TAXDUMP.out.untar
-                input[2] = [[], file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/nucl2tax.map', checkIfExists: true)]
+                input[0] = [ [id:'test'], file('${db}') ]
+                input[1] = [ [id:'taxdump'], [] ]
+                input[2] = [ [], [] ]
                 """
             }
         }

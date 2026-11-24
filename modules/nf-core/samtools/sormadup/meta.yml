@@ -11,90 +11,28 @@ keywords:
   - cram
   - multi-tool
 tools:
-  - samtools_cat:
+  - samtools:
       description: |
         SAMtools is a set of utilities for interacting with and post-processing
         short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
         These files are generated as output by short read aligners like BWA.
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
+      tool_dev_url: https://github.com/samtools/samtools
+      doi: 10.1093/gigascience/giab008
       publication:
-        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
-        year: 2009
-        title: "The Sequence Alignment/Map format and SAMtools"
-        source: "Bioinformatics"
+        author: "Danecek, P., Bonfield, J. K., Liddle, J., Marshall, J., Ohan, V., Pollard, M. O., Whitwham, A., Keane, T., McCarthy, S. A., Davies, R. M. & Li, H."
+        year: 2021
+        title: "Twelve years of SAMtools and BCFtools"
+        source: "GigaScience"
       licence:
         - "MIT"
-      args_id: "$args"
-      identifier: biotools:samtools
-  - samtools_collate:
-      description: |
-        SAMtools is a set of utilities for interacting with and post-processing
-        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-        These files are generated as output by short read aligners like BWA.
-      homepage: http://www.htslib.org/
-      documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
-      publication:
-        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
-        year: 2009
-        title: "The Sequence Alignment/Map format and SAMtools"
-        source: "Bioinformatics"
-      licence:
-        - "MIT"
-      args_id: "$args2"
-      identifier: biotools:samtools
-  - samtools_fixmate:
-      description: |
-        SAMtools is a set of utilities for interacting with and post-processing
-        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-        These files are generated as output by short read aligners like BWA.
-      homepage: http://www.htslib.org/
-      documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
-      publication:
-        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
-        year: 2009
-        title: "The Sequence Alignment/Map format and SAMtools"
-        source: "Bioinformatics"
-      licence:
-        - "MIT"
-      args_id: "$args3"
-      identifier: biotools:samtools
-  - samtools_sort:
-      description: |
-        SAMtools is a set of utilities for interacting with and post-processing
-        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-        These files are generated as output by short read aligners like BWA.
-      homepage: http://www.htslib.org/
-      documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
-      publication:
-        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
-        year: 2009
-        title: "The Sequence Alignment/Map format and SAMtools"
-        source: "Bioinformatics"
-      licence:
-        - "MIT"
-      args_id: "$args4"
-      identifier: biotools:samtools
-  - samtools_markdup:
-      description: |
-        SAMtools is a set of utilities for interacting with and post-processing
-        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
-        These files are generated as output by short read aligners like BWA.
-      homepage: http://www.htslib.org/
-      documentation: http://www.htslib.org/doc/samtools.html
-      doi: 10.1093/bioinformatics/btp352
-      publication:
-        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
-        year: 2009
-        title: "The Sequence Alignment/Map format and SAMtools"
-        source: "Bioinformatics"
-      licence:
-        - "MIT"
-      args_id: "$args5"
+      args_id:
+        - "$args" # samtools cat
+        - "$args2" # samtools collate
+        - "$args3" # samtools fixmate
+        - "$args4" # samtools sort
+        - "$args5" # samtools markdup
       identifier: biotools:samtools
 input:
   - - meta:
