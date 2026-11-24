@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process RIBOCODE_RIBOCODE"
     script "../main.nf"
     process "RIBOCODE_RIBOCODE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -10,8 +11,6 @@ nextflow_process {
     tag "ribocode/ribocode"
 
     test("test_ribocode_ribocode") {
-
-        config "./nextflow.config"
 
         def annotation
         setup {
@@ -53,8 +52,6 @@ nextflow_process {
     test("test_ribocode_ribocode - stub") {
 
         options "-stub"
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -86,8 +83,6 @@ nextflow_process {
     }
 
     test("test_ribocode_ribocode - invalid config failure") {
-
-        config "./nextflow.config"
 
         def annotation
         setup {

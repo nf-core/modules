@@ -14,7 +14,9 @@ nextflow_process {
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            // UNTAR named the directory after meta.id, and VueGen uses the directory name as the report title
+            def extracted = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            report_dir = java.nio.file.Files.move(extracted, extracted.resolveSibling('vuegen_test'))
         }
 
         when {
@@ -56,7 +58,9 @@ nextflow_process {
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            // UNTAR named the directory after meta.id, and VueGen uses the directory name as the report title
+            def extracted = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            report_dir = java.nio.file.Files.move(extracted, extracted.resolveSibling('vuegen_test'))
         }
 
         when {
@@ -94,7 +98,9 @@ nextflow_process {
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            report_dir = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            // UNTAR named the directory after meta.id, and VueGen uses the directory name as the report title
+            def extracted = extract(modules_testdata_base_path + 'delete_me/vuegen/Basic_example_vuegen.tar.gz').resolve('Basic_example_vuegen')
+            report_dir = java.nio.file.Files.move(extracted, extracted.resolveSibling('vuegen_test'))
         }
 
         when {
