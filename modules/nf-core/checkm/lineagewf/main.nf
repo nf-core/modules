@@ -7,8 +7,8 @@ process CHECKM_LINEAGEWF {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e77f70239b60110da040c4307b8048749ed1fc86262e07d27f1eb12a314d14f/data'
-        : 'community.wave.seqera.io/library/checkm-genome:1.2.5--8d1d1a2477a013ce'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75911411b834b3cbd473babea3721a6f8ca3d5c55783cc02cffadf583e8d6dd5/data'
+        : 'community.wave.seqera.io/library/checkm-genome:1.4.0--c2e5d2423bcf948a'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_bins/*")
@@ -17,7 +17,7 @@ process CHECKM_LINEAGEWF {
 
     output:
     tuple val(meta), path("${prefix}"), emit: checkm_output
-    tuple val(meta), path("${prefix}/lineage.ms"), emit: marker_file
+    tuple val(meta), path("${prefix}/lineage.ms.gz"), emit: marker_file
     tuple val(meta), path("${prefix}.tsv"), emit: checkm_tsv
     tuple val("${task.process}"), val('checkm'), eval("checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//'"), emit: versions_checkm, topic: versions
 
@@ -34,13 +34,12 @@ process CHECKM_LINEAGEWF {
     checkm \\
         lineage_wf \\
         -t ${task.cpus} \\
-        -f ${prefix}.tsv \\
-        --tab_table \\
-        --pplacer_threads ${task.cpus} \\
         -x ${fasta_ext} \\
         ${args} \\
         input_bins/ \\
         ${prefix}
+
+    cp ${prefix}/quality_report.tsv ${prefix}.tsv
     """
 
     stub:
@@ -49,6 +48,7 @@ process CHECKM_LINEAGEWF {
     mkdir -p checkm_dummy_db
     export CHECKM_DATA_PATH=\$PWD/checkm_dummy_db
     mkdir ${prefix}/
-    touch ${prefix}/lineage.ms ${prefix}.tsv
+    echo "" | gzip > ${prefix}/lineage.ms.gz
+    touch ${prefix}/quality_report.tsv ${prefix}.tsv
     """
 }

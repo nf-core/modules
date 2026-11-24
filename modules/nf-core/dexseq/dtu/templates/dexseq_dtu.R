@@ -54,6 +54,52 @@ keep_valid_columns <- function(x) {
     x[, keep, drop = FALSE]
 }
 
+#' Read the blocking variables of the contrast from the sample sheet
+#'
+#' A variable with one level in the samples of the contrast would break the model
+#' matrix, so it is left out with a warning.
+#'
+#' @return Named list of factors, named with make.names()
+
+read_blocking <- function(sample_sheet, columns) {
+    if (anyDuplicated(c('sample', 'exon', 'condition', make.names(columns))) > 0) {
+        stop("Blocking variables cannot be named 'sample', 'exon' or 'condition', or share a name after make.names(): ", toString(columns))
+    }
+
+    incomplete <- columns[vapply(sample_sheet[columns], function(x) any(is.na(x) | x == ''), logical(1))]
+    if (length(incomplete) > 0) {
+        stop("Blocking variables with missing values in this contrast: ", toString(incomplete))
+    }
+
+    blocking <- lapply(setNames(sample_sheet[columns], make.names(columns)), function(x) factor(as.character(x)))
+    single <- vapply(blocking, nlevels, integer(1)) < 2
+    for (column in columns[single]) {
+        warning("Blocking variable '", column, "' has one level in this contrast and is left out of the model")
+    }
+
+    blocking[! single]
+}
+
+#' Stop if the contrast cannot be told apart from the blocking variables
+#'
+#' DEXSeq does not check the rank of its models, so this fails with a clear message
+#' instead of a degrees of freedom error from the model fit.
+
+check_blocking <- function(blocking, condition, contrast_variable) {
+    design_data <- data.frame(condition = condition)
+    design_data[names(blocking)] <- blocking
+    rank_of <- function(terms) qr(model.matrix(reformulate(c('1', terms)), design_data))[['rank']]
+
+    full_rank <- rank_of(c(names(blocking), 'condition'))
+
+    if (full_rank == rank_of(names(blocking))) {
+        stop("Blocking variables ", toString(names(blocking)), " are confounded with '", contrast_variable, "' in this contrast")
+    }
+    if (full_rank >= nrow(design_data)) {
+        stop("Blocking variables ", toString(names(blocking)), " leave no residual degrees of freedom in this contrast")
+    }
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
@@ -67,6 +113,7 @@ opt <- list(
     contrast_variable = '$contrast_variable',
     reference_level = '$reference',
     target_level = '$target',
+    blocking_variables = '',
     sample_id_col = 'sample',
     feature_id_col = 'feature_id',
     gene_id_col = 'gene_id',
@@ -111,13 +158,23 @@ if (! is.na(opt[['cores']]) && opt[['cores']] > 1) {
 
 sample_sheet <- read_delim_flexible(opt[['sample_file']])
 
-for (column in c(opt[['sample_id_col']], opt[['contrast_variable']])) {
+blocking_columns <- setdiff(strsplit(opt[['blocking_variables']], ';', fixed = TRUE)[[1]], '')
+
+for (column in c(opt[['sample_id_col']], opt[['contrast_variable']], blocking_columns)) {
     if (! column %in% colnames(sample_sheet)) {
         stop(paste0("Column '", column, "' is not in the sample sheet"))
     }
 }
 
 # The sample sheet can have several rows per sample, e.g. for sequencing runs
+
+varying <- blocking_columns[vapply(blocking_columns, function(column) {
+    anyDuplicated(unique(sample_sheet[c(opt[['sample_id_col']], column)])[[opt[['sample_id_col']]]]) > 0
+}, logical(1))]
+
+if (length(varying) > 0) {
+    stop("Blocking variables with different values in rows of the same sample: ", toString(varying))
+}
 
 sample_sheet <- sample_sheet[! duplicated(sample_sheet[[opt[['sample_id_col']]]]), , drop = FALSE]
 
@@ -140,6 +197,17 @@ sample_data <- data.frame(
     sample = as.character(sample_sheet[[opt[['sample_id_col']]]]),
     condition = factor(sample_sheet[[opt[['contrast_variable']]]], levels = levels)
 )
+
+blocking <- read_blocking(sample_sheet, blocking_columns)
+check_blocking(blocking, sample_data[['condition']], opt[['contrast_variable']])
+sample_data[names(blocking)] <- blocking
+
+# The models have a term per sample, so blocking variables enter as interactions with exon
+
+reduced_terms <- c('sample', 'exon', sprintf('%s:exon', names(blocking)))
+full_model <- reformulate(c(reduced_terms, 'condition:exon'))
+reduced_model <- reformulate(reduced_terms)
+message("Full model: ", deparse1(full_model))
 
 count_table <- read_delim_flexible(opt[['count_file']])
 
@@ -169,14 +237,14 @@ rownames(counts) <- count_table[[opt[['feature_id_col']]]]
 dxd <- DEXSeqDataSet(
     countData = counts,
     sampleData = sample_data,
-    design = ~ sample + exon + condition:exon,
+    design = full_model,
     featureID = count_table[[opt[['feature_id_col']]]],
     groupID = count_table[[opt[['gene_id_col']]]]
 )
 
 dxd <- estimateSizeFactors(dxd)
 dxd <- estimateDispersions(dxd, BPPARAM = SerialParam())
-dxd <- testForDEU(dxd, BPPARAM = BPPARAM)
+dxd <- testForDEU(dxd, reducedModel = reduced_model, BPPARAM = BPPARAM)
 dxd <- estimateExonFoldChanges(dxd, BPPARAM = BPPARAM)
 
 results <- DEXSeqResults(dxd)
