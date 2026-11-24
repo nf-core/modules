@@ -71,10 +71,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.vcf.collect { meta, vcf -> [ meta, path(vcf).vcf.variantsMD5 ] },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
             )
         }
 
