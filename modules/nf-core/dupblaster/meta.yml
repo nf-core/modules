@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "dupblaster"
 description: Streaming duplicate marking for NGS alignments with dupblaster; for maximum throughput it can also run inline in the alignment pipe (aligner | dupblaster | sort) rather than as a standalone step
 keywords:
@@ -42,16 +41,60 @@ output:
           pattern: "*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
-  stats:
+  metrics:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.tsv":
+      - "*.duplicate-metrics.tsv":
           type: file
-          description: Duplicate-marking statistics (TSV)
-          pattern: "*.tsv"
+          description: Duplicate metrics, one row per library (TSV)
+          pattern: "*.duplicate-metrics.tsv"
+          ontologies: []
+  sequencing_units:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sequencing-units.tsv":
+          type: file
+          description: Duplicate metrics per flowcell and lane (TSV). Not written with `--sequencing-duplicate-detection off`.
+          pattern: "*.sequencing-units.tsv"
+          ontologies: []
+  sampled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplication-sampled.tsv":
+          type: file
+          description: Duplication rate sampled along the run (TSV)
+          pattern: "*.duplication-sampled.tsv"
+          ontologies: []
+  spectrum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.duplication-spectrum.tsv":
+          type: file
+          description: Histogram of how many molecules were seen how many times (TSV). Only with `--duplication-spectrum on`.
+          pattern: "*.duplication-spectrum.tsv"
+          ontologies: []
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.pdf":
+          type: file
+          description: Plots of the sampled duplication and the duplication spectrum (PDF)
+          pattern: "*.pdf"
           ontologies: []
   versions_dupblaster:
     - - "${task.process}":
@@ -78,3 +121,27 @@ authors:
   - "@nh13"
 maintainers:
   - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/dupblaster:0.3.1--31564d2e7161cbce
+      build_id: bd-31564d2e7161cbce_1
+      scan_id: sc-549e293d946e0ea8_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/dupblaster:0.3.1--5a0296e450a6dcb2
+      build_id: bd-5a0296e450a6dcb2_1
+      scan_id: sc-1fa3d7ac0cdbb767_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/dupblaster:0.3.1--16ccda363fbcfec5
+      build_id: bd-16ccda363fbcfec5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb8a15c87a7a367c89ebf2746f7f5b94cd181f7f8f1b62a47b961680bef26e78/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dupblaster:0.3.1--4e656a3d19416316
+      build_id: bd-4e656a3d19416316_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a7fd2e4aa8b960accf56ecd8c7b66c8e53430188f95a621c95eb19a8c04915e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dupblaster/.conda-lock/linux_amd64-bd-31564d2e7161cbce_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/dupblaster/.conda-lock/linux_arm64-bd-5a0296e450a6dcb2_1.txt

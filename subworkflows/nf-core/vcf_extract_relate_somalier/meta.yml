@@ -28,8 +28,8 @@ input:
         Structure: [ path(fasta_fai) ]
   - ch_somalier_sites:
       description: |
-        A VCF containing the common sites for Somalier
-        Structure: [ path(somalier_sites_vcf) ]
+        A VCF containing the common sites for Somalier (with INFO/AF), used by extract and relate
+        Structure: [ val(meta), path(somalier_sites_vcf) ]
   - ch_peds:
       description: |
         A channel containing an optional PED file for the corresponding families. This channel has to be given, but can be like `[meta, []]`.

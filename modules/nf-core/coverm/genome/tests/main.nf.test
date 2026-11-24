@@ -8,7 +8,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "coverm"
     tag "coverm/genome"
-    tag "untar"
 
     test("coverm_genome - fastq") {
 
@@ -98,18 +97,11 @@ nextflow_process {
 
     test("coverm_genome - directory") {
         config './nextflow.config'
+        def chromosomes
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            chromosomes = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz').resolve('chromosomes')
         }
         when {
             process {
@@ -121,7 +113,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true),
                     ]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [], file('${chromosomes}') ]
                 input[2] = false
                 input[3] = false
                 input[4] = 'dir'

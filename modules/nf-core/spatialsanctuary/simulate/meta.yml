@@ -1,0 +1,91 @@
+name: "spatialsanctuary_simulate"
+description: "Simulate biophysical reaction-diffusion concentration profiles and pharmacological sanctuary shell geometry in avascular tumor cords."
+keywords:
+  - oncology
+  - biophysics
+  - reaction-diffusion
+  - osimertinib
+  - sanctuary
+  - pharmacology
+tools:
+  - "spatial-sanctuary":
+      description: "Biophysical reaction-diffusion transport solver and evolutionary sanctuary dynamics in EGFR-mutant lung adenocarcinoma."
+      homepage: "https://github.com/Lukecele/spatial-oncology-master"
+      documentation: "https://github.com/Lukecele/spatial-oncology-master#readme"
+      tool_dev_url: "https://github.com/Lukecele/spatial-oncology-master"
+      doi: "10.5281/zenodo.23623653"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. `[ id:'sample1' ]`
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_sanctuary.json":
+          type: file
+          description: Simulated biophysical transport and sanctuary geometry profile in JSON format
+          pattern: "*_sanctuary.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_spatialsanctuary:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "spatial-sanctuary":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-sanctuary''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "spatial-sanctuary":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-sanctuary''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/spatial-sanctuary:2.2.2--db5736bd2f87711f
+      build_id: bd-db5736bd2f87711f_1
+      scan_id: sc-fd7ed06c4e887913_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/spatial-sanctuary:2.2.2--da11ed94efb15111
+      build_id: bd-da11ed94efb15111_1
+      scan_id: sc-6f209788a3217c7d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/spatial-sanctuary:2.2.2--2942a9876ef493d5
+      build_id: bd-2942a9876ef493d5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/7645fa74908c3db06a9b298d691008e2f733e0c306226fb706ded007a31ab909/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/spatial-sanctuary:2.2.2--7c96c72f21f887dd
+      build_id: bd-7c96c72f21f887dd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d3e7b96206df4ad45ef3374ae0c54d27077474fc78502cbfd0f8bca684f7504/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/spatialsanctuary/simulate/.conda-lock/linux_amd64-bd-da11ed94efb15111_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/spatialsanctuary/simulate/.conda-lock/linux_arm64-bd-db5736bd2f87711f_1.txt

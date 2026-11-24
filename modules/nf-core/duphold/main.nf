@@ -6,9 +6,9 @@ process DUPHOLD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1':
-        'quay.io/biocontainers/duphold:0.2.1--h516909a_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd09a716fdf652b4d6a88ef0cde873fd8ad199efc896981fe193039f7d8eb6d2/data'
+        : 'community.wave.seqera.io/library/duphold:0.2.1--e357044853fdceca'}"
 
     input:
     tuple val(meta), path(alignment_file), path(alignment_index), path(sv_variants), path(snp_variants), path(snp_variants_index)

@@ -102,3 +102,27 @@ authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/syri_pandas:84f5dfbb480b2430
+      build_id: bd-84f5dfbb480b2430_1
+      scan_id: sc-6a65602f06366440_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/syri_pandas:f22aaa7b23e8a35e
+      build_id: bd-f22aaa7b23e8a35e_1
+      scan_id: sc-0055e0a85002900e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/syri_pandas:9b19377c5ef0f52c
+      build_id: bd-9b19377c5ef0f52c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f39e620352dfc1b96ae6a288ea81072d2489906065e74ce1ed3538cd8c6e438/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/syri_pandas:63c4fa581669e53a
+      build_id: bd-63c4fa581669e53a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/444b93baa5cb545d52452da19ff2516424d2f14513ad9698b9933152aad06b39/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/syri/.conda-lock/linux_amd64-bd-84f5dfbb480b2430_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/syri/.conda-lock/linux_arm64-bd-f22aaa7b23e8a35e_1.txt

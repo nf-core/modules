@@ -104,3 +104,27 @@ authors:
   - "@emmcauley"
 maintainers:
   - "@emmcauley"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/chelae:0.2.1--bd172f0097d97ddd
+      build_id: bd-bd172f0097d97ddd_1
+      scan_id: sc-584734803c13082f_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/chelae:0.2.1--226b7d4244683014
+      build_id: bd-226b7d4244683014_1
+      scan_id: sc-2ae1ac7e50d01e03_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/chelae:0.2.1--2b500688b814ceb1
+      build_id: bd-2b500688b814ceb1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14288c3938f9bb9c8578d906e4833c399634a5ffd749d0dca8f6776ce476ffe9/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/chelae:0.2.1--79f823e159b566f3
+      build_id: bd-79f823e159b566f3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f9f53b14969037fd2ef16d0c23b86ce41ce891d450e21d1402ff5217a2a8e5b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/chelae/trim/.conda-lock/linux_amd64-bd-226b7d4244683014_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/chelae/trim/.conda-lock/linux_arm64-bd-bd172f0097d97ddd_1.txt

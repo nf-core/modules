@@ -7,29 +7,20 @@ nextflow_process {
         tag "modules_nfcore"
         tag "mtmalign"
         tag "mtmalign/align"
-        tag "untar"
-
-        setup {
-
-            run("UNTAR") {
-                script "../../../../../modules/nf-core/untar/main.nf"
-                    process {
-                        """
-                            archive = file("https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                            input[0] = Channel.of(tuple([id:'test'], archive))
-                        """
-                    }
-            }
-        }
 
         test("seatoxin - uncompressed") {
+
+            def structures
+            setup {
+                structures = extract('https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz').resolve('seatoxin-ref')
+            }
 
             when {
                 params {
                 }
                 process {
                     """
-                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[0] = [ [ id:'test' ], file('${structures}').listFiles().collect() ]
                         input[1] = false
                     """
                 }
@@ -52,12 +43,17 @@ nextflow_process {
 
         test("seatoxin - compressed") {
 
+            def structures
+            setup {
+                structures = extract('https://raw.githubusercontent.com/nf-core/test-datasets/multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz').resolve('seatoxin-ref')
+            }
+
             when {
                 params {
                 }
                 process {
                     """
-                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[0] = [ [ id:'test' ], file('${structures}').listFiles().collect() ]
                         input[1] = true
                     """
                 }
@@ -85,7 +81,7 @@ nextflow_process {
                 }
                 process {
                     """
-                        input[0] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], file(dir).listFiles().collect()]}
+                        input[0] = [ [ id:'test' ], [ file('dummy.pdb', checkIfExists: false) ] ]
                         input[1] = false
                     """
                 }

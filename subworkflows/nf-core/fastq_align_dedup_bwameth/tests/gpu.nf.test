@@ -21,38 +21,27 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows/fastq_align_dedup_bwameth"
     tag "subworkflows_nfcore"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../../modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [:],
-                    file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("Params: parabricks/fq2bammeth single-end | use_gpu") {
+        def bwameth_index
+        setup {
+            bwameth_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz').resolve('bwameth')
+        }
 
         when {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:true ],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = UNTAR.out.untar
+                input[2] = [ [:], file('${bwameth_index}') ]
                 input[3] = false // skip_deduplication
                 input[4] = true // use_gpu
                 """
@@ -75,6 +64,10 @@ nextflow_workflow {
     }
 
     test("Params: parabricks/fq2bammeth single-end | use_gpu | skip_deduplication") {
+        def bwameth_index
+        setup {
+            bwameth_index = extract('https://github.com/nf-core/test-datasets/raw/methylseq/reference/Bwameth_Index.tar.gz').resolve('bwameth')
+        }
 
         when {
             params {
@@ -84,16 +77,16 @@ nextflow_workflow {
 
             workflow {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                             [ id:'test', single_end:true ],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/SRR389222_sub1.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                             [:],
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[2] = UNTAR.out.untar
+                input[2] = [ [:], file('${bwameth_index}') ]
                 input[3] = true // skip_deduplication
                 input[4] = true // use_gpu
                 """

@@ -23,19 +23,10 @@ process TABIX_BGZIP {
 
     script:
     def deprecation_message = """
-    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
+    WARNING: This module has been deprecated. Please use nf-core/modules/htslib/bgziptabix instead.
 
     Reason:
-    This module is duplicative of TABIX/BGZIPTABIX and SAMTOOLS/BGZIP. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
-    """.stripIndent()
-    assert false: deprecation_message
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
-
-    Reason:
-    This module is duplicative of TABIX/BGZIPTABIX and SAMTOOLS/BGZIP. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
+    This module is duplicative of nf-core/modules/tabix/bgziptabix and nf-core/modules/samtools/bgzip. The new nf-core/modules/htslib/bgziptabix module provides equivalent functionality with a more predictable behavior and better interface.
     """.stripIndent()
     assert false: deprecation_message
 }

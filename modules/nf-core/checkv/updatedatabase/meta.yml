@@ -28,14 +28,12 @@ input:
           e.g. [ id:'sample', bin:'1' ]
     - fasta:
         type: file
-        description: fasta file containing additional sequences for the existing
-          checkv database
+        description: fasta file containing additional sequences for the existing checkv database
         pattern: "*.{fasta,fna,fa}"
         ontologies: []
   - db:
       type: directory
-      description: directory pointing to existing checkV database to avoid
-        redownloading the database
+      description: directory pointing to existing checkV database to avoid redownloading the database
 output:
   checkv_db:
     - - meta:
@@ -71,3 +69,17 @@ authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/checkv_diamond:49f136fbaa08f899
+      build_id: bd-49f136fbaa08f899_1
+      scan_id: sc-aa93c398adef3c7c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/checkv_diamond:393e06ce022e73de
+      build_id: bd-393e06ce022e73de_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2fb71a9ba838eae927761d0c123653534b4a83ef7a9b8fafe3c1de11b5ec71a4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/checkv/updatedatabase/.conda-lock/linux_amd64-bd-49f136fbaa08f899_1.txt

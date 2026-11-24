@@ -7,27 +7,18 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "metaphlan"
-    tag "untar"
     tag "metaphlan3/metaphlan3"
     tag "metaphlan3"
     tag "samtools/view"
     config "./nextflow.config"
 
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz', checkIfExists: true)
-            ]
-            """
-            }
-        }
-    }
-
     test("metaphlan3 single-end") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz')
+        }
 
         when {
             params {
@@ -40,7 +31,7 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
                 ]
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = file('${db}')
                 """
             }
         }
@@ -71,7 +62,7 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true)
                 ]
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = []
                 """
             }
         }
@@ -84,6 +75,12 @@ nextflow_process {
     }
 
     test("metaphlan3 paired end") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz')
+        }
 
         when {
             params {
@@ -97,7 +94,7 @@ nextflow_process {
                     [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists:true),
                       file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists:true)]
                 ]
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = file('${db}')
                 """
             }
         }
@@ -116,14 +113,18 @@ nextflow_process {
 
     test("metaphlan3 sam") {
 
+        def db
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz')
 
             run("SAMTOOLS_VIEW"){
                 script "../../../samtools/view/main.nf"
                 process {
                 """
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
                     []
@@ -135,7 +136,6 @@ nextflow_process {
                 """
                 }
             }
-
         }
 
         when {
@@ -146,7 +146,7 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_VIEW.out.sam
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = file('${db}')
                 """
             }
         }
@@ -168,28 +168,6 @@ nextflow_process {
     test("metaphlan3 sam stub") {
         options "-stub"
 
-        setup {
-
-            run("SAMTOOLS_VIEW"){
-                script "../../../samtools/view/main.nf"
-                process {
-                """
-
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam', checkIfExists:true),
-                    []
-                ])
-                input[1] = [[],[],[]]
-                input[2] = [[], []]
-                input[3] = [[], []]
-                input[4] = []
-                """
-                }
-            }
-
-        }
-
         when {
             params {
                  metaphlan_args = '--index mpa_v30_CHOCOPhlAn_201901 --add_viruses --bt2_ps very-sensitive-local'
@@ -197,8 +175,8 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = SAMTOOLS_VIEW.out.sam
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[0] = [ [ id:'test', single_end:false ], file('test.sam') ]
+                input[1] = []
                 """
             }
         }
@@ -211,6 +189,12 @@ nextflow_process {
     }
 
     test("metaphlan3 fasta") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/metaphlan_database.tar.gz')
+        }
 
         when {
             params {
@@ -223,7 +207,7 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{it[1]}
+                input[1] = file('${db}')
                 """
             }
         }

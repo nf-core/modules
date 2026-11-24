@@ -6,9 +6,9 @@ process BIGSCAPE_BIGSCAPE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acb20daff43670baa2f5599e97ef0d96f3eeeaaaeb31e7dfa7a23066c908b44a/data' :
-        'community.wave.seqera.io/library/bigscape:2.0.3--aed310da2cd1ca1d' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d0ff9770fe46787912573cedac2a2c1e39333e648a6f7060992d22851f88ae7/data'
+        : 'community.wave.seqera.io/library/bigscape_sqlalchemy:d11ab34d38b34cb6'}"
 
     input:
     tuple val(meta), path(gbk_dir)

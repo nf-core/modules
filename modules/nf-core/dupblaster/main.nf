@@ -7,15 +7,19 @@ process DUPBLASTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/ac756f5169c3a6e6e0ab5884bbdc49171a6d0f669066b7494df75185ad4b0716/data'
-        : 'community.wave.seqera.io/library/dupblaster:0.1.1--e033684cd2346e47'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a7fd2e4aa8b960accf56ecd8c7b66c8e53430188f95a621c95eb19a8c04915e/data'
+        : 'community.wave.seqera.io/library/dupblaster:0.3.1--31564d2e7161cbce'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
-    tuple val(meta), path("*.tsv"), emit: stats
+    tuple val(meta), path("*.duplicate-metrics.tsv"), emit: metrics
+    tuple val(meta), path("*.sequencing-units.tsv"), emit: sequencing_units, optional: true
+    tuple val(meta), path("*.duplication-sampled.tsv"), emit: sampled
+    tuple val(meta), path("*.duplication-spectrum.tsv"), emit: spectrum, optional: true
+    tuple val(meta), path("*.pdf"), emit: pdf
     tuple val("${task.process}"), val('dupblaster'), eval("dupblaster --version | sed 's/^dupblaster //'"), emit: versions_dupblaster, topic: versions
 
     when:
@@ -31,7 +35,7 @@ process DUPBLASTER {
     dupblaster \\
         --input ${bam} \\
         --output ${prefix}.bam \\
-        --stats ${prefix}.dupblaster.tsv \\
+        --metrics-prefix ${prefix} \\
         ${args}
     """
 
@@ -42,6 +46,9 @@ process DUPBLASTER {
     }
     """
     touch ${prefix}.bam
-    touch ${prefix}.dupblaster.tsv
+    touch ${prefix}.duplicate-metrics.tsv
+    touch ${prefix}.sequencing-units.tsv
+    touch ${prefix}.duplication-sampled.tsv
+    touch ${prefix}.duplication-sampled.pdf
     """
 }

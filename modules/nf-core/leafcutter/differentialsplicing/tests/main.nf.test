@@ -77,6 +77,7 @@ kd_rep2\\tKNOCKDOWN
 
                 input[0] = LEAFCUTTER_CLUSTERREGTOOLS.out.numers
                     .map { meta, counts -> [ meta, counts, groups_file ] }
+                input[1] = [ [:], [] ]
                 """
             }
         }
@@ -84,6 +85,99 @@ kd_rep2\\tKNOCKDOWN
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cluster_significance", "effect_sizes"])).match()}
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - differential splicing - exon file") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("REGTOOLS_JUNCTIONSEXTRACT") {
+                script "../../../regtools/junctionsextract/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of(
+                        [
+                            [ id:'ctrl_rep1', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'ctrl_rep2', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'kd_rep1', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ],
+                        [
+                            [ id:'kd_rep2', single_end:false ],
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.chr6.bam.bai", checkIfExists: true)
+                        ]
+                    )
+                    input[1] = ''
+                    """
+                }
+            }
+
+            run("LEAFCUTTER_CLUSTERREGTOOLS") {
+                script "../../../leafcutter/clusterregtools/main.nf"
+                process {
+                    """
+                    input[0] = REGTOOLS_JUNCTIONSEXTRACT.out.junc
+                        .map { meta, junc -> junc }
+                        .collect()
+                        .map { junc_files -> [ [ id:'test_ds' ], junc_files ] }
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--min_samples_per_group 2 --min_samples_per_intron 2'
+            }
+            process {
+                """
+                def groups_content = '''ctrl_rep1\\tCONTROL
+ctrl_rep2\\tCONTROL
+kd_rep1\\tKNOCKDOWN
+kd_rep2\\tKNOCKDOWN
+'''
+                def groups_file = file("\${workDir}/groups_file.txt")
+                groups_file.text = groups_content
+
+                // Exon ends meet the introns of clu_1; chr6 because leafcutter-ds fails on an all-numeric chr column
+                def exons_content = '''chr\tstart\tend\tstrand\tgene_name
+chr6\t29856400\t29856519\t+\tTEST_GENE
+chr6\t29911899\t29912000\t+\tTEST_GENE
+'''
+                def exons_file = file("\${workDir}/exons.txt")
+                exons_file.text = exons_content
+
+                input[0] = LEAFCUTTER_CLUSTERREGTOOLS.out.numers
+                    .map { meta, counts -> [ meta, counts, groups_file ] }
+                input[1] = [ [ id:'exons' ], exons_file ]
+                """
+            }
+        }
+
+        then {
+            def clusters = path(process.out.cluster_significance[0][1]).readLines()
+                .drop(1)
+                .collect { line -> line.split('\t') }
+                .collectEntries { fields -> [ fields[0], fields[-1] ] }
+            assertAll(
+                { assert process.success },
+                { assert clusters['chr6:clu_1_+'] == 'TEST_GENE' },
+                { assert clusters.findAll { cluster, genes -> cluster != 'chr6:clu_1_+' }.every { cluster, genes -> genes == 'NA' } },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cluster_significance", "effect_sizes"])).match()}
             )
         }
@@ -107,6 +201,7 @@ kd_rep2\\tKNOCKDOWN
                     file('test_perind.counts.gz'),
                     file('groups_file.txt')
                 ]
+                input[1] = [ [:], [] ]
                 """
             }
         }

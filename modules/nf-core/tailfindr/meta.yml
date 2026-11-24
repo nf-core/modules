@@ -1,14 +1,12 @@
 name: "tailfindr"
-description: Estimating poly(A)-tail lengths from basecalled fast5 files
-  produced by Nanopore sequencing of RNA and DNA
+description: Estimating poly(A)-tail lengths from basecalled fast5 files produced by Nanopore sequencing of RNA and DNA
 keywords:
   - polya tail
   - fast5
   - nanopore
 tools:
   - "tailfindr":
-      description: "An R package for estimating poly(A)-tail lengths in Oxford Nanopore
-        RNA and DNA reads."
+      description: "An R package for estimating poly(A)-tail lengths in Oxford Nanopore RNA and DNA reads."
       homepage: "https://github.com/adnaniazi/tailfindr"
       documentation: "https://github.com/adnaniazi/tailfindr/blob/master/README.md"
       tool_dev_url: "https://github.com/adnaniazi/tailfindr"
@@ -84,3 +82,17 @@ authors:
   - "@lucacozzuto"
 maintainers:
   - "@lucacozzuto"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ont-fast5-api_r-tailfindr:8aebb514f253bbe7
+      build_id: bd-8aebb514f253bbe7_1
+      scan_id: sc-51679f7c2c3841bf_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ont-fast5-api_r-tailfindr:cd279b70755e97e8
+      build_id: bd-cd279b70755e97e8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6881eb3b607b838a831db5b3ba45f07eac25f9e22c52ed98484460923afea25/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tailfindr/.conda-lock/linux_amd64-bd-8aebb514f253bbe7_1.txt

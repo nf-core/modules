@@ -16,6 +16,16 @@
             "type": "boolean",
             "description": "Whether the module is deprecated and should not be used in new pipelines"
         },
+        "deprecation_date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the module was deprecated (YYYY-MM-DD), used to plan its removal"
+        },
+        "deprecation_pr": {
+            "type": "string",
+            "pattern": "^https://github\\.com/nf-core/modules/pull/[0-9]+$",
+            "description": "Pull request that deprecated the module"
+        },
         "keywords": {
             "type": "array",
             "description": "Keywords for the module",

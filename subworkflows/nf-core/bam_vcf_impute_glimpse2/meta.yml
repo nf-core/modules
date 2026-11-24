@@ -68,13 +68,34 @@ output:
       type: string
       description: |
         Channel containing the chunking regions for each chromosome.
-        Structure: [ meta, region with buffer, region without buffer ]
+      structure:
+        - meta:
+            type: map
+            description: Metadata map with chromosome information
+        - regionin:
+            type: string
+            description: Region chunk with buffer
+        - regionout:
+            type: string
+            description: Region chunk without buffer
   - vcf_index:
-      type: file
       description: |
-        Output VCF/BCF file for the merged regions.
-        Index file of the output VCF/BCF file.
-        Structure: [ val(meta), variants, index ]
+        Channel emitting imputed VCF/BCF files and their indexes.
+        Regions imputed in multiple chunks are ligated into a single file.
+        Regions imputed as a single chunk are emitted unchanged.
+      structure:
+        - meta:
+            type: map
+            description: |
+              Metadata map combined with the posfile, chunks and map data map.
+        - vcf:
+            type: file
+            description: VCF imputed file
+            pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+            type: file
+            description: VCF index file
+            pattern: "*.{tbi,csi}"
 authors:
   - "@LouisLeNezet"
 maintainers:
