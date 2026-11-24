@@ -17,7 +17,7 @@ process GRIDSS_ASSEMBLE {
 
     output:
     tuple val(meta), path("*.gridss.working"), path("*.sv.assembly.bam"),  emit: assemble_dir
-    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | grep -v 'Picked up' | tail -n 1 | sed 's/-gridss//'")  , topic: versions, emit: versions_gridss
+    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed '/Picked up/d;s/-gridss//' | tail -n 1")  , topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when
