@@ -5,7 +5,9 @@ process DIANN_INSILICOLIBRARYGENERATION {
     tag "$fasta.Name"
     label 'process_medium'
 
-    container "docker.io/biocontainers/diann:v1.8.1_cv1"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://containers.biocontainers.pro/s3/SingImgsRepo/diann/v1.8.1_cv1/diann_v1.8.1_cv1.img' :
+        'docker.io/biocontainers/diann:v1.8.1_cv1' }"
 
     input:
     tuple val(meta), path(fasta)
