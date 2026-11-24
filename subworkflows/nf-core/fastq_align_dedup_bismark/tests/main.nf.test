@@ -18,6 +18,7 @@ nextflow_workflow {
     tag "samtools"
     tag "samtools/index"
     tag "samtools/sort"
+    tag "bwamem3/index"
 
     test("Params: bismark single-end | default") {
         def bismark_index
@@ -44,8 +45,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -102,8 +104,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -158,8 +161,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -214,8 +218,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -268,8 +273,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -325,8 +331,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -381,8 +388,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -437,8 +445,9 @@ nextflow_workflow {
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
                 input[2] = [ [:], file('${bismark_index}') ]
-                input[3] = params.skip_deduplication
-                input[4] = params.cytosine_report
+                input[3] = [ [:], [] ]
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
                 """
             }
         }
@@ -460,6 +469,68 @@ nextflow_workflow {
                     workflow.out.methylation_mbias,
                     workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.bismark_summary[0][1],
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
+                    ).match() }
+            )
+        }
+    }
+
+    test("Params: bismark illumina_5base bwamem3 paired-end | cytosine_report") {
+        setup {
+            run("BWAMEM3_INDEX") {
+                script "../../../../modules/nf-core/bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                                [ id:'sarscov2' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                bismark_args    = '--illumina_5base --bwamem3'
+                cytosine_report = true
+            }
+
+            workflow {
+                """
+                input[0] = channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = channel.of([
+                            [:],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = [ [:], [] ]
+                input[3] = BWAMEM3_INDEX.out.index
+                input[4] = params.skip_deduplication
+                input[5] = params.cytosine_report
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.bam_aligned.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
+                    workflow.out.coverage2cytosine_coverage,
+                    workflow.out.coverage2cytosine_report,
+                    workflow.out.coverage2cytosine_summary,
+                    workflow.out.methylation_bedgraph,
+                    workflow.out.methylation_coverage,
+                    workflow.out.methylation_mbias,
+                    workflow.out.bismark_report.collect { meta, report -> file(report).name },
                     workflow.out.multiqc.flatten().collect { path -> file(path).name },
                     ).match() }
             )

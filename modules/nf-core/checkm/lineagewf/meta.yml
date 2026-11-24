@@ -1,6 +1,5 @@
 name: checkm_lineagewf
-description: CheckM provides a set of tools for assessing the quality of genomes recovered
-  from isolates, single cells, or metagenomes.
+description: CheckM provides a set of tools for assessing the quality of genomes recovered from isolates, single cells, or metagenomes.
 keywords:
   - checkm
   - mag
@@ -15,8 +14,7 @@ keywords:
   - genome bins
 tools:
   - checkm:
-      description: Assess the quality of microbial genomes recovered from isolates,
-        single cells, and metagenomes.
+      description: Assess the quality of microbial genomes recovered from isolates, single cells, and metagenomes.
       homepage: https://ecogenomics.github.io/CheckM/
       documentation: https://github.com/Ecogenomics/CheckM/wiki
       tool_dev_url: https://github.com/Ecogenomics/CheckM
@@ -32,14 +30,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: One or a list of multiple FASTA files of each bin, with extension
-          defined with the fasta_ext value
+        description: One or a list of multiple FASTA files of each bin, with extension defined with the fasta_ext value
         pattern: "*.{$fasta_ext}"
         ontologies: []
   - fasta_ext:
       type: string
-      description: The file-type extension suffix of the input FASTA files (e.g., fasta,
-        fna, fa, fas)
+      description: The file-type extension suffix of the input FASTA files (e.g., fasta, fna, fa, fas)
   - db:
       type: directory
       description: Optional directory pointing to checkM database to prevent re-downloading
@@ -60,10 +56,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample', bin:'1' ]
-      - ${prefix}/lineage.ms:
+      - ${prefix}/lineage.ms.gz:
           type: file
           description: Lineage file
-          pattern: "*.ms"
+          pattern: "*.ms.gz"
           ontologies: []
   checkm_tsv:
     - - meta:
@@ -102,3 +98,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/checkm-genome:1.4.0--c2e5d2423bcf948a
+      build_id: bd-c2e5d2423bcf948a_1
+      scan_id: sc-a5de650cbc1b0e94_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/checkm-genome:1.4.0--0f3db0b9bbab7f6e
+      build_id: bd-0f3db0b9bbab7f6e_1
+      scan_id: sc-dd3da780e908446f_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/checkm-genome:1.4.0--d8d541388269fbba
+      build_id: bd-d8d541388269fbba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d70ef5742b0347bec938158effc1e93f63f27f4fd67ff4d2f4917a25fd2b3983/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/checkm-genome:1.4.0--e20cb79c0ed1d97f
+      build_id: bd-e20cb79c0ed1d97f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75911411b834b3cbd473babea3721a6f8ca3d5c55783cc02cffadf583e8d6dd5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/checkm/lineagewf/.conda-lock/linux_amd64-bd-c2e5d2423bcf948a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/checkm/lineagewf/.conda-lock/linux_arm64-bd-0f3db0b9bbab7f6e_1.txt

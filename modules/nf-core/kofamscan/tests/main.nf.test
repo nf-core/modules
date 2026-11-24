@@ -10,7 +10,7 @@ nextflow_process {
     tag "gunzip"
     tag "kofamscan"
 
-    test("test_kofamscan_txt") {
+    test("kofamscan - txt") {
         def profiles
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
@@ -40,15 +40,18 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.txt[0][1]).linesGzip
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.tsv.isEmpty() },
+                { assert hits[0].startsWith('# gene name') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.txt.collect { meta, f -> [ meta, file(f).name ] }, process.out.versions_kofamscan).match() }
             )
         }
     }
 
-    test("test_kofamscan_tsv") {
+    test("kofamscan - tsv") {
         def profiles
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
@@ -78,15 +81,61 @@ nextflow_process {
             }
         }
         then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
             assertAll(
                 { assert process.success },
-                { assert path(process.out.tsv.get(0).get(1)).exists() },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.txt.isEmpty() },
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
             )
         }
     }
 
-    test("test_kofamscan_txt - stub") {
+    test("kofamscan - tsv - gzipped fasta") {
+        def profiles
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            profiles = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/profiles.tar.gz').resolve('profiles')
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+
+                process {
+                    """
+                    input[0] = [[],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kofamscan/ko_list.gz',checkIfExists:true)]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--format detail-tsv'
+            }
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta.gz',checkIfExists: true)]
+                input[1] = file('${profiles}')
+                input[2] = GUNZIP.out.gunzip.map{it[1]}
+                """
+            }
+        }
+        then {
+            def hits = path(process.out.tsv[0][1]).linesGzip
+            def hitPairs = hits.findAll { l -> !l.startsWith('#') }.collect { l -> l.split('\t')[1..2].join(' ') }.sort().join('\n')
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt.isEmpty() },
+                { assert hits[0].startsWith('#\tgene name\tKO') },
+                { assert hits.any { l -> l.contains('ENSSASP00005000002.1') && l.contains('K24149') } },
+                { assert snapshot(process.out.tsv.collect { meta, f -> [ meta, file(f).name ] }, java.security.MessageDigest.getInstance('MD5').digest(hitPairs.bytes).encodeHex().toString(), process.out.versions_kofamscan).match() }
+            )
+        }
+    }
+
+    test("kofamscan - txt - stub") {
 
         options "-stub"
 
@@ -105,8 +154,33 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.txt },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert process.out.tsv.isEmpty() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("kofamscan - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--format detail-tsv'
+            }
+            process {
+                """
+                input[0] = [[id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta',checkIfExists: true)]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt.isEmpty() },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
