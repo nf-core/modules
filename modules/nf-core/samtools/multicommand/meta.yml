@@ -8,6 +8,10 @@ description: |
   is streamed to the next before being written to disk. The script can handle references being passed
   when you want CRAM inputs or outputs, as well as writing indexes and conversion to FASTA and FASTQ.
 
+  Note that at present, additional input files which can be used by some of the available subcommands,
+  such as region BED files or header files, are not supported as inputs. These could be added in
+  future if needed, but for now have been left out to keep the module simpler.
+
   By default, the threads for each tool are set to the total number of available cpus.
   However, it may be desirable to configure the number of threads used for each step,
   for example to give more threads to `samtools sort` than to `samtools view`. This can be achieved

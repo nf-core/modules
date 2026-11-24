@@ -8,6 +8,8 @@ process SAMTOOLS_MULTICOMMAND {
         : 'community.wave.seqera.io/library/htslib_samtools:1.25--704fb80d75745bd4'}"
 
     input:
+    // Note: presently the module does not support the input of additional reference files
+    // such as region bed files.
     tuple val(meta), path(input, arity: '1..*'), path(index, arity: '0..*')
     tuple val(meta2), path(fasta), path(fai)
     val chain
@@ -96,8 +98,12 @@ process SAMTOOLS_MULTICOMMAND {
     // Extension arguments for each command: args for the first, args2 ... argsN for the rest
     def all_args = (0..<n_commands).collect { idx -> task.ext[idx == 0 ? "args" : "args${idx + 1}"] ?: "" }
 
-    // Output format comes from --output-fmt in the final command's args, defaulting to BAM
-    def output_extension = (all_args[-1] =~ /(?i)(?:--output-fmt[ =]|-O\s*)(sam|bam|cram)/).with { m -> m.find() ? m.group(1).toLowerCase() : "bam" }
+    // Output format comes from --output-fmt or -O in the final command's args.
+    // For view, -C also selects CRAM.
+    def output_fmt = (all_args[-1] =~ /(?i)(?:--output-fmt[ =]|-O\s*)(sam|bam|cram)/).with { m -> m.find() ? m.group(1).toLowerCase() : null }
+    def view_cram = chain[-1] == 'view' && (all_args[-1] =~ /(?:^|\s)-C(?:\s|$)/).find()
+    def output_extension = output_fmt ?: (view_cram ? "cram" : "bam")
+
     def is_cram_input = fasta && input.any { f -> f.getExtension() == "cram" }
     def is_cram_output = fasta && output_extension == "cram"
 
