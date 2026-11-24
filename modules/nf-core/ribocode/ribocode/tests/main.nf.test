@@ -3,30 +3,21 @@ nextflow_process {
     name "Test Process RIBOCODE_RIBOCODE"
     script "../main.nf"
     process "RIBOCODE_RIBOCODE"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "ribocode"
     tag "ribocode/ribocode"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'annotation' ],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz", checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("test_ribocode_ribocode") {
 
-        config "./nextflow.config"
+        def annotation
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            annotation = extract(modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz').resolve('annotation')
+        }
 
         when {
             process {
@@ -35,7 +26,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'annotation' ], file('${annotation}') ]
                 input[2] = [
                     [ id:'config' ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/test_pre_config.txt", checkIfExists: true)
@@ -61,8 +52,6 @@ nextflow_process {
     test("test_ribocode_ribocode - stub") {
 
         options "-stub"
-        config "./nextflow.config"
-
         when {
             process {
                 """
@@ -95,7 +84,12 @@ nextflow_process {
 
     test("test_ribocode_ribocode - invalid config failure") {
 
-        config "./nextflow.config"
+        def annotation
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            annotation = extract(modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz').resolve('annotation')
+        }
 
         when {
             process {
@@ -108,7 +102,7 @@ nextflow_process {
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'annotation' ], file('${annotation}') ]
                 input[2] = [
                     [ id:'test_cfg' ],
                     invalid_cfg.toPath()

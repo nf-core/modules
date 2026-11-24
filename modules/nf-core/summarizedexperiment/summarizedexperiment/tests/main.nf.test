@@ -11,50 +11,42 @@ nextflow_process {
     tag "tximeta/tximport"
     tag "summarizedexperiment"
     tag "summarizedexperiment/summarizedexperiment"
-    tag "untar"
 
-    setup {
-
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                [ id:'test'], // meta map
-                file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz", checkIfExists: true)
-                ]
-                """
-            }
-        }
-        run("CUSTOM_TX2GENE") {
-            script "../../../custom/tx2gene/main.nf"
-            process {
-                """
-                input[0] = [
-                [ id:'test'], // meta map
-                file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
-                ]
-                input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
-                input[2] = 'kallisto'
-                input[3] = 'gene_id'
-                input[4] = 'gene_name'
-                """
-            }
-        }
-        run("TXIMETA_TXIMPORT") {
-            script "../../../tximeta/tximport/main.nf"
-            process {
-                """
-                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
-                input[1] = CUSTOM_TX2GENE.out.tx2gene
-                input[2] = 'kallisto'
-                """
-            }
-        }
-    }
     test("saccharomyces_cerevisiae - multi_matrix - rowdata - coldata - unify summarized experiment") {
 
         config "./unify.config"
+
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[2] = 'kallisto'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+            run("TXIMETA_TXIMPORT") {
+                script "../../../tximeta/tximport/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[1] = CUSTOM_TX2GENE.out.tx2gene
+                    input[2] = 'kallisto'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -91,6 +83,38 @@ nextflow_process {
 
         config "./multi_matrix.config"
 
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[2] = 'kallisto'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+            run("TXIMETA_TXIMPORT") {
+                script "../../../tximeta/tximport/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[1] = CUSTOM_TX2GENE.out.tx2gene
+                    input[2] = 'kallisto'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
@@ -120,12 +144,44 @@ nextflow_process {
 
         config "./multi_matrix.config"
 
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[2] = 'kallisto'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+            run("TXIMETA_TXIMPORT") {
+                script "../../../tximeta/tximport/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[1] = CUSTOM_TX2GENE.out.tx2gene
+                    input[2] = 'kallisto'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
-                input[2] = Channel.of([ [], [] ])
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
@@ -146,12 +202,44 @@ nextflow_process {
 
         config "./multi_matrix.config"
 
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[2] = 'kallisto'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+            run("TXIMETA_TXIMPORT") {
+                script "../../../tximeta/tximport/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[1] = CUSTOM_TX2GENE.out.tx2gene
+                    input[2] = 'kallisto'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
-                input[1] = Channel.of([ [], [] ])
-                input[2] = Channel.of([ [], [] ])
+                input[1] = channel.of([ [], [] ])
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
@@ -172,12 +260,44 @@ nextflow_process {
 
         config "./single_matrix.config"
 
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf", checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[2] = 'kallisto'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+            run("TXIMETA_TXIMPORT") {
+                script "../../../tximeta/tximport/main.nf"
+                process {
+                    """
+                    input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
+                    input[1] = CUSTOM_TX2GENE.out.tx2gene
+                    input[2] = 'kallisto'
+                    """
+                }
+            }
+        }
+
         when {
             process {
                 """
                 input[0] = TXIMETA_TXIMPORT.out.counts_gene
-                input[1] = Channel.of([ [], [] ])
-                input[2] = Channel.of([ [], [] ])
+                input[1] = channel.of([ [], [] ])
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
@@ -230,8 +350,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
-                input[1] = CUSTOM_TX2GENE.out.tx2gene
+                input[0] = [ [ id:'test' ], [] ]
+                input[1] = [ [ id:'test' ], [] ]
 		input[2] = [
                     [ id:'gene'], // meta map
                     file(params.modules_testdata_base_path + "genomics/eukaryotes/saccharomyces_cerevisiae/samplesheet.csv", checkIfExists: true)
@@ -257,9 +377,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
-                input[1] = CUSTOM_TX2GENE.out.tx2gene
-                input[2] = Channel.of([ [], [] ])
+                input[0] = [ [ id:'test' ], [] ]
+                input[1] = [ [ id:'test' ], [] ]
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
@@ -281,9 +401,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene.join(TXIMETA_TXIMPORT.out.tpm_gene).map{tuple(it[0], [it[1], it[2]])}
-                input[1] = Channel.of([ [], [] ])
-                input[2] = Channel.of([ [], [] ])
+                input[0] = [ [ id:'test' ], [] ]
+                input[1] = channel.of([ [], [] ])
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
@@ -305,9 +425,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TXIMETA_TXIMPORT.out.counts_gene
-                input[1] = Channel.of([ [], [] ])
-                input[2] = Channel.of([ [], [] ])
+                input[0] = [ [ id:'test' ], [] ]
+                input[1] = channel.of([ [], [] ])
+                input[2] = channel.of([ [], [] ])
                 """
             }
         }
