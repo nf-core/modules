@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dedup_bismark"
-description: Align BS-Seq reads to a reference genome using bismark, deduplicate and sort
+description: Align BS-Seq, Illumina 5-Base or TAPS reads to a reference genome using bismark, deduplicate and sort
 keywords:
   - bismark
   - 3-letter genome
@@ -37,6 +37,11 @@ input:
         Bismark genome index files
         Structure: [ val(meta), path(index) ]
       pattern: "BismarkIndex"
+  - ch_bwamem3_index:
+      description: |
+        bwa-mem3 `--meth` index for Bismark's 5-Base/TAPS mode (--illumina_5base --bwamem3 or --taps
+        in BISMARK_ALIGN's ext.args); pass [ [:], [] ] otherwise. With it, ch_bismark_index may be [ [:], [] ].
+        Structure: [ val(meta), path(index) ]
   - skip_deduplication:
       type: boolean
       description: |
