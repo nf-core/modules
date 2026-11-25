@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process TXIMETA_TXIMPORT"
     script "../main.nf"
     process "TXIMETA_TXIMPORT"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -271,7 +272,6 @@ nextflow_process {
 
     test("saccharomyces_cerevisiae - salmon - gtf - ignore_tx_version") {
 
-        config "./ignore_tx_version.config"
         def salmon
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
@@ -295,6 +295,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = '--ignore_tx_version true'
+            }
             process {
                 """
                 // Append a '.1' version to every transcript in the quantifications, leaving the tx2gene unversioned
@@ -444,7 +447,6 @@ nextflow_process {
 
     test("saccharomyces_cerevisiae - kallisto - gtf - custom_column_names") {
 
-        config "./nextflow.config"
         def kallisto
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
@@ -468,9 +470,11 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = '--gene_name_col gene_biotype'
+            }
             process {
                 """
-                // Uses ext.args = '--gene_name_col gene_biotype' from nextflow.config
                 input[0] = [ [ id:'test' ], file('${kallisto}').listFiles().collect() ]
                 input[1] = CUSTOM_TX2GENE.out.tx2gene
                 input[2] = 'kallisto'
