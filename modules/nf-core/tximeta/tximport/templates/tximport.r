@@ -120,6 +120,15 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col,
     )
     if (ignore_tx_version) {
         transcript_info[["tx"]] <- strip_tx_version(transcript_info[["tx"]])
+        transcript_info <- transcript_info[!duplicated(transcript_info[, c("tx", "gene_id")]), ]
+        conflicting <- unique(transcript_info[["tx"]][duplicated(transcript_info[["tx"]])])
+        if (length(conflicting) > 0) {
+            stop(
+                "Removing transcript versions maps ", length(conflicting), " transcript IDs in the tx2gene ",
+                "to more than one gene, so --ignore_tx_version cannot be used with it. ",
+                "First 5: ", paste(head(conflicting, 5), collapse = ", ")
+            )
+        }
     }
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
@@ -173,12 +182,6 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
         rowData = row_data)
 }
 
-################################################
-################################################
-## Main script starts here                    ##
-################################################
-################################################
-
 #' Strip version suffixes from transcript IDs
 #'
 #' Removes a trailing '.<digits>' version. Unlike tximport's `ignoreTxVersion`,
@@ -195,21 +198,23 @@ strip_tx_version <- function(ids) {
 
 #' Replace the transcript IDs of a tximport list
 #'
-#' @param txi_obj List returned by tximport() with txOut = TRUE.
+#' @param txi_obj List returned by tximport() with txOut = TRUE and no inferential replicates.
 #' @param ids Character vector of new transcript IDs, in the row order of txi_obj.
 #'
-#' @return txi_obj with the row names of every assay, including any inferential
-#' replicates, set to ids.
+#' @return txi_obj with the row names of its assays set to ids.
 
 set_tx_ids <- function(txi_obj, ids) {
     for (assay in c("abundance", "counts", "length")) {
         rownames(txi_obj[[assay]]) <- ids
     }
-    if (!is.null(txi_obj[["infReps"]])) {
-        txi_obj[["infReps"]] <- lapply(txi_obj[["infReps"]], function(x) { rownames(x) <- ids; x })
-    }
     txi_obj
 }
+
+################################################
+################################################
+## Main script starts here                    ##
+################################################
+################################################
 
 # Set defaults and classes
 opt <- list(
@@ -246,10 +251,9 @@ if ('$quant_type' == "rsem") {
     fns <- list.files('quants', pattern = pattern, recursive = TRUE, full.names = TRUE)
     names <- basename(dirname(fns))
     names(fns) <- names
-    dropInfReps <- '$quant_type' == "kallisto"
 
-    # Import transcript-level quantifications
-    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps)
+    # Import transcript-level quantifications. No output uses inferential replicates.
+    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = TRUE)
 }
 
 if (opt\$ignore_tx_version) {
@@ -268,21 +272,6 @@ if (opt\$ignore_tx_version) {
 # Read transcript and sample data
 transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col, opt\$ignore_tx_version)
 
-# Transcript-level scaled counts, computed as tximport does for countsFromAbundance.
-# dtuScaledTPM is lengthScaledTPM using the median transcript length of each gene,
-# with genes from the augmented tx2gene, which is in the row order of txi.
-txi.s <- txi
-txi.s\$counts <- makeCountsFromAbundance(txi\$counts, txi\$abundance, txi\$length, "scaledTPM")
-
-tx_gene <- transcript_info\$tx2gene[["gene_id"]]
-gene_median_length <- tapply(rowMeans(txi\$length), tx_gene, median)[tx_gene]
-txi.dtu <- txi
-txi.dtu\$counts <- makeCountsFromAbundance(
-    txi\$counts,
-    txi\$abundance,
-    matrix(gene_median_length, nrow(txi\$length), ncol(txi\$length), dimnames = dimnames(txi\$length)),
-    "lengthScaledTPM"
-)
 
 # Make coldata just to appease the summarizedexperiment
 coldata <- data.frame(files = fns, names = names, check.names = FALSE)
@@ -292,17 +281,27 @@ rownames(coldata) <- coldata[["names"]]
 se <- create_summarized_experiment(txi[["counts"]], txi[["abundance"]], txi[["length"]],
     DataFrame(coldata), transcript_info\$transcript)
 
-# Setting parameters for writing tables
-se.s <- create_summarized_experiment(txi.s[["counts"]], txi.s[["abundance"]], txi.s[["length"]],
-    DataFrame(coldata), transcript_info\$transcript)
-se.dtu <- create_summarized_experiment(txi.dtu[["counts"]], txi.dtu[["abundance"]], txi.dtu[["length"]],
-    DataFrame(coldata), transcript_info\$transcript)
+# Transcript-level scaled counts, as tximport computes them for countsFromAbundance.
+# dtuScaledTPM is lengthScaledTPM with the median transcript length of each gene, as in
+# tximport's internal medianLengthOverIsoform(); the augmented tx2gene is in txi row order.
+# makeCountsFromAbundance() only uses the row means of the length matrix, so one column suffices.
+assays(se)[["counts_scaled"]] <- makeCountsFromAbundance(txi\$counts, txi\$abundance, txi\$length, "scaledTPM")
 
+tx_gene <- transcript_info\$tx2gene[["gene_id"]]
+gene_median_length <- tapply(rowMeans(txi\$length), tx_gene, median)[tx_gene]
+assays(se)[["counts_dtu_scaled"]] <- makeCountsFromAbundance(
+    txi\$counts,
+    txi\$abundance,
+    matrix(gene_median_length, ncol = 1, dimnames = list(rownames(txi\$length), NULL)),
+    "lengthScaledTPM"
+)
+
+# Setting parameters for writing tables
 params <- list(
     list(obj = se, slot = "abundance", suffix = "transcript_tpm.tsv"),
     list(obj = se, slot = "counts", suffix = "transcript_counts.tsv"),
-    list(obj = se.s, slot = "counts", suffix = "transcript_counts_scaled.tsv"),
-    list(obj = se.dtu, slot = "counts", suffix = "transcript_counts_dtu_scaled.tsv"),
+    list(obj = se, slot = "counts_scaled", suffix = "transcript_counts_scaled.tsv"),
+    list(obj = se, slot = "counts_dtu_scaled", suffix = "transcript_counts_dtu_scaled.tsv"),
     list(obj = se, slot = "length", suffix = "transcript_lengths.tsv")
 )
 
