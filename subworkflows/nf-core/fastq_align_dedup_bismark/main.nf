@@ -14,7 +14,8 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     take:
     ch_reads // channel: [ val(meta), [ reads ] ]
     ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
-    ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
+    ch_bismark_index // channel: [ val(meta), [ bismark index ] ] or [ [:], [] ] for 5-Base/TAPS with ch_bwamem3_index
+    ch_bwamem3_index // channel: [ val(meta), [ bwa-mem3 --meth index ] ] or [ [:], [] ]
     skip_deduplication // boolean: whether to deduplicate alignments
     cytosine_report // boolean: whether the run coverage2cytosine
 
@@ -40,6 +41,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
         ch_reads,
         ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
         ch_bismark_index,
+        ch_bwamem3_index,
     )
     ch_alignments = BISMARK_ALIGN.out.bam
     ch_alignment_reports = BISMARK_ALIGN.out.report.map { meta, report -> [meta, report, []] }

@@ -1,6 +1,8 @@
 name: bismark_align
 description: Performs alignment of BS-Seq reads using bismark
 keywords:
+  - 5-base
+  - taps
   - bismark
   - 3-letter genome
   - map
@@ -56,8 +58,22 @@ input:
           e.g. [ id:'test', single_end:false ]
     - index:
         type: directory
-        description: Bismark genome index directory
+        description: |
+          Bismark genome index directory. Optional with --illumina_5base or --taps,
+          which align to the unconverted FASTA; pass [] to use the fasta input instead.
         pattern: "BismarkIndex"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - bwamem3_index:
+        type: file
+        description: |
+          bwa-mem3 `--meth` index (a directory or the index files), passed to Bismark as
+          --five_base_index. Requires --illumina_5base --bwamem3 or --taps in ext.args; pass [] otherwise.
+        pattern: "*.{amb,ann,pac,meth.amb,meth.ann,meth.pac,meth.bwt.2bit.64}"
+        ontologies: []
 output:
   bam:
     - - meta:

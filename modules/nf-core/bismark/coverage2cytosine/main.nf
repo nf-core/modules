@@ -27,10 +27,12 @@ process BISMARK_COVERAGE2CYTOSINE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Without a Bismark index, the folder holding the staged FASTA is the genome
+    def genome = index ?: 'tmp'
     """
     coverage2cytosine \\
         ${coverage_file} \\
-        --genome ${index} \\
+        --genome ${genome} \\
         --output ${prefix} \\
         --gzip \\
         ${args}
