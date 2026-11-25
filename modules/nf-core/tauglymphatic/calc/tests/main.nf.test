@@ -62,6 +62,9 @@ nextflow_process {
             def parsed = new groovy.json.JsonSlurper().parseText(path(process.out.report[0][1]).text)
             assertAll(
                 { assert parsed.inputs.dti_alps_index == 1.15 },
+                { assert parsed.inputs.apoe_e4_alleles == 2 },
+                { assert parsed.inputs.trem2_r47h == true },
+                { assert parsed.inputs.nlrp3_activated == true },
                 { assert parsed.biophysical_diagnostics.regime == "PATHOLOGIC EXPONENTIAL EXPANSION (STASIS NICHES)" },
                 { assert parsed.biophysical_diagnostics.net_stasis_ratio > 1.0 },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
