@@ -29,6 +29,9 @@ process XBQSR_APPLY {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
     """
+    export HOME=\$PWD
+    export XDG_DATA_HOME=\$PWD/.cache
+
     bqsr apply \\
         --bam-in ${input} \\
         --bam-out ${prefix}.bam \\

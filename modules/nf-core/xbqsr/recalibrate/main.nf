@@ -29,6 +29,9 @@ process XBQSR_RECALIBRATE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def sites  = known_sites instanceof List ? known_sites.join(',') : "${known_sites}"
     """
+    export HOME=\$PWD
+    export XDG_DATA_HOME=\$PWD/.cache
+
     bqsr recalibrate \\
         --bam-in ${input} \\
         --recal-out ${prefix}.table \\
