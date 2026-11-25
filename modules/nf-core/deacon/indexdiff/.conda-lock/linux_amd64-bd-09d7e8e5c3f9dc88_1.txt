@@ -10,8 +10,8 @@ environments:
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
-      - conda: https://conda.anaconda.org/bioconda/linux-64/deacon-0.15.0-hdd79491_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.11.20-hbd8a1cb_0.conda
+      - conda: https://conda.anaconda.org/bioconda/linux-64/deacon-0.20.0-h3edb6b3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libgcc-16.2.0-ha9f2e26_7.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libgomp-16.2.0-he0feb66_7.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-16.2.0-h934c35e_7.conda
@@ -33,24 +33,27 @@ packages:
   license_family: BSD
   size: 28948
   timestamp: 1770939786096
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
-  sha256: 95619b9c1184be7175392eeb0ee7eeb5ccf25d280951f4225f2d62e725790be3
-  md5: 3fd02989038a1e1cee627c14c2d73f29
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.11.20-hbd8a1cb_0.conda
+  sha256: 8c104262bf331b14478e36c6cedd63b558d4b7ff96f218742a91878353edeed1
+  md5: 05f63e1cbcb57e737619f989a2b8c8b3
   depends:
   - __unix
   license: ISC
-  size: 130057
-  timestamp: 1792772446739
-- conda: https://conda.anaconda.org/bioconda/linux-64/deacon-0.15.0-hdd79491_0.conda
-  sha256: 69c31e411d270f1311d31fceacb522ddea1b2ba3a04cbfa63e5669e919ecdee6
-  md5: 310026878e1a138dfade306cc1ab0950
+  size: 123617
+  timestamp: 1795239311426
+- conda: https://conda.anaconda.org/bioconda/linux-64/deacon-0.20.0-h3edb6b3_0.conda
+  sha256: a90694760adaf65a08776e4549062a808038ea62dfe277bfa694973e63e50e8c
+  md5: 37ed443082537f3fd6f8701c96006651
   depends:
-  - openssl >=3.5.5,<4.0a0
+  - __glibc >=2.17,<3.0.a0
+  - libgcc >=14
+  - openssl >=3.5.9,<4.0a0
   constrains:
   - __glibc >=2.17
   license: MIT
-  size: 2160787
-  timestamp: 1773419136781
+  license_family: MIT
+  size: 2723215
+  timestamp: 1795018335752
 - conda: https://conda.anaconda.org/conda-forge/linux-64/libgcc-16.2.0-ha9f2e26_7.conda
   sha256: e031634c3a928f9594eba868bc46ef5230d6571a364a0c63215b06c4563bfcea
   md5: 735629b400b70eeab21a2ba8f5b1c2ce
