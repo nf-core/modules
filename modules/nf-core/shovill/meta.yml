@@ -64,8 +64,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "{skesa,spades,megahit,velvet}.fasta":
           type: file
-          description: Raw assembly produced by the assembler (SKESA, SPAdes,
-            MEGAHIT, or Velvet)
+          description: Raw assembly produced by the assembler (SKESA, SPAdes, MEGAHIT, or Velvet)
           pattern: "{skesa,spades,megahit,velvet}.fasta"
           ontologies: []
   gfa:
@@ -74,10 +73,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - contigs.{fastg,gfa,LastGraph}:
+      - "{skesa,spades,megahit,velvet}.{fastg,gfa,LastGraph}":
           type: file
           description: Assembly graph produced by MEGAHIT, SPAdes, or Velvet
-          pattern: "contigs.{fastg,gfa,LastGraph}"
+          pattern: "{skesa,spades,megahit,velvet}.{fastg,gfa,LastGraph}"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
   versions_shovill:
@@ -106,3 +105,17 @@ authors:
   - "@eit-maxlcummins"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/shovill:1.4.2--eab27bd761ae82ef
+      build_id: bd-eab27bd761ae82ef_1
+      scan_id: sc-d5a858a465e56c7a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/shovill:1.4.2--682ca4fde86465c8
+      build_id: bd-682ca4fde86465c8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/97e3f0d4872793310b8bada5c56aa3905bb2ac430b91a7521a84a06b72e1768f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/shovill/.conda-lock/linux_amd64-bd-eab27bd761ae82ef_1.txt
