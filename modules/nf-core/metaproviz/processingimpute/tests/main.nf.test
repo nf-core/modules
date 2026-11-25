@@ -1,0 +1,266 @@
+nextflow_process {
+
+    name "Test Process METAPROVIZ_PROCESSINGIMPUTE"
+    script "../main.nf"
+    process "METAPROVIZ_PROCESSINGIMPUTE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaproviz"
+    tag "metaproviz/processingimpute"
+
+    test("processingimpute - cellular se rds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.se[0][1]).exists() },
+                { assert !path(process.out.log[0][1]).text.contains("ERROR") },
+                { assert path(process.out.log[0][1]).text.contains("Removed 1 feature(s) with no measured value in any sample of at least one condition") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--mvi_percentage 50</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("50% of the minimum (half-minimum), per condition") },
+                { assert path(process.out.report[0][1]).text.contains("181 features after 1 feature with no measured value in a condition was removed") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--filter_flagged TRUE</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--remove_unimputable TRUE</code> (default)") },
+                { assert path(process.out.report[0][1]).text.contains("There is no such column in the feature metadata, and therefore no feature was removed.") },
+                { assert path(process.out.report[0][1]).text.contains("1 unimputable feature was removed:") },
+                { assert path(process.out.report[0][1]).text.contains("Wei et al.") },
+                { assert path(process.out.removed_features[0][1]).readLines() == ["Feature\tReason", "SAICAR\tunimputable"] },
+                // the rows of a feature that cannot be imputed stay in the table, with NA
+                { assert path(process.out.imputed_values[0][1]).readLines().any { it.startsWith("SAICAR\t") && it.endsWith("\tNA") } },
+                { assert snapshot(
+                    imputed_values: process.out.imputed_values,
+                    removed_features: process.out.removed_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingimpute - cellular csv matrices") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/data_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).text.contains("feature metadata (<code>feature_matrix.csv</code>)") },
+                { assert path(process.out.report[0][1]).text.contains("sample metadata (<code>sample_matrix.csv</code>)") },
+                { assert path(process.out.report[0][1]).text.contains("181 features after 1 feature with no measured value in a condition was removed") },
+                { assert path(process.out.removed_features[0][1]).readLines() == ["Feature\tReason", "SAICAR\tunimputable"] },
+                { assert snapshot(
+                    imputed_values: process.out.imputed_values,
+                    removed_features: process.out.removed_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingimpute - remove_unimputable FALSE keeps a feature without a measured value as NA") {
+
+        when {
+            params {
+                module_args = "--remove_unimputable FALSE"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("1 feature(s) stay NA in at least one condition, because --remove_unimputable is FALSE: SAICAR") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--remove_unimputable FALSE</code> (default: TRUE)") },
+                { assert path(process.out.report[0][1]).text.contains("182 features") },
+                { assert path(process.out.report[0][1]).text.contains("1 feature stays NA in at least one condition:") },
+                { assert path(process.out.report[0][1]).text.contains("should be removed before continuing with <code>processingnormalize</code>") },
+                { assert path(process.out.removed_features[0][1]).readLines() == ["Feature\tReason"] },
+                { assert snapshot(
+                    imputed_values: process.out.imputed_values,
+                    removed_features: process.out.removed_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingimpute - mvi_percentage 25 and samples without a condition") {
+
+        when {
+            params {
+                module_args = "--mvi_percentage 25 --conditions_col Analytical_Replicates"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("10 sample(s) have no value in the Conditions column 'Analytical_Replicates'") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--mvi_percentage 25</code> (default: 50)") },
+                { assert path(process.out.report[0][1]).text.contains("25% of the minimum, per condition") },
+                { assert path(process.out.report[0][1]).text.contains("<code>--conditions_col Analytical_Replicates</code> (default: Conditions)") },
+                { assert path(process.out.report[0][1]).text.contains("10 samples have no value in the Conditions column:") },
+                { assert path(process.out.report[0][1]).text.contains("These samples are treated as one condition called 'NA'.") },
+                { assert snapshot(
+                    imputed_values: process.out.imputed_values,
+                    removed_features: process.out.removed_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingimpute - output format csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'csv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.se.isEmpty() },
+                { assert process.out.imputed_matrices[0][1].size() == 3 },
+                { assert path(process.out.imputed_matrices[0][1].find { it.toString().endsWith("data_matrix.csv") }).text.readLines().size() == 182 },
+                { assert path(process.out.imputed_matrices[0][1].find { it.toString().endsWith("sample_matrix.csv") }).text.readLines().size() == 59 },
+                { assert new File(process.out.imputed_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }.toString()).getText("ISO-8859-1").readLines().size() == 182 },
+                // the feature matrix is only counted (as ISO-8859-1) and not in the snapshot, since the test data has two invalid UTF-8 characters that different R setups write differently
+                { assert snapshot(
+                    imputed_matrices: process.out.imputed_matrices[0][1].findAll { !it.toString().endsWith("feature_matrix.csv") },
+                    imputed_values: process.out.imputed_values,
+                    removed_features: process.out.removed_features,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("processingimpute - conditions column not found fails") {
+
+        when {
+            params {
+                module_args = "--conditions_col not_a_column"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Conditions column 'not_a_column' not found in colData") }
+            )
+        }
+    }
+
+    test("processingimpute - unknown output format fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'xlsx'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("output_format must be se, tsv or csv") }
+            )
+        }
+    }
+
+    test("processingimpute - cellular se rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
