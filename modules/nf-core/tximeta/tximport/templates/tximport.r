@@ -86,6 +86,7 @@ write_se_table <- function(params, prefix) {
 #' @param tx_col Column name for transcript IDs.
 #' @param gene_id_col Column name for gene IDs.
 #' @param gene_name_col Column name for gene names.
+#' @param ignore_tx_version Whether to strip version suffixes from the transcript IDs.
 #'
 #' @return A list containing four elements:
 #' - `transcript`: A data frame with transcript IDs, gene IDs, and gene names, indexed by transcript IDs.
@@ -97,7 +98,7 @@ write_se_table <- function(params, prefix) {
 #'   column headers preserved.
 #' - `extra`: A character vector of transcript IDs found in quantification output but missing from the tx2gene file.
 
-read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col){
+read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col, ignore_tx_version = FALSE){
     info <- file.info(tinfo_path)
     if (info\$size == 0) {
         stop("tx2gene file is empty")
@@ -117,6 +118,9 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
         gene_name = raw_info[[resolved_gene_name_col]],
         check.names = FALSE
     )
+    if (ignore_tx_version) {
+        transcript_info[["tx"]] <- strip_tx_version(transcript_info[["tx"]])
+    }
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
     if (length(extra) > 0) {
@@ -175,11 +179,43 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
 ################################################
 ################################################
 
+#' Strip version suffixes from transcript IDs
+#'
+#' Removes everything from the first '.' onwards, matching the behaviour of
+#' tximport's `ignoreTxVersion`.
+#'
+#' @param ids Character vector of transcript IDs.
+#'
+#' @return Character vector of transcript IDs without version suffixes.
+
+strip_tx_version <- function(ids) {
+    sub("\\\\..*\$", "", ids)
+}
+
+#' Replace the transcript IDs of a tximport list
+#'
+#' @param txi_obj List returned by tximport() with txOut = TRUE.
+#' @param ids Character vector of new transcript IDs, in the row order of txi_obj.
+#'
+#' @return txi_obj with the row names of every assay, including any inferential
+#' replicates, set to ids.
+
+set_tx_ids <- function(txi_obj, ids) {
+    for (assay in c("abundance", "counts", "length")) {
+        rownames(txi_obj[[assay]]) <- ids
+    }
+    if (!is.null(txi_obj[["infReps"]])) {
+        txi_obj[["infReps"]] <- lapply(txi_obj[["infReps"]], function(x) { rownames(x) <- ids; x })
+    }
+    txi_obj
+}
+
 # Set defaults and classes
 opt <- list(
     tx_col = "transcript_id",
     gene_id_col = "gene_id",
-    gene_name_col = "gene_name"
+    gene_name_col = "gene_name",
+    ignore_tx_version = FALSE
 )
 
 # Apply parameter overrides from ext.args
@@ -188,6 +224,10 @@ for (ao in names(args_opt)) {
     if (ao %in% names(opt)) {
         opt[[ao]] <- args_opt[[ao]]
     }
+}
+opt\$ignore_tx_version <- as.logical(opt\$ignore_tx_version)
+if (is.na(opt\$ignore_tx_version)) {
+    stop("--ignore_tx_version must be true or false")
 }
 
 # Define pattern for file names based on quantification type
@@ -198,7 +238,10 @@ if ('$quant_type' == "rsem") {
     names(fns) <- names
 
     # Import transcript-level quantifications from RSEM isoform results
-    txi <- tximport(fns, type = 'rsem', txIn = TRUE, txOut = TRUE)
+    import_quants <- function(countsFromAbundance = "no", tx2gene = NULL) {
+        tximport(fns, type = 'rsem', txIn = TRUE, txOut = TRUE,
+            countsFromAbundance = countsFromAbundance, tx2gene = tx2gene)
+    }
 } else {
     # Salmon/Kallisto: files are in sample subdirectories
     pattern <- ifelse('$quant_type' == "kallisto", "abundance.tsv", "quant.sf")
@@ -208,11 +251,46 @@ if ('$quant_type' == "rsem") {
     dropInfReps <- '$quant_type' == "kallisto"
 
     # Import transcript-level quantifications
-    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps)
+    import_quants <- function(countsFromAbundance = "no", tx2gene = NULL) {
+        tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps,
+            countsFromAbundance = countsFromAbundance, tx2gene = tx2gene)
+    }
+}
+
+txi <- import_quants()
+raw_tx_ids <- rownames(txi[["counts"]])
+
+if (opt\$ignore_tx_version) {
+    tx_ids <- strip_tx_version(raw_tx_ids)
+    duplicated_ids <- unique(tx_ids[duplicated(tx_ids)])
+    if (length(duplicated_ids) > 0) {
+        stop(
+            "Removing transcript versions makes ", length(duplicated_ids), " transcript IDs ",
+            "ambiguous, so --ignore_tx_version cannot be used with these quantifications. ",
+            "First 5: ", paste(head(duplicated_ids, 5), collapse = ", ")
+        )
+    }
+    txi <- set_tx_ids(txi, tx_ids)
 }
 
 # Read transcript and sample data
-transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col)
+transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col, opt\$ignore_tx_version)
+
+# Re-import with transcript-level count scaling. dtuScaledTPM needs a gene for
+# every quantified transcript, which the augmented tx2gene provides, keyed here
+# by the IDs exactly as they appear in the quantification files.
+import_scaled <- function(countsFromAbundance, tx2gene = NULL) {
+    scaled <- import_quants(countsFromAbundance, tx2gene)
+    if (!identical(rownames(scaled[["counts"]]), raw_tx_ids)) {
+        stop("Transcript order differs between tximport runs")
+    }
+    set_tx_ids(scaled, rownames(txi[["counts"]]))
+}
+txi.s <- import_scaled("scaledTPM")
+txi.dtu <- import_scaled(
+    "dtuScaledTPM",
+    data.frame(tx = raw_tx_ids, gene_id = transcript_info\$tx2gene[["gene_id"]])
+)
 
 # Make coldata just to appease the summarizedexperiment
 coldata <- data.frame(files = fns, names = names, check.names = FALSE)
@@ -223,9 +301,16 @@ se <- create_summarized_experiment(txi[["counts"]], txi[["abundance"]], txi[["le
     DataFrame(coldata), transcript_info\$transcript)
 
 # Setting parameters for writing tables
+se.s <- create_summarized_experiment(txi.s[["counts"]], txi.s[["abundance"]], txi.s[["length"]],
+    DataFrame(coldata), transcript_info\$transcript)
+se.dtu <- create_summarized_experiment(txi.dtu[["counts"]], txi.dtu[["abundance"]], txi.dtu[["length"]],
+    DataFrame(coldata), transcript_info\$transcript)
+
 params <- list(
     list(obj = se, slot = "abundance", suffix = "transcript_tpm.tsv"),
     list(obj = se, slot = "counts", suffix = "transcript_counts.tsv"),
+    list(obj = se.s, slot = "counts", suffix = "transcript_counts_scaled.tsv"),
+    list(obj = se.dtu, slot = "counts", suffix = "transcript_counts_dtu_scaled.tsv"),
     list(obj = se, slot = "length", suffix = "transcript_lengths.tsv")
 )
 

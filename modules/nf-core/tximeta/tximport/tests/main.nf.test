@@ -52,6 +52,8 @@ nextflow_process {
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
                     process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
                     process.out.lengths_gene,
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
@@ -104,6 +106,8 @@ nextflow_process {
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
                     process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
                     process.out.lengths_gene,
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
@@ -180,6 +184,8 @@ nextflow_process {
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
                     process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
                     process.out.lengths_gene,
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
@@ -263,6 +269,79 @@ nextflow_process {
         }
     }
 
+    test("saccharomyces_cerevisiae - salmon - gtf - ignore_tx_version") {
+
+        config "./ignore_tx_version.config"
+        def salmon
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            salmon = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
+                    ])
+                    input[1] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
+                    input[2] = 'salmon'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                // Append a '.1' version to every transcript in the quantifications, leaving the tx2gene unversioned
+                input[0] = [ [ id:'test' ], file('${salmon}').listFiles().collect { sample ->
+                    def versioned = file("\${workDir}/versioned_quants/\${sample.name}")
+                    versioned.mkdirs()
+                    def lines = sample.resolve('quant.sf').readLines()
+                    def renamed = lines.drop(1).collect { line ->
+                        def fields = line.split('\\t', 2)
+                        fields[0] + '.1\\t' + fields[1]
+                    }
+                    versioned.resolve('quant.sf').text = ([lines[0]] + renamed).join('\\n') + '\\n'
+                    versioned
+                } ]
+                input[1] = CUSTOM_TX2GENE.out.tx2gene
+                input[2] = 'salmon'
+                """
+            }
+        }
+
+        then {
+            def gene_counts = path(process.out.counts_gene[0][1])
+            def tx_ids = path(process.out.counts_transcript[0][1]).readLines().drop(1).collect { line -> line.split('\t')[0] }
+            def commandErr = gene_counts.parent.resolve('.command.err').text
+
+            assertAll(
+                { assert process.success },
+                { assert !tx_ids.any { tx -> tx.endsWith('.1') } },
+                { assert !commandErr.contains("transcripts found in quantification output but missing from") },
+                { assert snapshot(
+                    process.out.counts_gene,
+                    process.out.counts_gene_length_scaled,
+                    process.out.counts_gene_scaled,
+                    process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
+                    process.out.lengths_gene,
+                    process.out.lengths_transcript,
+                    process.out.tpm_gene,
+                    process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
+                    process.out.versions).match()
+                }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - salmon - gtf - stub") {
 
         options "-stub"
@@ -326,6 +405,8 @@ nextflow_process {
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
                     process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
                     process.out.lengths_gene,
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
@@ -405,6 +486,8 @@ nextflow_process {
                     process.out.counts_gene_length_scaled,
                     process.out.counts_gene_scaled,
                     process.out.counts_transcript,
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
                     process.out.lengths_gene,
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
