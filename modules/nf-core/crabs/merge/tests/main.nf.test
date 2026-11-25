@@ -1,0 +1,98 @@
+nextflow_process {
+
+    name "Test Process CRABS_MERGE"
+    script "../main.nf"
+    process "CRABS_MERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "crabs"
+    tag "crabs/merge"
+    tag "crabs/import"
+    config "./nextflow.config"
+
+    setup {
+        run("CRABS_IMPORT") {
+            script "../../import/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome-ena.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'accession2taxid' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'names' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'nodes' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                ]
+                input[4] = 'embl'
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - merge") {
+
+        when {
+            params {
+                module_args = '--uniq'
+            }
+            process {
+                """
+                input[0] = CRABS_IMPORT.output.crabsdb
+                    .map { meta, file -> file }
+                    .mix(CRABS_IMPORT.output.crabsdb.map { meta, file -> file }.collectFile(name: 'copy.txt', newLine: false))
+                    .collect()
+                    .map { files -> [ [ id:'merged' ], files ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.crabsdb[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - merge - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = CRABS_IMPORT.output.crabsdb
+                    .map { meta, file -> file }
+                    .mix(CRABS_IMPORT.output.crabsdb.map { meta, file -> file }.collectFile(name: 'copy.txt', newLine: false))
+                    .collect()
+                    .map { files -> [ [ id:'merged' ], files ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.crabsdb[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+}
