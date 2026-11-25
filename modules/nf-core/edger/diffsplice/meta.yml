@@ -1,30 +1,20 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: edger_diffsplice
 description: |
-  Tests for differential exon usage (or differential transcript usage) with edgeR,
-  fitting a model with `glmQLFit` or `glmFit` and testing each gene's features
-  against the gene average with `diffSpliceDGE`, for one contrast.
-  The count matrix has one row per feature (e.g. exon or transcript), a gene ID column
-  and a feature ID column. A multi-sample featureCounts table can be passed as it is with
-  e.g. `--gene_id_col Geneid --feature_id_col Start --count_col_suffix .bam`.
+  Tests for differential exon or transcript usage with edgeR `diffSpliceDGE`, for one contrast.
   Options are passed via `ext.args` as `--option value` pairs:
-  `gene_id_col` (default `gene_id`), `feature_id_col` (`feature_id`, the exon or transcript ID column),
-  `annotation_cols` (`;`-separated count table columns carried into the results, e.g. `Chr;End;Strand`),
-  `count_col_suffix` (removed from the end of count table column names to match sample IDs, e.g. `.bam`),
-  `sample_id_col` (`experiment_accession`),
+  `gene_id_col` (default `gene_id`), `feature_id_col` (`feature_id`),
+  `annotation_cols` (`;`-separated count table columns carried into the results),
+  `count_col_suffix` (removed from count table column names), `sample_id_col` (`experiment_accession`),
   `blocking_variables` (`;`-separated sample sheet columns, not combinable with a formula),
-  `subset_to_contrast_samples` (`FALSE`, needs a contrast variable), `exclude_samples_col` and `exclude_samples_values` (`;`-separated),
-  `filter_by_expr` (`FALSE`), `min_count` (`10`), `norm_method` (`TMM`), `test_method` (`qlf` for
-  glmQLFit or `lrt` for glmFit), `robust` (`TRUE`), `adjust_method` (`BH`),
-  `plot_n` (`10`, number of top genes by Simes p-value drawn with `plotSpliceDGE`) and `round_digits` (no rounding).
-  Defaults that differ from edgeR's own: `robust` is `TRUE` for both `estimateDisp` and `glmQLFit`
-  (edgeR default `FALSE`), and `filterByExpr` is off by default because pipelines usually filter
-  upstream; when enabled, `min_count` is passed as `min.count`.
-  Sample sheet column names, including those used in a formula, are converted with `make.names()`.
-  With a contrast variable, design matrix columns are named `<variable>.<level>` (e.g. `condition.YRI`),
-  so a comparison string given with a contrast variable uses that form (`condition.YRI-condition.GBR`);
-  with a formula they keep the `model.matrix` names (e.g. `conditionYRI`).
-  The result tables are in the order topSpliceDGE returns them, sorted by p-value, not in input order.
+  `subset_to_contrast_samples` (`FALSE`, needs a contrast variable with reference and target levels),
+  `exclude_samples_col` and `exclude_samples_values` (`;`-separated),
+  `filter_by_expr` (`FALSE`), `min_count` (`10`), `norm_method` (`TMM`), `test_method` (`qlf` or `lrt`),
+  `robust` (`TRUE`), `adjust_method` (`BH`), `plot_n` (`10`) and `round_digits` (no rounding).
+  Defaults that differ from edgeR's own: `robust` is `TRUE` and `filterByExpr` is off.
+  Sample sheet column names are converted with `make.names()`. With a contrast variable, design
+  matrix columns are named `<variable>.<level>` (e.g. `condition.YRI`); with a formula they keep
+  the `model.matrix` names (e.g. `conditionYRI`).
 keywords:
   - differential
   - splicing
