@@ -30,10 +30,11 @@ parse_args <- function(x){
 #' @param check.names Passed to read.delim()
 #' @param character_cols Columns to read as character, e.g. identifiers with leading zeros
 #' @param comment_char Passed to read.delim() as comment.char
+#' @param na_strings Passed to read.delim() as na.strings
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, character_cols = NULL, comment_char = ""){
+read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, character_cols = NULL, comment_char = "", na_strings = "NA"){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -51,6 +52,7 @@ read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, charac
         header = header,
         check.names = check.names,
         comment.char = comment_char,
+        na.strings = na_strings,
         colClasses = if (is.null(character_cols)) NA else setNames(rep("character", length(character_cols)), character_cols)
     )
 }
@@ -223,9 +225,15 @@ if (length(missing_annotation) > 0){
 }
 
 # Headers and column options both go through make.names() so they stay aligned. Sample IDs
-# are read as character so that IDs such as '001' still match the count table columns.
+# are read as character so that IDs such as '001' still match the count table columns, and
+# empty cells are read as missing rather than as an empty factor level.
 opt\$sample_id_col <- make.names(opt\$sample_id_col)
-sample.sheet <- read_delim_flexible(file = opt\$sample_file, check.names = TRUE, character_cols = opt\$sample_id_col)
+sample.sheet <- read_delim_flexible(
+    file = opt\$sample_file,
+    check.names = TRUE,
+    character_cols = opt\$sample_id_col,
+    na_strings = c("", "NA")
+)
 
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
     stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))

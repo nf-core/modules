@@ -173,6 +173,33 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - chrX - transcript counts - invalid option value - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --robust yes'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value for option robust: 'yes' is not a valid logical") }
+            )
+        }
+    }
+
     test("homo_sapiens - chrX - transcript counts - condition - stub") {
 
         options "-stub"
