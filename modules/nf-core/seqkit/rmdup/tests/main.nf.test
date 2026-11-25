@@ -34,13 +34,9 @@ nextflow_process {
         when {
             process {
                 """
-                def repeated_fasta = file('repeated.fasta')
-                repeated_fasta.text = '>A\\nAGCTAGCTAGCT\\n>B\\nAGCTAGCTAGCT\\n>A\\nAGCTAGCTAGCT'
-
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    repeated_fasta
-                ]
+                input[0] = channel.of('>A\\nAGCTAGCTAGCT\\n>B\\nAGCTAGCTAGCT\\n>A\\nAGCTAGCTAGCT')
+                    .collectFile(name: 'repeated.fasta')
+                    .map { fasta -> [ [ id:'test' ], fasta ] }
                 """
             }
         }
