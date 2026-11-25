@@ -300,7 +300,8 @@ nextflow_process {
             }
             process {
                 """
-                // Append a '.1' version to every transcript in the quantifications, leaving the tx2gene unversioned
+                // Append a '.1' version to every transcript in the quantifications, leaving the tx2gene unversioned,
+                // and add a '_PAR_Y' copy of the first transcript, which has to stay distinct from it
                 input[0] = [ [ id:'test' ], file('${salmon}').listFiles().collect { sample ->
                     def versioned = file("\${workDir}/versioned_quants/\${sample.name}")
                     versioned.mkdirs()
@@ -309,6 +310,8 @@ nextflow_process {
                         def fields = line.split('\\t', 2)
                         fields[0] + '.1\\t' + fields[1]
                     }
+                    def first = lines[1].split('\\t', 2)
+                    renamed << first[0] + '.1_PAR_Y\\t' + first[1]
                     versioned.resolve('quant.sf').text = ([lines[0]] + renamed).join('\\n') + '\\n'
                     versioned
                 } ]
@@ -326,7 +329,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert !tx_ids.any { tx -> tx.endsWith('.1') } },
-                { assert !commandErr.contains("transcripts found in quantification output but missing from") },
+                { assert tx_ids.count { tx -> tx.endsWith('.1_PAR_Y') } == 1 },
+                { assert commandErr.contains("1 transcripts found in quantification output but missing from") },
                 { assert snapshot(
                     process.out.counts_gene,
                     process.out.counts_gene_length_scaled,

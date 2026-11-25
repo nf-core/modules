@@ -181,15 +181,16 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
 
 #' Strip version suffixes from transcript IDs
 #'
-#' Removes everything from the first '.' onwards, matching the behaviour of
-#' tximport's `ignoreTxVersion`.
+#' Removes a trailing '.<digits>' version. Unlike tximport's `ignoreTxVersion`,
+#' which removes everything after the first '.', this keeps suffixes such as
+#' GENCODE's '_PAR_Y' distinct from the IDs they are attached to.
 #'
 #' @param ids Character vector of transcript IDs.
 #'
 #' @return Character vector of transcript IDs without version suffixes.
 
 strip_tx_version <- function(ids) {
-    sub("\\\\..*\$", "", ids)
+    sub("\\\\.[0-9]+\$", "", ids)
 }
 
 #' Replace the transcript IDs of a tximport list
@@ -238,10 +239,7 @@ if ('$quant_type' == "rsem") {
     names(fns) <- names
 
     # Import transcript-level quantifications from RSEM isoform results
-    import_quants <- function(countsFromAbundance = "no", tx2gene = NULL) {
-        tximport(fns, type = 'rsem', txIn = TRUE, txOut = TRUE,
-            countsFromAbundance = countsFromAbundance, tx2gene = tx2gene)
-    }
+    txi <- tximport(fns, type = 'rsem', txIn = TRUE, txOut = TRUE)
 } else {
     # Salmon/Kallisto: files are in sample subdirectories
     pattern <- ifelse('$quant_type' == "kallisto", "abundance.tsv", "quant.sf")
@@ -251,17 +249,11 @@ if ('$quant_type' == "rsem") {
     dropInfReps <- '$quant_type' == "kallisto"
 
     # Import transcript-level quantifications
-    import_quants <- function(countsFromAbundance = "no", tx2gene = NULL) {
-        tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps,
-            countsFromAbundance = countsFromAbundance, tx2gene = tx2gene)
-    }
+    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps)
 }
 
-txi <- import_quants()
-raw_tx_ids <- rownames(txi[["counts"]])
-
 if (opt\$ignore_tx_version) {
-    tx_ids <- strip_tx_version(raw_tx_ids)
+    tx_ids <- strip_tx_version(rownames(txi[["counts"]]))
     duplicated_ids <- unique(tx_ids[duplicated(tx_ids)])
     if (length(duplicated_ids) > 0) {
         stop(
@@ -276,20 +268,20 @@ if (opt\$ignore_tx_version) {
 # Read transcript and sample data
 transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col, opt\$ignore_tx_version)
 
-# Re-import with transcript-level count scaling. dtuScaledTPM needs a gene for
-# every quantified transcript, which the augmented tx2gene provides, keyed here
-# by the IDs exactly as they appear in the quantification files.
-import_scaled <- function(countsFromAbundance, tx2gene = NULL) {
-    scaled <- import_quants(countsFromAbundance, tx2gene)
-    if (!identical(rownames(scaled[["counts"]]), raw_tx_ids)) {
-        stop("Transcript order differs between tximport runs")
-    }
-    set_tx_ids(scaled, rownames(txi[["counts"]]))
-}
-txi.s <- import_scaled("scaledTPM")
-txi.dtu <- import_scaled(
-    "dtuScaledTPM",
-    data.frame(tx = raw_tx_ids, gene_id = transcript_info\$tx2gene[["gene_id"]])
+# Transcript-level scaled counts, computed as tximport does for countsFromAbundance.
+# dtuScaledTPM is lengthScaledTPM using the median transcript length of each gene,
+# with genes from the augmented tx2gene, which is in the row order of txi.
+txi.s <- txi
+txi.s\$counts <- makeCountsFromAbundance(txi\$counts, txi\$abundance, txi\$length, "scaledTPM")
+
+tx_gene <- transcript_info\$tx2gene[["gene_id"]]
+gene_median_length <- tapply(rowMeans(txi\$length), tx_gene, median)[tx_gene]
+txi.dtu <- txi
+txi.dtu\$counts <- makeCountsFromAbundance(
+    txi\$counts,
+    txi\$abundance,
+    matrix(gene_median_length, nrow(txi\$length), ncol(txi\$length), dimnames = dimnames(txi\$length)),
+    "lengthScaledTPM"
 )
 
 # Make coldata just to appease the summarizedexperiment
