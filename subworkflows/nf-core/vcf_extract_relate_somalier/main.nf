@@ -3,6 +3,7 @@
 
 include { SOMALIER_EXTRACT  } from '../../../modules/nf-core/somalier/extract/main'
 include { SOMALIER_RELATE   } from '../../../modules/nf-core/somalier/relate/main'
+include { SOMALIER_ANCESTRY } from '../../../modules/nf-core/somalier/ancestry/main'
 include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_EXTRACT_RELATE_SOMALIER {
@@ -14,7 +15,10 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_peds                 // channel: [mandatory] [ val(meta), path(ped) ]
         ch_sample_groups        // channel: [optional]  [ path(txt) ]
         val_common_id           // string:  [optional]  A common identifier for the samples that need to be related. Has to be given when using single sample VCFs
+        ch_ancestry_reference   // channel: [optional]  [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
     main:
+
+    ch_optional_ancestry_reference = ch_ancestry_reference ?: channel.empty()
 
     ch_input = ch_vcfs
         .branch { meta, vcf, tbi, _count ->
@@ -72,9 +76,16 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites
     )
 
+    SOMALIER_ANCESTRY(
+        SOMALIER_EXTRACT.out.extract,
+        ch_optional_ancestry_reference.first()
+    )
+
     emit:
     extract        = SOMALIER_EXTRACT.out.extract       // channel: [ val(meta), path(extract) ]
     html           = SOMALIER_RELATE.out.html           // channel: [ val(meta), path(html) ]
     pairs_tsv      = SOMALIER_RELATE.out.pairs_tsv      // channel: [ val(meta), path(tsv) ]
     samples_tsv    = SOMALIER_RELATE.out.samples_tsv    // channel: [ val(meta), path(tsv) ]
+    ancestry_tsv   = SOMALIER_ANCESTRY.out.tsv           // channel: [ val(meta), path(tsv) ]
+    ancestry_html  = SOMALIER_ANCESTRY.out.html          // channel: [ val(meta), path(html) ]
 }

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_extract_relate_somalier"
-description: Perform somalier extraction and relate stats on input VCFs
+description: Perform somalier extraction, relatedness, and ancestry analyses on input VCFs
 keywords:
   - somalier
   - stats
@@ -11,6 +11,7 @@ components:
   - htslib/bgziptabix
   - somalier/extract
   - somalier/relate
+  - somalier/ancestry
 input:
   - ch_vcfs:
       description: |
@@ -45,6 +46,10 @@ input:
         Optional - A common identifier in the meta map.
         This will be used to determine which VCFs should be used in somalier_relate.
         This value should be given when using single sample VCFs
+  - ch_ancestry_reference:
+      description: |
+        Optional labels and Somalier files for reference samples with known ancestry. Supply an empty channel in this input position to skip ancestry analysis. These are used with each input VCF's extracted Somalier file.
+        Structure: [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
 output:
   - extract:
       description: |
@@ -62,6 +67,14 @@ output:
       description: |
         A TSV file detailing the relatedness between all samples with the same meta
         Structure: [ val(meta), path(tsv) ]
+  - ancestry_tsv:
+      description: |
+        A TSV file containing ancestry information for the query and labelled reference samples
+        Structure: [ val(meta), path(tsv) ]
+  - ancestry_html:
+      description: |
+        An HTML file containing an interactive ancestry plot
+        Structure: [ val(meta), path(html) ]
 authors:
   - "@nvnieuwk"
 maintainers:

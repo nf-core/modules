@@ -36,6 +36,7 @@ nextflow_workflow {
                 input[4] = Channel.of([ [id:"test"], [] ])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -62,6 +63,7 @@ nextflow_workflow {
                 input[4] = Channel.of([ [id:"test"], [] ])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -97,6 +99,7 @@ nextflow_workflow {
                 input[4] = ch_ped
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -141,6 +144,7 @@ nextflow_workflow {
                 input[4] = ch_ped
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
                 input[6] = "common"
+                input[7] = []
                 """
             }
         }
@@ -184,6 +188,7 @@ nextflow_workflow {
                 input[4] = ch_ped
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -229,6 +234,7 @@ nextflow_workflow {
                 input[4] = Channel.of([[id:"test"], []])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -271,6 +277,7 @@ nextflow_workflow {
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
                 input[6] = "common"
+                input[7] = []
                 """
             }
         }
@@ -315,6 +322,7 @@ nextflow_workflow {
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
                 input[6] = "common"
+                input[7] = []
                 """
             }
         }
