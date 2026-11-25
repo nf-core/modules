@@ -180,6 +180,8 @@ opt <- list(
   cores = 1,
   vs_blind = TRUE,
   vst_nsub = 1000,
+  norm_only = FALSE,       # Only normalise: skip the model fit and all differential outputs
+  write_matrices = TRUE,   # Write the normalised and variance-stabilised matrices
   round_digits = NULL,
   seed = NULL
 )
@@ -435,50 +437,63 @@ if (opt\$control_genes_file != '' && opt\$sizefactors_from_controls){
   dds <- estimateSizeFactors(dds, controlGenes=rownames(count.table) %in% control_genes)
 }
 
-dds <- DESeq(
-  dds,
-  test = opt\$test,
-  fitType = opt\$fit_type,
-  minReplicatesForReplace = opt\$min_replicates_for_replace,
-  useT = opt\$use_t,
-  sfType = opt\$sf_type,
-  parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
-)
+# With --norm_only true only the normalised and variance-stabilised matrices
+# are wanted. Those need size factors but not the model fit, the test or the
+# shrinkage, so estimate the size factors exactly as DESeq() would and stop
+# there. (rlog with --vs_blind false reuses fitted dispersions when they
+# exist, so in that one configuration its values can differ slightly from a
+# full run for features whose outliers DESeq() replaces.)
 
-if (!is.null(opt\$contrast_string)) {
-  coef_names <- resultsNames(dds)
-  if (opt\$contrast_string %in% coef_names) {
-    # Direct coefficient name
-    comp.results <- run_results(name = opt\$contrast_string)
-    if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(coef = opt\$contrast_string, shrink_type = opt\$shrink_lfc_type)
-    }
-  } else {
-    # Parse as limma-style contrast expression
-    design_mat <- model.matrix(as.formula(model), data = as.data.frame(colData(dds)))
-    colnames(design_mat) <- make.names(colnames(design_mat))
-    numeric_contrast <- as.numeric(
-      limma::makeContrasts(contrasts = opt\$contrast_string, levels = colnames(design_mat))
-    )
-
-    # Run DESeq2 results with numeric contrast
-    comp.results <- run_results(contrast = numeric_contrast)
-    if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(
-        contrast      = numeric_contrast,
-        shrink_type   = opt\$shrink_lfc_type,
-        contrast_name = opt\$contrast_string
-      )
-    }
+if (opt\$norm_only) {
+  if (is.null(sizeFactors(dds)) && is.null(normalizationFactors(dds))) {
+    dds <- estimateSizeFactors(dds, type = opt\$sf_type)
   }
 } else {
-  contrast_var_tg_ref <- c(contrast_variable,
-                           opt\$target_level,
-                           opt\$reference_level)
+  dds <- DESeq(
+    dds,
+    test = opt\$test,
+    fitType = opt\$fit_type,
+    minReplicatesForReplace = opt\$min_replicates_for_replace,
+    useT = opt\$use_t,
+    sfType = opt\$sf_type,
+    parallel=TRUE, BPPARAM=MulticoreParam(opt\$cores)
+  )
 
-  comp.results <- run_results(contrast = contrast_var_tg_ref)
-  if (opt\$shrink_lfc) {
-    comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
+  if (!is.null(opt\$contrast_string)) {
+    coef_names <- resultsNames(dds)
+    if (opt\$contrast_string %in% coef_names) {
+      # Direct coefficient name
+      comp.results <- run_results(name = opt\$contrast_string)
+      if (opt\$shrink_lfc) {
+        comp.results <- run_shrink(coef = opt\$contrast_string, shrink_type = opt\$shrink_lfc_type)
+      }
+    } else {
+      # Parse as limma-style contrast expression
+      design_mat <- model.matrix(as.formula(model), data = as.data.frame(colData(dds)))
+      colnames(design_mat) <- make.names(colnames(design_mat))
+      numeric_contrast <- as.numeric(
+        limma::makeContrasts(contrasts = opt\$contrast_string, levels = colnames(design_mat))
+      )
+
+      # Run DESeq2 results with numeric contrast
+      comp.results <- run_results(contrast = numeric_contrast)
+      if (opt\$shrink_lfc) {
+        comp.results <- run_shrink(
+          contrast      = numeric_contrast,
+          shrink_type   = opt\$shrink_lfc_type,
+          contrast_name = opt\$contrast_string
+        )
+      }
+    }
+  } else {
+    contrast_var_tg_ref <- c(contrast_variable,
+                             opt\$target_level,
+                             opt\$reference_level)
+
+    comp.results <- run_results(contrast = contrast_var_tg_ref)
+    if (opt\$shrink_lfc) {
+      comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
+    }
   }
 }
 
@@ -501,51 +516,54 @@ if (! is_valid_string(opt\$contrast_string)) {
   opt\$contrast_string <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
 }
 
-cat("Saving results for ", opt\$contrast_string, " ...\n", sep = "")
+if (! opt\$norm_only) {
 
-# Differential expression table- note very limited rounding for consistency of
-# results
+  cat("Saving results for ", opt\$contrast_string, " ...\n", sep = "")
 
-if (! is.null(opt\$round_digits)){
-  comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
-}
-comp.results <- `colnames<-`(
-  data.frame(
-    gene_id = rownames(comp.results),
+  # Differential expression table- note very limited rounding for consistency of
+  # results
+
+  if (! is.null(opt\$round_digits)){
+    comp.results <- apply(data.frame(comp.results), 2, function(x) round(x, opt\$round_digits))
+  }
+  comp.results <- `colnames<-`(
+    data.frame(
+      gene_id = rownames(comp.results),
+      comp.results,
+      check.names = FALSE
+    ),
+    c(opt\$gene_id_col, colnames(comp.results))  # Setting all column names
+  )
+
+  write.table(
     comp.results,
-    check.names = FALSE
-  ),
-  c(opt\$gene_id_col, colnames(comp.results))  # Setting all column names
-)
+    file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
+    col.names = TRUE,
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+  )
 
-write.table(
-  comp.results,
-  file = paste(opt\$output_prefix, 'deseq2.results.tsv', sep = '.'),
-  col.names = TRUE,
-  row.names = FALSE,
-  sep = '\t',
-  quote = FALSE
-)
+  # Dispersion plot
 
-# Dispersion plot
+  png(
+    file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
+    width = 600,
+    height = 600
+  )
+  plotDispEsts(dds)
+  dev.off()
 
-png(
-  file = paste(opt\$output_prefix, 'deseq2.dispersion.png', sep = '.'),
-  width = 600,
-  height = 600
-)
-plotDispEsts(dds)
-dev.off()
+  pdf(
+    file = paste(opt\$output_prefix, 'deseq2.dispersion.pdf', sep = '.')
+  )
+  plotDispEsts(dds)
+  dev.off()
 
-pdf(
-  file = paste(opt\$output_prefix, 'deseq2.dispersion.pdf', sep = '.')
-)
-plotDispEsts(dds)
-dev.off()
+  # R object for other processes to use
 
-# R object for other processes to use
-
-saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
+  saveRDS(dds, file = paste(opt\$output_prefix, 'dds.rld.rds', sep = '.'))
+}
 
 # Size factors
 
@@ -564,60 +582,67 @@ write.table(
   quote = FALSE
 )
 
-# Write specified matrices
+# Normalised and variance-stabilised matrices. These are the same for every
+# contrast of a study, so a caller that runs one process per contrast can
+# write them once and set --write_matrices false elsewhere.
 
-normalised_matrix <- counts(dds, normalized = TRUE)
-if (! is.null(opt\$round_digits)){
-  normalised_matrix <- apply(normalised_matrix, 2, function(x) round(x, opt\$round_digits))
-}
-normalised_matrix <- `colnames<-`(
-  data.frame(
-    gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
-    normalised_matrix,                # Other columns
-    check.names = FALSE
-  ),
-  c(opt\$gene_id_col, colnames(normalised_matrix))  # Setting all column names
-)
+if (opt\$write_matrices) {
 
-write.table(
-  normalised_matrix,
-  file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
-  col.names = TRUE,
-  row.names = FALSE,
-  sep = '\t',
-  quote = FALSE
-)
+  # Write specified matrices
 
-# Note very limited rounding for consistency of results
-
-for (vs_method_name in strsplit(opt\$vs_method, ',')){
-  if (vs_method_name == 'vst'){
-    vs_mat <- assay(vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub))
-  }else if (vs_method_name == 'rlog'){
-    vs_mat <- assay(rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type))
-  }
-
+  normalised_matrix <- counts(dds, normalized = TRUE)
   if (! is.null(opt\$round_digits)){
-    vs_mat <- apply(vs_mat, 2, function(x) round(x, opt\$round_digits))
+    normalised_matrix <- apply(normalised_matrix, 2, function(x) round(x, opt\$round_digits))
   }
-
-  vs_mat <- `colnames<-`(
+  normalised_matrix <- `colnames<-`(
     data.frame(
       gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
-      vs_mat,                           # Other columns from vs_mat
+      normalised_matrix,                # Other columns
       check.names = FALSE
     ),
-    c(opt\$gene_id_col, colnames(vs_mat))  # Setting all column names
+    c(opt\$gene_id_col, colnames(normalised_matrix))  # Setting all column names
   )
 
   write.table(
-    vs_mat,
-    file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
+    normalised_matrix,
+    file = paste(opt\$output_prefix, 'normalised_counts.tsv', sep = '.'),
     col.names = TRUE,
     row.names = FALSE,
     sep = '\t',
     quote = FALSE
   )
+
+  # Note very limited rounding for consistency of results
+
+  for (vs_method_name in strsplit(opt\$vs_method, ',')){
+    if (vs_method_name == 'vst'){
+      vs_mat <- assay(vst(dds, blind = opt\$vs_blind, nsub = opt\$vst_nsub))
+    }else if (vs_method_name == 'rlog'){
+      vs_mat <- assay(rlog(dds, blind = opt\$vs_blind, fitType = opt\$fit_type))
+    }
+
+    if (! is.null(opt\$round_digits)){
+      vs_mat <- apply(vs_mat, 2, function(x) round(x, opt\$round_digits))
+    }
+
+    vs_mat <- `colnames<-`(
+      data.frame(
+        gene_id = rownames(counts(dds)),  # First column with row names from counts(dds)
+        vs_mat,                           # Other columns from vs_mat
+        check.names = FALSE
+      ),
+      c(opt\$gene_id_col, colnames(vs_mat))  # Setting all column names
+    )
+
+    write.table(
+      vs_mat,
+      file = paste(opt\$output_prefix, vs_method_name, 'tsv', sep = '.'),
+      col.names = TRUE,
+      row.names = FALSE,
+      sep = '\t',
+      quote = FALSE
+    )
+  }
 }
 
 # Save model to file
