@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "chromograph"
-description: Chromograph is a python package to create PNG images from genetics data
-  such as BED and WIG files.
+description: Chromograph is a python package to create PNG images from genetics data such as BED and WIG files.
 keywords:
   - chromosome_visualization
   - bed
@@ -9,8 +7,7 @@ keywords:
   - png
 tools:
   - "chromograph":
-      description: "Chromograph is a python package to create PNG images from genetics
-        data such as BED and WIG files."
+      description: "Chromograph is a python package to create PNG images from genetics data such as BED and WIG files."
       homepage: "https://github.com/Clinical-Genomics/chromograph"
       documentation: "https://github.com/Clinical-Genomics/chromograph/blob/master/README.md"
       licence: ["MIT"]
@@ -119,3 +116,27 @@ authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/chromograph:1.3.1--43e54a5fe407067e
+      build_id: bd-43e54a5fe407067e_1
+      scan_id: sc-c5de9d6cfc89c588_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/chromograph:1.3.1--0e8436aeb3c0d998
+      build_id: bd-0e8436aeb3c0d998_1
+      scan_id: sc-7b24f84d8f5d5fe2_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/chromograph:1.3.1--957397344801b7a4
+      build_id: bd-957397344801b7a4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d1/d1a90a17eba97f1c33fbe1306d1530866bb320a46e4a9e4657b4d3e245ce2f97/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/chromograph:1.3.1--baca1bd32874421e
+      build_id: bd-baca1bd32874421e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e0c3932ad72d6c289d680282df6bd60668ee964008b6765119f3070bdc6cd17d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/chromograph/.conda-lock/linux_amd64-bd-0e8436aeb3c0d998_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/chromograph/.conda-lock/linux_arm64-bd-43e54a5fe407067e_1.txt
