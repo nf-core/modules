@@ -9,8 +9,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "edger"
     tag "edger/diffsplice"
-    tag "subread"
-    tag "subread/featurecounts"
 
     test("homo_sapiens - chrX - exon counts - condition - filter_by_expr") {
 
@@ -22,26 +20,11 @@ nextflow_process {
                 """
                 input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                // Merges the per-sample dexseq/count tables into one exon by sample matrix
-                input[1] = channel.of(['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916']).map { samples ->
-                    def tables = samples.collect { sample ->
-                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${sample}.txt", checkIfExists: true)
-                            .readLines()
-                            .findAll { line -> !line.startsWith('_') }
-                            .collect { line -> line.split('\\t') }
-                    }
-                    def lines = [ (['gene_id', 'exon_id'] + samples).join('\\t') ]
-                    tables[0].eachWithIndex { row, i ->
-                        lines << ( row[0].split(':') as List + tables.collect { table -> table[i][1] } ).join('\\t')
-                    }
-                    def matrix = file("\${workDir}/chrX.exon_counts.tsv")
-                    matrix.text = lines.join('\\n') + '\\n'
-                    [
-                        [ id:'chrX' ],
-                        file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
-                        matrix
-                    ]
-                }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.exon_counts.tsv', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -55,27 +38,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - chrX - featurecounts exon counts - condition - annotation columns") {
-
-        setup {
-            run("SUBREAD_FEATURECOUNTS") {
-                script "../../../subread/featurecounts/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'chrX', single_end:false ],
-                        [
-                            file('https://github.com/nf-core/test-datasets/raw/rnasplice/chrX_subset/testdata/ERR188383.Aligned.out.bam', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/rnasplice/chrX_subset/testdata/ERR188428.Aligned.out.bam', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/rnasplice/chrX_subset/testdata/ERR188454.Aligned.out.bam', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/rnasplice/chrX_subset/testdata/ERR204916.Aligned.out.bam', checkIfExists: true)
-                        ],
-                        file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
+    test("homo_sapiens - chrX - featureCounts exon counts - condition - annotation columns") {
 
         when {
             params {
@@ -85,13 +48,11 @@ nextflow_process {
                 """
                 input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = SUBREAD_FEATURECOUNTS.out.counts.map { _meta, counts ->
-                    [
-                        [ id:'chrX' ],
-                        file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
-                        counts
-                    ]
-                }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.exon_counts.featureCounts.tsv', checkIfExists: true)
+                ])
                 """
             }
         }
@@ -116,8 +77,8 @@ nextflow_process {
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
                 input[1] = channel.of([
                     [ id:'chrX' ],
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
                 ])
                 """
             }
@@ -143,8 +104,8 @@ nextflow_process {
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
                 input[1] = channel.of([
                     [ id:'chrX' ],
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
                 ])
                 """
             }
@@ -170,8 +131,8 @@ nextflow_process {
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
                 input[1] = channel.of([
                     [ id:'chrX' ],
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
                 ])
                 """
             }
@@ -181,6 +142,33 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert process.errorReport.contains("gene_id_col and feature_id_col must be different columns") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - subset_to_contrast_samples without levels - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --subset_to_contrast_samples TRUE'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_comparison', 'variable': 'condition', 'comparison': 'condition.YRI-condition.GBR'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("subset_to_contrast_samples requires a contrast variable with reference and target levels") }
             )
         }
     }
@@ -199,8 +187,8 @@ nextflow_process {
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
                 input[1] = channel.of([
                     [ id:'chrX' ],
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
                 ])
                 """
             }

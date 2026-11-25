@@ -5,7 +5,8 @@ description: |
   fitting a model with `glmQLFit` or `glmFit` and testing each gene's features
   against the gene average with `diffSpliceDGE`, for one contrast.
   The count matrix has one row per feature (e.g. exon or transcript), a gene ID column
-  and a feature ID column; featureCounts tables can be passed as they are.
+  and a feature ID column. A multi-sample featureCounts table can be passed as it is with
+  e.g. `--gene_id_col Geneid --feature_id_col Start --count_col_suffix .bam`.
   Options are passed via `ext.args` as `--option value` pairs:
   `gene_id_col` (default `gene_id`), `feature_id_col` (`feature_id`, the exon or transcript ID column),
   `annotation_cols` (`;`-separated count table columns carried into the results, e.g. `Chr;End;Strand`),
@@ -20,6 +21,9 @@ description: |
   (edgeR default `FALSE`), and `filterByExpr` is off by default because pipelines usually filter
   upstream; when enabled, `min_count` is passed as `min.count`.
   Sample sheet column names, including those used in a formula, are converted with `make.names()`.
+  With a contrast variable, design matrix columns are named `<variable>.<level>` (e.g. `condition.YRI`),
+  so a comparison string given with a contrast variable uses that form (`condition.YRI-condition.GBR`);
+  with a formula they keep the `model.matrix` names (e.g. `conditionYRI`).
   The result tables are in the order topSpliceDGE returns them, sorted by p-value, not in input order.
 keywords:
   - differential
@@ -69,7 +73,7 @@ input:
           - edam: http://edamontology.org/format_3475
     - counts:
         type: file
-        description: CSV or TSV raw count matrix with one row per feature (e.g. exon or transcript), a gene ID column, a feature ID column and one column per sample. Lines starting with '#' are skipped and columns that are neither annotation nor a sample in the sample sheet are ignored, so multi-sample featureCounts tables can be passed as they are
+        description: CSV or TSV raw count matrix with one row per feature (e.g. exon or transcript), a gene ID column, a feature ID column and one column per sample. Lines starting with '#' are skipped and columns that are neither annotation nor a sample in the sample sheet are ignored, so a multi-sample featureCounts table can be used with `--gene_id_col Geneid --feature_id_col Start` and `--count_col_suffix`
         pattern: "*.{csv,tsv,txt}"
         ontologies:
           - edam: http://edamontology.org/format_3752

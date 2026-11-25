@@ -25,16 +25,15 @@ parse_args <- function(x){
 
 #' Flexibly read CSV or TSV files
 #'
-#' Lines starting with '#' are skipped, so that featureCounts tables can be read as they are.
-#'
 #' @param file Input file
 #' @param header Passed to read.delim()
 #' @param check.names Passed to read.delim()
 #' @param character_cols Columns to read as character, e.g. identifiers with leading zeros
+#' @param comment_char Passed to read.delim() as comment.char
 #'
 #' @return output Data frame
 
-read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, character_cols = NULL){
+read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, character_cols = NULL, comment_char = ""){
 
     ext <- tolower(tail(strsplit(basename(file), split = "\\\\.")[[1]], 1))
 
@@ -51,7 +50,7 @@ read_delim_flexible <- function(file, header = TRUE, check.names = FALSE, charac
         sep = separator,
         header = header,
         check.names = check.names,
-        comment.char = "#",
+        comment.char = comment_char,
         colClasses = if (is.null(character_cols)) NA else setNames(rep("character", length(character_cols)), character_cols)
     )
 }
@@ -141,7 +140,11 @@ for ( ao in names(args_opt)){
 
         # Preserve classes from defaults where possible
         if (! is.null(opt[[ao]])){
-            args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
+            converted <- suppressWarnings(as(args_opt[[ao]], opt_types[[ao]]))
+            if (is.na(converted)){
+                stop(paste0("Invalid value for option ", ao, ": '", args_opt[[ao]], "' is not a valid ", opt_types[[ao]]))
+            }
+            args_opt[[ao]] <- converted
         }
         opt[[ao]] <- args_opt[[ao]]
     }
@@ -166,8 +169,8 @@ if (!is.null(opt\$contrast_string) && is.null(opt\$formula) && is.null(opt\$cont
 if (is.null(opt\$contrast_string) && any(sapply(opt[c('contrast_variable', 'reference_level', 'target_level')], is.null))){
     stop("Please provide either a formula with a comparison string, or a contrast variable with reference and target levels")
 }
-if (opt\$subset_to_contrast_samples && is.null(opt\$contrast_variable)){
-    stop("subset_to_contrast_samples requires a contrast variable")
+if (opt\$subset_to_contrast_samples && any(sapply(opt[c('contrast_variable', 'reference_level', 'target_level')], is.null))){
+    stop("subset_to_contrast_samples requires a contrast variable with reference and target levels")
 }
 if (!is.null(opt\$formula) && !is.null(opt\$blocking_variables)){
     stop("blocking_variables cannot be used with a formula: add the blocking variables to the formula instead")
@@ -204,7 +207,8 @@ if (! is.null(opt\$annotation_cols)){
     annotation_cols <- unique(c(annotation_cols, unlist(strsplit(opt\$annotation_cols, split = ';'))))
 }
 
-count.table <- read_delim_flexible(file = opt\$count_file, character_cols = annotation_cols)
+# Skipping '#' lines lets featureCounts tables be read as they are
+count.table <- read_delim_flexible(file = opt\$count_file, character_cols = annotation_cols, comment_char = '#')
 
 if (! is.null(opt\$count_col_suffix)){
     count_cols <- colnames(count.table)
@@ -218,9 +222,10 @@ if (length(missing_annotation) > 0){
     stop(paste('Annotation columns missing from count table:', paste(missing_annotation, collapse = ',')))
 }
 
-# Headers and column options both go through make.names() so they stay aligned
-sample.sheet <- read_delim_flexible(file = opt\$sample_file, check.names = TRUE)
+# Headers and column options both go through make.names() so they stay aligned. Sample IDs
+# are read as character so that IDs such as '001' still match the count table columns.
 opt\$sample_id_col <- make.names(opt\$sample_id_col)
+sample.sheet <- read_delim_flexible(file = opt\$sample_file, check.names = TRUE, character_cols = opt\$sample_id_col)
 
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
     stop(paste0("Specified sample ID column '", opt\$sample_id_col, "' is not in the sample sheet"))
@@ -232,17 +237,6 @@ if (! opt\$sample_id_col %in% colnames(sample.sheet)){
 sample.sheet <- sample.sheet[! duplicated(sample.sheet[[opt\$sample_id_col]]), ]
 rownames(sample.sheet) <- sample.sheet[[opt\$sample_id_col]]
 
-missing_samples <-
-    sample.sheet[!rownames(sample.sheet) %in% colnames(count.table), opt\$sample_id_col]
-
-if (length(missing_samples) > 0) {
-    stop(paste(
-        length(missing_samples),
-        'specified samples missing from count table:',
-        paste(missing_samples, collapse = ',')
-    ))
-}
-
 feature.annotation <- count.table[, annotation_cols, drop = FALSE]
 feature.ids <- paste(feature.annotation[[opt\$gene_id_col]], feature.annotation[[opt\$feature_id_col]], sep = ':')
 if (any(duplicated(feature.ids))) {
@@ -253,10 +247,6 @@ if (any(duplicated(feature.ids))) {
     ))
 }
 rownames(feature.annotation) <- feature.ids
-
-# Drop non-count columns and order samples as in the sample sheet
-count.table <- count.table[, rownames(sample.sheet), drop = FALSE]
-rownames(count.table) <- feature.ids
 
 ################################################
 ################################################
@@ -288,7 +278,6 @@ if (!is.null(contrast_variable)) {
 
     if (opt\$subset_to_contrast_samples){
         selected_samples <- rownames(sample.sheet)[sample.sheet[[contrast_variable]] %in% c(opt\$target_level, opt\$reference_level)]
-        count.table <- count.table[, selected_samples, drop = FALSE]
         sample.sheet <- sample.sheet[selected_samples, ]
     }
 }
@@ -305,13 +294,27 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
 
     print(paste0('Excluding samples with values of ', opt\$exclude_samples_values, ' in ', opt\$exclude_samples_col))
     selected_samples <- rownames(sample.sheet)[! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values]
-    count.table <- count.table[, selected_samples, drop = FALSE]
     sample.sheet <- sample.sheet[selected_samples, ]
 
     if (is.null(opt\$contrast_string) && any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
         stop('Sample exclusion removed all samples of the reference or target level')
     }
 }
+
+# Samples are checked against the count table only once excluded samples are gone
+missing_samples <- rownames(sample.sheet)[! rownames(sample.sheet) %in% colnames(count.table)]
+
+if (length(missing_samples) > 0) {
+    stop(paste(
+        length(missing_samples),
+        'specified samples missing from count table:',
+        paste(missing_samples, collapse = ',')
+    ))
+}
+
+# Drop non-count columns and order samples as in the sample sheet
+count.table <- count.table[, rownames(sample.sheet), drop = FALSE]
+rownames(count.table) <- feature.ids
 
 ################################################
 ################################################
@@ -337,6 +340,16 @@ if (!is.null(opt\$formula)) {
     contrast_levels <- levels(sample.sheet[[contrast_variable]])
     contrast_cols <- match(paste0(contrast_variable, contrast_levels), colnames(design))
     colnames(design)[contrast_cols] <- paste0(contrast_variable, '.', contrast_levels)
+}
+
+# model.matrix() silently drops samples with missing values in the model variables
+if (nrow(design) != nrow(sample.sheet)) {
+    model_cols <- intersect(all.vars(as.formula(model)), colnames(sample.sheet))
+    na_samples <- rownames(sample.sheet)[! complete.cases(sample.sheet[, model_cols, drop = FALSE])]
+    stop(paste0(
+        "Samples with missing values in the model variables (", paste(model_cols, collapse = ', '), "): ",
+        paste(na_samples, collapse = ', ')
+    ))
 }
 colnames(design) <- make.names(colnames(design))
 cat("Design matrix columns:\n   ", paste(colnames(design), collapse = ", "), "\n")
@@ -411,9 +424,12 @@ plot_genes <- head(as.character(simes.results[[opt\$gene_id_col]]), opt\$plot_n)
 for (gene in plot_genes) {
     plotSpliceDGE(splice, geneid = gene, genecolname = opt\$gene_id_col)
 }
-if (length(plot_genes) == 0) {
+if (nrow(simes.results) == 0) {
     plot.new()
-    title(main = "No genes with more than one exon were tested")
+    title(main = "No genes with more than one feature were tested")
+} else if (length(plot_genes) == 0) {
+    plot.new()
+    title(main = "No genes plotted (plot_n is 0)")
 }
 invisible(dev.off())
 
