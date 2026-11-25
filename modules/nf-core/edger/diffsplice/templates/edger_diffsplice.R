@@ -113,7 +113,7 @@ opt <- list(
     contrast_string            = '$comparison',
     blocking_variables         = NULL,
     gene_id_col                = "gene_id",
-    exon_id_col                = "exon_id",
+    feature_id_col             = "feature_id",
     annotation_cols            = NULL,
     count_col_suffix           = NULL,
     sample_id_col              = "experiment_accession",
@@ -175,8 +175,8 @@ if (!is.null(opt\$formula) && !is.null(opt\$blocking_variables)){
 if (!is.null(opt\$reference_level) && identical(opt\$reference_level, opt\$target_level)){
     stop(paste0("Reference and target levels must differ (both are '", opt\$reference_level, "')"))
 }
-if (identical(opt\$gene_id_col, opt\$exon_id_col)){
-    stop("gene_id_col and exon_id_col must be different columns")
+if (identical(opt\$gene_id_col, opt\$feature_id_col)){
+    stop("gene_id_col and feature_id_col must be different columns")
 }
 
 for (file_input in c('count_file', 'sample_file')){
@@ -199,7 +199,7 @@ library(edgeR)
 ################################################
 ################################################
 
-annotation_cols <- c(opt\$gene_id_col, opt\$exon_id_col)
+annotation_cols <- c(opt\$gene_id_col, opt\$feature_id_col)
 if (! is.null(opt\$annotation_cols)){
     annotation_cols <- unique(c(annotation_cols, unlist(strsplit(opt\$annotation_cols, split = ';'))))
 }
@@ -244,10 +244,10 @@ if (length(missing_samples) > 0) {
 }
 
 feature.annotation <- count.table[, annotation_cols, drop = FALSE]
-feature.ids <- paste(feature.annotation[[opt\$gene_id_col]], feature.annotation[[opt\$exon_id_col]], sep = ':')
+feature.ids <- paste(feature.annotation[[opt\$gene_id_col]], feature.annotation[[opt\$feature_id_col]], sep = ':')
 if (any(duplicated(feature.ids))) {
     stop(paste0(
-        "Combinations of '", opt\$gene_id_col, "' and '", opt\$exon_id_col, "' must be unique, e.g. ",
+        "Combinations of '", opt\$gene_id_col, "' and '", opt\$feature_id_col, "' must be unique, e.g. ",
         paste(head(unique(feature.ids[duplicated(feature.ids)]), 5), collapse = ', '),
         " occur more than once. Count overlapping exons from a flattened annotation"
     ))
@@ -382,7 +382,7 @@ splice <- diffSpliceDGE(
     fit,
     contrast = contrast.matrix,
     geneid = opt\$gene_id_col,
-    exonid = opt\$exon_id_col
+    exonid = opt\$feature_id_col
 )
 
 exon.results  <- topSpliceDGE(splice, test = "exon",  number = Inf, FDR = 1)
@@ -402,7 +402,7 @@ if (opt\$adjust_method != "BH") {
 ################################################
 ################################################
 
-write_results_table(round_numeric(exon.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.exon.tsv',  sep = '.'))
+write_results_table(round_numeric(exon.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.results.tsv', sep = '.'))
 write_results_table(round_numeric(simes.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.simes.tsv', sep = '.'))
 write_results_table(round_numeric(gene.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.gene.tsv',  sep = '.'))
 
@@ -415,6 +415,14 @@ if (length(plot_genes) == 0) {
     plot.new()
     title(main = "No genes with more than one exon were tested")
 }
+invisible(dev.off())
+
+png(
+    file = paste(opt\$output_prefix, 'edger.bcv.png', sep = '.'),
+    width = 600,
+    height = 600
+)
+plotBCV(dge)
 invisible(dev.off())
 
 saveRDS(fit, file = paste(opt\$output_prefix, 'DGEGLM.edger.rds', sep = '.'))

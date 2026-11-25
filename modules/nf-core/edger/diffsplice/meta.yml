@@ -7,7 +7,7 @@ description: |
   The count matrix has one row per feature (e.g. exon or transcript), a gene ID column
   and a feature ID column; featureCounts tables can be passed as they are.
   Options are passed via `ext.args` as `--option value` pairs:
-  `gene_id_col` (default `gene_id`), `exon_id_col` (`exon_id`),
+  `gene_id_col` (default `gene_id`), `feature_id_col` (`feature_id`, the exon or transcript ID column),
   `annotation_cols` (`;`-separated count table columns carried into the results, e.g. `Chr;End;Strand`),
   `count_col_suffix` (removed from the end of count table column names to match sample IDs, e.g. `.bam`),
   `sample_id_col` (`experiment_accession`),
@@ -20,6 +20,7 @@ description: |
   (edgeR default `FALSE`), and `filterByExpr` is off by default because pipelines usually filter
   upstream; when enabled, `min_count` is passed as `min.count`.
   Sample sheet column names, including those used in a formula, are converted with `make.names()`.
+  The result tables are in the order topSpliceDGE returns them, sorted by p-value, not in input order.
 keywords:
   - differential
   - splicing
@@ -74,14 +75,14 @@ input:
           - edam: http://edamontology.org/format_3752
           - edam: http://edamontology.org/format_3475
 output:
-  exon:
+  results:
     - - meta:
           type: map
           description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
-      - "*.edger.diffsplice.exon.tsv":
+      - "*.edger.diffsplice.results.tsv":
           type: file
-          description: TSV table of the feature-level test of each feature against the other features of its gene (logFC, F or LR, P.Value, FDR), as output by edgeR topSpliceDGE with test 'exon'
-          pattern: "*.edger.diffsplice.exon.tsv"
+          description: TSV table of the feature-level test of each feature against the other features of its gene, as output by edgeR topSpliceDGE with test 'exon', sorted by p-value. Columns are the gene, feature and annotation columns, then `logFC`, `exon.F` (`qlf`) or `exon.LR` (`lrt`), `P.Value` and `FDR`
+          pattern: "*.edger.diffsplice.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
   simes:
@@ -90,7 +91,7 @@ output:
           description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
       - "*.edger.diffsplice.simes.tsv":
           type: file
-          description: TSV table of gene-level results combining the feature-level p-values with Simes' method, as output by edgeR topSpliceDGE with test 'Simes'
+          description: TSV table of gene-level results combining the feature-level p-values with Simes' method, as output by edgeR topSpliceDGE with test 'Simes', sorted by p-value. Columns are the gene-level annotation columns, then `NExons`, `P.Value` and `FDR`
           pattern: "*.edger.diffsplice.simes.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -100,7 +101,7 @@ output:
           description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
       - "*.edger.diffsplice.gene.tsv":
           type: file
-          description: TSV table of gene-level F or likelihood ratio test results, as output by edgeR topSpliceDGE with test 'gene'
+          description: TSV table of gene-level F or likelihood ratio test results, as output by edgeR topSpliceDGE with test 'gene', sorted by p-value. Columns are the gene-level annotation columns, then `NExons`, `gene.F` (`qlf`) or `gene.LR` (`lrt`), `P.Value` and `FDR`
           pattern: "*.edger.diffsplice.gene.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -114,7 +115,17 @@ output:
           pattern: "*.edger.diffsplice.pdf"
           ontologies:
             - edam: http://edamontology.org/format_3508
-  glm:
+  bcv_plot:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.bcv.png":
+          type: file
+          description: Biological coefficient of variation (BCV) plot of the estimated dispersions
+          pattern: "*.edger.bcv.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  rdata:
     - - meta:
           type: map
           description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."

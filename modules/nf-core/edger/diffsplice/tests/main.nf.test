@@ -16,7 +16,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--sample_id_col sample --filter_by_expr TRUE --round_digits 4'
+                module_args = '--feature_id_col exon_id --sample_id_col sample --filter_by_expr TRUE --round_digits 4'
             }
             process {
                 """
@@ -49,7 +49,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "glm", "lrt", "session_info"])).match() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("edgeR_") }
             )
         }
@@ -79,7 +79,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--gene_id_col Geneid --exon_id_col Start --annotation_cols Chr;End;Strand;Length --count_col_suffix .Aligned.out.bam --sample_id_col sample --round_digits 4'
+                module_args = '--gene_id_col Geneid --feature_id_col Start --annotation_cols Chr;End;Strand;Length --count_col_suffix .Aligned.out.bam --sample_id_col sample --round_digits 4'
             }
             process {
                 """
@@ -99,7 +99,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "glm", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
             )
         }
     }
@@ -108,7 +108,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--gene_id_col gene_id --exon_id_col tx --sample_id_col sample --test_method lrt --round_digits 4'
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --test_method lrt --round_digits 4'
             }
             process {
                 """
@@ -126,7 +126,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "glm", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
             )
         }
     }
@@ -135,7 +135,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--gene_id_col gene_id --exon_id_col tx --sample_id_col sample --round_digits 4'
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --round_digits 4'
             }
             process {
                 """
@@ -153,16 +153,16 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "glm", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
             )
         }
     }
 
-    test("homo_sapiens - chrX - transcript counts - identical gene and exon columns - fails") {
+    test("homo_sapiens - chrX - transcript counts - identical gene and feature columns - fails") {
 
         when {
             params {
-                module_args = '--gene_id_col gene_id --exon_id_col gene_id --sample_id_col sample'
+                module_args = '--gene_id_col gene_id --feature_id_col gene_id --sample_id_col sample'
             }
             process {
                 """
@@ -180,7 +180,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("gene_id_col and exon_id_col must be different columns") }
+                { assert process.errorReport.contains("gene_id_col and feature_id_col must be different columns") }
             )
         }
     }

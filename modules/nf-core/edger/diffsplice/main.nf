@@ -15,15 +15,16 @@ process EDGER_DIFFSPLICE {
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.edger.diffsplice.exon.tsv") , emit: exon
-    tuple val(meta), path("*.edger.diffsplice.simes.tsv"), emit: simes
-    tuple val(meta), path("*.edger.diffsplice.gene.tsv") , emit: gene
-    tuple val(meta), path("*.edger.diffsplice.pdf")      , emit: plots
-    tuple val(meta), path("*.DGEGLM.edger.rds")          , emit: glm
-    tuple val(meta), path("*.DGELRT.edger.rds")          , emit: lrt
-    tuple val(meta), path("*.edger.model.txt")           , emit: model
-    tuple val(meta), path("*.R_sessionInfo.log")         , emit: session_info
-    path "versions.yml"                                  , emit: versions, topic: versions
+    tuple val(meta), path("*.edger.diffsplice.results.tsv"), emit: results
+    tuple val(meta), path("*.edger.diffsplice.simes.tsv")  , emit: simes
+    tuple val(meta), path("*.edger.diffsplice.gene.tsv")   , emit: gene
+    tuple val(meta), path("*.edger.diffsplice.pdf")        , emit: plots
+    tuple val(meta), path("*.edger.bcv.png")               , emit: bcv_plot
+    tuple val(meta), path("*.DGEGLM.edger.rds")            , emit: rdata
+    tuple val(meta), path("*.DGELRT.edger.rds")            , emit: lrt
+    tuple val(meta), path("*.edger.model.txt")             , emit: model
+    tuple val(meta), path("*.R_sessionInfo.log")           , emit: session_info
+    path "versions.yml"                                    , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,10 +35,11 @@ process EDGER_DIFFSPLICE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.edger.diffsplice.exon.tsv
+    touch ${prefix}.edger.diffsplice.results.tsv
     touch ${prefix}.edger.diffsplice.simes.tsv
     touch ${prefix}.edger.diffsplice.gene.tsv
     touch ${prefix}.edger.diffsplice.pdf
+    touch ${prefix}.edger.bcv.png
     touch ${prefix}.DGEGLM.edger.rds
     touch ${prefix}.DGELRT.edger.rds
     touch ${prefix}.edger.model.txt
