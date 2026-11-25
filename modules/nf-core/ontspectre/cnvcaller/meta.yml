@@ -1,0 +1,173 @@
+name: "ontspectre_cnvcaller"
+description: Call large copy number variants (CNVs) from long-read binned coverage ( using mosdepth) and small variant calls with ont-Spectre, a fork developed by Oxford Nanopore Technologies.
+keywords:
+  - cnv
+  - copy number
+  - structural variants
+  - long-read
+  - nanopore
+  - genomics
+tools:
+  - "ontspectre":
+      description: "ont-Spectre is a long-read copy number variation (CNV) caller designed to detect large CNVs (>100kb). ont-spectre adds diploid coverage estimation from heterozygous SNVs and sex chromosome karyotype prediction."
+      homepage: "https://github.com/epi2me-labs/ont-spectre"
+      documentation: "https://github.com/epi2me-labs/ont-spectre/blob/master/README.md"
+      tool_dev_url: "https://github.com/epi2me-labs/ont-spectre"
+      licence:
+        - "Oxford Nanopore Technologies Public License v1.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - summary_txt:
+        type: file
+        description: mosdepth summary file
+        pattern: "*.mosdepth.summary.txt"
+        ontologies: []
+    - regions_bed:
+        type: file
+        description: mosdepth binned coverage (to obtain, run Mosdepth with --by <bins>)
+        pattern: "*.regions.bed.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+    - regions_csi:
+        type: file
+        description: Index of the mosdepth binned coverage
+        pattern: "*.regions.bed.gz.csi"
+        ontologies: []
+    - snv:
+        type: file
+        description: SNV calls for the same sample, used to estimate diploid coverage. We recommend using Sniffles for these SNV calls.
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference fasta file used for alignment (for N removal)
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - metadata:
+      type: file
+      description: Optional N-region metadata from `spectre removeNs`; built from the fasta when missing
+      pattern: "*.mdr"
+      ontologies: []
+  - blacklist:
+      type: file
+      description: Optional BED of regions to ignore
+      pattern: "*.bed"
+      ontologies:
+        - edam: "http://edamontology.org/format_3003" # BED
+  - bin_size:
+      type: integer
+      description: Bin size in bp of the mosdepth coverage; must match the window passed to mosdepth `--by`
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_cnv.vcf:
+          type: file
+          description: CNV calls in VCF format
+          pattern: "*_cnv.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_cnv.bed:
+          type: file
+          description: CNV calls in BED format
+          pattern: "*_cnv.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  spc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.spc.gz:
+          type: file
+          description: Spectre candidate file, usable as input to Spectre population mode
+          pattern: "*.spc.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  karyotype:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_predicted_karyotype.txt:
+          type: file
+          description: Predicted sex chromosome karyotype
+          pattern: "*_predicted_karyotype.txt"
+          ontologies: []
+  versions_spectre:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spectre:
+          type: string
+          description: The name of the tool
+      - "spectre version 2>&1 | tail -n1 | sed 's/.*version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spectre:
+          type: string
+          description: The name of the tool
+      - "spectre version 2>&1 | tail -n1 | sed 's/.*version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@DylanMHouse"
+maintainers:
+  - "@DylanMHouse"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/polars_setuptools_ont-spectre:a102642182dbed27
+      build_id: bd-a102642182dbed27_1
+      scan_id: sc-f126a1702e232376_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/polars_setuptools_ont-spectre:c268298acfd5e637
+      build_id: bd-c268298acfd5e637_1
+      scan_id: sc-76c6b33fdc8c2ac2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/polars_setuptools_ont-spectre:a88a1446daaf604b
+      build_id: bd-a88a1446daaf604b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/053f18bb8a40ea805d2b1cc594c7b824d3c723d9ba9347dbfcca3832649d0184/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/polars_setuptools_ont-spectre:147090f668f7e817
+      build_id: bd-147090f668f7e817_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c72a261e7f6dcc104ebdcd7ba5b00b82ccc167299340ac68411e02268a8dec07/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/spectre/cnvcaller/.conda-lock/linux_amd64-bd-c268298acfd5e637_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/spectre/cnvcaller/.conda-lock/linux_arm64-bd-a102642182dbed27_1.txt
