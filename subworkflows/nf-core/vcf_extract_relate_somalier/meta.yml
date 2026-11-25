@@ -7,6 +7,7 @@ keywords:
   - vcf
   - ped
   - relatedness
+  - ancestry
 components:
   - htslib/bgziptabix
   - somalier/extract
@@ -16,8 +17,8 @@ input:
   - ch_vcfs:
       description: |
         The input VCFs to perform the stats on, optionally with their indices.
-        This channel can also contain the number of samples in the same family/group
-        to check relatedness. This is advised to add as it can improve the efficiency of your pipeline
+        The count is the expected number of input VCFs in the same family or case group.
+        Providing it allows relatedness and ancestry analyses to start as soon as all VCFs in a group arrive.
         Structure: [ val(meta), path(vcf), path(tbi), val(count) ]
   - ch_fasta:
       description: |
@@ -43,12 +44,15 @@ input:
         Structure: [ path(txt) ]
   - val_common_id:
       description: |
-        Optional - A common identifier in the meta map.
-        This will be used to determine which VCFs should be used in somalier_relate.
-        This value should be given when using single sample VCFs
+        Optional - The name of the meta map key used to group VCFs for both relatedness and ancestry,
+        for example family_id or case_id. Its value becomes meta.id in both analyses' outputs.
+        Input meta maps for a group must match apart from meta.id, and the PED input must use the resulting grouped meta map.
+        When no key is supplied, VCFs are grouped using their unchanged meta maps.
   - ch_ancestry_reference:
       description: |
-        Optional labels and Somalier files for reference samples with known ancestry. Supply an empty channel in this input position to skip ancestry analysis. These are used with each input VCF's extracted Somalier file.
+        Optional labels and Somalier files for reference samples with known ancestry.
+        Supply a single reference tuple, which is reused for every family or case group.
+        Supply an empty channel in this input position to skip ancestry analysis.
         Structure: [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
 output:
   - extract:
@@ -69,11 +73,13 @@ output:
         Structure: [ val(meta), path(tsv) ]
   - ancestry_tsv:
       description: |
-        A TSV file containing ancestry information for the query and labelled reference samples
+        One TSV file per group containing ancestry information for each query sample and the labelled reference samples.
+        The meta.id and filename prefix use the group identifier when val_common_id is supplied.
         Structure: [ val(meta), path(tsv) ]
   - ancestry_html:
       description: |
-        An HTML file containing an interactive ancestry plot
+        One HTML file per group containing an interactive ancestry plot for the query and labelled reference samples.
+        The meta.id and filename prefix use the group identifier when val_common_id is supplied.
         Structure: [ val(meta), path(html) ]
 authors:
   - "@nvnieuwk"

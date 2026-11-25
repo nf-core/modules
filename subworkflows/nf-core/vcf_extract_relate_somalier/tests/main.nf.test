@@ -91,18 +91,26 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of([
-                    [id: "test"],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
-                    [],
-                    1
-                ])
-                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
-                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
-                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)])
-                input[4] = Channel.of([[id: "test"], []])
+                input[0] = Channel.of(
+                    [
+                        [id: "test", family_id: "family1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        2
+                    ],
+                    [
+                        [id: "test2", family_id: "family1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        2
+                    ]
+                )
+                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]).collect()
+                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]).collect()
+                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "family1", family_id: "family1"], []])
                 input[5] = []
-                input[6] = []
+                input[6] = "family_id"
                 input[7] = Channel.of([
                     [id: "1000G"],
                     file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
@@ -113,6 +121,14 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert workflow.out.ancestry_tsv.size() == 1 },
+                { assert workflow.out.ancestry_tsv[0][0].id == "family1" },
+                { assert path(workflow.out.ancestry_tsv[0][1]).readLines()
+                    .drop(1)
+                    .collect { it.split('\t', -1) }
+                    .findAll { it[2] == '' }
+                    .collect { it[0] }
+                    .sort() == ["NA12878", "NA24385"] },
                 { assert snapshot(
                     workflow.out.extract.collect { [it[0], file(it[1]).name] },
                     workflow.out.html.collect { [it[0], file(it[1]).name] },
@@ -121,6 +137,54 @@ nextflow_workflow {
                     workflow.out.ancestry_tsv.collect { [it[0], file(it[1]).name] },
                     workflow.out.ancestry_html.collect { [it[0], file(it[1]).name] }
                 ).match() }
+            )
+        }
+    }
+    test("homo_sapiens ancestry case groups - [vcf, vcf, vcf] - case_id - labels - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "test", case_id: "case1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ],
+                    [
+                        [id: "test2", case_id: "case1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "test3", case_id: "case2"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                )
+                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]).collect()
+                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]).collect()
+                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "case1", case_id: "case1"], []], [[id: "case2", case_id: "case2"], []])
+                input[5] = []
+                input[6] = "case_id"
+                input[7] = Channel.of([
+                    [id: "1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
+                    []
+                ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.ancestry_tsv.collect { it[0].id }.sort() == ["case1", "case2"] },
+                { assert workflow.out.ancestry_html.collect { it[0].id }.sort() == ["case1", "case2"] },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
