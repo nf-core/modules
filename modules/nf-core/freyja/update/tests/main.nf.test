@@ -67,6 +67,34 @@ nextflow_process {
         }
     }
 
+    test("RSVa - value db name - no lineages_topology ") {
+
+        when {
+            params {
+                freyja_update_args = "--pathogen RSVa"
+            }
+
+            process {
+                """
+                input[0] = "test_db"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.config.get(0)).text.contains("RSVa") },
+                { assert process.out.lineages_topology == [] },
+                { assert snapshot(
+                        file(process.out.barcodes.get(0)).name,
+                        process.out.findAll { key, val -> key.startsWith("versions") }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("SARS-cov-2 - value db name - stub ") {
         options "-stub"
 
