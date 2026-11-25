@@ -13,18 +13,30 @@ tools:
       homepage: "https://github.com/Lukecele/tau-glymphatic-continuum"
       documentation: "https://github.com/Lukecele/tau-glymphatic-continuum#readme"
       tool_dev_url: "https://github.com/Lukecele/tau-glymphatic-continuum"
-      doi: "10.5281/zenodo.24297489"
+      doi: "10.5281/zenodo.24393484"
       licence:
         - "MIT"
       identifier: "biotools:tau-glymphatic-continuum"
       args_id: "$args"
 
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alps:
+        type: float
+        description: Patient DTI-ALPS index (e.g. 1.60 for healthy, 1.15 for AD)
+    - apoe_e4:
+        type: integer
+        description: Number of APOE-e4 high-risk alleles (0, 1, or 2)
+    - trem2_r47h:
+        type: boolean
+        description: Whether the sample carries the TREM2 R47H loss-of-function variant
+    - nlrp3:
+        type: boolean
+        description: Whether chronic NLRP3 inflammasome hyper-activation is present
 
 output:
   report:
@@ -33,23 +45,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "${prefix}.txt":
+      - "${prefix}.{txt,json}":
           type: file
-          description: Optional biophysical glymphatic clearance text report produced when --json is not set
-          pattern: "*.txt"
+          description: Biophysical glymphatic clearance report in text or structured JSON format (with --json)
+          pattern: "*.{txt,json}"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
-  json:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "${prefix}.json":
-          type: file
-          description: Optional structured JSON biophysical diagnostics produced when --json is set
-          pattern: "*.json"
-          ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
   versions_tauglymphatic:
     - - "${task.process}":
