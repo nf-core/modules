@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metabinner_metabinner"
+description: Ensemble binning of metagenomic contigs into genomes using coverage
+  and k-mer composition profiles
+keywords:
+  - binning
+  - ensemble
+  - metagenomics
+  - contigs
+  - genome recovery
+tools:
+  - "metabinner":
+      description: "Ensemble binning method to recover individual genomes from complex
+        microbial communities"
+      homepage: "https://github.com/ziyewang/MetaBinner"
+      documentation: "https://github.com/ziyewang/MetaBinner/blob/master/README.md"
+      tool_dev_url: "https://github.com/ziyewang/MetaBinner"
+      doi: "10.1186/s13059-022-02832-6"
+      licence: ["GPL-3.0-only"]
+      identifier: biotools:metabinner
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: Metagenomic assembly contigs, optionally gzipped
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - kmer:
+        type: file
+        description: |
+          K-mer composition profile, as produced by MetaBinner's `gen_kmer.py`
+          (e.g. `gen_kmer.py contigs.fa 1000 4`), optionally gzipped.
+          Please see how to generate this file in the MetaBinner documentation.
+        pattern: "*.{csv,csv.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+    - depth:
+        type: file
+        description: |
+          Depth profile, optionally gzipped. Tab-separated, with a header
+          row, contig IDs in the first column and one mean depth column per
+          sample. Raw `jgi_summarize_bam_contig_depths` output is accepted:
+          Extra columns are dropped. Rows that are not in the K-mer profile
+          are dropped.
+        pattern: "*.{txt,tsv,txt.gz,tsv.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3989" # GZIP
+
+output:
+  binning_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.metabinner.tsv.gz:
+          type: file
+          description: |
+            Gzipped, headerless tab-separated table assigning each contig
+            (first column) to a bin ID (second column), sorted by contig ID
+          pattern: "*.metabinner.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3989" # GZIP
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.metabinner.log.gz:
+          type: file
+          description: Gzipped MetaBinner run log
+          pattern: "*.metabinner.log.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+            - edam: "http://edamontology.org/format_3989" # GZIP
+  versions_metabinner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabinner:
+          type: string
+          description: The name of the tool
+      - 1.4.4:
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabinner:
+          type: string
+          description: The name of the tool
+      - 1.4.4:
+          type: string
+          description: The version of the tool
+
+authors:
+  - "@ESapenaVentura"
+maintainers:
+  - "@ESapenaVentura"
