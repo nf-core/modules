@@ -1,6 +1,5 @@
 name: "gridss_annotate"
-description: Annotates single breakends in a GRIDSS VCF with RepeatMasker
-  annotations using gridss_annotate_vcf_repeatmasker.
+description: Annotates single breakends in a GRIDSS VCF with RepeatMasker annotations using gridss_annotate_vcf_repeatmasker.
 keywords:
   - gridss
   - structural variants
@@ -67,3 +66,27 @@ authors:
   - "@emmcauley"
 maintainers:
   - "@emmcauley"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--7b2fca026d981d95
+      build_id: bd-7b2fca026d981d95_1
+      scan_id: sc-ee4fad98ff53b683_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--5af3ed2877afedd8
+      build_id: bd-5af3ed2877afedd8_1
+      scan_id: sc-68b9a9cca85d2ff2_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--2caca012e5090729
+      build_id: bd-2caca012e5090729_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8bb0dcadc1e65bdd7efe79eda9e18c7cd01e5513698b8ff69a756ed084be123/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--4f176b7e2408fede
+      build_id: bd-4f176b7e2408fede_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6eb03d21e6da5af38f5f2dcae878eb1e7cd627ac3f7c83bda21ceff993b941d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gridss/annotate/.conda-lock/linux_amd64-bd-7b2fca026d981d95_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gridss/annotate/.conda-lock/linux_arm64-bd-5af3ed2877afedd8_1.txt

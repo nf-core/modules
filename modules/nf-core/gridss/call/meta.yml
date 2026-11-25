@@ -1,6 +1,5 @@
 name: "gridss_call"
-description: Run the GRIDSS variant calling step to identify structural variants
-  from pre-processed and assembled alignments.
+description: Run the GRIDSS variant calling step to identify structural variants from pre-processed and assembled alignments.
 keywords:
   - gridss
   - structural variants
@@ -36,12 +35,10 @@ input:
         ontologies: []
     - preprocess_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS preprocess step
-          preprocess step
+        description: Working directory containing the output of the GRIDSS preprocess step preprocess step
     - assemble_dir:
         type: directory
-        description: Working directory containing the output of the GRIDSS assemble step
-          assemble step
+        description: Working directory containing the output of the GRIDSS assemble step assemble step
     - assemble_bam:
         type: file
         description: The assembly BAM file created by the GRIDSS assemble step
@@ -74,9 +71,7 @@ input:
           e.g. `[ id:'test' ]`
     - gridss_config:
         type: file
-        description: OPTIONAL - A GRIDSS configuration file (Java .properties format).
-          See the default config for available settings,
-          https://github.com/PapenfussLab/gridss/blob/825bc8e1bb092e9bb2ccb0c1c51dc6e7e1a922dd/src/main/resources/gridss.properties
+        description: OPTIONAL - A GRIDSS configuration file (Java .properties format). See the default config for available settings, https://github.com/PapenfussLab/gridss/blob/825bc8e1bb092e9bb2ccb0c1c51dc6e7e1a922dd/src/main/resources/gridss.properties
         ontologies: []
 output:
   vcf:
@@ -116,3 +111,27 @@ authors:
   - "@imsarath"
 maintainers:
   - "@imsarath"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--5af3ed2877afedd8
+      build_id: bd-5af3ed2877afedd8_1
+      scan_id: sc-68b9a9cca85d2ff2_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/gridss:2.13.2--7b2fca026d981d95
+      build_id: bd-7b2fca026d981d95_1
+      scan_id: sc-ee4fad98ff53b683_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--2caca012e5090729
+      build_id: bd-2caca012e5090729_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8bb0dcadc1e65bdd7efe79eda9e18c7cd01e5513698b8ff69a756ed084be123/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gridss:2.13.2--4f176b7e2408fede
+      build_id: bd-4f176b7e2408fede_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6eb03d21e6da5af38f5f2dcae878eb1e7cd627ac3f7c83bda21ceff993b941d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gridss/call/.conda-lock/linux_amd64-bd-7b2fca026d981d95_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gridss/call/.conda-lock/linux_arm64-bd-5af3ed2877afedd8_1.txt
