@@ -186,7 +186,9 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
 #'
 #' Removes a trailing '.<digits>' version. Unlike tximport's `ignoreTxVersion`,
 #' which removes everything after the first '.', this keeps suffixes such as
-#' GENCODE's '_PAR_Y' distinct from the IDs they are attached to.
+#' GENCODE's '_PAR_Y' distinct from the IDs they are attached to. Such IDs keep
+#' their inner version (e.g. 'ENST00000381192.10_PAR_Y'), so they only match a
+#' tx2gene with the same version.
 #'
 #' @param ids Character vector of transcript IDs.
 #'
@@ -231,6 +233,10 @@ for (ao in names(args_opt)) {
         opt[[ao]] <- args_opt[[ao]]
     }
 }
+# parse_args() drops options given without a value, so a bare flag is checked separately
+if (is.null(args_opt[["ignore_tx_version"]]) && "--ignore_tx_version" %in% strsplit('$task.ext.args', " +")[[1]]) {
+    opt\$ignore_tx_version <- TRUE
+}
 opt\$ignore_tx_version <- as.logical(opt\$ignore_tx_version)
 if (is.na(opt\$ignore_tx_version)) {
     stop("--ignore_tx_version must be true or false")
@@ -272,7 +278,6 @@ if (opt\$ignore_tx_version) {
 # Read transcript and sample data
 transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col, opt\$ignore_tx_version)
 
-
 # Make coldata just to appease the summarizedexperiment
 coldata <- data.frame(files = fns, names = names, check.names = FALSE)
 rownames(coldata) <- coldata[["names"]]
@@ -287,7 +292,8 @@ se <- create_summarized_experiment(txi[["counts"]], txi[["abundance"]], txi[["le
 # makeCountsFromAbundance() only uses the row means of the length matrix, so one column suffices.
 assays(se)[["counts_scaled"]] <- makeCountsFromAbundance(txi\$counts, txi\$abundance, txi\$length, "scaledTPM")
 
-tx_gene <- transcript_info\$tx2gene[["gene_id"]]
+# Gene IDs are indexed by name below, so numeric IDs must not be used as positions
+tx_gene <- as.character(transcript_info\$tx2gene[["gene_id"]])
 gene_median_length <- tapply(rowMeans(txi\$length), tx_gene, median)[tx_gene]
 assays(se)[["counts_dtu_scaled"]] <- makeCountsFromAbundance(
     txi\$counts,

@@ -270,6 +270,67 @@ nextflow_process {
         }
     }
 
+    test("saccharomyces_cerevisiae - salmon - gtf - numeric_gene_ids") {
+        def salmon
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            salmon = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/salmon_results.tar.gz')
+            run("CUSTOM_TX2GENE") {
+                script "../../../custom/tx2gene/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
+                    ])
+                    input[1] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
+                    input[2] = 'salmon'
+                    input[3] = 'gene_id'
+                    input[4] = 'gene_name'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], file('${salmon}').listFiles().collect() ]
+                // Replace gene IDs with numbers, as in Entrez/NCBI annotations
+                input[1] = CUSTOM_TX2GENE.out.tx2gene.map { meta, tx2gene ->
+                    def lines = tx2gene.readLines()
+                    def numeric_ids = [:]
+                    def renamed = lines.drop(1).collect { line ->
+                        def fields = line.split('\\t', -1)
+                        fields[1] = numeric_ids.computeIfAbsent(fields[1]) { 100000 + numeric_ids.size() }.toString()
+                        fields.join('\\t')
+                    }
+                    def modified = file("\${workDir}/numeric_tx2gene.tsv")
+                    modified.text = ([lines[0]] + renamed).join('\\n') + '\\n'
+                    [meta, modified]
+                }
+                input[2] = 'salmon'
+                """
+            }
+        }
+
+        then {
+            def dtu_lines = path(process.out.counts_transcript_dtu_scaled[0][1]).readLines()
+
+            assertAll(
+                { assert process.success },
+                { assert dtu_lines.size() > 1 },
+                { assert !dtu_lines.drop(1).any { line -> line.split('\t').contains('NA') } },
+                { assert snapshot(
+                    process.out.counts_transcript_dtu_scaled,
+                    process.out.counts_transcript_scaled,
+                    process.out.versions).match()
+                }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - salmon - gtf - ignore_tx_version") {
 
         def salmon

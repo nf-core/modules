@@ -4,8 +4,9 @@ description: |
   Import transcript-level abundances and estimated counts for gene-level
   analysis packages. `ext.args` accepts `--tx_col`, `--gene_id_col` and
   `--gene_name_col` to select tx2gene columns, and `--ignore_tx_version true`
-  to strip version suffixes from transcript IDs in both the quantifications
-  and the tx2gene before matching them.
+  to strip trailing version suffixes from transcript IDs in both the
+  quantifications and the tx2gene before matching them. With it, the
+  transcript-level tables and `tx2gene_augmented.tsv` use the stripped IDs.
 keywords:
   - gene
   - kallisto
