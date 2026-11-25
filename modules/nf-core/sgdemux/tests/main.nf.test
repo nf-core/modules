@@ -12,14 +12,16 @@ nextflow_process {
         def fastq_dir
         setup {
             // sgdemux writes its output into the input dir, named after meta.id
-            fastq_dir = extract('https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/fastq.tar.gz', extractDir: "${launchDir}/sim-data")
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            fastq_dir = extract(modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/fastq.tar.gz', extractDir: "${launchDir}/sim-data")
         }
         when {
             process {
                 """
                 input[0] = [
                     [id:'sim-data'],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/out.sample_meta.csv', checkIfExists:true),
                     file('${fastq_dir}')
                 ]
                 """
@@ -48,7 +50,7 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [id:'sim-data'],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/sim-data/out.sample_meta.csv", checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/out.sample_meta.csv', checkIfExists:true),
                     []
                 ])
                 """
