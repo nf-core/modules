@@ -1,0 +1,225 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaproviz_processingnormalize"
+description: >-
+  Total ion count (TIC) normalization of the metabolite values. Each sample is divided by its total ion count and
+  rescaled by the median total ion count, which corrects for differences in injection amount or instrument sensitivity.
+  This is the third module of the processing chain (processingfilter, processingimpute, processingnormalize and
+  processingoutliers). A sample with a total ion count of 0 is removed from the output data. Pool and QC samples must be
+  removed from the data beforehand, and missing values should be imputed first.
+keywords:
+  - metabolomics
+  - preprocessing
+  - normalization
+  - total ion count
+  - MetaProViz
+tools:
+  - "metaproviz":
+      description: "MetaProViz — Metabolomics Processing, functional analysis and Visualization."
+      homepage: "https://saezlab.github.io/MetaProViz/"
+      documentation: "https://saezlab.github.io/MetaProViz/"
+      tool_dev_url: "https://github.com/saezlab/MetaProViz"
+      doi: "10.1038/s44320-026-00231-8"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - se_rds:
+        type: file
+        description: >-
+          A SummarizedExperiment saved as RDS, ideally the output of metaproviz/processingimpute. The assay holds the numerical
+          values of the metabolites, the rowData the feature metadata and the colData the sample metadata. Both NA and 0 count
+          as not detected, and the normalization counts NA as 0. The colData can hold a Conditions column, which only colors the
+          plots. Use either this input or the three inputs data_matrix, feature_matrix and sample_matrix, not both.
+        pattern: "*.rds"
+        optional: true
+        ontologies: []
+    - data_matrix:
+        type: file
+        description: >-
+          Numerical values of the metabolites as TSV or CSV file, with the features in rows and the samples in columns.
+          The first column holds the feature IDs. Empty cells, NA and 0 count as not detected. Required together with
+          feature_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - feature_matrix:
+        type: file
+        description: >-
+          Feature metadata as TSV or CSV file. The first column holds the feature IDs, matching the rows of data_matrix.
+          Required together with data_matrix and sample_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - sample_matrix:
+        type: file
+        description: >-
+          Sample metadata as TSV or CSV file. The first column holds the sample IDs, matching the columns of data_matrix. It
+          can hold the Conditions column. Required together with data_matrix and feature_matrix.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+
+  - output_format:
+      type: string
+      description: >-
+        Format of the output with the normalized values. `se` (or an empty value) writes the
+        SummarizedExperiment as RDS, `tsv` or `csv` write it as three tables (data_matrix, feature_matrix and
+        sample_matrix).
+output:
+  se:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.normalized.rds":
+          type: file
+          description: >-
+            SummarizedExperiment with the normalized values, without the samples that have a total ion count of 0.
+            Written if output_format is `se` or empty.
+          pattern: "*.normalized.rds"
+          optional: true
+          ontologies: []
+  normalized_matrices:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.normalized.*_matrix.{tsv,csv}":
+          type: file
+          description: >-
+            The same data as three tables with the same shape as the input: data_matrix, feature_matrix and
+            sample_matrix. Written if output_format is `tsv` or `csv`.
+          pattern: "*.normalized.*_matrix.{tsv,csv}"
+          optional: true
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3752 # CSV
+  removed_samples:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.removed_samples.tsv":
+          type: file
+          description: >-
+            Table with one row per removed sample (Sample). These samples have a total ion count of 0, since every
+            value is NA or 0. Header only if no sample was removed.
+          pattern: "*.removed_samples.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  missing_values:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.missing_values.tsv":
+          type: file
+          description: >-
+            Count table with one row per feature that has missing values in the input. The columns give the feature
+            (Feature), the number of samples in which it is NA (NA_values) and the number of samples in which it is 0
+            (Zero_values). Header only if there are no missing values.
+          pattern: "*.missing_values.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.plots.rds":
+          type: file
+          description: >-
+            RDS with the ggplot objects of the RLA (relative log abundance) boxplots per sample, before and after the
+            normalization and side by side.
+          pattern: "*.plots.rds"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.report.html":
+          type: file
+          description: >-
+            HTML report with the run summary, the parameters of this run, the missing values, the RLA plots and the R session info.
+          pattern: "*.report.html"
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: >-
+            INFO/WARN log.
+          pattern: "*.log"
+          ontologies: []
+  versions_metaproviz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.1:
+          type: string
+          description: The version of MetaProViz
+  versions_r_base:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.99.1:
+          type: string
+          description: The version of MetaProViz
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.5.3:
+          type: string
+          description: The version of base R
+
+authors:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+maintainers:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
