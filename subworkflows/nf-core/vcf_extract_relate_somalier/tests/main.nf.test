@@ -14,6 +14,7 @@ nextflow_workflow {
 
     tag "bcftools"
     tag "bcftools/merge"
+    tag "bcftools/view"
     tag "htslib"
     tag "htslib/bgziptabix"
     tag "somalier"
@@ -45,6 +46,81 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens ancestry - vcf - fasta - fai - sites - 1KG labels and panel") {
+        setup {
+            run("BCFTOOLS_VIEW") {
+                script "../../../../modules/nf-core/bcftools/view/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            run("SOMALIER_EXTRACT", alias: "SOMALIER_EXTRACT_PANEL") {
+                script "../../../../modules/nf-core/somalier/extract/main.nf"
+                process {
+                    """
+                    input[0] = BCFTOOLS_VIEW.out.vcf
+                        .join(BCFTOOLS_VIEW.out.index)
+                    input[1] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                    ]
+                    input[2] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                    ]
+                    input[3] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                    [],
+                    1
+                ])
+                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)])
+                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)])
+                input[4] = Channel.of([[id: "test"], []])
+                input[5] = []
+                input[6] = []
+                input[7] = Channel.of([
+                    [id: "1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+                ]).join(SOMALIER_EXTRACT_PANEL.out.extract)
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.extract.collect { [it[0], file(it[1]).name] },
+                    workflow.out.html.collect { [it[0], file(it[1]).name] },
+                    workflow.out.pairs_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.samples_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.ancestry_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.ancestry_html.collect { [it[0], file(it[1]).name] }
+                ).match() }
             )
         }
     }
