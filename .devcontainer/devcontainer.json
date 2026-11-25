@@ -1,21 +1,30 @@
 {
     "name": "nfcore-modules",
-    "image": "nfcore/devcontainer:dev",
-
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
     "remoteEnv": {
         // Workspace path on the host for mounting with docker-outside-of-docker
         "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
         "DOCKER_API_VERSION": "1.43"
     },
-
-    "onCreateCommand": "./.devcontainer/setup.sh",
-
     "remoteUser": "root",
     "privileged": true,
-
     "hostRequirements": {
         "cpus": 4,
         "memory": "16gb",
         "storage": "32gb"
-    }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": ["ms-python.python"]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    "mounts": ["source=${localWorkspaceFolderBasename}-pixi,target=${containerWorkspaceFolder}/.pixi,type=volume"],
+    "postCreateCommand": "./.devcontainer/setup.sh"
 }
