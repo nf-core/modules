@@ -31,7 +31,11 @@ nextflow_process {
                 { assert process.out.db_cluster.size() == 1 },
                 {
                     def all_files = file(process.out.db_cluster[0][1]).listFiles()
-                    def all_file_names = all_files.collect { it.name }.toSorted()
+                    // Linclust2 (default since MMseqs2 19) writes one result part per available CPU, regardless of --threads,
+                    // so the numbered parts are checked for presence only
+                    def part_files = all_files.findAll { it.name ==~ /test_output_cluster\.\d+/ }
+                    assert part_files.size() > 0
+                    def all_file_names = (all_files - part_files).collect { it.name }.toSorted()
                     def stable_file_names = [
                         'test_output_cluster.dbtype',
                         'test_output_cluster.index'

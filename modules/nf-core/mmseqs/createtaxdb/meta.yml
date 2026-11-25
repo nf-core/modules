@@ -8,8 +8,7 @@ keywords:
   - taxonomy
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
-        suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
@@ -88,3 +87,27 @@ authors:
   - "@dialvarezs"
 maintainers:
   - "@dialvarezs"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/mmseqs2:20.ae60e--1a2ed8d09d2e9938
+      build_id: bd-1a2ed8d09d2e9938_1
+      scan_id: sc-2a0108d6989703be_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mmseqs2:20.ae60e--0746edfc81192f32
+      build_id: bd-0746edfc81192f32_1
+      scan_id: sc-33a51d9e327f51ee_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mmseqs2:20.ae60e--01cb3cb4aab5089f
+      build_id: bd-01cb3cb4aab5089f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/161e2ded0fc1b8d724333808695d7da12a8643668a59b652796e7a51ff9b4f3e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mmseqs2:20.ae60e--672a1de26ee37884
+      build_id: bd-672a1de26ee37884_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/dbd22124e4588c2d700310059db732b877a434e81679ae9d521137fdbb7e2afb/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mmseqs/createtaxdb/.conda-lock/linux_amd64-bd-0746edfc81192f32_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/mmseqs/createtaxdb/.conda-lock/linux_arm64-bd-1a2ed8d09d2e9938_1.txt
