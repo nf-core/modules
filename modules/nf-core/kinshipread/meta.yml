@@ -1,0 +1,104 @@
+name: "kinshipread"
+description: Estimate relationship from ancient DNA using READv2
+keywords:
+  - kinship
+  - READ
+  - kinship-read
+  - "ancient DNA"
+tools:
+  - "kinship-read":
+      description: "Relationship Estimation from Ancient DNA version 2 (READv2)"
+      homepage: "https://github.com/GuntherLab/READv2?tab=readme-ov-file"
+      documentation: "https://github.com/GuntherLab/READv2?tab=readme-ov-file"
+      tool_dev_url: "https://github.com/GuntherLab/READv2"
+      doi: "10.1186/s13059-024-03350-3"
+      licence:
+        - "GPL v3"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bed:
+        type: file
+        description: The input .bed file
+        ontologies:
+          - edam: http://edamontology.org/format_3288 ## PLINK PED/MAP (binary) file
+    - bim:
+        type: file
+        description: The input .bim file
+        ontologies:
+          - edam: http://edamontology.org/format_3288 ## PLINK PED/MAP (binary) file
+    - fam:
+        type: file
+        description: The input .fam file
+        ontologies:
+          - edam: http://edamontology.org/format_3288 ## PLINK PED/MAP (binary) file
+
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_Read_Results.tsv:
+          type: file
+          description: Kinship results TSV file
+          ontologies:
+            - edam: http://edamontology.org/format_3475 ## TSV
+
+  normalised_means:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_meansP0_AncientDNA_normalized_READv2.tsv:
+          type: file
+          description: Normalized means file for Ancient DNA analysis
+          ontologies:
+            - edam: http://edamontology.org/format_3475 ## TSV
+
+  results_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_Read_Results.pdf:
+          type: file
+          description: Kinship results PDF file
+          ontologies:
+            - edam: http://edamontology.org/format_3533 ## PDF
+
+  versions_read:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kinship-read:
+          type: string
+          description: The name of the tool
+      - kinship-read --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kinship-read:
+          type: string
+          description: The name of the tool
+      - kinship-read --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@TCLamnidis"
+maintainers:
+  - "@TCLamnidis"
