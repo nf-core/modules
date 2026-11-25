@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tchem_fetchlists"
+description: Downloads and checks the single-cell barcode lists tchem uses, which belong to their vendors and are never redistributed
+keywords:
+  - single-cell
+  - scrnaseq
+  - barcode
+  - whitelist
+  - download
+tools:
+  - "tchem":
+      description: "tussl-chemistry: names the kit, geometry, barcode lists, strand and library type of a single-cell RNA library from its first reads, across vendors."
+      homepage: "https://github.com/Tussl-Co/TusslChemistry"
+      documentation: "https://github.com/Tussl-Co/TusslChemistry/blob/master/README.md"
+      tool_dev_url: "https://github.com/Tussl-Co/TusslChemistry"
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - cellranger:
+      type: directory
+      description: |
+        Optional Cell Ranger install directory, downloaded from 10x under its licence; the
+        lists only Cell Ranger ships (10x Flex) are copied from it. Pass [] to skip them, and
+        tchem then reports the layouts that need them as not checked.
+output:
+  whitelists:
+    - whitelists:
+        type: directory
+        description: The barcode lists, each checked against its registered sha256, with their packed forms for faster loads
+        pattern: "whitelists"
+  versions_tchem:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tchem:
+          type: string
+          description: The name of the tool
+      - tchem --version | sed 's/^tchem //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tchem:
+          type: string
+          description: The name of the tool
+      - tchem --version | sed 's/^tchem //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@artymisterJ"
+maintainers:
+  - "@artymisterJ"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/tussl-chemistry:0.1.0--c2715f83a6c0aba0
+      build_id: bd-c2715f83a6c0aba0_1
+      scan_id: sc-96534eafff2ae216_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/tussl-chemistry:0.1.0--6043b7490da0bfc8
+      build_id: bd-6043b7490da0bfc8_1
+      scan_id: sc-8a05607dd86e3103_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tussl-chemistry:0.1.0--b887ba17a3715a2e
+      build_id: bd-b887ba17a3715a2e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b072816713ba24255537e669013831b88246dac6418e3730a39588eec77857d/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tussl-chemistry:0.1.0--7c5ad38088698664
+      build_id: bd-7c5ad38088698664_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c61b3fd2a2c757ebba98edeec47abf69e8520970fbc5fbda0a17ceb99e59ec2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tchem/fetchlists/.conda-lock/linux_amd64-bd-6043b7490da0bfc8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tchem/fetchlists/.conda-lock/linux_arm64-bd-c2715f83a6c0aba0_1.txt

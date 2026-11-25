@@ -1,0 +1,116 @@
+nextflow_process {
+
+    name "Test Process TCHEM_DETECT"
+    script "../main.nf"
+    process "TCHEM_DETECT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tchem"
+    tag "tchem/detect"
+    tag "tchem/fetchlists"
+
+    // The barcode lists belong to their vendors and are never shipped, so the tests fetch them.
+    setup {
+        run("TCHEM_FETCHLISTS") {
+            script "../../fetchlists/main.nf"
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - 10x 3' v3 - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = TCHEM_FETCHLISTS.out.whitelists
+                """
+            }
+        }
+
+        then {
+            def report = path(process.out.json[0][1]).json
+            assertAll(
+                { assert process.success },
+                { assert report.schema_version == '1.0' },
+                { assert report.verdict == 'match' },
+                { assert report.confidence == 'high' },
+                { assert report.layout.name == "10x 3' v3/v3.1" },
+                { assert report.layout.barcode_lists == ['whitelists/10x_v3_permit.txt'] },
+                { assert report.library.kind == 'gene expression' },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - 10x 5' v2 - fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = TCHEM_FETCHLISTS.out.whitelists
+                """
+            }
+        }
+
+        then {
+            def report = path(process.out.json[0][1]).json
+            assertAll(
+                { assert process.success },
+                { assert report.verdict == 'match' },
+                { assert report.confidence == 'high' },
+                { assert report.layout.name == "10x 5' v1/v2" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - 10x 3' v3 - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = TCHEM_FETCHLISTS.out.whitelists
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
