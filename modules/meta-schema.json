@@ -169,16 +169,64 @@
             }
         },
         "input": {
-            "$ref": "#/$defs/channelArray",
-            "description": "Input channels for the module"
+            "description": "Input channels for the module, or the input record of a module that uses static types",
+            "if": {
+                "$ref": "#/$defs/recordLayout"
+            },
+            "then": {
+                "$ref": "#/$defs/inputRecordArray"
+            },
+            "else": {
+                "$ref": "#/$defs/channelArray"
+            }
         },
         "output": {
-            "$ref": "#/$defs/channelMap",
-            "description": "Output channels for the module"
+            "description": "Output channels for the module, or the output record of a module that uses static types",
+            "if": {
+                "$ref": "#/$defs/recordLayout"
+            },
+            "then": {
+                "$ref": "#/$defs/outputRecordArray"
+            },
+            "else": {
+                "$ref": "#/$defs/channelMap"
+            }
         },
         "topics": {
-            "$ref": "#/$defs/channelMap",
-            "description": "Topics of the module"
+            "type": "object",
+            "description": "Topics of the module",
+            "properties": {
+                "versions": {
+                    "if": {
+                        "$ref": "#/$defs/recordLayout"
+                    },
+                    "then": {
+                        "items": {
+                            "properties": {
+                                "fields": {
+                                    "required": ["process", "tool", "version"],
+                                    "propertyNames": {
+                                        "enum": ["process", "tool", "version"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patternProperties": {
+                ".*": {
+                    "if": {
+                        "$ref": "#/$defs/recordLayout"
+                    },
+                    "then": {
+                        "$ref": "#/$defs/topicRecordArray"
+                    },
+                    "else": {
+                        "$ref": "#/$defs/channelArray"
+                    }
+                }
+            }
         },
         "authors": {
             "type": "array",
@@ -310,6 +358,132 @@
                 }
             },
             "required": ["type", "description"]
+        },
+        "recordLayout": {
+            "type": "array",
+            "contains": {
+                "type": "object",
+                "required": ["type"],
+                "properties": {
+                    "type": {
+                        "const": "record"
+                    }
+                }
+            }
+        },
+        "inputRecordArray": {
+            "type": "array",
+            "description": "The single input record of the process",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+                "$ref": "#/$defs/record",
+                "required": ["description"],
+                "properties": {
+                    "fields": {
+                        "required": ["id"],
+                        "additionalProperties": {
+                            "$ref": "#/$defs/recordField",
+                            "unevaluatedProperties": false
+                        }
+                    }
+                }
+            }
+        },
+        "outputRecordArray": {
+            "type": "array",
+            "description": "The single output record of the process",
+            "minItems": 1,
+            "maxItems": 1,
+            "items": {
+                "$ref": "#/$defs/record",
+                "required": ["description"],
+                "properties": {
+                    "fields": {
+                        "required": ["id", "meta"],
+                        "additionalProperties": {
+                            "$ref": "#/$defs/recordOutputField"
+                        }
+                    }
+                }
+            }
+        },
+        "topicRecordArray": {
+            "type": "array",
+            "description": "Records that the process sends to the topic",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/record",
+                "properties": {
+                    "fields": {
+                        "additionalProperties": {
+                            "$ref": "#/$defs/recordOutputField"
+                        }
+                    }
+                }
+            }
+        },
+        "record": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "record"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the record"
+                },
+                "fields": {
+                    "type": "object",
+                    "description": "Fields of the record, keyed by field name",
+                    "minProperties": 1,
+                    "propertyNames": {
+                        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+                    }
+                }
+            },
+            "required": ["type", "fields"],
+            "additionalProperties": false
+        },
+        "recordField": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Nextflow type of the field. Mark an optional field with `optional: true`, not with `?`",
+                    "pattern": "^(Boolean|Integer|Float|String|Path|Record|Duration|MemoryUnit|(List|Set|Bag)<.+>|Map<.+,.+>)$"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the field"
+                },
+                "optional": {
+                    "type": "boolean",
+                    "description": "Whether the field can be null"
+                },
+                "pattern": {
+                    "$ref": "#/$defs/elementProperties/properties/pattern"
+                },
+                "enum": {
+                    "$ref": "#/$defs/elementProperties/properties/enum"
+                },
+                "ontologies": {
+                    "$ref": "#/$defs/elementProperties/properties/ontologies"
+                }
+            },
+            "required": ["type", "description"]
+        },
+        "recordOutputField": {
+            "$ref": "#/$defs/recordField",
+            "properties": {
+                "value": {
+                    "type": "string",
+                    "description": "Expression that sets the field in main.nf, e.g. `id` or `file(\"*.bam\")`",
+                    "minLength": 1
+                }
+            },
+            "required": ["value"],
+            "unevaluatedProperties": false
         },
         "container": {
             "type": "object",
