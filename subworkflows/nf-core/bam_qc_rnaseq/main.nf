@@ -33,8 +33,12 @@ workflow BAM_QC_RNASEQ {
     // MODULE: Preseq library complexity
     //
     PRESEQ_LCEXTRAP (
-        ch_genome_bam.filter { 'preseq' in tools }
+        ch_genome_bam
+            .filter { 'preseq' in tools }
+            .map { meta, bam -> record(id: meta.id, meta: record(meta), single_end: meta.single_end ?: false, bam: bam) }
     )
+    ch_preseq_lc_extrap = PRESEQ_LCEXTRAP.out.map { result -> [ result.meta, result.lc_extrap ] }
+    ch_preseq_log       = PRESEQ_LCEXTRAP.out.map { result -> [ result.meta, result.log ] }
 
     //
     // MODULE: Feature biotype QC using featureCounts
@@ -86,7 +90,7 @@ workflow BAM_QC_RNASEQ {
 
     // Aggregate MultiQC-compatible output files
     ch_multiqc_files = channel.empty()
-        .mix(PRESEQ_LCEXTRAP.out.lc_extrap)
+        .mix(ch_preseq_lc_extrap)
         .mix(CUSTOM_MULTIQCCUSTOMBIOTYPE.out.tsv)
         .mix(QUALIMAP_RNASEQ.out.results)
         .mix(DUPRADAR.out.multiqc)
@@ -101,7 +105,7 @@ workflow BAM_QC_RNASEQ {
 
     // `remainder: true` needed because every contributor is gated behind
     // `tools` / `rseqc_modules`.
-    ch_per_sample_mqc_bundle = PRESEQ_LCEXTRAP.out.lc_extrap
+    ch_per_sample_mqc_bundle = ch_preseq_lc_extrap
         .join(CUSTOM_MULTIQCCUSTOMBIOTYPE.out.tsv,         remainder: true)
         .join(QUALIMAP_RNASEQ.out.results,                 remainder: true)
         .join(DUPRADAR.out.multiqc,                        remainder: true)
@@ -120,8 +124,8 @@ workflow BAM_QC_RNASEQ {
     multiqc_files = ch_multiqc_files // channel: [ val(meta), path(files) ]
 
     // Preseq
-    preseq_lc_extrap = PRESEQ_LCEXTRAP.out.lc_extrap // channel: [ val(meta), path(txt) ]
-    preseq_log       = PRESEQ_LCEXTRAP.out.log       // channel: [ val(meta), path(log) ]
+    preseq_lc_extrap = ch_preseq_lc_extrap         // channel: [ val(meta), path(txt) ]
+    preseq_log       = ch_preseq_log               // channel: [ val(meta), path(log) ]
 
     // Biotype QC
     featurecounts_counts  = SUBREAD_FEATURECOUNTS.out.counts     // channel: [ val(meta), path(txt) ]

@@ -14,62 +14,73 @@ tools:
         - "GPL"
       identifier: biotools:preseq
 input:
-  - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
-    - bam:
-        type: file
+  - type: record
+    description: A BAM file of one sample
+    fields:
+      id:
+        type: String
+        description: Sample identifier, used as the default output prefix
+      meta:
+        type: Record
+        optional: true
+        description: Pipeline-specific sample information, passed to the output
+      single_end:
+        type: Boolean
+        description: Whether the reads are single-end; paired-end reads run lc_extrap with `-pe`
+      bam:
+        type: Path
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
         ontologies: []
+      preseq_lcextrap_args:
+        type: String
+        optional: true
+        description: Additional arguments for preseq lc_extrap (overridden by `ext.args`)
+      output_prefix:
+        type: String
+        optional: true
+        description: Output file prefix (overridden by `ext.prefix`)
 output:
-  lc_extrap:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.lc_extrap.txt":
-          type: file
-          description: File containing output of Preseq lcextrap
-          pattern: "*.{lc_extrap.txt}"
-          ontologies: []
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.log":
-          type: file
-          description: Log file containing stderr produced by Preseq
-          pattern: "*.{log}"
-          ontologies: []
-  versions_preseq:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - preseq:
-          type: string
-          description: The name of the tool
-      - "preseq 2>&1 | sed -n 's/Version: //p'":
-          type: eval
-          description: The expression to obtain the version of the tool
-
+  - type: record
+    description: The complexity extrapolation of one sample
+    fields:
+      id:
+        value: id
+        type: String
+        description: Sample identifier from the input record
+      meta:
+        value: meta
+        type: Record
+        optional: true
+        description: The `meta` record from the input, `null` if none was given
+      lc_extrap:
+        value: file("*.lc_extrap.txt")
+        type: Path
+        description: File containing output of Preseq lcextrap
+        pattern: "*.lc_extrap.txt"
+        ontologies: []
+      log:
+        value: file("*.log")
+        type: Path
+        description: Log file containing stderr produced by Preseq
+        pattern: "*.log"
+        ontologies: []
 topics:
   versions:
-    - - ${task.process}:
-          type: string
+    - type: record
+      fields:
+        process:
+          value: '"${task.process}"'
+          type: String
           description: The name of the process
-      - preseq:
-          type: string
+        tool:
+          value: "'preseq'"
+          type: String
           description: The name of the tool
-      - "preseq 2>&1 | sed -n 's/Version: //p'":
-          type: eval
-          description: The expression to obtain the version of the tool
-
+        version:
+          value: 'eval("preseq 2>&1 | sed -n ''s/Version: //p''")'
+          type: String
+          description: The version of the tool
 authors:
   - "@drpatelh"
   - "@edmundmiller"

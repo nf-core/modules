@@ -8,14 +8,13 @@ nextflow_process {
     tag "preseq"
     tag "preseq/lcextrap"
 
+    topics "versions"
+
     test("sarscov2 - single_end") {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:true ],
-                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
-                ]
+                input[0] = record(id: 'test', single_end: true, bam: file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true))
                 """
             }
         }
@@ -23,7 +22,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
@@ -33,10 +35,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:true ],
-                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
-                ]
+                input[0] = record(id: 'test', single_end: true, bam: file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true))
                 """
             }
         }
@@ -44,7 +43,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(process.out, topics).match() }
             )
         }
     }
@@ -53,10 +52,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
-                ]
+                input[0] = record(id: 'test', single_end: false, bam: file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true))
                 """
             }
         }
@@ -64,7 +60,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
@@ -74,10 +73,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false ],
-                    [ file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true) ]
-                ]
+                input[0] = record(id: 'test', single_end: false, bam: file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true))
                 """
             }
         }
@@ -85,7 +81,27 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(process.out, topics).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - single_end - meta, output_prefix and args") {
+        when {
+            process {
+                """
+                input[0] = record(id: 'test', single_end: true, bam: file(params.modules_testdata_base_path + 'delete_me/preseq/SRR1003759_5M_subset.mr', checkIfExists: true), meta: record(id: 'test', condition: 'a'), output_prefix: 'custom', preseq_lcextrap_args: '-seed 1')
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out[0].collect { r -> [id: r.id, meta: r.meta, lc_extrap: file(r.lc_extrap), log: file(r.log).name] },
+                    topics
+                ).match() }
             )
         }
     }
