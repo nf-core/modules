@@ -46,7 +46,11 @@ process SEQTK_SAMPLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo "" | gzip > ${prefix}.fastq.gz
+    printf "%s\\n" $reads | while read f;
+    do
+        out=\$(basename \$f | sed 's/\\.f\\(ast\\)\\?q\\.gz\$/.fastq.gz/')
+        echo | gzip --no-name > ${prefix}_\${out}
+    done
     """
 
 }
