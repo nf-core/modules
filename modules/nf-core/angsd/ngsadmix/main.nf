@@ -3,9 +3,9 @@ process ANGSD_NGSADMIX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4':
-        'quay.io/biocontainers/angsd:0.940--h13024bc_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/30772c69ae82551a37d41faeb8f557ca75e3edcb1ffd00aef59d8398d07c84f9/data'
+        : 'community.wave.seqera.io/library/angsd:0.940--18f3e70272dd28e3'}"
 
     input:
     tuple val(meta), path(beagle_file), val(k)

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "angsd_ngsadmix"
 description: Estimate individual admixture proportions and ancestral allele frequencies from genotype likelihoods with NGSadmix
 keywords:
@@ -10,8 +9,7 @@ keywords:
   - genomics
 tools:
   - "ngsadmix":
-      description: "NGSadmix: estimates individual admixture proportions from
-        genotype likelihoods of low-depth NGS data. Distributed with ANGSD."
+      description: "NGSadmix: estimates individual admixture proportions from genotype likelihoods of low-depth NGS data. Distributed with ANGSD."
       homepage: "https://www.popgen.dk/software/index.php/NgsAdmix"
       documentation: "https://www.popgen.dk/software/index.php/NgsAdmix"
       tool_dev_url: "https://github.com/ANGSD/angsd"
@@ -93,3 +91,27 @@ authors:
   - "@ASendellPrice"
 maintainers:
   - "@ASendellPrice"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd:0.940--18f3e70272dd28e3
+      build_id: bd-18f3e70272dd28e3_1
+      scan_id: sc-7d181ec7dd8592db_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/angsd:0.940--72c76ee21384baac
+      build_id: bd-72c76ee21384baac_1
+      scan_id: sc-cbc8de5e3810ffe2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd:0.940--fa6259639edde7d3
+      build_id: bd-fa6259639edde7d3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/30772c69ae82551a37d41faeb8f557ca75e3edcb1ffd00aef59d8398d07c84f9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/angsd:0.940--d6092892937dcb9c
+      build_id: bd-d6092892937dcb9c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b10493b5d8f9fcb79740381e6aaffba28a5236dfae0073884c51d8df0a115d4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/ngsadmix/.conda-lock/linux_amd64-bd-18f3e70272dd28e3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/angsd/ngsadmix/.conda-lock/linux_arm64-bd-72c76ee21384baac_1.txt
