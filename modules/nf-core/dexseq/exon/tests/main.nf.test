@@ -39,6 +39,7 @@ nextflow_process {
             def padj = results[0].findIndexOf { it == 'padj' }
             assertAll(
                 { assert process.success },
+                { assert path(process.out.model[0][1]).readLines() == ["Full model: ~sample + exon + condition:exon", "Reduced model: ~sample + exon"] },
                 { assert 'log2fold_GBR_YRI' in results[0] },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "plots", "session_info"]),
@@ -140,10 +141,10 @@ nextflow_process {
             def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
             def stable = (0..<results[0].size()).findAll { i -> results[0][i] ==~ /groupID|featureID|countData\..+/ }
             def padj = results[0].findIndexOf { col -> col == 'padj' }
-            def command_err = path(process.out.results[0][1]).parent.resolve('.command.err').text
+            def model = path(process.out.model[0][1]).readLines()
             assertAll(
                 { assert process.success },
-                { assert command_err.contains("Full model: ~sample + exon + batch:exon + condition:exon") },
+                { assert model == ["Full model: ~sample + exon + batch:exon + condition:exon", "Reduced model: ~sample + exon + batch:exon"] },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
                     results[0],

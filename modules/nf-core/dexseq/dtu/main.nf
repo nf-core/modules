@@ -20,6 +20,7 @@ process DEXSEQ_DTU {
     tuple val(meta), path("*.dexseq.dataset.rds")        , emit: dataset_rds
     tuple val(meta), path("*.dexseq.results.rds")        , emit: results_rds
     tuple val(meta), path("*.dexseq.gene_qvalues.rds")   , emit: gene_qvalues_rds
+    tuple val(meta), path("*.dexseq.model.txt")          , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")         , emit: session_info
     path "versions.yml"                                  , emit: versions, topic: versions
 
@@ -37,6 +38,7 @@ process DEXSEQ_DTU {
     touch ${prefix}.dexseq.dataset.rds
     touch ${prefix}.dexseq.results.rds
     touch ${prefix}.dexseq.gene_qvalues.rds
+    touch ${prefix}.dexseq.model.txt
     touch ${prefix}.R_sessionInfo.log
 
     cat <<-END_VERSIONS > versions.yml

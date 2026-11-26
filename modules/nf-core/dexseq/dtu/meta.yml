@@ -117,6 +117,17 @@ output:
           description: Serialised named vector of the gene level q-values
           pattern: "*.dexseq.gene_qvalues.rds"
           ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.model.txt":
+          type: file
+          description: Text file with two lines, the full model formula prefixed "Full model" and the reduced model formula prefixed "Reduced model"
+          pattern: "*.dexseq.model.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   session_info:
     - - meta:
           type: map
