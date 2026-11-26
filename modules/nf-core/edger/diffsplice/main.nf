@@ -19,7 +19,7 @@ process EDGER_DIFFSPLICE {
     tuple val(meta), path("*.edger.diffsplice.results.tsv"), emit: results
     tuple val(meta), path("*.edger.diffsplice.simes.tsv")  , emit: simes
     tuple val(meta), path("*.edger.diffsplice.gene.tsv")   , emit: gene
-    tuple val(meta), path("*.edger.diffsplice.pdf")        , emit: plots
+    tuple val(meta), path("*.edger.diffsplice.*.pdf")      , emit: plots
     tuple val(meta), path("*.edger.bcv.png")               , emit: bcv_plot
     tuple val(meta), path("*.DGEGLM.edger.rds")            , emit: rdata
     tuple val(meta), path("*.DGELRT.edger.rds")            , emit: lrt
@@ -40,7 +40,9 @@ process EDGER_DIFFSPLICE {
     touch ${prefix}.edger.diffsplice.results.tsv
     touch ${prefix}.edger.diffsplice.simes.tsv
     touch ${prefix}.edger.diffsplice.gene.tsv
-    touch ${prefix}.edger.diffsplice.pdf
+    touch ${prefix}.edger.diffsplice.results.pdf
+    touch ${prefix}.edger.diffsplice.simes.pdf
+    touch ${prefix}.edger.diffsplice.gene.pdf
     touch ${prefix}.edger.bcv.png
     touch ${prefix}.DGEGLM.edger.rds
     touch ${prefix}.DGELRT.edger.rds

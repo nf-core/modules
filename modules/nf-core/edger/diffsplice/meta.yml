@@ -114,10 +114,10 @@ output:
     - - meta:
           type: map
           description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
-      - "*.edger.diffsplice.pdf":
+      - "*.edger.diffsplice.*.pdf":
           type: file
-          description: PDF with one plotSpliceDGE page per top gene by Simes p-value
-          pattern: "*.edger.diffsplice.pdf"
+          description: PDFs with one plotSpliceDGE page per top gene (`plot_n`), one per ranking of the result tables, `results` (by the best feature of each gene), `simes` and `gene`
+          pattern: "*.edger.diffsplice.*.pdf"
           ontologies:
             - edam: http://edamontology.org/format_3508
   bcv_plot:

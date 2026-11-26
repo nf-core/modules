@@ -454,19 +454,27 @@ write_results_table(round_numeric(exon.results, opt\$round_digits),  paste(opt\$
 write_results_table(round_numeric(simes.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.simes.tsv', sep = '.'))
 write_results_table(round_numeric(gene.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.gene.tsv',  sep = '.'))
 
-pdf(file = paste(opt\$output_prefix, 'edger.diffsplice.pdf', sep = '.'))
-plot_genes <- head(as.character(simes.results[[opt\$gene_id_col]]), opt\$plot_n)
-for (gene in plot_genes) {
-    plotSpliceDGE(splice, geneid = gene, genecolname = opt\$gene_id_col)
+# One PDF per ranking, with the top genes of the exon-level table taken once each
+plot_rankings <- list(
+    results = exon.results,
+    simes   = simes.results,
+    gene    = gene.results
+)
+for (ranking in names(plot_rankings)) {
+    pdf(file = paste(opt\$output_prefix, 'edger.diffsplice', ranking, 'pdf', sep = '.'))
+    plot_genes <- head(unique(as.character(plot_rankings[[ranking]][[opt\$gene_id_col]])), opt\$plot_n)
+    for (gene in plot_genes) {
+        plotSpliceDGE(splice, geneid = gene, genecolname = opt\$gene_id_col)
+    }
+    if (nrow(simes.results) == 0) {
+        plot.new()
+        title(main = "No genes with more than one feature were tested")
+    } else if (length(plot_genes) == 0) {
+        plot.new()
+        title(main = "No genes plotted (plot_n is 0)")
+    }
+    invisible(dev.off())
 }
-if (nrow(simes.results) == 0) {
-    plot.new()
-    title(main = "No genes with more than one feature were tested")
-} else if (length(plot_genes) == 0) {
-    plot.new()
-    title(main = "No genes plotted (plot_n is 0)")
-}
-invisible(dev.off())
 
 png(
     file = paste(opt\$output_prefix, 'edger.bcv.png', sep = '.'),
