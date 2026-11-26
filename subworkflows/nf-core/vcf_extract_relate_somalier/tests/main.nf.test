@@ -104,11 +104,11 @@ nextflow_workflow {
                 input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
                 input[4] = Channel.of([[id: "family1", family_id: "family1"], []])
                 input[5] = []
-                input[6] = "family_id"
-                input[7] = Channel.of([
+                input[6] = Channel.of([
                     [id: "1000G"],
                     file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
                 ]).join(SOMALIER_EXTRACT_PANEL.out.extract)
+                input[7] = "family_id"
                 """
             }
         }
@@ -164,12 +164,12 @@ nextflow_workflow {
                 input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
                 input[4] = Channel.of([[id: "case1", case_id: "case1"], []], [[id: "case2", case_id: "case2"], []])
                 input[5] = []
-                input[6] = "case_id"
-                input[7] = Channel.of([
+                input[6] = Channel.of([
                     [id: "1000G"],
                     file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
                     []
                 ])
+                input[7] = "case_id"
                 """
             }
         }
@@ -278,8 +278,8 @@ nextflow_workflow {
                 input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
                 input[4] = ch_ped
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
-                input[7] = []
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }
@@ -411,8 +411,8 @@ nextflow_workflow {
                 input[4] = Channel.of([[id: "test", common:"test"]])
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
-                input[7] = []
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }
@@ -456,8 +456,8 @@ nextflow_workflow {
                 input[4] = Channel.of([[id: "test", common:"test"]])
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
-                input[7] = []
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }

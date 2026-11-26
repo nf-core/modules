@@ -14,8 +14,8 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         ch_somalier_sites       // channel: [mandatory] [ path(somalier_sites_vcf) ]
         ch_peds                 // channel: [mandatory] [ val(meta), path(ped) ]
         ch_sample_groups        // channel: [optional]  [ path(txt) ]
-        val_common_id           // string:  [optional]  Meta key used to group VCFs for relatedness and ancestry, e.g. family_id or case_id
         ch_ancestry_reference   // channel: [optional]  [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
+        val_common_id           // string:  [optional]  Meta key used to group VCFs for relatedness and ancestry, e.g. family_id or case_id
     main:
 
     ch_optional_ancestry_reference = ch_ancestry_reference ?: channel.empty()
