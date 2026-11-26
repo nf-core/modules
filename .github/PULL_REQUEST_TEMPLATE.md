@@ -35,3 +35,4 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile docker`
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile singularity`
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile conda`
+- [ ] Once your PR is ready, ask for a review on the [#request-review](https://nfcore.slack.com/channels/request-review) channel on Slack.
