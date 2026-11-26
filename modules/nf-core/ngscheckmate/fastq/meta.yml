@@ -12,9 +12,27 @@ tools:
       documentation: https://github.com/parklab/NGSCheckMate
       tool_dev_url: https://github.com/parklab/NGSCheckMate
       doi: "10.1093/nar/gkx193"
+      publication:
+        author: "Lee, S., Lee, S., Ouellette, S., Park, W., Lee, E. A. & Park, P. J."
+        year: 2017
+        title: "NGSCheckMate: software for validating sample identity in next-generation sequencing studies within and across data types"
+        source: "Nucleic Acids Research"
       licence:
         - "MIT"
       identifier: biotools:ngscheckmate
+  - bcftools:
+      description: Tools for variant calling and manipulating VCFs and BCFs
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: https://samtools.github.io/bcftools/bcftools.html
+      tool_dev_url: https://github.com/samtools/bcftools
+      doi: 10.1093/gigascience/giab008
+      publication:
+        author: "Danecek, P., Bonfield, J. K., Liddle, J., Marshall, J., Ohan, V., Pollard, M. O., Whitwham, A., Keane, T., McCarthy, S. A., Davies, R. M. & Li, H."
+        year: 2021
+        title: "Twelve years of SAMtools and BCFtools"
+        source: "GigaScience"
+      licence: ["MIT"]
+      identifier: biotools:bcftools
 input:
   - - meta:
         type: map

@@ -1,9 +1,5 @@
 name: "duphold"
-description: SV callers like lumpy look at split-reads and pair distances to find
-  structural variants. This tool is a fast way to add depth information to those calls.
-  This can be used as additional information for filtering variants; for example we
-  will be skeptical of deletion calls that do not have lower than average coverage
-  compared to regions with similar gc-content.
+description: SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls. This can be used as additional information for filtering variants; for example we will be skeptical of deletion calls that do not have lower than average coverage compared to regions with similar gc-content.
 keywords:
   - sort
   - duphold
@@ -11,9 +7,7 @@ keywords:
   - depth information
 tools:
   - "duphold":
-      description: "SV callers like lumpy look at split-reads and pair distances to
-        find structural variants. This tool is a fast way to add depth information to
-        those calls."
+      description: "SV callers like lumpy look at split-reads and pair distances to find structural variants. This tool is a fast way to add depth information to those calls."
       homepage: "https://github.com/brentp/duphold"
       documentation: "https://github.com/brentp/duphold"
       tool_dev_url: "https://github.com/brentp/duphold"
@@ -97,3 +91,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/duphold:0.2.1--e357044853fdceca
+      build_id: bd-e357044853fdceca_1
+      scan_id: sc-e5d271a42e82f26c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/duphold:0.2.1--85eca3e82b28e2ef
+      build_id: bd-85eca3e82b28e2ef_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd09a716fdf652b4d6a88ef0cde873fd8ad199efc896981fe193039f7d8eb6d2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/duphold/.conda-lock/linux_amd64-bd-e357044853fdceca_1.txt

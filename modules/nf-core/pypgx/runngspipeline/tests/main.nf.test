@@ -11,9 +11,9 @@ nextflow_process {
     tag "pypgx/createinputvcf"
     tag "pypgx/computecontrolstatistics"
     tag "pypgx/preparedepthofcoverage"
-    tag "untar"
 
     test("human paired end bam - CYP2D6 locus - GRCh37 - CYP2D6 pharmacogene") {
+        def bundle
         setup {
             run("PYPGX_CREATEINPUTVCF") {
                 script "../../createinputvcf/main.nf"
@@ -56,17 +56,7 @@ nextflow_process {
                     """
                 }
             }
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'resource_bundle'],
-                        file('https://github.com/sbslee/pypgx-bundle/archive/refs/tags/0.25.0.tar.gz')
-                    ]
-                    """
-                }
-            }
+            bundle = extract('https://github.com/sbslee/pypgx-bundle/archive/refs/tags/0.25.0.tar.gz').resolve('pypgx-bundle-0.25.0')
         }
         when {
             process {
@@ -75,8 +65,8 @@ nextflow_process {
                             .join(PYPGX_CREATEINPUTVCF.out.tbi)
                             .join(PYPGX_PREPAREDEPTHOFCOVERAGE.out.coverage)
                             .join(PYPGX_COMPUTECONTROLSTATISTICS.out.control_stats)
-                            .combine(Channel.fromList(["CYP2D6"]))
-                input[1] = UNTAR.out.untar // resource bundle
+                            .combine(channel.fromList(["CYP2D6"]))
+                input[1] = [ [id: 'resource_bundle'], file('${bundle}') ] // resource bundle
                 """
             }
         }

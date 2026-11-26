@@ -7,8 +7,8 @@ process METHYLSIEVE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92a979cffe85f24353179c5647b0e6151bf0c6d3bdbe8890101b6999107c4db5/data'
-        : 'community.wave.seqera.io/library/methylsieve:0.1.0--dd751f2cc2a188b1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6ddf32365a6fe29b43b89e0ed11ca9dda2d3f73d9a72827c9910a24ef169b2f/data'
+        : 'community.wave.seqera.io/library/methylsieve:0.3.0--fabcb86b0e4a4051'}"
 
     input:
     tuple val(meta), path(bam)
@@ -16,7 +16,10 @@ process METHYLSIEVE {
 
     output:
     tuple val(meta), path("${prefix}.bam"), emit: bam
-    tuple val(meta), path("*.stats.tsv"), emit: stats
+    tuple val(meta), path("*.summary.tsv"), emit: summary
+    tuple val(meta), path("*.mbias.tsv"), emit: mbias
+    tuple val(meta), path("*.conversion-matrix.tsv"), emit: conversion_matrix, optional: true
+    tuple val(meta), path("*.pdf"), emit: pdf
     tuple val("${task.process}"), val('methylsieve'), eval("methylsieve --version | sed 's/^methylsieve //'"), emit: versions_methylsieve, topic: versions
 
     when:
@@ -33,7 +36,7 @@ process METHYLSIEVE {
         --reference ${fasta} \\
         --input ${bam} \\
         --output ${prefix}.bam \\
-        --stats ${prefix}.stats.tsv \\
+        --metrics-prefix ${prefix} \\
         ${args}
     """
 
@@ -44,6 +47,10 @@ process METHYLSIEVE {
     }
     """
     touch ${prefix}.bam
-    touch ${prefix}.stats.tsv
+    touch ${prefix}.summary.tsv
+    touch ${prefix}.mbias.tsv
+    touch ${prefix}.conversion-matrix.tsv
+    touch ${prefix}.mbias.pdf
+    touch ${prefix}.conversion-matrix.pdf
     """
 }

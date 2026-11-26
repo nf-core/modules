@@ -1,9 +1,11 @@
 name: samplesheetparser_validate
 description: |
   Validate an Illumina SampleSheet.csv (V1 or V2) for index, adapter, and
-  structural issues. Format is auto-detected. Exits 0 if valid, 1 if errors
-  are found — causing the pipeline to fail early with a clear message rather
-  than discovering demultiplexing problems downstream.
+  structural issues. Format is auto-detected. Supports configurable strictness
+  (via ext.args, e.g. --strictness strict) and validation against a custom
+  JSON Schema. Exits 0 if valid, 1 if errors are found, causing the pipeline to
+  fail early with a clear message rather than discovering demultiplexing
+  problems downstream.
 keywords:
   - illumina
   - samplesheet
@@ -37,6 +39,15 @@ input:
         pattern: "*.{csv,CSV}"
         ontologies:
           - edam: "http://edamontology.org/format_3752"
+  - schema:
+      type: file
+      description: |
+        Optional JSON Schema (Draft 2020-12) to validate the sheet against,
+        forwarded to `samplesheet validate --schema`. Pass an empty list
+        ([]) to skip custom-schema validation.
+      pattern: "*.{json,JSON}"
+      ontologies:
+        - edam: "http://edamontology.org/format_3464"
 output:
   json:
     - - meta:

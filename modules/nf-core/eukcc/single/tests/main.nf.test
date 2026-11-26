@@ -1,0 +1,213 @@
+nextflow_process {
+
+    name "Test Process EUKCC_SINGLE"
+    script "../main.nf"
+    process "EUKCC_SINGLE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "eukcc"
+    tag "eukcc/single"
+
+    test("fungi - fasta") {
+        def eukcc_db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            eukcc_db = extract(modules_testdata_base_path + 'genomics/eukaryotes/metagenome/qc/eukcc2_db_tiny_fungi.tar.gz').resolve('eukcc2_db_tiny_fungi')
+        }
+
+        when {
+            params {
+                module_args = '--clade fungi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome/genome.fa', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'eukcc_db' ], file('${eukcc_db}') ]
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate', 'workdir']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
+                    path(process.out.log[0][1]).text.contains('Wrote output to')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - faa - extra") {
+        def eukcc_db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            eukcc_db = extract(modules_testdata_base_path + 'genomics/eukaryotes/metagenome/qc/eukcc2_db_tiny_fungi.tar.gz').resolve('eukcc2_db_tiny_fungi')
+        }
+
+        when {
+            params {
+                module_args = '--clade fungi --AA --extra'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'eukcc_db' ], file('${eukcc_db}') ]
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
+                    path(process.out.log[0][1]).text.contains('Wrote output to')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - faa - genomes") {
+        def eukcc_db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            eukcc_db = extract(modules_testdata_base_path + 'genomics/eukaryotes/metagenome/qc/eukcc2_db_tiny_fungi.tar.gz').resolve('eukcc2_db_tiny_fungi')
+        }
+
+        when {
+            params {
+                module_args = '--clade fungi --AA --set_size 10 --ignore_tree'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'eukcc_db' ], file('${eukcc_db}') ]
+                input[2] = file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
+                    path(process.out.log[0][1]).text.contains('Will create custom marker set based on input genomes/proteomes')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - faa - use_placement") {
+        def eukcc_db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            eukcc_db = extract(modules_testdata_base_path + 'genomics/eukaryotes/metagenome/qc/eukcc2_db_tiny_fungi.tar.gz').resolve('eukcc2_db_tiny_fungi')
+            run("EUKCC_SINGLE", alias: "EUKCC_SINGLE_SETUP") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'setup' ],
+                        file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                    ]
+                    input[1] = [ [ id:'eukcc_db' ], file('${eukcc_db}') ]
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--clade fungi --AA'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'eukcc_db' ], file('${eukcc_db}') ]
+                input[2] = []
+                input[3] = EUKCC_SINGLE_SETUP.out.savestate.map { meta, savestate -> savestate }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['tsv', 'log', 'savestate']),
+                    path(process.out.tsv[0][1]).readLines().collect { line -> line.split('\t').drop(1).join('\t') },
+                    path(process.out.savestate[0][1]).linesGzip.toString().contains('clade'),
+                    path(process.out.log[0][1]).text.contains('Loaded precomputed set with 24 profiles')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fungi - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--clade fungi --extra --keep'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    []
+                ]
+                input[1] = [ [ id:'eukcc_db' ], [] ]
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

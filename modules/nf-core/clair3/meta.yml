@@ -171,3 +171,27 @@ authors:
   - "@robert-a-forsyth"
 maintainers:
   - "@robert-a-forsyth"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/clair3:2.0.5--d716697d8603446d
+      build_id: bd-d716697d8603446d_1
+      scan_id: sc-066321594eafb0f2_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/clair3:2.0.5--af64dfa2c8f0b388
+      build_id: bd-af64dfa2c8f0b388_1
+      scan_id: sc-a5fd11134d16e647_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/clair3:2.0.5--75604064cfb72c0f
+      build_id: bd-75604064cfb72c0f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b8170a951de0e34d4b3d0d1e8033d92cc183145d364751757bbf597fabff618/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/clair3:2.0.5--4fe2b6c5f5156b65
+      build_id: bd-4fe2b6c5f5156b65_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fac3c639be51f2aa2d33b51009f2a6c4175392b90c1073c670f7e70afa367f6d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/clair3/.conda-lock/linux_amd64-bd-af64dfa2c8f0b388_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/clair3/.conda-lock/linux_arm64-bd-d716697d8603446d_1.txt

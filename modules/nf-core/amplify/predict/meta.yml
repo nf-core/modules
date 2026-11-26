@@ -1,6 +1,5 @@
 name: "amplify_predict"
-description: AMPlify is an attentive deep learning model for antimicrobial
-  peptide prediction.
+description: AMPlify is an attentive deep learning model for antimicrobial peptide prediction.
 keywords:
   - antimicrobial peptides
   - AMPs
@@ -40,8 +39,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: amino acid sequences with prediction (AMP, non-AMP) and
-            probability scores
+          description: amino acid sequences with prediction (AMP, non-AMP) and probability scores
           pattern: "*.{tsv}"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
@@ -70,3 +68,17 @@ authors:
   - "@louperelo"
 maintainers:
   - "@louperelo"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/amplify:2.0.1--7eb8330ae27de15c
+      build_id: bd-7eb8330ae27de15c_1
+      scan_id: sc-f08b3ffa53ffeedc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/amplify:2.0.1--4476cdb08274ea0b
+      build_id: bd-4476cdb08274ea0b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de8468259cabd4c8a689f980d1144917aeb3f37824b8282657969363cbff4caa/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/amplify/predict/.conda-lock/linux_amd64-bd-7eb8330ae27de15c_1.txt

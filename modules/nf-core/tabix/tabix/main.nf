@@ -23,20 +23,10 @@ process TABIX_TABIX {
 
     script:
     def deprecation_message = """
-    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
+    WARNING: This module has been deprecated. Please use nf-core/modules/htslib/bgziptabix instead.
 
     Reason:
-    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
+    This module is duplicative of nf-core/modules/htslib/bgziptabix. The nf-core/modules/htslib/bgziptabix module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
     """.stripIndent()
     assert false: deprecation_message
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
-
-    Reason:
-    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
-    """.stripIndent()
-    assert false: deprecation_message
-
 }

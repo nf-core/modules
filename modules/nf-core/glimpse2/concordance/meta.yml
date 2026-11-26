@@ -1,6 +1,5 @@
 name: "glimpse2_concordance"
-description: Program to compute the genotyping error rate at the sample or
-  marker level.
+description: Program to compute the genotyping error rate at the sample or marker level.
 keywords:
   - concordance
   - low-coverage
@@ -8,8 +7,7 @@ keywords:
   - imputation
 tools:
   - "glimpse2":
-      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage
-        sequencing studies."
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
@@ -34,8 +32,7 @@ input:
         ontologies: []
     - truth:
         type: file
-        description: Validation dataset called at the same positions as the
-          imputed file.
+        description: Validation dataset called at the same positions as the imputed file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
     - truth_index:
@@ -59,9 +56,7 @@ input:
           - edam: http://edamontology.org/format_3475
     - region:
         type: string
-        description: Target region used for imputation, including left and right
-          buffers (e.g. chr20:1000000-2000000). Can also be a list of such
-          regions.
+        description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000). Can also be a list of such regions.
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
   - - meta2:
         type: map
@@ -70,8 +65,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - groups:
         type: file
-        description: Alternative to frequency bins, group bins are user defined,
-          provided in a file.
+        description: Alternative to frequency bins, group bins are user defined, provided in a file.
         pattern: "*.{txt,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475
@@ -84,8 +78,7 @@ input:
         pattern: "0 0.01 0.05 ... 0.5"
     - ac_bins:
         type: string
-        description: User-defined allele count bins used for rsquared
-          computations.
+        description: User-defined allele count bins used for rsquared computations.
         pattern: "1 2 5 10 20 ... 100000"
     - allele_counts:
         type: string
@@ -112,8 +105,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.cal.txt.gz":
           type: file
-          description: Calibration correlation errors between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Calibration correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.cal.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -125,8 +117,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.grp.txt.gz":
           type: file
-          description: Groups correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Groups correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -138,8 +129,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.spl.txt.gz":
           type: file
-          description: Samples correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -151,8 +141,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.grp.txt.gz":
           type: file
-          description: Groups r-squared correlation between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -164,8 +153,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.spl.txt.gz":
           type: file
-          description: Samples r-squared correlation between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -177,8 +165,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_r2_sites.txt.gz":
           type: file
-          description: Variant r-squared correlation between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Variant r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "_r2_sites.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -207,3 +194,17 @@ authors:
   - "@louislenezet"
 maintainers:
   - "@louislenezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/glimpse-bio:2.0.1--13883817364cf3d3
+      build_id: bd-13883817364cf3d3_1
+      scan_id: sc-303d6d41a9035b2e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/glimpse-bio:2.0.1--5c2b509c6dd2009b
+      build_id: bd-5c2b509c6dd2009b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6db4ab0bf9cdc87502f93289dc3eb4f3ff28a7125703bcc778ff88d4bd4dd2a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/glimpse2/concordance/.conda-lock/linux_amd64-bd-13883817364cf3d3_1.txt

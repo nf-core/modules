@@ -7,8 +7,8 @@ process GENOMAD_ENDTOEND {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83e31b082e82e714b01040adf90f865fdd229b6d9d926525b821d207271a3922/data'
-        : 'community.wave.seqera.io/library/genomad:1.12.0--27836e6e665e84b5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6f85f5f1506356a6be2ffb05c05d9297f2be0e2253c4e769f4d95a1552ef1880/data'
+        : 'community.wave.seqera.io/library/genomad:1.13.0--82a58f1eca0eabc7'}"
 
     input:
     tuple val(meta), path(fasta)

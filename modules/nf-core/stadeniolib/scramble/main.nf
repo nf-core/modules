@@ -6,9 +6,9 @@ process STADENIOLIB_SCRAMBLE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3' :
-        'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/deffb1131242d30a8e6f760a5f9ee85846b0cc74563bcea3fd22c1743ef396fe/data'
+        : 'community.wave.seqera.io/library/staden_io_lib:1.15.1--cdbf259bf64228b4'}"
 
     input:
     tuple val(meta), path(reads)

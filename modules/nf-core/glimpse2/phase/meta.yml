@@ -1,6 +1,5 @@
 name: "glimpse2_phase"
-description: Tool for imputation and phasing from vcf file or directly from bam
-  files.
+description: Tool for imputation and phasing from vcf file or directly from bam files.
 keywords:
   - phasing
   - low-coverage
@@ -8,8 +7,7 @@ keywords:
   - glimpse
 tools:
   - "glimpse2":
-      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage
-        sequencing studies."
+      description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
@@ -127,8 +125,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt.gz":
           type: file
-          description: Optional coverage statistic file created when BAM/CRAM
-            files are used as inputs.
+          description: Optional coverage statistic file created when BAM/CRAM files are used as inputs.
           pattern: "*.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -157,3 +154,17 @@ authors:
   - "@LouisLeNezet"
 maintainers:
   - "@LouisLeNezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/glimpse-bio:2.0.1--13883817364cf3d3
+      build_id: bd-13883817364cf3d3_1
+      scan_id: sc-303d6d41a9035b2e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/glimpse-bio:2.0.1--5c2b509c6dd2009b
+      build_id: bd-5c2b509c6dd2009b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6db4ab0bf9cdc87502f93289dc3eb4f3ff28a7125703bcc778ff88d4bd4dd2a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/glimpse2/phase/.conda-lock/linux_amd64-bd-13883817364cf3d3_1.txt

@@ -9,7 +9,6 @@ nextflow_process {
     tag "tcoffee"
     tag "tcoffee/align"
     tag "famsa/guidetree"
-    tag "untar"
 
     test("align_sequence - compressed - seatoxin") {
 
@@ -103,19 +102,11 @@ nextflow_process {
 
         config "./structure.config"
 
+        def structures
         setup {
-
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [ id:'test' ],
-                                 file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz", checkIfExists: true)
-                               ]
-
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            structures = extract(modules_testdata_base_path + '../../multiplesequencealign/testdata/structures/seatoxin-ref.tar.gz').resolve('seatoxin-ref')
         }
 
         when {
@@ -125,7 +116,7 @@ nextflow_process {
                              file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
                            ]
                 input[1] = [ [:], [] ]
-                input[2] = UNTAR.out.untar.map { meta,dir -> [[ id:'test' ], [] ,file(dir).listFiles().collect()]}
+                input[2] = [ [ id:'test' ], [], file('${structures}').listFiles().collect() ]
                 input[3] = true
                 """
 

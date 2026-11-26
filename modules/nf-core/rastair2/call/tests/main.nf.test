@@ -119,6 +119,43 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - paired-end methylated bam - one-strand mbias cutoffs") {
+
+        // rastair2/mbias writes one line per strand with data: a one-line file is called without trims
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]).combine(channel.of('0,0,10,0\\n').collectFile(name: 'test.MN908947.3.cutoffs.txt'))
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def command = path(process.out.vcf[0][1]).linesGzip.find { line -> line.startsWith('##rastairCommand=') }
+            assertAll(
+                { assert process.success },
+                { assert command },
+                { assert !command.contains('--nOT') && !command.contains('--nOB') },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
+                    process.out.tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.bed,
+                    process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - paired-end methylated bam - mbias cutoffs") {
 
         setup {
