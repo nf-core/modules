@@ -280,6 +280,10 @@ gene_qvalues <- perGeneQValue(results)
 
 prefix <- opt[['output_prefix']]
 
+writeLines(
+    c(paste('Full model:', deparse1(full_model)), paste('Reduced model:', deparse1(reduced_model))),
+    paste0(prefix, '.dexseq.model.txt')
+)
 saveRDS(dxd, file = paste0(prefix, '.dexseq.dataset.rds'))
 saveRDS(results, file = paste0(prefix, '.dexseq.results.rds'))
 saveRDS(gene_qvalues, file = paste0(prefix, '.dexseq.gene_qvalues.rds'))
