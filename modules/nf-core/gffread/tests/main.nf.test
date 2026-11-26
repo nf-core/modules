@@ -273,7 +273,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2-gff3-table") {
+    test("homo_sapiens-gtf-table") {
 
         when {
             params {
@@ -283,7 +283,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
                 ]
                 input[1] = []
                 """
@@ -300,7 +300,7 @@ nextflow_process {
 
     }
 
-    test("sarscov2-gff3-table-stub") {
+    test("homo_sapiens-gtf-table-stub") {
 
         options '-stub'
 
@@ -312,7 +312,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: 'test'],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.gff3", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
                 ]
                 input[1] = []
                 """
