@@ -46,7 +46,7 @@ input:
       description: |
         Optional labels and Somalier files for reference samples with known ancestry.
         Supply a single reference tuple, which is reused for every family or case group.
-        Supply an empty channel in this input position to skip ancestry analysis.
+        Supply an empty channel to skip ancestry analysis; do not supply a tuple with empty file values.
         Structure: [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
   - val_common_id:
       description: |

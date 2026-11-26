@@ -18,7 +18,11 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
         val_common_id           // string:  [optional]  Meta key used to group VCFs for relatedness and ancestry, e.g. family_id or case_id
     main:
 
-    ch_optional_ancestry_reference = ch_ancestry_reference ?: channel.empty()
+    ch_ancestry_reference_branched = ch_ancestry_reference
+        .branch { _meta, labels, labelled ->
+            valid: labels && labelled
+            invalid: true
+        }
 
     ch_input = ch_vcfs
         .branch { meta, vcf, tbi, _count ->
@@ -81,7 +85,7 @@ workflow VCF_EXTRACT_RELATE_SOMALIER {
 
     SOMALIER_ANCESTRY(
         ch_somalierancestry_input,
-        ch_optional_ancestry_reference.first()
+        ch_ancestry_reference_branched.valid.first()
     )
 
     emit:

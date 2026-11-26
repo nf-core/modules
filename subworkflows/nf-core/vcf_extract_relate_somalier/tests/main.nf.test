@@ -164,11 +164,11 @@ nextflow_workflow {
                 input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
                 input[4] = Channel.of([[id: "case1", case_id: "case1"], []], [[id: "case2", case_id: "case2"], []])
                 input[5] = []
+                somalier_panel = Channel.of("stub panel").collectFile(name: 'panel.somalier')
                 input[6] = Channel.of([
                     [id: "1000G"],
-                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true),
-                    []
-                ])
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+                ]).combine(somalier_panel)
                 input[7] = "case_id"
                 """
             }
