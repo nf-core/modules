@@ -7,8 +7,8 @@ process PMDSHODH_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pmdshodh:0.3.1--hfa8f182_0'
-        : 'quay.io/biocontainers/pmdshodh:0.3.1--hfa8f182_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/pmdshodh:0.3.3--hfa8f182_0'
+        : 'quay.io/biocontainers/pmdshodh:0.3.3--hfa8f182_0'}"
 
     input:
     tuple val(meta), path(input)
