@@ -15,6 +15,7 @@ process EDGER_DIFFSPLICE {
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
+    tuple val(meta), path("*.edger.diffsplice.expression.tsv"), emit: expression
     tuple val(meta), path("*.edger.diffsplice.results.tsv"), emit: results
     tuple val(meta), path("*.edger.diffsplice.simes.tsv")  , emit: simes
     tuple val(meta), path("*.edger.diffsplice.gene.tsv")   , emit: gene
@@ -35,6 +36,7 @@ process EDGER_DIFFSPLICE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    touch ${prefix}.edger.diffsplice.expression.tsv
     touch ${prefix}.edger.diffsplice.results.tsv
     touch ${prefix}.edger.diffsplice.simes.tsv
     touch ${prefix}.edger.diffsplice.gene.tsv

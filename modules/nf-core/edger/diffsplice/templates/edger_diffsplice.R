@@ -418,9 +418,12 @@ dge <- estimateDisp(dge, design = design, robust = opt\$robust)
 
 if (opt\$test_method == 'qlf') {
     fit <- glmQLFit(dge, design = design, robust = opt\$robust)
+    expression <- glmQLFTest(fit, contrast = contrast.matrix)
 } else {
     fit <- glmFit(dge, design = design)
+    expression <- glmLRT(fit, contrast = contrast.matrix)
 }
+expression.results <- topTags(expression, n = Inf, adjust.method = opt\$adjust_method)\$table
 
 splice <- diffSpliceDGE(
     fit,
@@ -446,6 +449,7 @@ if (opt\$adjust_method != "BH") {
 ################################################
 ################################################
 
+write_results_table(round_numeric(expression.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.expression.tsv', sep = '.'))
 write_results_table(round_numeric(exon.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.results.tsv', sep = '.'))
 write_results_table(round_numeric(simes.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.simes.tsv', sep = '.'))
 write_results_table(round_numeric(gene.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.gene.tsv',  sep = '.'))

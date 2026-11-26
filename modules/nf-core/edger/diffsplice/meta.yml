@@ -1,7 +1,8 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: edger_diffsplice
 description: |
-  Tests for differential exon or transcript usage with edgeR `diffSpliceDGE`, for one contrast.
+  Tests for differential exon or transcript usage with edgeR `diffSpliceDGE`, for one contrast,
+  and for differential expression of each feature with the same fit.
   Options are passed via `ext.args` as `--option value` pairs:
   `gene_id_col` (default `gene_id`), `feature_id_col` (`feature_id`),
   `annotation_cols` (`;`-separated count table columns carried into the results),
@@ -69,6 +70,16 @@ input:
           - edam: http://edamontology.org/format_3752
           - edam: http://edamontology.org/format_3475
 output:
+  expression:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.diffsplice.expression.tsv":
+          type: file
+          description: TSV table of the differential expression test of each feature for the contrast, from the same fit as the usage tests (`glmQLFTest` for `qlf`, `glmLRT` for `lrt`), as output by edgeR topTags and sorted by p-value. Columns are the gene, feature and annotation columns, then `logFC`, `logCPM`, `F` (`qlf`) or `LR` (`lrt`), `PValue` and `FDR`
+          pattern: "*.edger.diffsplice.expression.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   results:
     - - meta:
           type: map
