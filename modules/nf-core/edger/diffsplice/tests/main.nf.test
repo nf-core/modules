@@ -200,6 +200,204 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - chrX - transcript counts - blocking variable") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --blocking_variables batch --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,1',
+                    'ERR188428,GBR,2',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'chrX' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            def command_err = path(process.out.results[0][1]).parent.resolve('.command.err').text
+            def command_out = path(process.out.results[0][1]).parent.resolve('.command.out').text
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines().size() > 1 },
+                { assert command_out.contains("condition.GBR, condition.YRI, batch2") },
+                { assert ! command_err.contains("left out of the model") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - blocking variable with one level is dropped") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --blocking_variables lane;batch --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of(
+                    'sample,condition,lane,batch',
+                    'ERR188383,GBR,1,1',
+                    'ERR188428,GBR,1,2',
+                    'ERR188454,YRI,1,1',
+                    'ERR204916,YRI,1,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'chrX' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            def command_err = path(process.out.results[0][1]).parent.resolve('.command.err').text
+            def command_out = path(process.out.results[0][1]).parent.resolve('.command.out').text
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines().size() > 1 },
+                { assert command_err.contains("Blocking variable 'lane' has one level in this contrast and is left out of the model") },
+                { assert command_out.contains("condition.GBR, condition.YRI, batch2") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - blocking variable with one level in the contrast samples is dropped") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --blocking_variables lane --subset_to_contrast_samples TRUE --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of(
+                    'sample,condition,lane',
+                    'ERR188383,GBR,1',
+                    'ERR188428,GBR,1',
+                    'ERR188454,YRI,1',
+                    'ERR204916,YRI,1',
+                    'ERR000000,CEU,2'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'chrX' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            def command_err = path(process.out.results[0][1]).parent.resolve('.command.err').text
+            def command_out = path(process.out.results[0][1]).parent.resolve('.command.out').text
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines().size() > 1 },
+                { assert command_err.contains("Blocking variable 'lane' has one level in this contrast and is left out of the model") },
+                { assert command_out.contains("condition.GBR, condition.YRI") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - blocking variable confounded with the contrast - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --blocking_variables batch --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of(
+                    'sample,condition,batch',
+                    'ERR188383,GBR,A',
+                    'ERR188428,GBR,A',
+                    'ERR188454,YRI,B',
+                    'ERR204916,YRI,B'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'chrX' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Blocking variables batch are confounded with 'condition' in this contrast") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - blocking variable leaves no residual degrees of freedom - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --blocking_variables donor --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of(
+                    'sample,condition,donor',
+                    'ERR188383,GBR,A',
+                    'ERR188428,GBR,B',
+                    'ERR188454,YRI,A',
+                    'ERR204916,YRI,C'
+                )
+                    .collectFile(name: 'samplesheet.csv', newLine: true, sort: false)
+                    .map { samplesheet ->
+                        [
+                            [ id:'chrX' ],
+                            samplesheet,
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Blocking variables donor leave no residual degrees of freedom in this contrast") }
+            )
+        }
+    }
+
     test("homo_sapiens - chrX - transcript counts - condition - stub") {
 
         options "-stub"
