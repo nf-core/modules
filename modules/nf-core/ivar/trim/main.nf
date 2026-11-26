@@ -31,7 +31,7 @@ process IVAR_TRIM {
         -i ${bam} \\
         -b ${bed} \\
         -p ${prefix} \\
-        > ${prefix}.ivar.log
+        > ${prefix}.ivar.log 2>&1
     """
 
     stub:
