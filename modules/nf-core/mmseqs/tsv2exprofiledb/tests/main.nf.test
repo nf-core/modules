@@ -3,33 +3,24 @@ nextflow_process {
     name "Test Process MMSEQS_TSV2EXPROFILEDB"
     script "../main.nf"
     process "MMSEQS_TSV2EXPROFILEDB"
-    config './nextflow.config'
 
     tag "modules"
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/tsv2exprofiledb"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar"
-            process {
-                """
-                input[0] = [ [:],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
-                    ]
-                """
-            }
-        }
-    }
 
     test("sarscov2 - db") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz').resolve('mmseqs')
+        }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, untar -> untar }
+                input[0] = file('${db}')
                 """
             }
         }
@@ -50,12 +41,18 @@ nextflow_process {
     }
 
     test("sarscov2 - db - stub") {
+        def db
+        setup {
+            db = new File("${launchDir}/mmseqs")
+            db.mkdirs()
+        }
+
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map { meta, untar -> untar }
+                input[0] = file('${db}')
                 """
             }
         }

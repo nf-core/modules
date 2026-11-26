@@ -9,58 +9,22 @@ nextflow_process {
     tag "fcs"
     tag "fcs/fcsgx"
 
-    test("sarscov2 - fasta") {
+    test("deprecated") {
 
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                    "6973"
-                ]
-                input[1] = []
+                input[0] = [ [ id:'test' ], file('assembly'), [] ]
+                input[1] = file('gxdb')
                 """
             }
         }
 
         then {
             assertAll(
-                //{ assert process.success },
-                //{ assert snapshot(sanitizeOutput(process.out)).match()},
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx") }
             )
         }
-
     }
-
-    test("sarscov2 - fasta - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                    "6973"
-                ]
-                input[1] = []
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                //{ assert process.success },
-                //{ assert snapshot(sanitizeOutput(process.out)).match()},
-                { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
-            )
-        }
-
-    }
-
 }

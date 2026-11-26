@@ -9,18 +9,11 @@ nextflow_process {
     tag "modules_nfcore"
     tag "malt"
     tag "malt/build"
-    tag "unzip"
 
     test("sarscov2 - fastq - mdb") {
+        def mapping_db
         setup {
-            run("UNZIP", alias: "UNZIP_MDB") {
-                script "../../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = [[], file("s3://nf-core-test-datasets/modules/data/delete_me/malt/megan-nucl-Feb2022.db.zip", checkIfExists: true)]
-                    """
-                }
-            }
+            mapping_db = extract('s3://nf-core-test-datasets/modules/data/delete_me/malt/megan-nucl-Feb2022.db.zip')
         }
 
         when {
@@ -37,7 +30,7 @@ nextflow_process {
                     [genome_1,genome_2]
                 ]
                 input[1] = []
-                input[2] = UNZIP_MDB.out.unzipped_archive.map { it[1] }
+                input[2] = file('${mapping_db}')
                 input[3] = 'mdb'
                 """
             }
@@ -63,15 +56,9 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq - abin") {
+        def mapping_db
         setup {
-            run("UNZIP", alias: "UNZIP_ABIN") {
-                script "../../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = [[], file("https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/nucl_acc2tax-Jul2019.abin.zip", checkIfExists: true)]
-                    """
-                }
-            }
+            mapping_db = extract('https://ngi-igenomes.s3.eu-west-1.amazonaws.com/test-data/createtaxdb/taxonomy/nucl_acc2tax-Jul2019.abin.zip')
         }
 
         when {
@@ -88,7 +75,7 @@ nextflow_process {
                     [genome_1,genome_2]
                 ]
                 input[1] = []
-                input[2] = UNZIP_ABIN.out.unzipped_archive.map { it[1] }
+                input[2] = file('${mapping_db}')
                 input[3] = 'a2t'
                 """
             }

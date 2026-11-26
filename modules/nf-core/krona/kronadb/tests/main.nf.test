@@ -9,22 +9,12 @@ nextflow_process {
     tag "krona"
     tag "krona/kronadb"
 
-    test("taxonomy - deprecated") {
+    test("deprecated") {
+
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
-            )
-        }
-    }
-
-    test("taxonomy - stub") {
-        options '-stub'
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/krona/ktupdatetaxonomy instead.") }
             )
         }
     }

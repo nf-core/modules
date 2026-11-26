@@ -61,6 +61,30 @@ nextflow_process {
         }
     }
 
+    // Without a Bismark index the staged FASTA folder is the genome; same outputs as with the index
+    test("sarscov2 genome [fasta] | sarscov2 paired-end methylated [bam] | no index") {
+
+        when {
+            process {
+                """
+                input[0] = BISMARK_METHYLATIONEXTRACTOR.out.coverage
+                input[1] = channel.of([
+                    [ id:'sarscov2'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
     test("sarscov2 genome [fasta] | sarscov2 paired-end methylated [bam] | stub") {
         options "-stub"
 

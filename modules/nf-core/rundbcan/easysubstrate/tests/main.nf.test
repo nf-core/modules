@@ -9,22 +9,14 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rundbcan"
     tag "rundbcan/easysubstrate"
-    tag "untar"
 
     test("bacteroides_fragilis - faa, gff") {
 
+        def dbcan_db
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            dbcan_db = extract(modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz').resolve('dbcan_db')
         }
 
         when {
@@ -42,7 +34,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.gff', checkIfExists: true),
                     'NCBI_prok'
                 ]
-                input[2] = UNTAR.out.untar.map { _meta, db -> db }
+                input[2] = file('${dbcan_db}')
                 """
             }
         }
@@ -74,18 +66,11 @@ nextflow_process {
 
     test("bacteroides_fragilis - faa, gff - fungi, no prokaryotic") {
 
+        def dbcan_db
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            dbcan_db = extract(modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz').resolve('dbcan_db')
         }
 
         when {
@@ -103,7 +88,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.gff', checkIfExists: true),
                     'NCBI_prok'
                 ]
-                input[2] = UNTAR.out.untar.map { _meta, db -> db }
+                input[2] = file('${dbcan_db}')
                 """
             }
         }

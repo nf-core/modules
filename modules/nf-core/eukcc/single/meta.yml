@@ -1,0 +1,234 @@
+name: "eukcc_single"
+description: Estimate completeness and contamination of a single eukaryotic genome or MAG
+keywords:
+  - eukaryotes
+  - completeness
+  - contamination
+  - mag
+  - metagenomics
+  - quality control
+tools:
+  - "eukcc":
+      description: "Check eukaryotic genomes or MAGs for completeness and contamination."
+      homepage: "https://eukcc.readthedocs.io/en/latest/"
+      documentation: "https://eukcc.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/EBI-Metagenomics/EukCC"
+      doi: "10.1186/s13059-020-02155-4"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:eukcc
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Genome or MAG in FASTA format (DNA, or amino acids with `--AA`), optionally gzipped
+        pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: Groovy Map containing database information. e.g. `[ id:'eukcc_db' ]`
+    - db:
+        type: directory
+        description: EukCC database directory (e.g. from `eukcc download_db`)
+  - genomes:
+      type: file
+      description: Optional reference genomes in FASTA format, or proteomes with `--AA`, to define the marker gene set from (`--genomes`) instead of the tree placement; the lineage is then `NA`
+      pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
+      ontologies:
+        - edam: http://edamontology.org/format_1929 # FASTA
+        - edam: http://edamontology.org/format_3989 # GZIP format
+  - use_placement:
+      type: file
+      description: Optional `savestate.json.gz` of a previous run, to reuse its marker gene set and lineage (`--use_placement`)
+      pattern: "*.json.gz"
+      ontologies:
+        - edam: http://edamontology.org/format_3464 # JSON
+        - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/eukcc.tsv:
+          type: file
+          description: Table with completeness, contamination and NCBI lineage of the input
+          pattern: "eukcc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/eukcc.log:
+          type: file
+          description: EukCC log file
+          pattern: "eukcc.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  savestate:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/savestate.json.gz:
+          type: file
+          description: State of the run with its marker gene set, to reuse with `use_placement`
+          pattern: "savestate.json.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  marker_table:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/scmg_marker_table.csv.gz:
+          type: file
+          description: Optional single copy marker gene table, produced only with `--extra`
+          pattern: "scmg_marker_table.csv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  workdir:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/workdir:
+          type: directory
+          description: Optional EukCC working directory, kept with `--keep` or when no estimate could be made
+          pattern: "workdir"
+  versions_eukcc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eukcc:
+          type: string
+          description: The name of the tool
+      - eukcc --version | sed 's/^EukCC version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_metaeuk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaeuk:
+          type: string
+          description: The name of the tool
+      - metaeuk version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | grep -o '^# HMMER [0-9.]*' | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_epang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed 's/^EPA-ng v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pplacer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pplacer:
+          type: string
+          description: The name of the tool
+      - pplacer --version | sed 's/^v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version | head -1 | sed 's/^gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eukcc:
+          type: string
+          description: The name of the tool
+      - eukcc --version | sed 's/^EukCC version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaeuk:
+          type: string
+          description: The name of the tool
+      - metaeuk version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | grep -o '^# HMMER [0-9.]*' | cut -d' ' -f3:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - epa-ng:
+          type: string
+          description: The name of the tool
+      - epa-ng --version | sed 's/^EPA-ng v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pplacer:
+          type: string
+          description: The name of the tool
+      - pplacer --version | sed 's/^v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version | head -1 | sed 's/^gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dezordi"
+maintainers:
+  - "@dezordi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:594e6049c8db4277
+      build_id: bd-594e6049c8db4277_1
+      scan_id: sc-5d1d85fd581dc3dd_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/epa-ng_eukcc_hmmer_metaeuk_pruned:b7e3c7ca83b3b949
+      build_id: bd-b7e3c7ca83b3b949_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b250d20483a5003159796184688df6f61b320ad838f4445af4e1654aa498728/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/eukcc/single/.conda-lock/linux_amd64-bd-594e6049c8db4277_1.txt

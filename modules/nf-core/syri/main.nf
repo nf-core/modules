@@ -6,9 +6,9 @@ process SYRI {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/syri:1.7.1--py310ha6711e0_0':
-        'quay.io/biocontainers/syri:1.7.1--py310ha6711e0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/444b93baa5cb545d52452da19ff2516424d2f14513ad9698b9933152aad06b39/data'
+        : 'community.wave.seqera.io/library/syri_pandas:84f5dfbb480b2430'}"
 
     input:
     tuple val(meta), path(infile)

@@ -32,15 +32,4 @@ process ISOSEQ3_TAG {
     the current isoseq release.
     """
     assert false: deprecation_message
-
-    stub:
-    def deprecation_message = """
-    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/tag
-
-    Reason:
-    The isoseq3 conda package is frozen at 4.0.0 and now only wraps the actively
-    maintained isoseq package. isoseq/tag provides the same functionality under
-    the current isoseq release.
-    """
-    assert false: deprecation_message
 }

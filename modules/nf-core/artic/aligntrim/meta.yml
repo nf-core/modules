@@ -1,6 +1,5 @@
 name: "artic_aligntrim"
-description: Standalone version of fieldbioinformatics aligntrim. Soft clips
-  amplicon scheme primer sites in BAM/SAM files.
+description: Standalone version of fieldbioinformatics aligntrim. Soft clips amplicon scheme primer sites in BAM/SAM files.
 keywords:
   - artic
   - primer trimming
@@ -11,8 +10,7 @@ keywords:
   - illumina
 tools:
   - "align_trim":
-      description: "ARTIC align_trim: A tool for trimming amplicon sequencing primers
-        from aligned reads."
+      description: "ARTIC align_trim: A tool for trimming amplicon sequencing primers from aligned reads."
       homepage: "https://github.com/artic-network/align_trim"
       documentation: "https://github.com/artic-network/align_trim/blob/master/README.md"
       tool_dev_url: "https://github.com/artic-network/align_trim"
@@ -65,8 +63,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.align_trim_report.tsv":
           type: file
-          description: TSV report containing full details of primer trimming for
-            each read / read pair
+          description: TSV report containing full details of primer trimming for each read / read pair
           pattern: "*.align_trim_report.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3750
@@ -110,6 +107,83 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3750
             - edam: http://edamontology.org/format_3475
+  qc_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.summary.tsv":
+          type: file
+          description: TSV report containing the number of fragments kept and removed for each removal reason
+          pattern: "*.summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  qc_amplicons:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.amplicons.tsv":
+          type: file
+          description: TSV report containing the number of fragments kept and removed for each amplicon in the scheme
+          pattern: "*.amplicons.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  qc_primer_pairs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.primer_pairs.tsv":
+          type: file
+          description: TSV report containing counts of each combination of primers matched at the fragment ends
+          pattern: "*.primer_pairs.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  qc_split_reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.split_reads.tsv":
+          type: file
+          description: TSV report containing joins in split (supplementary) alignments, e.g. amplicon chimeras
+          pattern: "*.split_reads.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  qc_overlaps:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.overlaps.tsv":
+          type: file
+          description: TSV report containing base frequency concordance between neighbouring amplicons in their overlapping regions
+          pattern: "*.overlaps.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3750
+            - edam: http://edamontology.org/format_3475
+  rejected_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.rejected.bam":
+          type: file
+          description: Unsorted BAM file containing the untrimmed reads removed during trimming, each tagged with the reason for removal (ZR tag)
+          pattern: "*.rejected.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   versions_align_trim:
     - - ${task.process}:
           type: string
@@ -135,3 +209,27 @@ authors:
   - "@BioWilko"
 maintainers:
   - "@BioWilko"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/samtools_pip_align_trim:5fd2b1772c911075
+      build_id: bd-5fd2b1772c911075_1
+      scan_id: sc-dd89992ada54accd_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/samtools_pip_align_trim:6f7f3214ceb2673d
+      build_id: bd-6f7f3214ceb2673d_1
+      scan_id: sc-168eb45136ba69a4_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/samtools_pip_align_trim:dffb055ec8e17f3f
+      build_id: bd-dffb055ec8e17f3f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/23fb96f7b8c846ee7e502520801ab924560be07d9c5eec04e0c804d0c44851e1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/samtools_pip_align_trim:e00af551075e8a27
+      build_id: bd-e00af551075e8a27_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/996a25fe1d54150b634fbd958a2a55bd5c30c34c88df1208b67f3451c50906d2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/artic/aligntrim/.conda-lock/linux_amd64-bd-5fd2b1772c911075_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/artic/aligntrim/.conda-lock/linux_arm64-bd-6f7f3214ceb2673d_1.txt

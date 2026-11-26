@@ -8,28 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "bigscape"
     tag "bigscape/bigscape"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [ id:'test_gbk' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("streptomyces_coelicolor - bigscape - cluster") {
+        def gbk_dir
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            gbk_dir = extract(modules_testdata_base_path + 'genomics/prokaryotes/streptomyces_coelicolor/fixtures_bigslice_gbk.tar.gz')
+        }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [ id:'test_gbk' ], file('${gbk_dir}') ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz', checkIfExists: true)
                 """
             }
@@ -55,8 +46,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/Pfam-A.hmm.gz', checkIfExists: true)
+                input[0] = [ [ id:'test_gbk' ], [] ]
+                input[1] = []
                 """
             }
         }

@@ -1,0 +1,151 @@
+name: "ccnv_reference"
+description: Generate reference information for CNV analysis using CCNV
+keywords:
+  - ccnv
+  - cnv
+  - nips
+  - fragmentomics
+  - genomics
+tools:
+  - "ccnv":
+      description: "CCNV is a tool to extract copy number variation information from sequencing data."
+      homepage: "https://matthdsm.github.io/ccnv/"
+      documentation: "https://matthdsm.github.io/ccnv/"
+      tool_dev_url: "https://github.com/matthdsm/ccnv"
+      doi: ""
+      licence:
+        - "AGPL-3.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cohort_yaml:
+        type: file
+        description: Cohort YAML file
+        pattern: "*.yaml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - cohort_ccnv:
+        type: file
+        description: ccnv files in cohort yaml
+        pattern: "*.ccnv"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Reference genome FASTA file for flat references. Superceded by cohort_ccnv if provided
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fasta,fa,fna}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing additional metadata for the reference files
+          e.g. `[ id:'reference1' ]`
+    - mappability:
+        type: file
+        description: Mappability BigWig track
+        pattern: "*.bw"
+        ontologies:
+          - edam: "http://edamontology.org/format_3006" # bigWig
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference1' ]`
+    - gc_content:
+        type: file
+        description: GC content track
+        pattern: "*.{bed,bed.gz,fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - gc_content_index:
+        type: file
+        description: GC content index file
+        pattern: "*.{tbi,csi,fai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # CSI
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  ccnv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'reference1' ]`
+      - "*.ccnv":
+          type: file
+          description: ccnv reference file
+          pattern: "*.ccnv"
+          ontologies: []
+  qc_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'reference1' ]`
+      - "*_qc.json":
+          type: file
+          description: QC JSON file
+          pattern: "*_qc.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_ccnv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ccnv:
+          type: string
+          description: The name of the tool
+      - ccnv --version 2>&1 | sed 's/ccnv //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+maintainers:
+  - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ccnv:1.1.0--726d8b142feb0e3d
+      build_id: bd-726d8b142feb0e3d_3
+      scan_id: sc-5b44d2694676a524_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ccnv:1.1.0--77964c5a593670f7
+      build_id: bd-77964c5a593670f7_3
+      scan_id: sc-ba09599fda53a5fc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.1.0--597daee53c645636
+      build_id: bd-597daee53c645636_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cd552e195217d37801cf86348dbe875fa66ae2014147e481fd6be6e80dbbcd90/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ccnv:1.1.0--6adee92177cfea32
+      build_id: bd-6adee92177cfea32_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88cbdaefd17962221372b111e46cf2bdc6e0a82e969adc5090dc4f9ac3758ba5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ccnv/reference/.conda-lock/linux_amd64-bd-726d8b142feb0e3d_3.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ccnv/reference/.conda-lock/linux_arm64-bd-77964c5a593670f7_3.txt

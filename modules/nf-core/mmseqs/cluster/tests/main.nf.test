@@ -8,25 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/cluster"
-    tag "untar"
 
     test("Should cluster an mmseqs database") {
-
+        def db
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz').resolve('mmseqs')
         }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [id:'test'], file('${db}') ]
                 """
             }
         }

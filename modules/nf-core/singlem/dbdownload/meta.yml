@@ -57,3 +57,17 @@ authors:
   - "@TheGreatJack"
 maintainers:
   - "@TheGreatJack"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/singlem:0.21.4--12242454960ab14c
+      build_id: bd-12242454960ab14c_1
+      scan_id: sc-6978c3e1694b8756_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/singlem:0.21.4--2b92d771e1cbf3f0
+      build_id: bd-2b92d771e1cbf3f0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c64fb959b73c0d5cefcd3fff9c0d8f388f635ab1e953cb658adf267097eb77df/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/singlem/dbdownload/.conda-lock/linux_amd64-bd-12242454960ab14c_1.txt

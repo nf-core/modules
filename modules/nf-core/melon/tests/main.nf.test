@@ -6,24 +6,15 @@ nextflow_process {
 
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "melon"
 
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = [
-                    [],
-                    file(params.modules_testdata_base_path + 'delete_me/melon_db.tar.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
-
     test("bacteroides_fragilis - nanopore fastq") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'delete_me/melon_db.tar.gz').resolve('melon_test_db')
+        }
 
         when {
             process {
@@ -32,7 +23,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                 ]
-                input[1] =  UNTAR.out.untar.map{ it[1] }
+                input[1] =  file('${db}')
                 input[2] = []
                 """
             }
@@ -58,7 +49,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true)
                 ]
-                input[1] =  UNTAR.out.untar.map{ it[1] }
+                input[1] =  []
                 input[2] = []
                 """
             }

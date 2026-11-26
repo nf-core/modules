@@ -6,9 +6,9 @@ process CRUMBLE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crumble:0.9.1--hb0d9459_0':
-        'quay.io/biocontainers/crumble:0.9.1--hb0d9459_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0a1346c2b14945ca6fdd5f0ad16793359bda5515adb73ec9bc8fba29667f1c15/data'
+        : 'community.wave.seqera.io/library/crumble_htslib:7794eee7eca9bbfb'}"
 
     input:
     tuple val(meta), path(input)

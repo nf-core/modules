@@ -98,7 +98,7 @@ output:
       - gridss:
           type: string
           description: The name of the tool
-      - CallVariants --version 2>&1 | sed 's/-gridss\$//':
+      - CallVariants --version 2>&1 | sed '/Picked up/d;s/-gridss\$//' | tail -n 1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -109,7 +109,7 @@ topics:
       - gridss:
           type: string
           description: The name of the tool
-      - CallVariants --version 2>&1 | sed 's/-gridss\$//':
+      - CallVariants --version 2>&1 | sed '/Picked up/d;s/-gridss\$//' | tail -n 1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:

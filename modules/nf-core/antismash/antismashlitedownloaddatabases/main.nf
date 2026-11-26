@@ -38,7 +38,7 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
 
     script:
     def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismashdownaddatabases
+        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismashdownloaddatabases
 
         Reason:
         This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
@@ -56,28 +56,5 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         ${args}
 
     ${cp_cmd}
-    """
-
-    stub:
-    def deprecation_message = """
-        WARNING: This module has been deprecated. Please use nf-core/modules/antismash/antismash
-
-        Reason:
-        This module includes non-standard workarounds to allow for use with container engines, due to database caching systems with antiSMASH not being compatible with the biocontainers build system.
-        The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
-    """
-
-    assert false: deprecation_message
-    def args = task.ext.args ?: ''
-    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
-        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
-        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
-    """
-    echo "download-antismash-databases --database-dir antismash_db ${args}"
-
-    echo "${cp_cmd}"
-
-    mkdir antismash_dir
-    mkdir antismash_db
     """
 }

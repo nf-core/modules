@@ -10,22 +10,15 @@ nextflow_process {
     tag "controlfreec"
     tag "controlfreec/freec2bed"
     tag "controlfreec/freec"
-    tag "untar"
 
     test("human - freec_ratio") {
 
+        def chr_dir
         setup {
 
-            run("UNTAR") {
-                    script "../../../../nf-core/untar/main.nf"
-                    process {
-                        """
-                        input[0] =  [ [],
-                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz', checkIfExists: true)
-                        ]
-                        """
-                    }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            chr_dir = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chromosomes.tar.gz').resolve('chromosomes')
 
             run("CONTROLFREEC_FREEC") {
                 script "../../../../nf-core/controlfreec/freec/main.nf"
@@ -47,7 +40,7 @@ nextflow_process {
                     // known_snps_tbi
                     input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/dbsnp_138.hg38.vcf.gz.tbi', checkIfExists: true)
                     // chr_directory
-                    input[6] = UNTAR.out.untar.map{ it[1] }
+                    input[6] = file('${chr_dir}')
                     // mappability
                     input[7] = []
                     // target_bed

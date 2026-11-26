@@ -8,25 +8,19 @@ nextflow_process {
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/createindex"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true) ]
-                """
-            }
-        }
-    }
 
     test("sars-cov-2 - mmseqs.tar.gz") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz').resolve('mmseqs')
+        }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [id:'test'], file('${db}') ]
                 """
             }
         }
@@ -95,13 +89,18 @@ nextflow_process {
     }
 
     test("sars-cov-2 - mmseqs.tar.gz - stub") {
+        def db
+        setup {
+            db = new File("${launchDir}/mmseqs")
+            db.mkdirs()
+        }
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar
+                input[0] = [ [id:'test'], file('${db}') ]
                 """
             }
         }
