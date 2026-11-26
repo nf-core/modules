@@ -1,0 +1,117 @@
+name: "angsd_ngsadmix"
+description: Estimate individual admixture proportions and ancestral allele frequencies from genotype likelihoods with NGSadmix
+keywords:
+  - angsd
+  - ngsadmix
+  - admixture
+  - genotype likelihoods
+  - population structure
+  - genomics
+tools:
+  - "ngsadmix":
+      description: "NGSadmix: estimates individual admixture proportions from genotype likelihoods of low-depth NGS data. Distributed with ANGSD."
+      homepage: "https://www.popgen.dk/software/index.php/NgsAdmix"
+      documentation: "https://www.popgen.dk/software/index.php/NgsAdmix"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1534/genetics.113.154138"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample set information
+          e.g. [ id:'test', samples:'sample IDs' ]
+    - beagle_file:
+        type: file
+        description: Beagle genotype likelihood file produced by ANGSD
+        pattern: "*.beagle.gz"
+        ontologies: []
+    - k:
+        type: integer
+        description: Number of ancestral populations (K)
+output:
+  qopt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.qopt":
+          type: file
+          description: |
+            Admixture proportions (n samples x K), in the sample order of the Beagle file
+          pattern: "*.qopt"
+          ontologies: []
+  fopt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.fopt.gz":
+          type: file
+          description: Estimated allele frequencies of the K ancestral populations at each site
+          pattern: "*.fopt.gz"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample set information
+            e.g. [ id:'test', samples:'sample IDs' ]
+      - "*.log":
+          type: file
+          description: NGSadmix log file, including the final log likelihood
+          pattern: "*.log"
+          ontologies: []
+  versions_angsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "angsd":
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "angsd":
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd:0.940--18f3e70272dd28e3
+      build_id: bd-18f3e70272dd28e3_1
+      scan_id: sc-7d181ec7dd8592db_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/angsd:0.940--72c76ee21384baac
+      build_id: bd-72c76ee21384baac_1
+      scan_id: sc-cbc8de5e3810ffe2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd:0.940--fa6259639edde7d3
+      build_id: bd-fa6259639edde7d3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/30772c69ae82551a37d41faeb8f557ca75e3edcb1ffd00aef59d8398d07c84f9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/angsd:0.940--d6092892937dcb9c
+      build_id: bd-d6092892937dcb9c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b10493b5d8f9fcb79740381e6aaffba28a5236dfae0073884c51d8df0a115d4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/ngsadmix/.conda-lock/linux_amd64-bd-18f3e70272dd28e3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/angsd/ngsadmix/.conda-lock/linux_arm64-bd-72c76ee21384baac_1.txt
