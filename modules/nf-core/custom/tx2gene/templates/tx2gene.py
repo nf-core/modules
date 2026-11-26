@@ -63,6 +63,13 @@ def read_top_transcripts(quant_dir: str, file_pattern: str) -> Set[str]:
         raise FileNotFoundError("Quantification file not found.")
 
 
+def strip_version(transcript_id: str) -> str:
+    """
+    Remove a trailing '.<digits>' version suffix from a transcript ID.
+    """
+    return re.sub(r"\\.\\d+\$", "", transcript_id)
+
+
 def discover_transcript_attribute(gtf_file: str, transcripts: Set[str]) -> str:
     """
     Discover the attribute in the GTF that corresponds to transcripts, prioritizing 'transcript_id'.
@@ -76,6 +83,8 @@ def discover_transcript_attribute(gtf_file: str, transcripts: Set[str]) -> str:
     """
 
     votes = Counter()
+    unversioned_votes = Counter()
+    unversioned_transcripts = {strip_version(transcript) for transcript in transcripts}
     with open(gtf_file) as inh:
         # Read GTF file, skipping header lines
         for line in filter(lambda x: not x.startswith("#"), inh):
@@ -86,10 +95,21 @@ def discover_transcript_attribute(gtf_file: str, transcripts: Set[str]) -> str:
             attributes = dict(re.findall(r'(\\S+) "(.*?)(?<!\\\\)";', attributes_str))
 
             votes.update(key for key, value in attributes.items() if value in transcripts)
+            unversioned_votes.update(
+                key for key, value in attributes.items() if strip_version(value) in unversioned_transcripts
+            )
+
+    # Transcript IDs can carry a version on one side only, e.g. a GENCODE transcript FASTA
+    # with an Ensembl GTF, so match without versions when no attribute matches exactly
+    if not votes and unversioned_votes:
+        logger.warning(
+            "No attribute in GTF matches the transcripts exactly, matching with version suffixes removed. "
+            "Transcript versions must then be ignored when the table is used, e.g. tximport's ignoreTxVersion."
+        )
+        votes = unversioned_votes
 
     if not votes:
-        # Error out if no matching attribute is found
-        logger.error("No attribute in GTF matching transcripts")
+        raise ValueError("No attribute in GTF matches the transcript IDs of the quantification files.")
 
     # Check if 'transcript_id' is among the attributes with the highest votes
     if "transcript_id" in votes and votes["transcript_id"] == max(votes.values()):

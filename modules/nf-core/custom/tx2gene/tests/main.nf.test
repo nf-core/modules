@@ -71,6 +71,47 @@ nextflow_process {
         }
     }
 
+    test("saccharomyces_cerevisiae - gtf - versioned transcript IDs") {
+        def kallisto
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            kallisto = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/kallisto_results.tar.gz').resolve('kallisto_results')
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
+                ])
+                // The GTF transcript IDs carry no version, so a version is added to the quantified
+                // ones, as with a GENCODE transcript FASTA and an Ensembl GTF. '.99' because this
+                // GTF's exon IDs are the transcript IDs with low numbered suffixes
+                input[1] = [ [ id:'test' ], file('${kallisto}').listFiles().collect { dir ->
+                    def copy = file("\${workDir}/versioned/\${dir.name}")
+                    copy.mkdirs()
+                    def lines = dir.resolve('abundance.tsv').readLines()
+                    file("\${copy}/abundance.tsv").text = ([lines[0]] + lines.tail().collect { line -> line.replaceFirst('\\t', '.99\\t') }).join('\\n') + '\\n'
+                    copy
+                } ]
+                input[2] = 'kallisto'
+                input[3] = 'gene_id'
+                input[4] = 'gene_name'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tx2gene[0][1]).readLines()[0].startsWith('transcript_id\t') },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - rsem - gtf") {
         def rsem
         setup {
