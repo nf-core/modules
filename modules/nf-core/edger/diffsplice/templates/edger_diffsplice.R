@@ -418,9 +418,12 @@ dge <- estimateDisp(dge, design = design, robust = opt\$robust)
 
 if (opt\$test_method == 'qlf') {
     fit <- glmQLFit(dge, design = design, robust = opt\$robust)
+    expression <- glmQLFTest(fit, contrast = contrast.matrix)
 } else {
     fit <- glmFit(dge, design = design)
+    expression <- glmLRT(fit, contrast = contrast.matrix)
 }
+expression.results <- topTags(expression, n = Inf, adjust.method = opt\$adjust_method)\$table
 
 splice <- diffSpliceDGE(
     fit,
@@ -446,23 +449,32 @@ if (opt\$adjust_method != "BH") {
 ################################################
 ################################################
 
+write_results_table(round_numeric(expression.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.expression.tsv', sep = '.'))
 write_results_table(round_numeric(exon.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.results.tsv', sep = '.'))
 write_results_table(round_numeric(simes.results, opt\$round_digits), paste(opt\$output_prefix, 'edger.diffsplice.simes.tsv', sep = '.'))
 write_results_table(round_numeric(gene.results, opt\$round_digits),  paste(opt\$output_prefix, 'edger.diffsplice.gene.tsv',  sep = '.'))
 
-pdf(file = paste(opt\$output_prefix, 'edger.diffsplice.pdf', sep = '.'))
-plot_genes <- head(as.character(simes.results[[opt\$gene_id_col]]), opt\$plot_n)
-for (gene in plot_genes) {
-    plotSpliceDGE(splice, geneid = gene, genecolname = opt\$gene_id_col)
+# One PDF per ranking, with the top genes of the exon-level table taken once each
+plot_rankings <- list(
+    results = exon.results,
+    simes   = simes.results,
+    gene    = gene.results
+)
+for (ranking in names(plot_rankings)) {
+    pdf(file = paste(opt\$output_prefix, 'edger.diffsplice', ranking, 'pdf', sep = '.'))
+    plot_genes <- head(unique(as.character(plot_rankings[[ranking]][[opt\$gene_id_col]])), opt\$plot_n)
+    for (gene in plot_genes) {
+        plotSpliceDGE(splice, geneid = gene, genecolname = opt\$gene_id_col)
+    }
+    if (nrow(simes.results) == 0) {
+        plot.new()
+        title(main = "No genes with more than one feature were tested")
+    } else if (length(plot_genes) == 0) {
+        plot.new()
+        title(main = "No genes plotted (plot_n is 0)")
+    }
+    invisible(dev.off())
 }
-if (nrow(simes.results) == 0) {
-    plot.new()
-    title(main = "No genes with more than one feature were tested")
-} else if (length(plot_genes) == 0) {
-    plot.new()
-    title(main = "No genes plotted (plot_n is 0)")
-}
-invisible(dev.off())
 
 png(
     file = paste(opt\$output_prefix, 'edger.bcv.png', sep = '.'),
@@ -472,7 +484,9 @@ png(
 plotBCV(dge)
 invisible(dev.off())
 
+saveRDS(dge, file = paste(opt\$output_prefix, 'DGEList.edger.rds', sep = '.'))
 saveRDS(fit, file = paste(opt\$output_prefix, 'DGEGLM.edger.rds', sep = '.'))
+saveRDS(expression, file = paste(opt\$output_prefix, 'DGELRT.expression.edger.rds', sep = '.'))
 saveRDS(splice, file = paste(opt\$output_prefix, 'DGELRT.edger.rds', sep = '.'))
 
 write(model, file = paste(opt\$output_prefix, 'edger.model.txt', sep = '.'))
