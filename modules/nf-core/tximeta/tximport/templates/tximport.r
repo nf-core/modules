@@ -388,11 +388,13 @@ sink()
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 tximeta.version <- as.character(packageVersion('tximeta'))
+tximport.version <- as.character(packageVersion('tximport'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    bioconductor-tximeta:', tximeta.version)
+        paste('    bioconductor-tximeta:', tximeta.version),
+        paste('    bioconductor-tximport:', tximport.version)
     ),
 'versions.yml')
 
