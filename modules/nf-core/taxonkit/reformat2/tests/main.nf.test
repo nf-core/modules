@@ -1,0 +1,194 @@
+nextflow_process {
+
+    name "Test Process TAXONKIT_REFORMAT2"
+    script "../main.nf"
+    process "TAXONKIT_REFORMAT2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "taxonkit"
+    tag "taxonkit/reformat2"
+
+    test("haemophilus - taxid") {
+
+        def taxdump
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "727",
+                    []
+                ]
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - taxid") {
+
+        def taxdump
+        setup {
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "2697049",
+                    []
+                ]
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus, sarscov2 - taxid file") {
+
+        def taxdump
+        setup {
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    ''
+                ] ).combine( channel.of("727", "2697049").collectFile( name:'taxids.txt', newLine: true, sort: true ) )
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus, sarscov2 - taxid file gzipped") {
+
+        def taxdump
+        def gz
+        setup {
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+            gz = java.nio.file.Files.createTempFile('taxids', '.txt.gz')
+            new java.util.zip.GZIPOutputStream(java.nio.file.Files.newOutputStream(gz)).withCloseable { out -> out.write("727\n2697049\n".getBytes('UTF-8')) }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    '',
+                    file('${gz}')
+                ]
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus, sarscov2, merged - taxid file - tsv field and lineage taxids") {
+
+        def taxdump
+        setup {
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
+        when {
+            params {
+                module_args = '-I 2 -t'
+            }
+            process {
+                """
+                input[0] = channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    ''
+                ] ).combine( channel.of("a\t727", "b\t2697049", "c\t156439").collectFile( name:'taxids.tsv', newLine: true ) )
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - taxid - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "2697049",
+                    []
+                ]
+                input[1] = [ [ id:'taxdump' ], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
