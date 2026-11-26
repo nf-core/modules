@@ -10,6 +10,8 @@ nextflow_process {
     tag "seqtk"
     tag "seqtk/sample"
 
+    topics "versions"
+
     test("sarscov2_sample_singleend_fqgz") {
 
         when {
@@ -27,7 +29,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    topics
+                ).match() }
             )
         }
     }
@@ -38,8 +43,11 @@ nextflow_process {
             process {
                 """
                 input[0] =  [
-                                [ id:'test', single_end:true ],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                [ id:'test', single_end:false ],
+                                [ 
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                                ],
                                 50
                             ]
                 """
@@ -49,7 +57,39 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    topics
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2_sample_pairedend_fqgz - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] =  [
+                                [ id:'test', single_end:false ],
+                                [ 
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                                ],
+                                50
+                            ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    topics
+                ).match() }
             )
         }
     }
@@ -72,7 +112,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    topics
+                ).match() }
             )
         }
     }
@@ -94,7 +137,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    topics
+                ).match() }
             )
         }
     }
