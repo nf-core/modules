@@ -19,7 +19,7 @@ process GFFREAD {
     tuple val(meta), path("*.gff3") , emit: gffread_gff     , optional: true
     tuple val(meta), path("*.fasta"), emit: gffread_fasta   , optional: true
     tuple val(meta), path("*.bed")  , emit: bed             , optional: true
-    tuple val(meta), path("*.tsv")  , emit: table           , optional: true
+    tuple val(meta), path("*.tsv")  , emit: tsv             , optional: true
     tuple val("${task.process}"), val('gffread'), eval('gffread --version 2>&1'), topic: versions, emit: versions_gffread
 
     when:
