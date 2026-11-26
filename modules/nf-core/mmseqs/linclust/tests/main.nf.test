@@ -3,13 +3,15 @@ nextflow_process {
     name "Test Process MMSEQS_LINCLUST"
     script "../main.nf"
     process "MMSEQS_LINCLUST"
-    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "mmseqs"
     tag "mmseqs/linclust"
 
     test("Should cluster an mmseqs database") {
+
+        config "./nextflow.config"
+
         def db
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
@@ -18,6 +20,10 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args   = '--remove-tmp-files 1 -v 0'
+                module_prefix = 'test_output_cluster'
+            }
             process {
                 """
                 input[0] = [ [id:'test'], file('${db}') ]
@@ -54,9 +60,13 @@ nextflow_process {
 
     test("Should cluster an mmseqs database - stub") {
 
+        config "./nextflow.config"
         options "-stub"
 
         when {
+            params {
+                module_prefix = 'test_output_cluster'
+            }
             process {
                 """
                 input[0] = [ [id:'test'], [] ]
