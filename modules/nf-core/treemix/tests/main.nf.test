@@ -1,0 +1,482 @@
+nextflow_process {
+
+    name "Test Process TREEMIX"
+    script "../main.nf"
+    process "TREEMIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "treemix"
+
+    test("synthetic - treemix.gz - one migration, fixed seed") {
+
+        config "./nextflow.config"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "-m 1 -seed 1234 -root PopA -k 10"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'migration'],
+                    file("${launchDir}/toy.treemix.gz", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.llik.size() == 1 },
+                { assert process.out.llik[0][0].id == "migration" },
+                { assert path(process.out.llik[0][1]).size() > 0 },
+                { assert process.out.treeout.size() == 1 },
+                { assert process.out.treeout[0][0].id == "migration" },
+                { assert path(process.out.treeout[0][1]).size() > 0 },
+                { assert process.out.vertices.size() == 1 },
+                { assert process.out.vertices[0][0].id == "migration" },
+                { assert path(process.out.vertices[0][1]).size() > 0 },
+                { assert process.out.edges.size() == 1 },
+                { assert process.out.edges[0][0].id == "migration" },
+                { assert path(process.out.edges[0][1]).size() > 0 },
+                { assert process.out.cov.size() == 1 },
+                { assert process.out.cov[0][0].id == "migration" },
+                { assert path(process.out.cov[0][1]).size() > 0 },
+                { assert process.out.modelcov.size() == 1 },
+                { assert process.out.modelcov[0][0].id == "migration" },
+                { assert path(process.out.modelcov[0][1]).size() > 0 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.log[0][0].id == "migration" },
+                { assert path(process.out.log[0][1]).size() > 0 },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.vertices[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.edges[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.cov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.modelcov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8") }.contains("PopA") },
+                { assert path(process.out.llik[0][1]).text.contains("with 1 migration events") },
+                { assert path(process.out.log[0][1]).text.contains("SEED: 1234") },
+                { assert process.out.covse.every { path(it[1]).size() > 0 } },
+                { assert process.out.versions_treemix[0][1..2] == ["treemix", "1.13"] },
+                { assert snapshot(
+                    process.out.findAll { key, value -> key.startsWith("versions") },
+                    [
+                        llik: path(process.out.llik[0][1]).fileName.toString(),
+                        treeout: path(process.out.treeout[0][1]).fileName.toString(),
+                        vertices: path(process.out.vertices[0][1]).fileName.toString(),
+                        edges: path(process.out.edges[0][1]).fileName.toString(),
+                        cov: path(process.out.cov[0][1]).fileName.toString(),
+                        modelcov: path(process.out.modelcov[0][1]).fileName.toString(),
+                        log: path(process.out.log[0][1]).fileName.toString()
+                    ]
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - treemix.gz - explicit zero migrations") {
+
+        config "./nextflow.config"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "-m 0 -seed 1234 -root PopA -k 10"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'zero'],
+                    file("${launchDir}/toy.treemix.gz", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.llik.size() == 1 },
+                { assert process.out.llik[0][0].id == "zero" },
+                { assert path(process.out.llik[0][1]).size() > 0 },
+                { assert process.out.treeout.size() == 1 },
+                { assert process.out.treeout[0][0].id == "zero" },
+                { assert path(process.out.treeout[0][1]).size() > 0 },
+                { assert process.out.vertices.size() == 1 },
+                { assert process.out.vertices[0][0].id == "zero" },
+                { assert path(process.out.vertices[0][1]).size() > 0 },
+                { assert process.out.edges.size() == 1 },
+                { assert process.out.edges[0][0].id == "zero" },
+                { assert path(process.out.edges[0][1]).size() > 0 },
+                { assert process.out.cov.size() == 1 },
+                { assert process.out.cov[0][0].id == "zero" },
+                { assert path(process.out.cov[0][1]).size() > 0 },
+                { assert process.out.modelcov.size() == 1 },
+                { assert process.out.modelcov[0][0].id == "zero" },
+                { assert path(process.out.modelcov[0][1]).size() > 0 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.log[0][0].id == "zero" },
+                { assert path(process.out.log[0][1]).size() > 0 },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.vertices[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.edges[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.cov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.modelcov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8") }.contains("PopA") },
+                { assert path(process.out.llik[0][1]).text.contains("with 0 migration events") },
+                { assert path(process.out.log[0][1]).text.contains("SEED: 1234") },
+                { assert process.out.covse.every { path(it[1]).size() > 0 } },
+                { assert process.out.versions_treemix[0][1..2] == ["treemix", "1.13"] },
+                { assert snapshot(
+                    process.out.findAll { key, value -> key.startsWith("versions") },
+                    [
+                        llik: path(process.out.llik[0][1]).fileName.toString(),
+                        treeout: path(process.out.treeout[0][1]).fileName.toString(),
+                        vertices: path(process.out.vertices[0][1]).fileName.toString(),
+                        edges: path(process.out.edges[0][1]).fileName.toString(),
+                        cov: path(process.out.cov[0][1]).fileName.toString(),
+                        modelcov: path(process.out.modelcov[0][1]).fileName.toString(),
+                        log: path(process.out.log[0][1]).fileName.toString()
+                    ]
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - treemix.gz - default migrations, automatic seed") {
+
+        config "./nextflow.config"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'defaults'],
+                    file("${launchDir}/toy.treemix.gz", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.llik.size() == 1 },
+                { assert process.out.llik[0][0].id == "defaults" },
+                { assert path(process.out.llik[0][1]).size() > 0 },
+                { assert process.out.treeout.size() == 1 },
+                { assert process.out.treeout[0][0].id == "defaults" },
+                { assert path(process.out.treeout[0][1]).size() > 0 },
+                { assert process.out.vertices.size() == 1 },
+                { assert process.out.vertices[0][0].id == "defaults" },
+                { assert path(process.out.vertices[0][1]).size() > 0 },
+                { assert process.out.edges.size() == 1 },
+                { assert process.out.edges[0][0].id == "defaults" },
+                { assert path(process.out.edges[0][1]).size() > 0 },
+                { assert process.out.cov.size() == 1 },
+                { assert process.out.cov[0][0].id == "defaults" },
+                { assert path(process.out.cov[0][1]).size() > 0 },
+                { assert process.out.modelcov.size() == 1 },
+                { assert process.out.modelcov[0][0].id == "defaults" },
+                { assert path(process.out.modelcov[0][1]).size() > 0 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.log[0][0].id == "defaults" },
+                { assert path(process.out.log[0][1]).size() > 0 },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.vertices[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.edges[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.cov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.modelcov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8") }.contains("PopA") },
+                { assert path(process.out.llik[0][1]).text.contains("with 0 migration events") },
+                { assert path(process.out.log[0][1]).text.contains("SEED:") },
+                { assert process.out.covse.every { path(it[1]).size() > 0 } },
+                { assert process.out.versions_treemix[0][1..2] == ["treemix", "1.13"] },
+                { assert snapshot(
+                    process.out.findAll { key, value -> key.startsWith("versions") },
+                    [
+                        llik: path(process.out.llik[0][1]).fileName.toString(),
+                        treeout: path(process.out.treeout[0][1]).fileName.toString(),
+                        vertices: path(process.out.vertices[0][1]).fileName.toString(),
+                        edges: path(process.out.edges[0][1]).fileName.toString(),
+                        cov: path(process.out.cov[0][1]).fileName.toString(),
+                        modelcov: path(process.out.modelcov[0][1]).fileName.toString(),
+                        log: path(process.out.log[0][1]).fileName.toString()
+                    ]
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - treemix.gz, newick - starting tree") {
+
+        config "./nextflow.config"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+            new File("${launchDir}/starting.nwk").text = "(PopA:0.01,((PopB:0.01,PopC:0.01):0.01,(PopD:0.01,PopE:0.01):0.01):0.01);\n"
+        }
+
+        when {
+            params {
+                module_args = "-m 0 -seed 1234 -root PopA -k 10"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'starting'],
+                    file("${launchDir}/toy.treemix.gz", checkIfExists: true),
+                    file("${launchDir}/starting.nwk", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.llik.size() == 1 },
+                { assert process.out.llik[0][0].id == "starting" },
+                { assert path(process.out.llik[0][1]).size() > 0 },
+                { assert process.out.treeout.size() == 1 },
+                { assert process.out.treeout[0][0].id == "starting" },
+                { assert path(process.out.treeout[0][1]).size() > 0 },
+                { assert process.out.vertices.size() == 1 },
+                { assert process.out.vertices[0][0].id == "starting" },
+                { assert path(process.out.vertices[0][1]).size() > 0 },
+                { assert process.out.edges.size() == 1 },
+                { assert process.out.edges[0][0].id == "starting" },
+                { assert path(process.out.edges[0][1]).size() > 0 },
+                { assert process.out.cov.size() == 1 },
+                { assert process.out.cov[0][0].id == "starting" },
+                { assert path(process.out.cov[0][1]).size() > 0 },
+                { assert process.out.modelcov.size() == 1 },
+                { assert process.out.modelcov[0][0].id == "starting" },
+                { assert path(process.out.modelcov[0][1]).size() > 0 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.log[0][0].id == "starting" },
+                { assert path(process.out.log[0][1]).size() > 0 },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.vertices[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.edges[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.cov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.modelcov[0][1]).newInputStream()).withCloseable { it.getText("UTF-8").trim() } },
+                { assert new java.util.zip.GZIPInputStream(path(process.out.treeout[0][1]).newInputStream()).withCloseable { it.getText("UTF-8") }.contains("PopA") },
+                { assert path(process.out.llik[0][1]).text.contains("with 0 migration events") },
+                { assert path(process.out.log[0][1]).text.contains("SEED: 1234") },
+                { assert process.out.covse.every { path(it[1]).size() > 0 } },
+                { assert process.out.versions_treemix[0][1..2] == ["treemix", "1.13"] },
+                { assert snapshot(
+                    process.out.findAll { key, value -> key.startsWith("versions") },
+                    [
+                        llik: path(process.out.llik[0][1]).fileName.toString(),
+                        treeout: path(process.out.treeout[0][1]).fileName.toString(),
+                        vertices: path(process.out.vertices[0][1]).fileName.toString(),
+                        edges: path(process.out.edges[0][1]).fileName.toString(),
+                        cov: path(process.out.cov[0][1]).fileName.toString(),
+                        modelcov: path(process.out.modelcov[0][1]).fileName.toString(),
+                        log: path(process.out.log[0][1]).fileName.toString()
+                    ]
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - treemix.gz - stub") {
+
+        config "./nextflow.config"
+        options "-stub"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'stub'],
+                    file("${launchDir}/toy.treemix.gz", checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.llik.size() == 1 },
+                { assert process.out.llik[0][0].id == "stub" },
+                { assert path(process.out.llik[0][1]).size() > 0 },
+                { assert process.out.treeout.size() == 1 },
+                { assert process.out.treeout[0][0].id == "stub" },
+                { assert path(process.out.treeout[0][1]).size() > 0 },
+                { assert process.out.vertices.size() == 1 },
+                { assert process.out.vertices[0][0].id == "stub" },
+                { assert path(process.out.vertices[0][1]).size() > 0 },
+                { assert process.out.edges.size() == 1 },
+                { assert process.out.edges[0][0].id == "stub" },
+                { assert path(process.out.edges[0][1]).size() > 0 },
+                { assert process.out.cov.size() == 1 },
+                { assert process.out.cov[0][0].id == "stub" },
+                { assert path(process.out.cov[0][1]).size() > 0 },
+                { assert process.out.modelcov.size() == 1 },
+                { assert process.out.modelcov[0][0].id == "stub" },
+                { assert path(process.out.modelcov[0][1]).size() > 0 },
+                { assert process.out.log.size() == 1 },
+                { assert process.out.log[0][0].id == "stub" },
+                { assert path(process.out.log[0][1]).size() > 0 },
+                { assert process.out.covse.every { path(it[1]).size() > 0 } },
+                { assert process.out.versions_treemix[0][1..2] == ["treemix", "1.13"] },
+                { assert snapshot(
+                    process.out.findAll { key, value -> key.startsWith("versions") },
+                    [
+                        llik: path(process.out.llik[0][1]).fileName.toString(),
+                        treeout: path(process.out.treeout[0][1]).fileName.toString(),
+                        vertices: path(process.out.vertices[0][1]).fileName.toString(),
+                        edges: path(process.out.edges[0][1]).fileName.toString(),
+                        cov: path(process.out.cov[0][1]).fileName.toString(),
+                        modelcov: path(process.out.modelcov[0][1]).fileName.toString(),
+                        log: path(process.out.log[0][1]).fileName.toString()
+                    ]
+                ).match() }
+            )
+        }
+    }
+
+    test("synthetic - multiple input files are rejected") {
+
+        config "./nextflow.config"
+
+        setup {
+            // Correlated allele counts exercise tree fitting without external test data.
+            def random = new Random(42)
+            def counts = new File("${launchDir}/toy.treemix.gz")
+            new java.util.zip.GZIPOutputStream(counts.newOutputStream()).withWriter('UTF-8') { writer ->
+                writer.write('PopA PopB PopC PopD PopE\n')
+                2000.times {
+                    def ancestral = 0.1 + random.nextDouble() * 0.8
+                    def drift = random.nextGaussian() * 0.08
+                    def alleles = (0..<5).collect { population ->
+                        def frequency = ancestral + (population < 2 ? drift : -drift) + random.nextGaussian() * 0.04
+                        def count = Math.max(0, Math.min(20, Math.round(frequency * 20)))
+                        "${count},${20 - count}"
+                    }
+                    writer.write(alleles.join(' ') + '\n')
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                new File("${launchDir}/second.treemix.gz").bytes = new File("${launchDir}/toy.treemix.gz").bytes
+                input[0] = [
+                    [id: 'invalid'],
+                    [file("${launchDir}/toy.treemix.gz"), file("${launchDir}/second.treemix.gz")],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.errorReport.contains("Incorrect number of input files") }
+            )
+        }
+    }
+}
