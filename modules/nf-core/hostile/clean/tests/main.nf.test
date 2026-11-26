@@ -83,6 +83,35 @@ nextflow_process {
 
     }
 
+    // Mates named sample.R1/sample.R2 and given in reverse order. Both reduce to the
+    // same simpleName, so only a sort on the full file name puts R1 first.
+    test("fastq - paired-end - mates given in reverse order") {
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                def dir = java.nio.file.Files.createTempDirectory('hostile_mates')
+                def r1  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true).copyTo(dir.resolve('sample.R1.fastq.gz'))
+                def r2  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true).copyTo(dir.resolve('sample.R2.fastq.gz'))
+                input[0] = [ [ id:'test', single_end:false ], [ r2, r1 ] ]
+                input[1] = BOWTIE2_BUILD.out.index.map { ['genome', it[1]] }
+                """
+            }
+        }
+
+        then {
+            def report = path(process.out.json[0][1]).json[0]
+            assertAll(
+                { assert process.success },
+                { assert report.fastq1_in_name == 'sample.R1.fastq.gz' },
+                { assert report.fastq2_in_name == 'sample.R2.fastq.gz' }
+            )
+        }
+
+    }
+
     test("fastq - single-end - stub") {
 
         options "-stub"
