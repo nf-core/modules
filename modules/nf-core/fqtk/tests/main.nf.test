@@ -11,14 +11,16 @@ nextflow_process {
     test("tsv - fastq") {
         def fastq_dir
         setup {
-            fastq_dir = extract('https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fastq.tar.gz')
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            fastq_dir = extract(modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/fastq.tar.gz')
         }
         when {
             process {
                 """
                 ch_input = channel.of ([
                     [ id:'sim-data'], // meta map
-                    file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/fqtk_sample_metadata_subset.tsv', checkIfExists: true),
                     file('${fastq_dir}')
                 ])
                 .map { meta, sample_sheet, fastq_folder ->
@@ -53,7 +55,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [id: "test"],
-                    file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/element/sim-data/fqtk_sample_metadata_subset.tsv', checkIfExists: true),
                     [], []
                 ]
                 """

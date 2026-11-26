@@ -1,4 +1,132 @@
 {
+    "saccharomyces_cerevisiae - salmon - gtf - ignore_tx_version": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.gene_counts.tsv:md5,28b312144d974387ec28f057f8c9d747"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.gene_counts_length_scaled.tsv:md5,739e9d0a6a103c21db78cb533da2615f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.gene_counts_scaled.tsv:md5,97614d00dbbfd3c7e27b2ddb69700efc"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts.tsv:md5,57de599703c294054dc959d64cf6285d"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,c23effda2c7224c4235ddf014553211a"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,23b1faec69d0c871a110273f463ace97"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.gene_lengths.tsv:md5,9d0be086ae56cc0157c9c813cc3dba41"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_lengths.tsv:md5,058407dd92a61eabb94427975df1daad"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.gene_tpm.tsv:md5,0517636400ed73ed8b76e91167af35b3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_tpm.tsv:md5,c13f5d5da59be6592cfbd3dfe55b9567"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.tx2gene_augmented.tsv:md5,de8b002181fb85b76b03cba3599e8a1a"
+                ]
+            ],
+            [
+                "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+            ]
+        ],
+        "timestamp": "2026-11-25T15:03:42.285500843",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.7"
+        }
+    },
+    "saccharomyces_cerevisiae - salmon - gtf - numeric_gene_ids": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,b28cdd50c7c1d64d7819a83a1edc5888"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,25d81282800e0d440db91c8d27bb8313"
+                ]
+            ],
+            [
+                "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+            ]
+        ],
+        "timestamp": "2026-11-25T19:04:45.198514798",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.7"
+        }
+    },
     "saccharomyces_cerevisiae - kallisto - gtf - stub": {
         "content": [
             {
@@ -17,6 +145,17 @@
                         ],
                         "[].gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
+                ],
+                "10": [
+                    [
+                        [
+                            
+                        ],
+                        "[].tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "11": [
+                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
                 ],
                 "2": [
                     [
@@ -63,7 +202,7 @@
                         [
                             
                         ],
-                        "[].transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "[].transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -71,11 +210,16 @@
                         [
                             
                         ],
-                        "[].tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "[].transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
-                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "counts_gene": [
                     [
@@ -107,6 +251,22 @@
                             
                         ],
                         "[].transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_dtu_scaled": [
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_scaled": [
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "lengths_gene": [
@@ -154,10 +314,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T10:22:14.156331967",
+        "timestamp": "2026-11-25T10:28:33.65626184",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - salmon - gtf": {
@@ -192,6 +352,22 @@
                         "id": "test"
                     },
                     "test.transcript_counts.tsv:md5,ff0f5be09ca7a322672c0074ba35da17"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,a8aef3a6564232a3d699032c89023025"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,f655b12b9ede464e85b2fbb9dbbb224c"
                 ]
             ],
             [
@@ -238,10 +414,10 @@
                 "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
             ]
         ],
-        "timestamp": "2026-07-15T10:17:56.972700672",
+        "timestamp": "2026-11-25T10:28:47.075027948",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - salmon - gtf - stub": {
@@ -263,6 +439,17 @@
                         "[].gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "10": [
+                    [
+                        [
+                            
+                        ],
+                        "[].tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "11": [
+                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+                ],
                 "2": [
                     [
                         [
@@ -308,7 +495,7 @@
                         [
                             
                         ],
-                        "[].transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "[].transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -316,11 +503,16 @@
                         [
                             
                         ],
-                        "[].tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "[].transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
-                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "counts_gene": [
                     [
@@ -352,6 +544,22 @@
                             
                         ],
                         "[].transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_dtu_scaled": [
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_scaled": [
+                    [
+                        [
+                            
+                        ],
+                        "[].transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "lengths_gene": [
@@ -399,10 +607,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T10:22:52.357921901",
+        "timestamp": "2026-11-25T10:29:28.237781185",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - rsem - gtf - stub": {
@@ -423,6 +631,17 @@
                         },
                         "test.gene_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
+                ],
+                "10": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "11": [
+                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
                 ],
                 "2": [
                     [
@@ -469,7 +688,7 @@
                         {
                             "id": "test"
                         },
-                        "test.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "8": [
@@ -477,11 +696,16 @@
                         {
                             "id": "test"
                         },
-                        "test.tx2gene_augmented.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "9": [
-                    "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcript_lengths.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "counts_gene": [
                     [
@@ -513,6 +737,22 @@
                             "id": "test"
                         },
                         "test.transcript_counts.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_dtu_scaled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcript_counts_dtu_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "counts_transcript_scaled": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.transcript_counts_scaled.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "lengths_gene": [
@@ -560,10 +800,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-05T10:23:18.051860334",
+        "timestamp": "2026-11-25T10:29:56.166037499",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - kallisto - gtf - custom_column_names": {
@@ -598,6 +838,22 @@
                         "id": "test"
                     },
                     "test.transcript_counts.tsv:md5,42e0106e75fa97c1c684c6d9060f1724"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,39660d573f2298593fa5fa8d0ee69f90"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,6eb8ba403fa7889ff7395fc5c07fb3ea"
                 ]
             ],
             [
@@ -644,10 +900,10 @@
                 "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
             ]
         ],
-        "timestamp": "2026-07-15T10:19:00.225936028",
+        "timestamp": "2026-11-25T10:30:10.133870108",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - kallisto - gtf": {
@@ -682,6 +938,22 @@
                         "id": "test"
                     },
                     "test.transcript_counts.tsv:md5,42e0106e75fa97c1c684c6d9060f1724"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,39660d573f2298593fa5fa8d0ee69f90"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,6eb8ba403fa7889ff7395fc5c07fb3ea"
                 ]
             ],
             [
@@ -728,10 +1000,10 @@
                 "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
             ]
         ],
-        "timestamp": "2026-07-15T10:17:19.478993926",
+        "timestamp": "2026-11-25T10:28:01.458873875",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - rsem - gtf": {
@@ -766,6 +1038,22 @@
                         "id": "test"
                     },
                     "test.transcript_counts.tsv:md5,4049fc5545452e4a1e3bc9a75b060fc6"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,f0f1c6929c262fa83dca30699e27850e"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,0fb4cde6f117f9e97b88b140296de663"
                 ]
             ],
             [
@@ -812,10 +1100,10 @@
                 "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
             ]
         ],
-        "timestamp": "2026-07-15T10:18:34.678762478",
+        "timestamp": "2026-11-25T10:29:41.450367876",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.7"
         }
     },
     "saccharomyces_cerevisiae - kallisto - gtf - extra_attributes": {
@@ -850,6 +1138,22 @@
                         "id": "test"
                     },
                     "test.transcript_counts.tsv:md5,42e0106e75fa97c1c684c6d9060f1724"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_dtu_scaled.tsv:md5,39660d573f2298593fa5fa8d0ee69f90"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.transcript_counts_scaled.tsv:md5,6eb8ba403fa7889ff7395fc5c07fb3ea"
                 ]
             ],
             [
@@ -896,10 +1200,10 @@
                 "versions.yml:md5,6ff317cceddc686f84d79cb976e1e28b"
             ]
         ],
-        "timestamp": "2026-07-15T10:17:31.261886238",
+        "timestamp": "2026-11-25T10:28:16.337384637",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.7"
         }
     }
 }

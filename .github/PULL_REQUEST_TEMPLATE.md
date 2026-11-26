@@ -18,6 +18,7 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
 - [ ] This comment contains a description of changes (with reason).
 - [ ] If you've fixed a bug or added code that should be tested, add tests!
 - [ ] If you've added a new tool - have you followed the module conventions in the [contribution docs](https://github.com/nf-core/modules/tree/master/.github/CONTRIBUTING.md)
+- [ ] Use BioConda if possible to fulfil software requirements. Run `nf-core modules containers create` to create the containers.
 - [ ] If necessary, include test data in your PR.
 - [ ] Remove all TODO statements.
 - [ ] Broadcast software version numbers to `topic: versions` - [See version_topics](https://nf-co.re/blog/2025/version_topics)
@@ -25,7 +26,6 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
 - [ ] Follow the parameters requirements.
 - [ ] Follow the input/output options guidelines.
 - [ ] Add a resource `label`
-- [ ] Use BioConda and BioContainers if possible to fulfil software requirements.
 - Ensure that the test works with either Docker / Singularity. Conda CI tests can be quite flaky:
   - For modules:
     - [ ] `nf-core modules test <MODULE> --profile docker`
@@ -35,3 +35,4 @@ Closes #XXX <!-- If this PR fixes an issue, please link it here! -->
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile docker`
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile singularity`
     - [ ] `nf-core subworkflows test <SUBWORKFLOW> --profile conda`
+- [ ] Once your PR is ready, ask for a review on the [#request-review](https://nfcore.slack.com/channels/request-review) channel on Slack.
