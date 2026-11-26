@@ -7,8 +7,8 @@ process MMSEQS_DATABASES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/edfecaaca16ca7fb7b6428dce0ed9c737549b38146360c98fdabf74e6c4cac68/data'
-        : 'community.wave.seqera.io/library/mmseqs2_wget:aa683a2c5355899d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7df92cbef82c41ca1fcdc2959e9beeeeb6106099accfdaaed468b2990587061/data'
+        : 'community.wave.seqera.io/library/mmseqs2_wget:4ce0f9394a204754'}"
 
     input:
     val database
