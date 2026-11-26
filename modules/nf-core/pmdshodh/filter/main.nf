@@ -7,8 +7,8 @@ process PMDSHODH_FILTER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/pmdshodh:0.3.3--hfa8f182_0'
-        : 'quay.io/biocontainers/pmdshodh:0.3.3--hfa8f182_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bdc1b50afea6c4c60f579807586e2d1603ebf5bc06bc414ed116dfad9e8b8d3/data'
+        : 'community.wave.seqera.io/library/pmdshodh:0.3.3--4d662c161631c5ad'}"
 
     input:
     tuple val(meta), path(input)

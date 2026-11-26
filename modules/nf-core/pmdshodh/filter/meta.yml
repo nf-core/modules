@@ -109,3 +109,27 @@ authors:
   - "@dpatel511"
 maintainers:
   - "@dpatel511"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pmdshodh:0.3.3--021d57dd06dae595
+      build_id: bd-021d57dd06dae595_1
+      scan_id: sc-2f04427109239d6b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pmdshodh:0.3.3--4d662c161631c5ad
+      build_id: bd-4d662c161631c5ad_1
+      scan_id: sc-2ebee70d59d7e594_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pmdshodh:0.3.3--ea94781a7285ea0d
+      build_id: bd-ea94781a7285ea0d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d22759c412c0f04dda74a9a3153c666b7d4f2417911b7b92c924d4c78935253/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pmdshodh:0.3.3--ea776d43687bb696
+      build_id: bd-ea776d43687bb696_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bdc1b50afea6c4c60f579807586e2d1603ebf5bc06bc414ed116dfad9e8b8d3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/pmdshodh/filter/.conda-lock/linux_amd64-bd-4d662c161631c5ad_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/pmdshodh/filter/.conda-lock/linux_arm64-bd-021d57dd06dae595_1.txt
