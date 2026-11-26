@@ -10,37 +10,26 @@ nextflow_process {
     tag "gtdbtk"
     tag "gtdbtk/classifywf"
     tag "gtdbtk/gtdbtoncbimajorityvote"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [
-                [ id:'mockup' ], // meta map
-                file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_r232_20260507.tar.gz', checkIfExists: true)
-            ]
-            """
-            }
-        }
-
-        run("GTDBTK_CLASSIFYWF") {
-            script "../../classifywf/main.nf"
-            process {
-            """
-            input[0] = [
-                [ id:'test', single_end:false, assembler:'SPADES' ],
-                [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
-            ]
-            input[1] = UNTAR.out.untar
-            input[2] = false
-            """
-            }
-        }
-    }
 
     test("E. coli - genome fasta") {
+        def gtdb_db
+        setup {
+            gtdb_db = extract('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_r232_20260507.tar.gz')
+
+            run("GTDBTK_CLASSIFYWF") {
+                script "../../classifywf/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, assembler:'SPADES' ],
+                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
+                ]
+                input[1] = [ [ id:'mockup' ], file('${gtdb_db}') ]
+                input[2] = false
+                """
+                }
+            }
+        }
 
         when {
             params {
@@ -49,7 +38,7 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_outdir.map { meta, outfiles -> [meta, outfiles, meta.idgot ] }
+                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_outdir.map { meta, outfiles -> [meta, outfiles, meta.id ] }
                 input[1] = [[id: "ar53"], file("https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/ar53_metadata_r232.tsv.gz", checkIfExists: true)]
                 input[2] = [[id: "bac120"], file("https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_metadata_r232.tsv.gz", checkIfExists: true)]
                 """
@@ -75,9 +64,9 @@ nextflow_process {
 
             process {
                 """
-                input[0] = GTDBTK_CLASSIFYWF.out.gtdb_outdir.map { meta, outfiles -> [meta, outfiles, meta.id] }
-                input[1] = [[id: "ar53"], file("https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/ar53_metadata_r232.tsv.gz", checkIfExists: true)]
-                input[2] = [[id: "bac120"], file("https://data.gtdb.aau.ecogenomic.org/releases/release232/232.0/bac120_metadata_r232.tsv.gz", checkIfExists: true)]
+                input[0] = [ [ id:'test', single_end:false, assembler:'SPADES' ], [], 'test' ]
+                input[1] = [ [ id:'ar53' ], [] ]
+                input[2] = [ [ id:'bac120' ], [] ]
                 """
             }
         }

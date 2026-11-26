@@ -8,28 +8,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rtgtools"
     tag "rtgtools/vcfeval"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = Channel.value([
-                    [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz', checkIfExists:true)
-                ])
-                """
-            }
-        }
-    }
 
     test("homo_sapiens - [vcf, tbi, truth, truth_tbi, truth_bed, regions_bed], sdf") {
+        def sdf
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            sdf = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz').resolve('genome_sdf')
+        }
+
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists:true),
@@ -38,7 +30,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists:true)
                 ])
-                input[1] = UNTAR.out.untar
+                input[1] = [ [id:'test'], file('${sdf}') ]
                 """
             }
         }
@@ -53,11 +45,18 @@ nextflow_process {
     }
 
     test("homo_sapiens - [vcf, [], truth, [], [], []], sdf") {
+        def sdf
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            sdf = extract(modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome_sdf.tar.gz').resolve('genome_sdf')
+        }
+
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
                     [],
@@ -66,7 +65,7 @@ nextflow_process {
                     [],
                     []
                 ])
-                input[1] = UNTAR.out.untar
+                input[1] = [ [id:'test'], file('${sdf}') ]
                 """
             }
         }
@@ -87,7 +86,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists:true),
@@ -96,7 +95,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists:true)
                 ])
-                input[1] = UNTAR.out.untar
+                input[1] = [ [id:'test'], [] ]
                 """
             }
         }

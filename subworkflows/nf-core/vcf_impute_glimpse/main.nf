@@ -93,8 +93,14 @@ workflow VCF_IMPUTE_GLIMPSE {
             def meta = groupKeyObj.getGroupTarget()
             [meta, vcf, index]
         }
+        .branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }
 
-    GLIMPSE_LIGATE(ligate_input, 'vcf.gz')
+    GLIMPSE_LIGATE(ligate_input.more, 'vcf.gz')
 
     BCFTOOLS_INDEX_LIGATE(GLIMPSE_LIGATE.out.merged_variants)
 
@@ -103,6 +109,8 @@ workflow VCF_IMPUTE_GLIMPSE {
         BCFTOOLS_INDEX_LIGATE.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
+    ).mix(
+        ligate_input.one
     )
 
     emit:

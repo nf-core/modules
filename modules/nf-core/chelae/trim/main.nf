@@ -6,9 +6,9 @@ process CHELAE_TRIM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/chelae:0.1.0--hfa8f182_0'
-        : 'quay.io/biocontainers/chelae:0.1.0--hfa8f182_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f9f53b14969037fd2ef16d0c23b86ce41ce891d450e21d1402ff5217a2a8e5b/data'
+        : 'community.wave.seqera.io/library/chelae:0.2.1--226b7d4244683014'}"
 
     input:
     tuple val(meta), path(reads)

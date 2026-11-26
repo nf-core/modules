@@ -6,9 +6,9 @@ process QCATCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a7d0112866550e3bcf97c40104596a3ca2ecbc26c13cf919fe76587554528281/data':
-        'community.wave.seqera.io/library/pip_qcatch:03b88593a5cca75b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a2/a2a380d111d607023af3046d0bab97c1b1b78d874190cc0c07f7eb71b85f1199/data'
+        : 'community.wave.seqera.io/library/pip_python_anndata_qcatch:2684f051bed40abe'}"
     input:
     tuple val(meta), val(chemistry), path(quant_dir)
 
@@ -17,6 +17,7 @@ process QCATCH {
     tuple val(meta), path("*_filtered_quants.h5ad") , emit: filtered_h5ad
     tuple val(meta), path("*_metrics_summary.csv")  , emit: metrics_summary
     tuple val("${task.process}"), val('qcatch'), eval("qcatch --version | sed -e 's/qcatch //g'"), emit: versions_qcatch, topic: versions
+    tuple val("${task.process}"), val('anndata'), eval("python -c 'import anndata; print(anndata.__version__)'"), emit: versions_anndata, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

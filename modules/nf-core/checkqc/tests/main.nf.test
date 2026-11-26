@@ -5,7 +5,6 @@ nextflow_process {
     process "CHECKQC"
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "checkqc"
 
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC OK") {
@@ -15,7 +14,7 @@ nextflow_process {
         when {
             process {
                 """
-                    input[0] = Channel.of([[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
+                    input[0] = channel.of([[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
                     input[1] = []
                 """
             }
@@ -37,21 +36,17 @@ nextflow_process {
     test("homo_sapiens illumina test_miseq_noRunParameters - Log Error: no File") {
         config "./nextflow.config"
 
+        def run_dir
         setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([[id: 'test_no_xml'], file('https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/MiSeq/220422_M11111_0222_000000000-K9H97.tar.gz', checkIfExists: true)])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            run_dir = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_no_runparameters.tar.gz').resolve('220422_M11111_0222_000000000-K9H97')
         }
 
         when {
             process {
                 """
-                    input[0] = UNTAR.out.untar
+                    input[0] = [[id: 'test_no_xml'], file('${run_dir}')]
                     input[1] = []
                 """
             }
@@ -68,21 +63,17 @@ nextflow_process {
 
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC Error") {
 
+        def run_dir
         setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                process {
-                    """
-                   input[0] = Channel.of([[id: 'test_no_downgrade_errors'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            run_dir = extract(modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz').resolve('170726_D00118_0303_BCB1TVANXX')
         }
 
         when {
             process {
                 """
-                    input[0] = UNTAR.out.untar
+                    input[0] = [[id: 'test_no_downgrade_errors'], file('${run_dir}')]
                     input[1] = []
                 """
             }

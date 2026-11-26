@@ -11,7 +11,6 @@ nextflow_process {
     tag "colabfold"
     tag "colabfold/colabfold"
     tag "colabfold/downloadmodels"
-    tag "untar"
 
     // The ~3.5 GB AlphaFold2 weights come from colabfold/downloadmodels, so the
     // --data path that pipelines use is the one tested. No test queries the MSA
@@ -108,23 +107,17 @@ nextflow_process {
 
     test("proteomics - a3m - pdb hits - gpu") {
 
+        def local_pdb
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            local_pdb = extract(modules_testdata_base_path + 'proteomics/colabfold/local_pdb.tar.gz').resolve('local_pdb')
+
             run("COLABFOLD_DOWNLOADMODELS") {
                 script "../../downloadmodels/main.nf"
                 process {
                     """
                     input[0] = 'alphafold2_ptm'
-                    """
-                }
-            }
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'local_pdb' ],
-                        file(params.modules_testdata_base_path + 'proteomics/colabfold/local_pdb.tar.gz', checkIfExists: true)
-                    ]
                     """
                 }
             }
@@ -142,9 +135,11 @@ nextflow_process {
                 ]
                 input[1] = COLABFOLD_DOWNLOADMODELS.out.weights
                 input[2] = [ [:], [] ]
-                input[3] = UNTAR.out.untar.map { meta, local_pdb ->
-                    [ meta, file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage_pdb_hits.m8', checkIfExists: true), local_pdb ]
-                }
+                input[3] = [
+                    [ id:'local_pdb' ],
+                    file(params.modules_testdata_base_path + 'proteomics/colabfold/trp_cage_pdb_hits.m8', checkIfExists: true),
+                    file('${local_pdb}')
+                ]
                 """
             }
         }

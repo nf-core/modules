@@ -1,0 +1,99 @@
+nextflow_process {
+
+    name "Test Process CCNV_PREDICT"
+    script "../main.nf"
+    process "CCNV_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ccnv"
+    tag "ccnv/predict"
+
+    test("synthetic - ccnv") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],[],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.ccnv', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'cohort_ref'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/ref_qc_warn_flat.ccnv', checkIfExists: true),
+                ]
+                input[2] = [[:],[],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["qc_json","bins_bed","segments_bed","segments_vcf","plot_html"])).match() }
+            )
+        }
+    }
+
+    test("synthetic - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam.bai', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id: 'cohort_ref'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/ref_qc_warn_flat.ccnv', checkIfExists: true),
+                ]
+                input[2] = [[:],[],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["qc_json","bins_bed","segments_bed","segments_vcf","plot_html"])).match() }
+            )
+        }
+    }
+
+
+    test("synthetic - bam - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/paired_end.bam.bai', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id: 'cohort_ref'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/ccnv/ref_qc_warn_flat.ccnv', checkIfExists: true),
+                ]
+                input[2] = [[:],[],[]]
+                input[3] = [[:],[]]
+                input[4] = [[:],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

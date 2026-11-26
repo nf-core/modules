@@ -8,46 +8,32 @@ nextflow_process {
     tag "modules_nfcore"
     tag "checkv"
     tag "checkv/endtoend"
-    tag "untar"
     tag "gunzip"
 
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'checkv_minimal_db' ],
-                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-            process {
-                """
-                input[0] = Channel.of(
-                    [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
-                    ]
-                )
-                """
-            }
-        }
-    }
-
     test("bacteroides_fragilis - illumina - test1_contigs_fa_gz") {
+        def checkv_db
+        setup {
+            checkv_db = extract('https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar').resolve('checkv_minimal_db')
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = channel.of(
+                        [
+                            [ id:'test' ],
+                            file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                        ]
+                    )
+                    """
+                }
+            }
+        }
 
         when {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = UNTAR.out.untar.map { it[1] }
+                input[1] = file('${checkv_db}')
                 """
             }
         }
@@ -69,11 +55,14 @@ nextflow_process {
     }
 
     test("bacteroides_fragilis - illumina - test1_contigs_fa_gz - stub") {
+
+        options "-stub"
+
         when {
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
-                input[1] = UNTAR.out.untar.map { it[1] }
+                input[0] = [ [ id:'test' ], [] ]
+                input[1] = []
                 """
             }
         }

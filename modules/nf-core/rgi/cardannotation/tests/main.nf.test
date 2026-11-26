@@ -8,30 +8,17 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rgi"
     tag "rgi/cardannotation"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-            """
-            file('https://card.mcmaster.ca/latest/data', checkIfExists: true).copyTo('data.tar.gz')
-
-            input[0] = [
-                [ ],
-                file("data.tar.gz")
-            ]
-            """
-            }
-        }
-    }
 
     test("rgi/cardannotation") {
+        def card
+        setup {
+            card = extract('https://card.mcmaster.ca/latest/data', compression: 'tar.bz2')
+        }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it[1] }
+                input[0] = file('${card}')
                 """
             }
         }
@@ -51,7 +38,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.map{ it[1] }
+                input[0] = []
                 """
             }
         }

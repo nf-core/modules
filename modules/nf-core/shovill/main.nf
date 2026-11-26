@@ -6,9 +6,9 @@ process SHOVILL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
-        'quay.io/biocontainers/shovill:1.1.0--0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/97e3f0d4872793310b8bada5c56aa3905bb2ac430b91a7521a84a06b72e1768f/data'
+        : 'community.wave.seqera.io/library/shovill:1.4.2--eab27bd761ae82ef'}"
 
     input:
     tuple val(meta), path(reads)
@@ -18,7 +18,7 @@ process SHOVILL {
     tuple val(meta), path("shovill.corrections")                , emit: corrections
     tuple val(meta), path("shovill.log")                        , emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
-    tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
+    tuple val(meta), path("{skesa,spades,megahit,velvet}.{fastg,gfa,LastGraph}"), optional:true, emit: gfa
     tuple val("${task.process}"), val('shovill'), eval('shovill --version 2>&1 | sed "s/^.*shovill //"'), emit: versions_shovill, topic: versions
 
     when:

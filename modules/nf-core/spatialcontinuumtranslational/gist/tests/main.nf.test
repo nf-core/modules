@@ -1,0 +1,124 @@
+nextflow_process {
+
+    name "Test Process SPATIALCONTINUUMTRANSLATIONAL_GIST"
+    script "../main.nf"
+    process "SPATIALCONTINUUMTRANSLATIONAL_GIST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spatialcontinuumtranslational"
+    tag "spatialcontinuumtranslational/gist"
+
+    test("homosapiens - tsv - json") {
+
+        when {
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.tsv")
+                test_file.text = "sample_id\\tmitoses_per_50_hpf\\tsite\\ttumor_rupture\\tmutation\\ttumor_size_cm\\nsample1\\t3.5\\tgastric\\tfalse\\tkit_exon11\\t4.2\\n"
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - csv - tsv") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--format tsv'
+            }
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.csv")
+                test_file.text = "sample_id,mitoses_per_50_hpf,site,tumor_rupture,mutation,tumor_size_cm\\nsample1,3.5,gastric,false,kit_exon11,4.2\\n"
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - json - tsv") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--format tsv'
+            }
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.json")
+                test_file.text = '[{"sample_id":"sample2","mitoses_per_50_hpf":6.0,"site":"duodenal","tumor_rupture":"true","mutation":"kit_exon9","tumor_size_cm":5.5}]\\n'
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homosapiens - tsv - json - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def test_file = file("\${workDir}/gist_input.tsv")
+                test_file.text = "sample_id\\tmitoses_per_50_hpf\\tsite\\ttumor_rupture\\tmutation\\ttumor_size_cm\\nsample1\\t3.5\\tgastric\\tfalse\\tkit_exon11\\t4.2\\n"
+
+                input[0] = [
+                    [ id:'test_sample' ],
+                    test_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

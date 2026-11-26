@@ -1,0 +1,231 @@
+nextflow_process {
+
+    name "Test Process EDGER_DIFFSPLICE"
+    script "../main.nf"
+    process "EDGER_DIFFSPLICE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "edger"
+    tag "edger/diffsplice"
+
+    test("homo_sapiens - chrX - exon counts - condition - filter_by_expr") {
+
+        when {
+            params {
+                module_args = '--feature_id_col exon_id --sample_id_col sample --filter_by_expr TRUE --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.exon_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("edgeR_") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - featureCounts exon counts - condition - annotation columns") {
+
+        when {
+            params {
+                module_args = '--gene_id_col Geneid --feature_id_col Start --annotation_cols Chr;End;Strand;Length --count_col_suffix .Aligned.out.bam --sample_id_col sample --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.exon_counts.featureCounts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - condition - lrt") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --test_method lrt --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - formula") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --round_digits 4'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_formula', 'formula': '~ condition', 'comparison': 'conditionYRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - identical gene and feature columns - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col gene_id --sample_id_col sample'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("gene_id_col and feature_id_col must be different columns") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - subset_to_contrast_samples without levels - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --subset_to_contrast_samples TRUE'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_comparison', 'variable': 'condition', 'comparison': 'condition.YRI-condition.GBR'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("subset_to_contrast_samples requires a contrast variable with reference and target levels") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - invalid option value - fails") {
+
+        when {
+            params {
+                module_args = '--gene_id_col gene_id --feature_id_col tx --sample_id_col sample --robust yes'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value for option robust: 'yes' is not a valid logical") }
+            )
+        }
+    }
+
+    test("homo_sapiens - chrX - transcript counts - condition - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'condition_GBR_YRI', 'variable': 'condition', 'reference': 'GBR', 'target': 'YRI'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/rnaseq_expression/chrX.transcript_counts.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
