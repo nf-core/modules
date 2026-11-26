@@ -29,7 +29,7 @@ nextflow_process {
         when {
             process {
                 """
-                filter_fastq_ch = Channel.of(
+                filter_fastq_ch = channel.of(
                     [
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
@@ -41,14 +41,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    file(process.out.log[0][1]).readLines()[16..17],  // seqs_in and seqs_out
-                    process.out.fastq_filtered,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()}
+                    sanitizeOutput(process.out, unstableKeys: ["log"]), // the summary also holds run times
+                    path(process.out.log[0][1]).json.subMap(["seqs_in", "seqs_out"])
+                ).match() }
             )
         }
 
@@ -73,7 +71,7 @@ nextflow_process {
         when {
             process {
                 """
-                filter_fastq_ch = Channel.of(
+                filter_fastq_ch = channel.of(
                     [
                         [ id:'test', single_end:false ],
                         [
@@ -88,13 +86,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.fastq_filtered,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()}
+                    sanitizeOutput(process.out, unstableKeys: ["log"]), // the summary also holds run times
+                    path(process.out.log[0][1]).json.subMap(["seqs_in", "seqs_out"])
+                ).match() }
             )
         }
 
@@ -121,7 +118,7 @@ nextflow_process {
         when {
             process {
                 """
-                filter_fastq_ch = Channel.of(
+                filter_fastq_ch = channel.of(
                     [
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
@@ -133,8 +130,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
