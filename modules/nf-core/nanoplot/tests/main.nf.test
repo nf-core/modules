@@ -69,6 +69,34 @@ nextflow_process {
         }
     }
 
+    test("NanoPlot FASTQ - uncompressed") {
+
+        when {
+            process {
+                """
+                // an uncompressed FASTQ (.fastq), made from the gzipped test file
+                def gz = file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                def fq = file("\${workDir}/test.fastq")
+                fq.text = new java.util.zip.GZIPInputStream(gz.newInputStream()).text
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    [ fq ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.html[0][1].size() > 0 },
+                { assert process.out.txt[0][1] },
+                { assert file(process.out.txt[0][1]).readLines().size() > 1 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["html", "txt"], ignoreKeys: ["png"])).match()}
+            )
+        }
+    }
+
     test("NanoPlot - stub") {
 
         options "-stub"

@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process GFFREAD"
     script "../main.nf"
     process "GFFREAD"
+    config "./nextflow.config"
 
     tag "gffread"
     tag "modules_nfcore"
@@ -10,11 +11,10 @@ nextflow_process {
 
     test("sarscov2-gff3-gtf") {
 
-        config "./nextflow.config"
-
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-T'
             }
             process {
                 """
@@ -42,11 +42,11 @@ nextflow_process {
     test("sarscov2-gff3-gtf-stub") {
 
         options '-stub'
-        config "./nextflow.config"
 
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-T'
             }
             process {
                 """
@@ -72,11 +72,10 @@ nextflow_process {
 
     test("sarscov2-gff3-gff3") {
 
-        config "./nextflow-gff3.config"
-
         when {
             params {
                 outdir = "$outputDir"
+                module_args = ''
             }
             process {
                 """
@@ -103,11 +102,11 @@ nextflow_process {
     test("sarscov2-gff3-gff3-stub") {
 
         options '-stub'
-        config "./nextflow-gff3.config"
 
         when {
             params {
                 outdir = "$outputDir"
+                module_args = ''
             }
             process {
                 """
@@ -133,11 +132,10 @@ nextflow_process {
 
     test("sarscov2-gff3-fasta") {
 
-        config "./nextflow-fasta.config"
-
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-w -S'
             }
             process {
                 """
@@ -163,11 +161,10 @@ nextflow_process {
 
     test("sarscov2-gff3gz-fastagz") {
 
-        config "./nextflow-fasta.config"
-
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-w -S'
             }
             process {
                 """
@@ -194,11 +191,11 @@ nextflow_process {
     test("sarscov2-gff3-fasta-stub") {
 
         options '-stub'
-        config "./nextflow-fasta.config"
 
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-w -S'
             }
             process {
                 """
@@ -224,9 +221,10 @@ nextflow_process {
 
     test("sarscov2-gff3-bed") {
 
-        config "./nextflow-bed.config"
-
         when {
+            params {
+                module_args = '--bed'
+            }
             process {
                 """
                 input[0] = [
@@ -250,9 +248,11 @@ nextflow_process {
     test("sarscov2-gff3-bed-stub") {
 
         options '-stub'
-        config "./nextflow-bed.config"
 
         when {
+            params {
+                module_args = '--bed'
+            }
             process {
                 """
                 input[0] = [
@@ -273,14 +273,69 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens-gtf-table") {
+
+        when {
+            params {
+                module_args = '--table @id,@geneid,@chr,@start,@end,@strand,@numexons'
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert process.out.gffread_gff == [] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-gtf-table-stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = '--table @id,@geneid,@chr,@start,@end,@strand,@numexons'
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("sarscov2-gff3-fasta-fail-catch") {
 
         options '-stub'
-        config "./nextflow-fasta.config"
 
         when {
             params {
                 outdir = "$outputDir"
+                module_args = '-w -S'
             }
             process {
                 """
