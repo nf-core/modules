@@ -69,7 +69,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = [ [ id: 'test', lane:1 ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/nextseq2000_samplesheet.csv', checkIfExists: true) ]
+                input[0] = [ [ id: 'test', lane:1 ], file('samplesheet.csv') ]
                 input[1] = []
                 """
             }
