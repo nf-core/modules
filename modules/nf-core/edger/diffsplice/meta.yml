@@ -130,6 +130,15 @@ output:
           pattern: "*.edger.bcv.png"
           ontologies:
             - edam: http://edamontology.org/format_3603
+  dgelist:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
+      - "*.DGEList.edger.rds":
+          type: file
+          description: Serialised DGEList object after filtering, normalisation and dispersion estimation
+          pattern: "*.DGEList.edger.rds"
+          ontologies: []
   rdata:
     - - meta:
           type: map
@@ -147,6 +156,15 @@ output:
           type: file
           description: Serialised DGELRT object returned by diffSpliceDGE
           pattern: "*.DGELRT.edger.rds"
+          ontologies: []
+  expression_lrt:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].\nThis can be used at the workflow level to pass optional parameters to the module via ext.args,\ne.g. '--blocking_variables $meta.blocking'."
+      - "*.DGELRT.expression.edger.rds":
+          type: file
+          description: Serialised DGELRT object of the feature-level differential expression test (`glmQLFTest` or `glmLRT`)
+          pattern: "*.DGELRT.expression.edger.rds"
           ontologies: []
   model:
     - - meta:

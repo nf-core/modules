@@ -32,7 +32,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "dgelist", "rdata", "lrt", "expression_lrt", "session_info"])).match() },
                 { assert path(process.out.session_info[0][1]).text.contains("edgeR_") }
             )
         }
@@ -60,7 +60,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "dgelist", "rdata", "lrt", "expression_lrt", "session_info"])).match() }
             )
         }
     }
@@ -87,7 +87,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "dgelist", "rdata", "lrt", "expression_lrt", "session_info"])).match() }
             )
         }
     }
@@ -114,7 +114,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "rdata", "lrt", "session_info"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["plots", "bcv_plot", "dgelist", "rdata", "lrt", "expression_lrt", "session_info"])).match() }
             )
         }
     }

@@ -484,7 +484,9 @@ png(
 plotBCV(dge)
 invisible(dev.off())
 
+saveRDS(dge, file = paste(opt\$output_prefix, 'DGEList.edger.rds', sep = '.'))
 saveRDS(fit, file = paste(opt\$output_prefix, 'DGEGLM.edger.rds', sep = '.'))
+saveRDS(expression, file = paste(opt\$output_prefix, 'DGELRT.expression.edger.rds', sep = '.'))
 saveRDS(splice, file = paste(opt\$output_prefix, 'DGELRT.edger.rds', sep = '.'))
 
 write(model, file = paste(opt\$output_prefix, 'edger.model.txt', sep = '.'))
