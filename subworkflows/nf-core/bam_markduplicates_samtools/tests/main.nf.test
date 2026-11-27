@@ -1,7 +1,6 @@
 nextflow_workflow {
 
     name "Test Workflow BAM_MARKDUPLICATES_SAMTOOLS"
-    config "./nextflow.config"
     script "../main.nf"
     workflow "BAM_MARKDUPLICATES_SAMTOOLS"
 
@@ -11,10 +10,9 @@ nextflow_workflow {
     tag "bam_markduplicates_samtools"
 
     tag "samtools"
-    tag "samtools/collate"
-    tag "samtools/fixmate"
-    tag "samtools/sort"
-    tag "samtools/markdup"
+    tag "samtools/multicommand"
+
+    config "./nextflow.config"
 
     test("sarscov2 - bam - fasta") {
         when {
@@ -22,7 +20,8 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    []
                 ]
                 input[1] = channel.of([
                     [id:'fasta'],
@@ -45,7 +44,8 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists:true),
+                    []
                 ]
                 input[1] = channel.of([
                     [id:'fasta'],
