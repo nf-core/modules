@@ -10,7 +10,7 @@ environments:
     packages:
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-8_kmp_llvm.conda
-      - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.4.0-hb05d258_0.conda
+      - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.5.0-hb05d258_0.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bowtie2-2.5.5-h54003ff_2.conda
       - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bwa-mem3-0.18.0-h9200417_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/bzip2-1.0.8-h4777abc_10.conda
@@ -27,7 +27,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libdeflate-1.25-hfa851ae_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libedit-3.1.20260512-pl5321hc48eb74_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libev-4.33-h80f16a2_3.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libexpat-2.9.0-h4154aff_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libexpat-2.11.0-h4154aff_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libffi-3.7.0-hdaad0be_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libgcc-16.2.0-h205dda4_7.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libgomp-16.2.0-h8acb6b2_7.conda
@@ -48,7 +48,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/openssl-3.6.5-he6ad1d5_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/perl-5.44.0-1_h5bc82ec_perl5.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/procps-ng-4.0.6-h9388cd8_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/python-3.15.2-h0c7c799_100_cp315.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/python-3.15.2-h0c7c799_102_cp315.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.15-9_cp315.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/tk-8.6.13-noxft_hf03c496_4.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2026e-h5d301ff_0.conda
@@ -65,9 +65,9 @@ packages:
   license_family: BSD
   size: 8050
   timestamp: 1788046407214
-- conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.4.0-hb05d258_0.conda
-  sha256: 0660caf77bb66591eb7aee5493d8db17ad0e3ac35a2fdcb59062cb5c111ae3fe
-  md5: 5488397761bdd89ae2768e7488055b31
+- conda: https://conda.anaconda.org/bioconda/linux-aarch64/bismark-3.5.0-hb05d258_0.conda
+  sha256: 994fe365d1896b4fc30309eb91a0ec9f6e64526159a8d5b362ba2ee1fe13bb92
+  md5: 4507d86fd28ca9a7e8ad7a82c9cdfdeb
   depends:
   - bowtie2 >=2.5.5
   - bwa-mem3 >=0.16.0
@@ -78,8 +78,8 @@ packages:
   - __glibc >=2.17
   license: GPL-3.0-only
   license_family: GPL3
-  size: 3076965
-  timestamp: 1795303912286
+  size: 3071767
+  timestamp: 1795709953739
 - conda: https://conda.anaconda.org/bioconda/linux-aarch64/bowtie2-2.5.5-h54003ff_2.conda
   sha256: a3d7f4dd46d42031ada1afb99b7c467f266e5e5364b735251ec5dcd2e33d2a2c
   md5: 37d2350984a2341d569ac4f53675b376
@@ -266,17 +266,17 @@ packages:
   license_family: GPL
   size: 45746
   timestamp: 1785917328690
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libexpat-2.9.0-h4154aff_0.conda
-  sha256: d3327ab1086334309cab3cf533c95f70c44dcbb8f66a99a92b23fb0f3f20f1da
-  md5: cb3ce9ae94bc74f792c119312e03bcf7
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libexpat-2.11.0-h4154aff_0.conda
+  sha256: 7366ffd7532a5b4698267a0b7f1aee3204aa0755d2dd2b0e6109e7e2958c9c57
+  md5: a9e083f1129427235e03dc2e0df6240c
   depends:
   - libgcc >=15
   constrains:
-  - expat 2.9.0.*
+  - expat 2.11.0.*
   license: MIT
   license_family: MIT
-  size: 80340
-  timestamp: 1793054214232
+  size: 84960
+  timestamp: 1795647405926
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libffi-3.7.0-hdaad0be_1.conda
   sha256: b1879d78b622c5f4817fd6d77fe7ae3ab7b501542e3c2f4ac77198c54c62c189
   md5: f9e5b3e446b526b34a7e25ecec08efd9
@@ -477,15 +477,15 @@ packages:
   license_family: GPL
   size: 640148
   timestamp: 1794091075625
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/python-3.15.2-h0c7c799_100_cp315.conda
-  build_number: 100
-  sha256: 788a8c701af3fb86e7e7d8f40335804959e796c705b7b7e9a409de2eea8ded18
-  md5: 9874b7ceebe929da370eddcc23314fa3
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/python-3.15.2-h0c7c799_102_cp315.conda
+  build_number: 102
+  sha256: bfd90f3e90d42e17bf77ad5e4867b9184a62c92a4718ed097b0d296600e38169
+  md5: 1caadde1dde394f3668d63060a0e27b0
   depends:
   - bzip2 >=1.0.8,<2.0a0
   - ld_impl_linux-aarch64 >=2.36.1
   - libedit >=3.1.20260512,<3.2.0a0
-  - libexpat >=2.8.5,<3.0a0
+  - libexpat >=2.9.0,<3.0a0
   - libffi >=3.7.0,<3.8.0a0
   - libgcc >=15
   - liblzma >=5.8.3,<6.0a0
@@ -500,8 +500,8 @@ packages:
   - tzdata
   - zstd >=1.5.7,<1.6.0a0
   license: Python-2.0
-  size: 27765007
-  timestamp: 1793015442708
+  size: 27802259
+  timestamp: 1795565928007
   python_site_packages_path: lib/python3.15/site-packages
 - conda: https://conda.anaconda.org/conda-forge/noarch/python_abi-3.15-9_cp315.conda
   build_number: 9
