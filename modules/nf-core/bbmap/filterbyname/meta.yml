@@ -1,65 +1,81 @@
 name: bbmap_filterbyname
-description: Filter out sequences by sequence header name(s)
+description: Filter reads by name, removing the named reads or keeping only them (`include=t`)
 keywords:
+  - filter
+  - reads
+  - read names
+  - genomics
   - fastq
   - fasta
-  - filter
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other
-        bioinformatic tools.
-      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/clumpify-guide/
-      documentation: https://www.biostars.org/p/225338/
+      description: BBMap is a short read aligner, as well as various other bioinformatic tools.
+      homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/
+      documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
+      tool_dev_url: https://github.com/bbushnell/BBTools/blob/master/filterbyname.sh
       licence:
         - "UC-LBL license (see package)"
       identifier: biotools:bbmap
+      args_id: "$args"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. `[ id:'test', single_end:false ]`
     - reads:
         type: file
-        description: |
-          List of input FastQ files of size 1 and 2 for single-end and
-          paired-end data, respectively.
-        ontologies: []
+        description: FASTQ or FASTA reads, one file for single-end and two for paired-end data
+        pattern: "*.{fastq,fq,fasta,fa}{,.gz,.bz2}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - names_file:
+        type: file
+        description: Optional. Files of read names, one per line, or FASTA/FASTQ/SAM files whose read names are used
+        pattern: "*.{txt,fasta,fa,fastq,fq,sam}"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_2573 # SAM
   - names_to_filter:
       type: string
-      description: |
-        String containing names of reads to filter out of the fastq files.
+      description: Optional. Comma-separated read names, matched against the full header unless `ext.args` sets `substring=` or `prefix=`
   - output_format:
       type: string
-      description: |
-        String with the format of the output file, e.g. fastq.gz, fasta, fasta.bz2
+      description: Output file extension that sets format and compression, e.g. fastq.gz, fasta or fastq.bz2
   - interleaved_output:
       type: boolean
-      description: |
-        Whether to produce an interleaved fastq output file
+      description: Whether to write paired reads to one interleaved file instead of two files
 output:
   reads:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.${output_format}":
+            e.g. `[ id:'test', single_end:false ]`
+      - reads_out:
           type: file
-          description: The trimmed/modified fastq reads
-          pattern: "*${output_format}"
-          ontologies: []
+          description: Filtered reads, as `${prefix}.<format>` or `${prefix}_1.<format>` and `${prefix}_2.<format>` for paired reads
+          pattern: "*.{fastq,fq,fasta,fa}{,.gz,.bz2}"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.log":
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.log:
           type: file
-          description: filterbyname.sh log file
-          pattern: "*.filterbyname.log"
-          ontologies: []
+          description: BBTools report with the reads and bases processed and kept
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_bbmap:
     - - "${task.process}":
           type: string
@@ -86,3 +102,27 @@ authors:
   - "@sppearce"
 maintainers:
   - "@sppearce"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bbmap_pigz:7ce06264033efd7e
+      build_id: bd-7ce06264033efd7e_1
+      scan_id: sc-75f38cf1da780f95_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bbmap_pigz:be239c1925a67ec8
+      build_id: bd-be239c1925a67ec8_1
+      scan_id: sc-956626db09ce4c15_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bbmap_pigz:6f9d29550cf0998e
+      build_id: bd-6f9d29550cf0998e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5f02126e0d84b2eb0bcfd4b59c53fb192830fdf6510158c1a3cc121a7d3fff1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bbmap_pigz:2e109ca7720acd71
+      build_id: bd-2e109ca7720acd71_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a70b9f088e1e45881856a9b6d873a4f3ee3d8b5f47c3c1be342fe4bf286566a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bbmap/filterbyname/.conda-lock/linux_amd64-bd-7ce06264033efd7e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bbmap/filterbyname/.conda-lock/linux_arm64-bd-be239c1925a67ec8_1.txt
