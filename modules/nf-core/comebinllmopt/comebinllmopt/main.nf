@@ -66,5 +66,6 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
     touch ${prefix}/embeddings.npy
     touch ${prefix}/covembeddings.npy
     touch ${prefix}/embedding_ids.txt
+    touch ${prefix}/final_selection.txt
     """
 }
