@@ -14,11 +14,13 @@ nextflow_workflow {
 
     tag "bcftools"
     tag "bcftools/merge"
+    tag "bcftools/view"
     tag "htslib"
     tag "htslib/bgziptabix"
     tag "somalier"
     tag "somalier/extract"
     tag "somalier/relate"
+    tag "somalier/ancestry"
 
     test("homo_sapiens minimal - vcf 1 - fasta - fai - sites - [] - [] - []") {
         when {
@@ -36,12 +38,146 @@ nextflow_workflow {
                 input[4] = Channel.of([ [id:"test"], [] ])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
         then {
             assertAll(
                 { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+    test("homo_sapiens ancestry - vcf - fasta - fai - sites - 1KG labels and panel") {
+        setup {
+            run("BCFTOOLS_VIEW") {
+                script "../../../../modules/nf-core/bcftools/view/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+            run("SOMALIER_EXTRACT", alias: "SOMALIER_EXTRACT_PANEL") {
+                script "../../../../modules/nf-core/somalier/extract/main.nf"
+                process {
+                    """
+                    input[0] = BCFTOOLS_VIEW.out.vcf
+                        .join(BCFTOOLS_VIEW.out.index)
+                    input[1] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                    ]
+                    input[2] = [
+                        [id: "hg38"],
+                        [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                    ]
+                    input[3] = [
+                        [id: "1000G"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "test", family_id: "family1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        1
+                    ]
+                )
+                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]).collect()
+                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]).collect()
+                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "family1", family_id: "family1"], []])
+                input[5] = []
+                input[6] = Channel.of([
+                    [id: "1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+                ]).join(SOMALIER_EXTRACT_PANEL.out.extract)
+                input[7] = "family_id"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.ancestry_tsv.size() == 1 },
+                { assert workflow.out.ancestry_tsv[0][0].id == "family1" },
+                { assert path(workflow.out.ancestry_tsv[0][1]).readLines()
+                    .drop(1)
+                    .collect { it.split('\t', -1) }
+                    .findAll { it[2] == '' }
+                    .collect { it[0] }
+                    .sort() == ["NA12878"] },
+                { assert snapshot(
+                    workflow.out.extract.collect { [it[0], file(it[1]).name] },
+                    workflow.out.html.collect { [it[0], file(it[1]).name] },
+                    workflow.out.pairs_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.samples_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.ancestry_tsv.collect { [it[0], file(it[1]).name] },
+                    workflow.out.ancestry_html.collect { [it[0], file(it[1]).name] }
+                ).match() }
+            )
+        }
+    }
+    test("homo_sapiens ancestry case groups - [vcf, vcf, vcf] - case_id - labels - stub") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [
+                        [id: "test", case_id: "case1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ],
+                    [
+                        [id: "test2", case_id: "case1"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA24385_sv.vcf.gz.tbi', checkIfExists: true),
+                        []
+                    ],
+                    [
+                        [id: "test3", case_id: "case2"],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                )
+                input[1] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]).collect()
+                input[2] = Channel.of([[id: "Hg38"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]).collect()
+                input[3] = Channel.of([[id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
+                input[4] = Channel.of([[id: "case1", case_id: "case1"], []], [[id: "case2", case_id: "case2"], []])
+                input[5] = []
+                somalier_panel = Channel.of("stub panel").collectFile(name: 'panel.somalier')
+                input[6] = Channel.of([
+                    [id: "1000G"],
+                    file("https://github.com/brentp/somalier/raw/73db124d3fe9febe3a53787707554f863595b48f/scripts/ancestry-labels-1kg.tsv", checkIfExists: true)
+                ]).combine(somalier_panel)
+                input[7] = "case_id"
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.ancestry_tsv.collect { it[0].id }.sort() == ["case1", "case2"] },
+                { assert workflow.out.ancestry_html.collect { it[0].id }.sort() == ["case1", "case2"] },
                 { assert snapshot(workflow.out).match() }
             )
         }
@@ -62,6 +198,7 @@ nextflow_workflow {
                 input[4] = Channel.of([ [id:"test"], [] ])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -97,6 +234,7 @@ nextflow_workflow {
                 input[4] = ch_ped
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -140,7 +278,8 @@ nextflow_workflow {
                 input[3] = Channel.of([ [id: "sites"], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz', checkIfExists: true)]).collect()
                 input[4] = ch_ped
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }
@@ -184,6 +323,7 @@ nextflow_workflow {
                 input[4] = ch_ped
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -229,6 +369,7 @@ nextflow_workflow {
                 input[4] = Channel.of([[id:"test"], []])
                 input[5] = []
                 input[6] = []
+                input[7] = []
                 """
             }
         }
@@ -270,7 +411,8 @@ nextflow_workflow {
                 input[4] = Channel.of([[id: "test", common:"test"]])
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }
@@ -314,7 +456,8 @@ nextflow_workflow {
                 input[4] = Channel.of([[id: "test", common:"test"]])
                     .combine(ped_file)
                 input[5] = Channel.of("disease_103,testN").collectFile(name:"sample_groups.txt")
-                input[6] = "common"
+                input[6] = []
+                input[7] = "common"
                 """
             }
         }

@@ -1,22 +1,24 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_extract_relate_somalier"
-description: Perform somalier extraction and relate stats on input VCFs
+description: Perform somalier extraction, relatedness, and ancestry analyses on input VCFs
 keywords:
   - somalier
   - stats
   - vcf
   - ped
   - relatedness
+  - ancestry
 components:
   - htslib/bgziptabix
   - somalier/extract
   - somalier/relate
+  - somalier/ancestry
 input:
   - ch_vcfs:
       description: |
         The input VCFs to perform the stats on, optionally with their indices.
-        This channel can also contain the number of samples in the same family/group
-        to check relatedness. This is advised to add as it can improve the efficiency of your pipeline
+        The count is the expected number of input VCFs in the same family or case group.
+        Providing it allows relatedness and ancestry analyses to start as soon as all VCFs in a group arrive.
         Structure: [ val(meta), path(vcf), path(tbi), val(count) ]
   - ch_fasta:
       description: |
@@ -40,11 +42,18 @@ input:
       description: |
         Optional - A text file describing how the samples should be grouped
         Structure: [ path(txt) ]
+  - ch_ancestry_reference:
+      description: |
+        Optional labels and Somalier files for reference samples with known ancestry.
+        Supply a single reference tuple, which is reused for every family or case group.
+        Supply an empty channel to skip ancestry analysis; do not supply a tuple with empty file values.
+        Structure: [ val(meta), path(labels_tsv), path(labelled_somalier_files) ]
   - val_common_id:
       description: |
-        Optional - A common identifier in the meta map.
-        This will be used to determine which VCFs should be used in somalier_relate.
-        This value should be given when using single sample VCFs
+        Optional - The name of the meta map key used to group VCFs for both relatedness and ancestry,
+        for example family_id or case_id. Its value becomes meta.id in both analyses' outputs.
+        Input meta maps for a group must match apart from meta.id, and the PED input must use the resulting grouped meta map.
+        When no key is supplied, VCFs are grouped using their unchanged meta maps.
 output:
   - extract:
       description: |
@@ -62,6 +71,16 @@ output:
       description: |
         A TSV file detailing the relatedness between all samples with the same meta
         Structure: [ val(meta), path(tsv) ]
+  - ancestry_tsv:
+      description: |
+        One TSV file per group containing ancestry information for each query sample and the labelled reference samples.
+        The meta.id and filename prefix use the group identifier when val_common_id is supplied.
+        Structure: [ val(meta), path(tsv) ]
+  - ancestry_html:
+      description: |
+        One HTML file per group containing an interactive ancestry plot for the query and labelled reference samples.
+        The meta.id and filename prefix use the group identifier when val_common_id is supplied.
+        Structure: [ val(meta), path(html) ]
 authors:
   - "@nvnieuwk"
 maintainers:
