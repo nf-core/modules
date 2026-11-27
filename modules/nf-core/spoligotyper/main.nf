@@ -9,6 +9,8 @@ process SPOLIGOTYPER {
 
     input:
     tuple val(meta), path(reads)
+    path db
+    path sit_db
 
     output:
     tuple val(meta), path("${prefix}_spoligotyping.txt"), emit: tsv
@@ -25,10 +27,15 @@ process SPOLIGOTYPER {
     prefix = task.ext.prefix ?: "${meta.id}"
     // Reads (single-end or paired-end) or an assembly: spoligotyper detects the file type
     def input = reads instanceof List && reads.size() == 2 ? "-r1 \"${reads[0]}\" -r2 \"${reads[1]}\"" : "-r1 \"${reads}\""
+    // Optional databases: the Mbovis.org spoligotype database included with spoligotyper and no SIT database by default
+    def db_arg = db ? "--db \"${db}\"" : ''
+    def sit_db_arg = sit_db ? "--sit-db \"${sit_db}\"" : ''
     """
     spoligotyper \\
         ${args} \\
         ${input} \\
+        ${db_arg} \\
+        ${sit_db_arg} \\
         --sample "${prefix}" \\
         --output . \\
         --threads ${task.cpus}
