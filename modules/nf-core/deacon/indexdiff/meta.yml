@@ -50,7 +50,7 @@ output:
           description: |
             Groovy Map containing reference index information.
             e.g. [ id:'test', single_end:false ]
-      - "*.idx":
+      - "${prefix}.idx":
           type: file
           description: Deacon minimizer index file
           pattern: "*.idx"

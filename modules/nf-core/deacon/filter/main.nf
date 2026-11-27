@@ -14,8 +14,9 @@ process DEACON_FILTER {
     tuple val(meta), path(index), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}*.fq.gz"), emit: fastq_filtered
-    tuple val(meta), path("${prefix}.json")  , emit: log
+    tuple val(meta), path(fastq_out)                , emit: fastq_filtered
+    tuple val(meta), path("${prefix}.json")         , emit: log
+    tuple val(meta), path("${prefix}.debug.tsv.gz") , emit: debug, optional: true
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -24,25 +25,34 @@ process DEACON_FILTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq" // deacon's automatic compression does not work
-    if (!(reads instanceof List) && "${reads}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    fastq_out = reads instanceof List ? ["${prefix}_1.fq.gz", "${prefix}_2.fq.gz"] : ["${prefix}.fq.gz"]
+    if ([reads].flatten().any { read -> "${read}" in fastq_out*.toString() }) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def output_reads = reads instanceof List ? "-o ${fastq_out[0]} -O ${fastq_out[1]}" : "-o ${fastq_out[0]}"
+    // --debug needs a path: the module names it so that the file is declared as an output
+    def debug_flag = args.contains('--debug') ? "--debug ${prefix}.debug.tsv.gz" : ''
+    def args_corrected = args.replaceAll(/--debug(?:[ =]+[^-\s]\S*)?/, '').trim()
     """
     deacon \\
         filter \\
         --threads ${task.cpus} \\
-        $args \\
+        ${args_corrected} \\
+        ${debug_flag} \\
         --summary ${prefix}.json \\
         -d $index \\
         $reads \\
-        ${read_type}
-
-    gzip -f ${prefix}*.fq
+        ${output_reads}
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    fastq_out = reads instanceof List ? ["${prefix}_1.fq.gz", "${prefix}_2.fq.gz"] : ["${prefix}.fq.gz"]
+    def debug_stub = args.contains('--debug') ? "echo | gzip > ${prefix}.debug.tsv.gz" : ''
     """
-    echo | gzip > '${prefix}.fq.gz'
+    for fastq in ${fastq_out.join(' ')}; do
+        echo | gzip > \$fastq
+    done
     touch ${prefix}.json
+    ${debug_stub}
     """
 }

@@ -15,7 +15,7 @@ process DEACON_INDEXDIFF {
     tuple val(meta2), path(genome)    // a single fasta or .idx file to subtract from the main index
 
     output:
-    tuple val(meta), path("*.idx"), emit: index
+    tuple val(meta), path("${prefix}.idx"), emit: index
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -23,12 +23,13 @@ process DEACON_INDEXDIFF {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.diff"
+    prefix = task.ext.prefix ?: "${meta.id}.diff"
 
     """
     deacon \\
         index \\
         diff \\
+        --threads ${task.cpus} \\
         ${args} \\
         ${index} \\
         ${genome} \\
@@ -36,7 +37,7 @@ process DEACON_INDEXDIFF {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.diff"
+    prefix = task.ext.prefix ?: "${meta.id}.diff"
     """
     touch ${prefix}.idx
     """

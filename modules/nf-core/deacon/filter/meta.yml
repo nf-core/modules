@@ -33,10 +33,13 @@ input:
           - edam: "http://edamontology.org/data_3210" # Genome index
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-        pattern: "*.{fastq,fastq.gz,fqs,fqs.gz,fq,fq.gz}"
+        description: Input reads, one file for single-end and two for paired-end data.
+        pattern: "*.{fastq,fq,fasta,fa}{,.gz,.zst,.xz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+          - edam: "http://edamontology.org/format_4006" # Zstandard format
 
 output:
   fastq_filtered:
@@ -45,12 +48,13 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}*.fq.gz":
+      - fastq_out:
           type: file
-          description: List of output filtered FastQ files of size 1 and 2, for single-end and paired-end data, respectively.
+          description: Filtered reads, one file for single-end and two for paired-end data.
           pattern: "*.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   log:
     - - meta:
           type: map
@@ -63,6 +67,19 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
+  debug:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.debug.tsv.gz":
+          type: file
+          description: Optional. Per-record minimizer hits table, written only when `--debug` is in ext.args.
+          pattern: "*.debug.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   versions_deacon:
     - - ${task.process}:
           type: string

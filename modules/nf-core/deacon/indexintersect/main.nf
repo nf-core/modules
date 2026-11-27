@@ -14,7 +14,7 @@ process DEACON_INDEXINTERSECT {
     tuple val(meta), path(indices)  // two or more deacon .idx index files to intersect
 
     output:
-    tuple val(meta), path("*.idx"), emit: index
+    tuple val(meta), path("${prefix}.idx"), emit: index
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -22,7 +22,7 @@ process DEACON_INDEXINTERSECT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
+    prefix = task.ext.prefix ?: "${meta.id}.intersect"
 
     """
     deacon \\
@@ -34,7 +34,7 @@ process DEACON_INDEXINTERSECT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.intersect"
+    prefix = task.ext.prefix ?: "${meta.id}.intersect"
     """
     touch ${prefix}.idx
     """

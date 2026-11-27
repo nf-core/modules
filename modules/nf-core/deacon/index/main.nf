@@ -14,7 +14,7 @@ process DEACON_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.idx"), emit: index
+    tuple val(meta), path("${prefix}.idx"), emit: index
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -22,7 +22,7 @@ process DEACON_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     deacon \\
         index \\
@@ -33,7 +33,7 @@ process DEACON_INDEX {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${fasta.baseName}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.idx
     """

@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process DEACON_FILTER"
     script "../main.nf"
     process "DEACON_FILTER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -97,6 +98,176 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fastq - single-end - debug") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--debug --ordered'
+            }
+            process {
+                """
+                filter_fastq_ch = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]), // the summary also holds run times
+                    path(process.out.log[0][1]).json.subMap(["seqs_in", "seqs_out"]),
+                    path(process.out.debug[0][1]).linesGzip[0],
+                    path(process.out.debug[0][1]).linesGzip.size()
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired-end - debug") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // single_end:false to join paired reads channel
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--debug --ordered'
+            }
+            process {
+                """
+                filter_fastq_ch = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]), // the summary also holds run times
+                    path(process.out.log[0][1]).json.subMap(["seqs_in", "seqs_out"]),
+                    path(process.out.debug[0][1]).linesGzip[0],
+                    path(process.out.debug[0][1]).linesGzip.size()
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - single-end - input named as output") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filter_fastq_ch = channel.of('reads')
+                    .collectFile(name: 'test.fq.gz')
+                    .map { reads -> [ [ id:'test', single_end:true ], reads ] }
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - paired-end - input named as output") {
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // single_end:false to join paired reads channel
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filter_fastq_ch = channel.of('reads')
+                    .collectFile(name: 'test_1.fq.gz')
+                    .combine(channel.of('reads').collectFile(name: 'test_2.fq.gz'))
+                    .map { reads_1, reads_2 -> [ [ id:'test', single_end:false ], [ reads_1, reads_2 ] ] }
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
     test("sarscov2 - fastq - single-end - stub") {
 
         options "-stub"
@@ -122,6 +293,138 @@ nextflow_process {
                     [
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - stub") {
+
+        options "-stub"
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // single_end:false to join paired reads channel
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filter_fastq_ch = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - single-end - debug - stub") {
+
+        options "-stub"
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--debug --ordered'
+            }
+            process {
+                """
+                filter_fastq_ch = channel.of(
+                    [
+                        [ id:'test', single_end:true ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                )
+                input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - paired-end - debug - stub") {
+
+        options "-stub"
+
+        setup {
+            run("DEACON_INDEX") {
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // single_end:false to join paired reads channel
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--debug --ordered'
+            }
+            process {
+                """
+                filter_fastq_ch = channel.of(
+                    [
+                        [ id:'test', single_end:false ],
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                        ]
                     ]
                 )
                 input[0] = DEACON_INDEX.out.index.join(filter_fastq_ch)
