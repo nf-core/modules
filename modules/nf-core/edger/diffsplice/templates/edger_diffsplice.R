@@ -335,6 +335,13 @@ if (!is.null(opt\$formula)) {
     cat("Using user-specified formula:\n   ", model, "\n")
     design <- model.matrix(as.formula(model), data = sample.sheet)
 } else {
+    # Blocking variables are checked on the samples that enter the model, i.e. after any subsetting
+    single_level <- vapply(blocking.vars, function(v) length(unique(na.omit(sample.sheet[[v]]))) < 2, logical(1))
+    for (v in blocking.vars[single_level]) {
+        warning("Blocking variable '", v, "' has one level in this contrast and is left out of the model", call. = FALSE)
+    }
+    blocking.vars <- blocking.vars[! single_level]
+
     # A zero-intercept design represents each contrast level directly
     model_vars <- c(contrast_variable, blocking.vars)
     model <- paste('~ 0 +', paste(model_vars, collapse = '+'))
@@ -359,6 +366,22 @@ if (nrow(design) != nrow(sample.sheet)) {
         paste(na_samples, collapse = ', ')
     ))
 }
+
+# Checked before fitting so that rank deficiency gives a clear message
+if (is.null(opt\$formula) && length(blocking.vars) > 0) {
+    design_rank <- qr(design)\$rank
+    if (design_rank < ncol(design)) {
+        stop(paste0(
+            "Blocking variables ", paste(blocking.vars, collapse = ', '), " are confounded with '", contrast_variable, "' in this contrast"
+        ))
+    }
+    if (design_rank >= nrow(design)) {
+        stop(paste0(
+            "Blocking variables ", paste(blocking.vars, collapse = ', '), " leave no residual degrees of freedom in this contrast"
+        ))
+    }
+}
+
 colnames(design) <- make.names(colnames(design))
 cat("Design matrix columns:\n   ", paste(colnames(design), collapse = ", "), "\n")
 

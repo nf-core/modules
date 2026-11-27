@@ -7,8 +7,8 @@ process TAXONKIT_NAME2TAXID {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/91013897d309411f36f0bf958988adf50d8abeeecd910b7debd446bfc1e3f2d8/data'
-        : 'community.wave.seqera.io/library/taxonkit:0.15.1--96f7341bd5c149a7'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c33b5ce6cec42ed5986d11c706d5726b2eb7dc0902b9c1c333a319864a3b45ea/data'
+        : 'community.wave.seqera.io/library/taxonkit:0.20.0--73c6bc587e9e62ac'}"
 
     input:
     tuple val(meta), val(name), path(names_txt)

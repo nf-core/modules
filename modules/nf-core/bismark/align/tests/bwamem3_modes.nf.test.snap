@@ -132,7 +132,7 @@
                     [
                         "BISMARK_ALIGN",
                         "bismark",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ],
                 "versions_bwamem3": [
@@ -144,7 +144,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-23T22:22:19.670436975",
+        "timestamp": "2026-11-26T23:32:35.201350676",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -194,6 +194,50 @@
             "nextflow": "25.10.4"
         }
     },
+    "illumina_5base | paired-end | bwamem3 index directory | no --bwamem3": {
+        "content": [
+            "57aeef88ed701a8ebc8e2f0a381b2a6",
+            [
+                "Option '--directional' specified (default mode): alignments to complementary strands (CTOT, CTOB) were ignored (i.e. not performed)",
+                "Final Alignment report",
+                "======================",
+                "Sequence pairs analysed in total:\t100",
+                "Number of paired-end alignments with a unique best hit:\t100",
+                "Mapping efficiency:\t100.0% ",
+                "Sequence pairs with no alignments under any condition:\t0",
+                "Sequence pairs did not map uniquely:\t0",
+                "Sequence pairs which were discarded because genomic sequence could not be extracted:\t0",
+                "Number of sequence pairs with unique best (first) alignment came from the bowtie output:",
+                "CT/GA/CT:\t48\t((converted) top strand)",
+                "GA/CT/CT:\t0\t(complementary to (converted) top strand)",
+                "GA/CT/GA:\t0\t(complementary to (converted) bottom strand)",
+                "CT/GA/GA:\t52\t((converted) bottom strand)",
+                "Number of alignments to (merely theoretical) complementary strands being rejected in total:\t0",
+                "Final Cytosine Methylation Report",
+                "=================================",
+                "Total number of C's analysed:\t5313",
+                "Total methylated C's in CpG context:\t0",
+                "Total methylated C's in CHG context:\t0",
+                "Total methylated C's in CHH context:\t3",
+                "Total methylated C's in Unknown context:\t0",
+                "Total unmethylated C's in CpG context:\t448",
+                "Total unmethylated C's in CHG context:\t1017",
+                "Total unmethylated C's in CHH context:\t3845",
+                "Total unmethylated C's in Unknown context:\t1",
+                "C methylated in CpG context:\t0.0%",
+                "C methylated in CHG context:\t0.0%",
+                "C methylated in CHH context:\t0.1%",
+                "C methylated in Unknown context (CN or CHN):\t0.0%",
+                "Proper pairs rejected (same strand, other contig, pointing apart, or R2 not proper):\t0",
+                "Dovetail overhang bases not called:\t1"
+            ]
+        ],
+        "timestamp": "2026-11-27T09:08:55.786442789",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
     "taps bwamem3 | paired-end | bwamem3 index directory": {
         "content": [
             "57aeef88ed701a8ebc8e2f0a381b2a6",
@@ -237,7 +281,7 @@
                     [
                         "BISMARK_ALIGN",
                         "bismark",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ],
                 "versions_bwamem3": [
@@ -249,7 +293,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-23T22:22:27.449254949",
+        "timestamp": "2026-11-26T23:32:41.054264298",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -283,7 +327,7 @@
                     [
                         "BISMARK_ALIGN",
                         "bismark",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ],
                 "4": [
@@ -318,7 +362,7 @@
                     [
                         "BISMARK_ALIGN",
                         "bismark",
-                        "3.4.0"
+                        "3.5.0"
                     ]
                 ],
                 "versions_bwamem3": [
@@ -330,7 +374,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-23T21:24:06.98754772",
+        "timestamp": "2026-11-26T23:33:33.071748848",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

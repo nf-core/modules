@@ -7,8 +7,8 @@ process BISMARK_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/20bce4b3bce2e7045431676190322012e22a96cef1a53eaadd14acc89de2e232/data'
-        : 'community.wave.seqera.io/library/bismark_bwa-mem3:1eb534160cb7def7'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f649b628c613bd75e37f5671cc6d088d18e46326069f6c514192e21ac15bf98/data'
+        : 'community.wave.seqera.io/library/bismark_bwa-mem3:0cace1e159351cc0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -34,19 +34,18 @@ process BISMARK_ALIGN {
     }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
 
-    // 5-Base and TAPS align to the unconverted genome, so the staged FASTA folder can stand in for the index
-    def bwamem3_mode = (args =~ /(^|\s)--(bwamem3|taps)(\s|$)/).find()
-    def five_base = bwamem3_mode || (args =~ /(^|\s)--(illumina_5base|five_base)(\s|$)/).find()
+    def bwamem3_mode = (args =~ /(^|\s)--(taps|illumina_5base|five_base)(\s|$)/).find()
     if (bwamem3_index && !bwamem3_mode) {
-        error("bismark/align: bwamem3_index needs --illumina_5base --bwamem3 or --taps in ext.args")
+        error("bismark/align: bwamem3_index needs --illumina_5base or --taps in ext.args")
     }
     if (bwamem3_index && args.contains('--five_base_index')) {
         error("bismark/align: give the bwa-mem3 index as the bwamem3_index input or as --five_base_index in ext.args, not both")
     }
     if (bwamem3_mode && !index && !bwamem3_index && !args.contains('--five_base_index')) {
-        error("bismark/align: --bwamem3/--taps needs bwamem3_index, --five_base_index in ext.args, or an index folder holding Bwamem3_Index/")
+        error("bismark/align: --illumina_5base/--taps needs bwamem3_index, --five_base_index in ext.args, or an index folder holding Bwamem3_Index/")
     }
-    def genome = index ?: (five_base ? 'tmp' : '')
+    // 5-Base and TAPS align to the unconverted genome, so the staged FASTA folder can serve as --genome
+    def genome = index ?: (bwamem3_mode ? 'tmp' : '')
     if (!genome) {
         error("bismark/align: index is required")
     }
