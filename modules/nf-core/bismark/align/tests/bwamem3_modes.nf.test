@@ -262,11 +262,93 @@ nextflow_process {
         }
     }
 
+    test("illumina_5base | paired-end | bwamem3 index directory | no --bwamem3") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def cpg = (report =~ /C methylated in CpG context:\s+([0-9.]+)%/)
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            def bwamem3_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:bwa-mem3') }
+            def threads = (bismark_cl =~ /\s-p (\d+)/)
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--genome tmp ') },
+                { assert bismark_cl.contains('--five_base_index bwamem3_index/bwamem3/genome.fasta ') },
+                { assert !bismark_cl.contains('--bwamem3') },
+                { assert threads.find() && threads.group(1) == '4' },
+                { assert bwamem3_cl.contains(' -t 4 ') },
+                { assert cpg.find() && (cpg.group(1) as double) < 5 },
+                // no versions in this snapshot, so version bumps leave it unchanged
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("five_base alias without any index fails") {
+
+        when {
+            params {
+                bismark_args = '--five_base'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('bismark/align: --illumina_5base/--taps needs bwamem3_index') }
+            )
+        }
+    }
+
     test("bwamem3_index without --illumina_5base or --taps fails") {
 
         when {
             params {
-                bismark_args = '--bowtie2'
+                bismark_args = '--bowtie2 --five_base_baseq 30'
             }
             process {
                 """
@@ -290,7 +372,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.errorReport.contains('bwamem3_index needs --illumina_5base --bwamem3 or --taps') }
+                { assert process.errorReport.contains('bismark/align: bwamem3_index needs --illumina_5base or --taps in ext.args') }
             )
         }
     }
