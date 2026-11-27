@@ -59,8 +59,8 @@ input:
     - index:
         type: directory
         description: |
-          Bismark genome index directory. Optional with --illumina_5base or --taps,
-          which align to the unconverted FASTA; pass [] to use the fasta input instead.
+          Bismark genome index directory. Optional with --illumina_5base or --taps: a folder
+          holding Bwamem3_Index/, or [] to use the fasta input with the bwamem3_index input.
         pattern: "BismarkIndex"
   - - meta4:
         type: map
@@ -71,7 +71,7 @@ input:
         type: file
         description: |
           bwa-mem3 `--meth` index (a directory or the index files), passed to Bismark as
-          --five_base_index. Requires --illumina_5base --bwamem3 or --taps in ext.args; pass [] otherwise.
+          --five_base_index. Requires --illumina_5base or --taps in ext.args; pass [] otherwise.
         pattern: "*.{amb,ann,pac,meth.amb,meth.ann,meth.pac,meth.bwt.2bit.64}"
         ontologies: []
 output:

@@ -39,7 +39,7 @@ input:
       pattern: "BismarkIndex"
   - ch_bwamem3_index:
       description: |
-        bwa-mem3 `--meth` index for Bismark's 5-Base/TAPS mode (--illumina_5base --bwamem3 or --taps
+        bwa-mem3 `--meth` index for Bismark's 5-Base/TAPS mode (--illumina_5base or --taps
         in BISMARK_ALIGN's ext.args); pass [ [:], [] ] otherwise. With it, ch_bismark_index may be [ [:], [] ].
         Structure: [ val(meta), path(index) ]
   - skip_deduplication:
