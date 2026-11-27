@@ -26,9 +26,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - input:
         type: file
-        description: |
-          Tab-separated file with the lineage in field 2 by default (e.g. the output of taxonkit/lineage)
-          Field numbers are set with `ext.args`; TaxIds are accepted with `--taxid-field`
+        description: Tab-separated lineage table (lineage in field 2 by default, e.g. from taxonkit/lineage)
         pattern: "*.{tsv,tsv.gz,txt,txt.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
