@@ -34,23 +34,33 @@ input:
           - edam: http://edamontology.org/format_1930 # FASTQ
           - edam: http://edamontology.org/format_1929 # FASTA
           - edam: http://edamontology.org/format_3989 # GZIP format
-  - db:
-      type: file
-      description: |
-        Optional spoligotype database ("octal name binary" on each line), passed with --db.
-        Use [] for the Mbovis.org database included with spoligotyper.
-      pattern: "*.txt"
-      ontologies:
-        - edam: http://edamontology.org/format_2330 # Textual format
-  - sit_db:
-      type: file
-      description: |
-        Optional SIT database for the SIT and SITVIT2family columns, passed with --sit-db
-        (a tab-separated file with octal, binary, sit and family columns, as saved by spoligotyper-download-sit).
-        Use [] for none.
-      pattern: "*.tsv"
-      ontologies:
-        - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing database information
+          e.g. [ id:'mbovis' ]
+    - db:
+        type: file
+        description: |
+          Optional spoligotype database ("octal name binary" on each line), passed with --db.
+          Use [ [:], [] ] for the Mbovis.org database included with spoligotyper.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing SIT database information
+          e.g. [ id:'sitvit2' ]
+    - sit_db:
+        type: file
+        description: |
+          Optional SIT database for the SIT and SITVIT2family columns, passed with --sit-db
+          (a tab-separated file with octal, binary, sit and family columns, as saved by spoligotyper-download-sit).
+          Use [ [:], [] ] for none.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   tsv:
     - - meta:

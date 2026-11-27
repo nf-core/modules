@@ -9,8 +9,8 @@ process SPOLIGOTYPER {
 
     input:
     tuple val(meta), path(reads)
-    path db
-    path sit_db
+    tuple val(meta2), path(db)
+    tuple val(meta3), path(sit_db)
 
     output:
     tuple val(meta), path("${prefix}_spoligotyping.txt"), emit: tsv

@@ -18,8 +18,8 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = []
-                input[2] = []
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
                 """
             }
         }
@@ -53,8 +53,8 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
-                input[1] = []
-                input[2] = []
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
                 """
             }
         }
@@ -87,8 +87,10 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = channel.of("000000000000000 TEST0001 \${absent}").collectFile(name: 'spoligotype_db.txt', newLine: true)
+                    .map { db -> [ [ id:'test_db' ], db ] }
                 input[2] = channel.of("octal\\tbinary\\tsit\\tfamily", "000000000000000\\t\${absent}\\t9999\\tTEST-FAMILY")
                     .collectFile(name: 'sit_database.tsv', newLine: true, sort: false)
+                    .map { db -> [ [ id:'test_sit_db' ], db ] }
                 """
             }
         }
@@ -117,8 +119,8 @@ nextflow_process {
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = []
-                input[2] = []
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
                 """
             }
         }
