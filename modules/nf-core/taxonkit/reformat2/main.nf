@@ -24,7 +24,7 @@ process TAXONKIT_REFORMAT2 {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    assert (!taxid && taxidfile) || (taxid && !taxidfile)
+    assert (!taxid && taxidfile) || (taxid && !taxidfile) : "Give either taxid or taxidfile, not both"
     def input = taxid ? "<<< '${taxid}'" : "\"${taxidfile}\""
     """
     taxonkit \\
@@ -39,7 +39,7 @@ process TAXONKIT_REFORMAT2 {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    assert (!taxid && taxidfile) || (taxid && !taxidfile)
+    assert (!taxid && taxidfile) || (taxid && !taxidfile) : "Give either taxid or taxidfile, not both"
     """
     echo "${args}"
 
