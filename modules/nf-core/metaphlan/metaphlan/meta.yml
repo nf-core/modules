@@ -1,8 +1,10 @@
 name: metaphlan_metaphlan
-description: MetaPhlAn is a tool for profiling the composition of microbial communities from metagenomic shotgun sequencing data.
+description: Profile the taxonomic composition of microbial communities from metagenomic shotgun sequencing data
 keywords:
   - metagenomics
   - classification
+  - taxonomic profiling
+  - microbiome
   - fastq
   - fasta
   - sam
@@ -10,79 +12,125 @@ tools:
   - metaphlan:
       description: Identify clades (phyla to species) present in the metagenome obtained from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
-      documentation: https://github.com/biobakery/MetaPhlAn
+      documentation: https://github.com/biobakery/MetaPhlAn/wiki/MetaPhlAn-4.3
+      tool_dev_url: https://github.com/biobakery/MetaPhlAn
       doi: "10.1038/s41587-023-01688-w"
       licence:
         - "MIT License"
+      args_id: "$args"
       identifier: biotools:metaphlan
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. `[ id:'test', single_end:false ]`
     - input:
         type: file
-        description: Metaphlan can classify the metagenome from a variety of input data types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced SAM files (produced from alignments to the MetaPHlAn marker database) and intermediate bowtie2 alignment files (bowtie2out)
-        pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
-        ontologies: []
-  - db_metaphlan_latest:
-      type: file
-      description: |
-        Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
-        Note that you will also need to specify `--index` and the database version name (e.g. 'mpa_vJan21_TOY_CHOCOPhlAnSGB_202103') in your module.conf ext.args for METAPHLAN_METAPHLAN!
-      pattern: "*/"
-      ontologies: []
+        description: Reads (FASTQ or FASTA), a `mapout` file, or a SAM file of alignments to the marker database
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz,fasta,fna,fa,fasta.gz,fna.gz,fa.gz,mapout,mapout.bz2,sam}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_2573 # SAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing database information
+          e.g. `[ id:'mpa_vJan26' ]`
+    - db_metaphlan_latest:
+        type: directory
+        description: MetaPhlAn database directory (e.g. from `metaphlan/makedb`); with `--long_reads` it must hold the `.mmi` index
+        pattern: "*/"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing marker list information
+          e.g. `[ id:'ignore_list' ]`
+    - ignore_markers:
+        type: file
+        description: Optional. Text file with one marker name per line to exclude from profiling
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_3671 # Text
   - save_samfile:
       type: boolean
-      description: |
-        Whether to save the SAM file produced by MetaPhlAn of read alignments to MetaPhlAn database gene sequences
+      description: Whether to save the SAM file of read alignments (always saved with `--profile_vsc`)
 output:
   profile:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_profile.txt":
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}_profile.txt:
           type: file
-          description: Tab-separated output file of the predicted taxon relative abundances
-          pattern: "*.{txt}"
-          ontologies: []
+          description: Optional. Tab-separated taxon relative abundances, absent with `--biom_format_output`
+          pattern: "*_profile.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   biom:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.biom":
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.biom:
           type: file
-          description: General-use format for representing biological sample by observation contingency tables
-          pattern: "*.{biom}"
+          description: Optional. Profile in BIOM format, only with `--biom_format_output` (replaces the text profile)
+          pattern: "*.biom"
           ontologies:
-            - edam: http://edamontology.org/format_3746
-  bt2out:
+            - edam: http://edamontology.org/format_3746 # BIOM format
+  mapout:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bowtie2out.txt":
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.mapout.bz2:
           type: file
-          description: Intermediate Bowtie2 output produced from mapping the metagenome against the MetaPHlAn marker database ( not compatible with `bowtie2out` files generated with MetaPhlAn versions below 3 )
-          pattern: "*.{bowtie2out.txt}"
+          description: Optional. Bzip2-compressed mapping to the marker database, reusable as input (FASTQ or FASTA input only)
+          pattern: "*.mapout.bz2"
           ontologies: []
   sam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.sam":
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.sam.bz2:
           type: file
-          description: SAM file produced by MetaPPhlAn of read alignments to MetaPhlAn database gene sequences
-          pattern: "*.{sam}"
-          ontologies: []
+          description: Optional. Bzip2-compressed SAM of marker alignments, with `save_samfile` or `--profile_vsc` (FASTQ or FASTA input only)
+          pattern: "*.sam.bz2"
+          ontologies:
+            - edam: http://edamontology.org/format_2573 # SAM
+  vsc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}_vsc.tsv:
+          type: file
+          description: Optional. Viral sequence cluster profile, only with `--profile_vsc` and reads hitting viral markers
+          pattern: "*_vsc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  subsampled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.subsampled.${input_type}.gz:
+          type: file
+          description: Optional. Gzipped subsampled reads, only with `--subsampling N` on FASTQ or FASTA input and N below the read count
+          pattern: "*.subsampled.{fastq,fasta}.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_metaphlan:
     - - ${task.process}:
           type: string
@@ -90,9 +138,9 @@ output:
       - metaphlan:
           type: string
           description: The tool name
-      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+      - metaphlan --version 2>&1 | head -n 1 | cut -d ' ' -f 3:
           type: eval
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -101,36 +149,37 @@ topics:
       - metaphlan:
           type: string
           description: The tool name
-      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+      - metaphlan --version 2>&1 | head -n 1 | cut -d ' ' -f 3:
           type: eval
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 authors:
   - "@MGordon09"
   - "@LilyAnderssonLee"
 maintainers:
   - "@MGordon09"
   - "@LilyAnderssonLee"
+  - "@plazanas"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/metaphlan_numpy_python:729d587efd21f3af
-      build_id: bd-729d587efd21f3af_1
-      scan_id: sc-911b10c06b2a2f9d_1
     linux/amd64:
-      name: community.wave.seqera.io/library/metaphlan_numpy_python:59796ca881a8bb02
-      build_id: bd-59796ca881a8bb02_1
-      scan_id: sc-f98b614bb73250be_1
+      name: community.wave.seqera.io/library/metaphlan:4.3--6cd977ac2f320230
+      build_id: bd-6cd977ac2f320230_2
+      scan_id: sc-5f161fd7b932c7c3_2
+    linux/arm64:
+      name: community.wave.seqera.io/library/metaphlan:4.3--3aae96664b5d1d1f
+      build_id: bd-3aae96664b5d1d1f_3
+      scan_id: sc-d90b46cc52588f07_1
   singularity:
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/metaphlan_numpy_python:373e0586cfa7f0cb
-      build_id: bd-373e0586cfa7f0cb_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/01/0198f5dc14251a57ec171969072954f8acfe03827ee492d8962325b61db128c9/data
+      name: oras://community.wave.seqera.io/library/metaphlan:4.3--d4457947a5edf44e
+      build_id: bd-d4457947a5edf44e_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0ef2f7ad620b9048116323152bc5c1592829c2b3f062d661e5c6528bf5e40be/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/metaphlan_numpy_python:1276de67df48518a
-      build_id: bd-1276de67df48518a_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59f3aa387903d5b87b6e2d3c0172f462f701c662e73cb2e26066d4ec6fd3e8c6/data
+      name: oras://community.wave.seqera.io/library/metaphlan:4.3--3546a9699fb74c35
+      build_id: bd-3546a9699fb74c35_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a05e0cb9a7387c4711a0bed4e283152bba02d06712d97c0253aa481b48e1a3e/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/metaphlan/metaphlan/.conda-lock/linux_amd64-bd-59796ca881a8bb02_1.txt
+      lock_file: modules/nf-core/metaphlan/metaphlan/.conda-lock/linux_amd64-bd-6cd977ac2f320230_2.txt
     linux/arm64:
-      lock_file: modules/nf-core/metaphlan/metaphlan/.conda-lock/linux_arm64-bd-729d587efd21f3af_1.txt
+      lock_file: modules/nf-core/metaphlan/metaphlan/.conda-lock/linux_arm64-bd-3aae96664b5d1d1f_3.txt

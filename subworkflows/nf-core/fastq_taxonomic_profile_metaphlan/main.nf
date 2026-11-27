@@ -12,9 +12,9 @@ workflow FASTQ_TAXONOMIC_PROFILE_METAPHLAN {
 
     main:
 
-    METAPHLAN_MAKEDB()
+    METAPHLAN_MAKEDB([id: 'metaphlan_db'])
 
-    METAPHLAN_METAPHLAN(ch_fastq, METAPHLAN_MAKEDB.out.db, false)
+    METAPHLAN_METAPHLAN(ch_fastq, METAPHLAN_MAKEDB.out.db, [[:], []], false)
 
     metaphlan_merged_profiles_txt = METAPHLAN_MERGEMETAPHLANTABLES(METAPHLAN_METAPHLAN.out.profile
         .map { _meta, profile -> [[id: 'all_samples'], profile] }

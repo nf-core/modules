@@ -6,15 +6,15 @@ process METAPHLAN_MERGEMETAPHLANTABLES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59f3aa387903d5b87b6e2d3c0172f462f701c662e73cb2e26066d4ec6fd3e8c6/data'
-        : 'community.wave.seqera.io/library/metaphlan_numpy_python:59796ca881a8bb02'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a05e0cb9a7387c4711a0bed4e283152bba02d06712d97c0253aa481b48e1a3e/data'
+        : 'community.wave.seqera.io/library/metaphlan:4.3--6cd977ac2f320230'}"
 
     input:
     tuple val(meta), path(profiles)
 
     output:
     tuple val(meta), path("${prefix}.txt") , emit: txt
-    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
+    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | head -n 1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

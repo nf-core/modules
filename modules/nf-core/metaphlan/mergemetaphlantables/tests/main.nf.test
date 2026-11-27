@@ -11,12 +11,12 @@ nextflow_process {
     tag "metaphlan/metaphlan"
     tag "metaphlan/mergemetaphlantables"
 
-    test("sarscov2 - illumina single end [fastq]") {
+    test("sarscov2 - illumina single end [ fastq ]") {
         def db
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            db = extract(modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz')
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
             run("METAPHLAN_METAPHLAN") {
                 script "../../../metaphlan/metaphlan/main.nf"
                 process {
@@ -25,8 +25,9 @@ nextflow_process {
                         [ [ id: 'test', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ) ],
                         [ [ id: 'test2', single_end: true], file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ],
                     )
-                    input[1] = file('${db}')
-                    input[2] = false
+                    input[1] = [ [ id: 'db' ], file('${db}') ]
+                    input[2] = [ [:], [] ]
+                    input[3] = false
                     """
                 }
             }
@@ -41,15 +42,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
 
-    test("sarscov2 - illumina single end [fastq] - stub") {
+    test("sarscov2 - illumina single end [ fastq ] - stub") {
 
         options "-stub"
 
@@ -62,8 +63,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

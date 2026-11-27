@@ -1,62 +1,116 @@
 {
-    "test-metaphlan-makedb": {
-        "content": [
-            [
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103_VINFO.csv",
-                "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103_VSG.fna"
-            ],
-            {
-                "versions_metaphlan": [
-                    [
-                        "METAPHLAN_MAKEDB",
-                        "metaphlan",
-                        "4.1.1"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-06-09T17:18:34.743604189",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
-        }
-    },
-    "test-metaphlan-makedb-stub": {
+    "metaphlan - default index - stub": {
         "content": [
             {
                 "db": [
                     [
-                        "mpa_latest:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.1.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.2.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.3.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.4.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.fna.bz2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.md5:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.pkl:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.rev.1.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.rev.2.bt2:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "mpa_v31_CHOCOPhlAn_201901.tar:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        {
+                            "id": "metaphlan_db"
+                        },
+                        [
+                            "mpa_latest:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.1.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.2.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.3.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.4.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.fna:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.nwk:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.pkl:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.rev.1.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.rev.2.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611_VINFO.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611_VSG.fna:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "versions_metaphlan": [
                     [
                         "METAPHLAN_MAKEDB",
                         "metaphlan",
-                        "4.1.1"
+                        "4.3"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-06-09T17:18:42.454659295",
+        "timestamp": "2026-11-27T12:07:43.172388034",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "metaphlan - default index - long_reads - stub": {
+        "content": [
+            {
+                "db": [
+                    [
+                        {
+                            "id": "metaphlan_db"
+                        },
+                        [
+                            "mpa_latest:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.1.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.2.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.3.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.4.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.fna:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.nwk:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.pkl:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.rev.1.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611.rev.2.bt2l:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611_VINFO.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611_VSG.fna:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "mpa_vJan26_CHOCOPhlAnSGB_202611_xasm20_B3_O3_12.mmi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_MAKEDB",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T12:07:49.884662354",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "metaphlan - toy index - download": {
+        "content": [
+            {
+                "db": [
+                    [
+                        {
+                            "id": "metaphlan_db"
+                        },
+                        [
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.1.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.2.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.3.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.4.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.fna.bz2",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.pkl",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.1.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103.rev.2.bt2l",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103_VINFO.csv",
+                            "mpa_vJan21_TOY_CHOCOPhlAnSGB_202103_VSG.fna"
+                        ]
+                    ]
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_MAKEDB",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T12:07:36.502876476",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
