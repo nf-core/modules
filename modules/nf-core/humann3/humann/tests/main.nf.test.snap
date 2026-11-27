@@ -1,37 +1,46 @@
 {
-    "humann3 sarscov2 - fastq - stub": {
+    "sarscov2 - [ fastq, profile ] - demo databases - stub": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "run_accession": "abc"
-                    },
-                    "test_pathabundance.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "run_accession": "abc"
-                    },
-                    "test_pathcoverage.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "run_accession": "abc"
-                    },
-                    "test_reactions.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                ]
-            ],
             {
+                "genefamilies": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_genefamilies.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "pathabundance": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_pathabundance.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "pathcoverage": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_pathcoverage.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "reactions": [
+                    
+                ],
                 "versions_humann": [
                     [
                         "HUMANN3_HUMANN",
@@ -43,7 +52,7 @@
                     [
                         "HUMANN3_HUMANN",
                         "MetaPhlAn",
-                        "4.0.6 (1 Mar 2023)"
+                        "4.0.6"
                     ]
                 ],
                 "versions_python": [
@@ -55,38 +64,54 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-19T18:08:28.27672",
+        "timestamp": "2026-11-27T23:08:17.549969182",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
+            "nextflow": "26.04.0"
         }
     },
-    "humann3 sarscov2 - fastq": {
+    "sarscov2 - [ fastq, profile ] - demo databases": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "run_accession": "abc"
-                    },
-                    "test_pathabundance.tsv.gz:md5,65f73f474bdb2a7c8b278766ca789a3c"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false,
-                        "run_accession": "abc"
-                    },
-                    "test_pathcoverage.tsv.gz:md5,17c91a2581f34b55179aa4c79c242b1c"
-                ]
-            ],
-            [
-                
-            ],
             {
+                "genefamilies": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_genefamilies.tsv.gz:md5,b9777e24dd24e1257eb6906aba5463f5"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log"
+                    ]
+                ],
+                "pathabundance": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_pathabundance.tsv.gz:md5,65f73f474bdb2a7c8b278766ca789a3c"
+                    ]
+                ],
+                "pathcoverage": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_pathcoverage.tsv.gz:md5,17c91a2581f34b55179aa4c79c242b1c"
+                    ]
+                ],
+                "reactions": [
+                    
+                ],
                 "versions_humann": [
                     [
                         "HUMANN3_HUMANN",
@@ -98,7 +123,7 @@
                     [
                         "HUMANN3_HUMANN",
                         "MetaPhlAn",
-                        "4.0.6 (1 Mar 2023)"
+                        "4.0.6"
                     ]
                 ],
                 "versions_python": [
@@ -108,12 +133,17 @@
                         "3.10.8"
                     ]
                 ]
-            }
+            },
+            [
+                "Total species selected from prescreen: 0",
+                "Total gene families after translated alignment: 0",
+                "Unaligned reads after translated alignment: 100.0000000000"
+            ]
         ],
-        "timestamp": "2026-05-19T18:08:05.120967",
+        "timestamp": "2026-11-27T23:17:23.89462376",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
+            "nextflow": "26.04.0"
         }
     }
 }
