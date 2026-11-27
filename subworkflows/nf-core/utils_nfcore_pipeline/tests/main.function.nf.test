@@ -104,6 +104,82 @@ nextflow_function {
         }
     }
 
+    test("Test Function processVersionsFromYAML keeps scalar, empty, list and map values") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = 'PIPELINE:WORKFLOW:FOO: 1.0\\nPIPELINE:WORKFLOW:EMPTY:\\nPIPELINE:WORKFLOW:SAMTOOLS_SORT:\\n  samtools: 1.20\\n  list: [1.0, 2.0]\\n  nested: {core: 1.20}\\n  tilde: ~\\n  nul: null\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            def expected = [
+                "FOO: '1.0'",
+                "EMPTY: null",
+                "SAMTOOLS_SORT:",
+                "  samtools: '1.20'",
+                "  list:",
+                "  - '1.0'",
+                "  - '2.0'",
+                "  nested:",
+                "    core: '1.20'",
+                "  tilde: null",
+                "  nul: null",
+            ].join('\n')
+            assertAll(
+                { assert function.success },
+                { assert function.result == expected }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML returns an empty string for an empty file") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = ''
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == '' }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML returns an empty string for a null document") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '# no versions\\n---\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == '' }
+            )
+        }
+    }
+
     test("Test Function getSingleReport with a single file") {
         function "getSingleReport"
 
