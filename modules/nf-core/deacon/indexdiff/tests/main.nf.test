@@ -10,7 +10,7 @@ nextflow_process {
     tag "deacon/index"
     tag "deacon/indexdiff"
 
-    test("index diff sarscov2 - fasta") {
+    test("sarscov2 - genome index - transcriptome fasta") {
 
         setup {
             run("DEACON_INDEX") {
@@ -18,7 +18,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = [
-                        [ id:'test'],
+                        [ id:'test' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
@@ -31,23 +31,23 @@ nextflow_process {
                 """
                 input[0] = DEACON_INDEX.out.index
                 input[1] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("index diff sarscov2 - fasta gzipped") {
+    test("sarscov2 - contigs index - genome fasta gzipped") {
 
         setup {
             run("DEACON_INDEX") {
@@ -56,7 +56,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -76,15 +76,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("index diff sarscov2 - idx ") {
+    test("homo_sapiens - genome index - transcriptome index") {
 
         setup {
             run("DEACON_INDEX", alias: "DEACON_INDEX_1") {
@@ -93,7 +93,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test-idx' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -105,7 +105,7 @@ nextflow_process {
                     """
                     input[0] = [
                         [ id:'test-diff' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)
                     ]
                     """
                 }
@@ -122,15 +122,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("index diff sarscov2 - fasta - stub") {
+    test("sarscov2 - genome index - transcriptome fasta - stub") {
 
         options "-stub"
 
@@ -138,20 +138,20 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test-index'],
+                    [ id:'test-index' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'test-diff'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    [ id:'test-diff' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

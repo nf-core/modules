@@ -7,14 +7,14 @@ process DEACON_INDEXUNION {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f628781900b19a962ce706a66d7b1d83c26acb5b08d5085947ae1bbea879b1f8/data'
-        : 'community.wave.seqera.io/library/deacon:0.15.0--ac1f965b3a6ea82e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f1270fe75323ac6d213bf66d72b9f292c5ff31f7f5ee12300d2bed2b858f5ab/data'
+        : 'community.wave.seqera.io/library/deacon:0.20.0--09d7e8e5c3f9dc88'}"
 
     input:
     tuple val(meta), path(indices)    // two or more deacon .idx index files to combine
 
     output:
-    tuple val(meta), path("*.idx"), emit: index
+    tuple val(meta), path("${prefix}.idx"), emit: index
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -22,7 +22,7 @@ process DEACON_INDEXUNION {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.union"
+    prefix = task.ext.prefix ?: "${meta.id}.union"
 
     """
     deacon \\
@@ -34,7 +34,7 @@ process DEACON_INDEXUNION {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}.union"
+    prefix = task.ext.prefix ?: "${meta.id}.union"
     """
     touch ${prefix}.idx
     """
