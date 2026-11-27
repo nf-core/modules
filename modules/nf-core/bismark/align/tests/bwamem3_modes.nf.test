@@ -301,7 +301,6 @@ nextflow_process {
                 { assert threads.find() && threads.group(1) == '4' },
                 { assert bwamem3_cl.contains(' -t 4 ') },
                 { assert cpg.find() && (cpg.group(1) as double) < 5 },
-                // no versions in this snapshot, so version bumps leave it unchanged
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
@@ -348,7 +347,7 @@ nextflow_process {
 
         when {
             params {
-                bismark_args = '--bowtie2 --five_base_baseq 30'
+                bismark_args = '--bwamem3 --five_base_baseq 30'
             }
             process {
                 """

@@ -34,7 +34,6 @@ process BISMARK_ALIGN {
     }
     def fastq = meta.single_end ? reads : "-1 ${reads[0]} -2 ${reads[1]}"
 
-    // 5-Base and TAPS align to the unconverted genome, so the staged FASTA folder can serve as --genome
     def bwamem3_mode = (args =~ /(^|\s)--(taps|illumina_5base|five_base)(\s|$)/).find()
     if (bwamem3_index && !bwamem3_mode) {
         error("bismark/align: bwamem3_index needs --illumina_5base or --taps in ext.args")
@@ -45,6 +44,7 @@ process BISMARK_ALIGN {
     if (bwamem3_mode && !index && !bwamem3_index && !args.contains('--five_base_index')) {
         error("bismark/align: --illumina_5base/--taps needs bwamem3_index, --five_base_index in ext.args, or an index folder holding Bwamem3_Index/")
     }
+    // 5-Base and TAPS align to the unconverted genome, so the staged FASTA folder can serve as --genome
     def genome = index ?: (bwamem3_mode ? 'tmp' : '')
     if (!genome) {
         error("bismark/align: index is required")

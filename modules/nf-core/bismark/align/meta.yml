@@ -59,8 +59,8 @@ input:
     - index:
         type: directory
         description: |
-          Bismark genome index directory. Optional with --illumina_5base or --taps: pass []
-          and give the bwa-mem3 index as bwamem3_index or --five_base_index.
+          Bismark genome index directory. Optional with --illumina_5base or --taps: a folder
+          holding Bwamem3_Index/, or [] to use the fasta input with the bwamem3_index input.
         pattern: "BismarkIndex"
   - - meta4:
         type: map
