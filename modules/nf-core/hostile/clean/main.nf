@@ -25,7 +25,7 @@ process HOSTILE_CLEAN {
     script:
     def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.simpleName }
+    def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.name }
     def reads_cmd    = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
