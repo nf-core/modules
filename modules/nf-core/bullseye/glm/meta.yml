@@ -1,0 +1,137 @@
+name: "bullseye_glm"
+description: Test RNA-editing sites for differential editing between sample groups with Bullseye's beta-binomial (or binomial/quasibinomial) GLM
+keywords:
+  - bullseye
+  - rna editing
+  - dart-seq
+  - differential editing
+  - glm
+tools:
+  - "bullseye":
+      description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
+      homepage: "https://github.com/mflamand/Bullseye"
+      documentation: "https://github.com/mflamand/Bullseye"
+      tool_dev_url: "https://github.com/mflamand/Bullseye"
+      licence:
+        - "MIT"
+      identifier: ""
+  - "aod":
+      description: "Analysis of Overdispersed Data - provides the beta-binomial GLM (betabin) used for the default test."
+      homepage: "https://cran.r-project.org/package=aod"
+      documentation: "https://cran.r-project.org/web/packages/aod/aod.pdf"
+      licence:
+        - "GPL (>= 2)"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information about the comparison
+          e.g. `[ id:'all_sites' ]`
+    - coverage:
+        type: file
+        description: |
+          Tab-separated site x sample coverage matrix. Must contain `#chr`, `start`, `end`
+          and `strand` columns plus one column per sample, with the same columns and
+          sites (in the same order) as `mutations`.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - mutations:
+        type: file
+        description: Tab-separated site x sample mutation-count matrix, same layout as `coverage`.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - samplesheet:
+        type: file
+        description: |
+          Sample annotation with a `sample` column (matching the matrix column names) and
+          the column(s) used in the design formula. Group labels must not occur inside
+          other group or sample names.
+        pattern: "*.{tsv,csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information about the comparison
+            e.g. `[ id:'all_sites' ]`
+      - "*.glm.tsv":
+          type: file
+          description: |
+            Per-site results: pooled editing rate, coverage, called sites, log2 fold change,
+            p-value and Benjamini-Hochberg adjusted p-value (`<group>_padj`) of each group
+            against the reference level (`--reference_level` in `ext.args`, otherwise the
+            first level alphabetically). The `bin`, `quasibinomial` and `betareg` links also
+            report the GLM coefficient (`<group>_LFC`).
+
+            Note: `<group>_log2FoldChange` is computed directly from the raw pooled editing
+            rates (unlike the p-value, it is not pseudocount-protected), so it is `Inf`
+            whenever the reference level has zero mutations at a site - seen on roughly a
+            quarter of sites in this module's own test data. `<group>_pvalue`/`<group>_padj`
+            are unaffected and remain valid for those sites.
+          pattern: "*.glm.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information about the comparison
+            e.g. `[ id:'all_sites' ]`
+      - "*.R_sessionInfo.log":
+          type: file
+          description: R session information
+          pattern: "*.R_sessionInfo.log"
+          ontologies: []
+  versions_bullseye_glm:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-aod_r-base_r-data.table_r-dplyr_pruned:9ff2262cd35fb547
+      build_id: bd-9ff2262cd35fb547_1
+      scan_id: sc-12d7887ef2b31a8b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-aod_r-base_r-data.table_r-dplyr_pruned:c0ae0a7ea8a9b036
+      build_id: bd-c0ae0a7ea8a9b036_1
+      scan_id: sc-6ae598f1951b2d43_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-aod_r-base_r-data.table_r-dplyr_pruned:ead9227604803133
+      build_id: bd-ead9227604803133_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0ab90f0b815b17326d7f16e4ee3399e07bddbff348dc0562f98961140cf2c97/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-aod_r-base_r-data.table_r-dplyr_pruned:b777971abac27b54
+      build_id: bd-b777971abac27b54_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/03/0308e385a736d8d08d73ca5f219c5ad1d8e9438fd8f7419c0d1ce37f04865773/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bullseye/glm/.conda-lock/linux_amd64-bd-9ff2262cd35fb547_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bullseye/glm/.conda-lock/linux_arm64-bd-c0ae0a7ea8a9b036_1.txt

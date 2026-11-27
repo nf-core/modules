@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process BULLSEYE_GLM"
+    script "../main.nf"
+    process "BULLSEYE_GLM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bullseye"
+    tag "bullseye/glm"
+
+    test("homo_sapiens - illumina - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.coverage.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.mut.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.observations.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.results[0][1]).readLines()
+            def header = lines[0].split('\t') as List
+            // GLM p-values can differ in the last digits with BLAS threading, so only the plain-arithmetic columns are snapshotted
+            def stable_idx = ['site', 'wt', 'kd', 'kd_log2FoldChange', 'baseEdit'].collect { header.indexOf(it) }
+            def stable_rows = lines.collect { line -> def f = line.split('\t', -1); stable_idx.collect { f[it] }.join('\t') }
+            def pvalues = lines.drop(1).collect { it.split('\t', -1)[header.indexOf('kd_pvalue')] }.findAll { it && it != 'NA' }
+            assertAll(
+                { assert process.success },
+                { assert lines.size() == 373 },
+                { assert header.containsAll(['site', 'wt', 'kd', 'kd_log2FoldChange', 'kd_pvalue', 'kd_padj', 'baseEdit']) },
+                { assert pvalues.size() > 0 && pvalues.every { (it as double) >= 0 && (it as double) <= 1 } },
+                { assert snapshot(
+                    header,
+                    stable_rows.join('\n').md5(),
+                    process.out.session_info.collect { meta, log -> file(log).name },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - illumina - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.coverage.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.mut.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tsv/bullseye_glm.observations.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
