@@ -39,16 +39,19 @@ nextflow_process {
             }
             assertAll(
                 { assert process.success },
+                { assert process.out.bai.every { path(it[1]).exists() } },
+                { assert process.out.bai_primertrimmed.every { path(it[1]).exists() } },
+                { assert process.out.tbi.every { path(it[1]).exists() } },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     fileNames,
                     process.out.bam.collect{ file(it[1]).name },
-                    process.out.bai,
+                    process.out.bai.collect{ [it[0], file(it[1]).name] },
                     process.out.bam_primertrimmed.collect{ file(it[1]).name },
-                    process.out.bai_primertrimmed,
+                    process.out.bai_primertrimmed.collect{ [it[0], file(it[1]).name] },
                     process.out.fasta,
                     process.out.vcf.collect{ file(it[1]).name },
-                    process.out.tbi,
+                    process.out.tbi.collect{ [it[0], file(it[1]).name] },
                     process.out.json
                 ).match() }
             )
