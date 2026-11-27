@@ -113,6 +113,20 @@ output:
         Transcript-level matrix of unadjusted estimated counts from tximport
         (`countsFromAbundance = 'no'`).
       pattern: "*.transcript_counts.tsv"
+  - counts_transcript_scaled:
+      type: file
+      description: |
+        Transcript-level matrix of estimated counts, generated from abundance
+        (TPM) values by scaling to library size with tximport
+        `countsFromAbundance = 'scaledTPM'`.
+      pattern: "*.transcript_counts_scaled.tsv"
+  - counts_transcript_dtu_scaled:
+      type: file
+      description: |
+        Transcript-level matrix of estimated counts from tximport
+        `countsFromAbundance = 'dtuScaledTPM'`, the recommended input for
+        differential transcript usage analysis with e.g. DRIMSeq or DEXSeq.
+      pattern: "*.transcript_counts_dtu_scaled.tsv"
   - lengths_transcript:
       type: file
       description: |
@@ -128,7 +142,7 @@ output:
       type: file
       description: |
         Serialised SummarizedExperiment object containing transcript-level
-        assays (counts, lengths, TPM).
+        assays (counts, scaled counts, DTU-scaled counts, lengths, TPM).
       pattern: "*.rds"
 authors:
   - "@pinin4fjords"

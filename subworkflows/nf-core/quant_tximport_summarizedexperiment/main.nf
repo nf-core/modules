@@ -100,6 +100,8 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
         // Build transcript-level SummarizedExperiment
         //
         ch_transcript_unified = TXIMETA_TXIMPORT.out.counts_transcript
+            .join(TXIMETA_TXIMPORT.out.counts_transcript_scaled, failOnMismatch: true, failOnDuplicate: true)
+            .join(TXIMETA_TXIMPORT.out.counts_transcript_dtu_scaled, failOnMismatch: true, failOnDuplicate: true)
             .join(TXIMETA_TXIMPORT.out.lengths_transcript, failOnMismatch: true, failOnDuplicate: true)
             .join(TXIMETA_TXIMPORT.out.tpm_transcript, failOnMismatch: true, failOnDuplicate: true)
             .map { row -> tuple(row[0], row.tail()) }
@@ -115,18 +117,20 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
     }
 
     emit:
-    tx2gene                   = CUSTOM_TX2GENE.out.tx2gene                     // channel: [ val(meta), tx2gene.tsv ]
-    tx2gene_augmented         = TXIMETA_TXIMPORT.out.tx2gene_augmented         // channel: [ val(meta), tx2gene_augmented.tsv ]
+    tx2gene                      = CUSTOM_TX2GENE.out.tx2gene                        // channel: [ val(meta), tx2gene.tsv ]
+    tx2gene_augmented            = TXIMETA_TXIMPORT.out.tx2gene_augmented            // channel: [ val(meta), tx2gene_augmented.tsv ]
 
-    tpm_gene                  = TXIMETA_TXIMPORT.out.tpm_gene                  //    path: *gene_tpm.tsv
-    counts_gene               = TXIMETA_TXIMPORT.out.counts_gene               //    path: *gene_counts.tsv
-    lengths_gene              = TXIMETA_TXIMPORT.out.lengths_gene              //    path: *gene_lengths.tsv
-    counts_gene_length_scaled = TXIMETA_TXIMPORT.out.counts_gene_length_scaled //    path: *gene_counts_length_scaled.tsv
-    counts_gene_scaled        = TXIMETA_TXIMPORT.out.counts_gene_scaled        //    path: *gene_counts_scaled.tsv
-    tpm_transcript            = TXIMETA_TXIMPORT.out.tpm_transcript            //    path: *transcript_tpm.tsv
-    counts_transcript         = TXIMETA_TXIMPORT.out.counts_transcript         //    path: *transcript_counts.tsv
-    lengths_transcript        = TXIMETA_TXIMPORT.out.lengths_transcript        //    path: *transcript_lengths.tsv
+    tpm_gene                     = TXIMETA_TXIMPORT.out.tpm_gene                     //    path: *gene_tpm.tsv
+    counts_gene                  = TXIMETA_TXIMPORT.out.counts_gene                  //    path: *gene_counts.tsv
+    lengths_gene                 = TXIMETA_TXIMPORT.out.lengths_gene                 //    path: *gene_lengths.tsv
+    counts_gene_length_scaled    = TXIMETA_TXIMPORT.out.counts_gene_length_scaled    //    path: *gene_counts_length_scaled.tsv
+    counts_gene_scaled           = TXIMETA_TXIMPORT.out.counts_gene_scaled           //    path: *gene_counts_scaled.tsv
+    tpm_transcript               = TXIMETA_TXIMPORT.out.tpm_transcript               //    path: *transcript_tpm.tsv
+    counts_transcript            = TXIMETA_TXIMPORT.out.counts_transcript            //    path: *transcript_counts.tsv
+    counts_transcript_scaled     = TXIMETA_TXIMPORT.out.counts_transcript_scaled     //    path: *transcript_counts_scaled.tsv
+    counts_transcript_dtu_scaled = TXIMETA_TXIMPORT.out.counts_transcript_dtu_scaled //    path: *transcript_counts_dtu_scaled.tsv
+    lengths_transcript           = TXIMETA_TXIMPORT.out.lengths_transcript           //    path: *transcript_lengths.tsv
 
-    merged_gene_rds           = ch_merged_gene_rds                             //    path: *.rds
-    merged_transcript_rds     = ch_merged_transcript_rds                       //    path: *.rds
+    merged_gene_rds              = ch_merged_gene_rds                                //    path: *.rds
+    merged_transcript_rds        = ch_merged_transcript_rds                          //    path: *.rds
 }

@@ -7,8 +7,8 @@ process BISMARK_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/20bce4b3bce2e7045431676190322012e22a96cef1a53eaadd14acc89de2e232/data'
-        : 'community.wave.seqera.io/library/bismark_bwa-mem3:1eb534160cb7def7'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f649b628c613bd75e37f5671cc6d088d18e46326069f6c514192e21ac15bf98/data'
+        : 'community.wave.seqera.io/library/bismark_bwa-mem3:0cace1e159351cc0'}"
 
     input:
     tuple val(meta), path(reads)
