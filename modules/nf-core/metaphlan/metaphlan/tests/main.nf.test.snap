@@ -1,23 +1,171 @@
 {
-    "sarscov2 - illumina pair end [fastq] - stub": {
+    "toy database - markers [ fasta ]": {
         "content": [
             {
                 "biom": [
+                    
+                ],
+                "mapout": [
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "single_end": true
                         },
-                        "test.biom:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.mapout.bz2"
                     ]
                 ],
-                "bt2out": [
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            [
+                "t__SGB10768 8.47588",
+                "t__SGB147693 8.09503",
+                "t__SGB148571 7.34587",
+                "t__SGB35907 6.07154",
+                "t__SGB27549 5.54976",
+                "t__SGB109194 4.98885",
+                "t__SGB146968 4.01733",
+                "t__SGB110642 3.73764",
+                "t__SGB117088 3.65053",
+                "t__SGB159703 3.64494",
+                "t__SGB33527 3.34009",
+                "t__EUK5741_3 3.1002",
+                "t__SGB90689 3.09332",
+                "t__SGB15356 3.07572",
+                "t__SGB4582 2.99436",
+                "t__SGB56613 2.93797",
+                "t__EUK391823 2.84403",
+                "t__EUK64417 2.68168",
+                "t__SGB163894 2.56392",
+                "t__EUK5692 2.14733",
+                "t__SGB147917 1.89386",
+                "t__SGB628 1.80102",
+                "t__EUK4792 1.67837",
+                "t__EUK538568 1.61562",
+                "t__EUK41066 1.60983",
+                "t__EUK5059 1.58596",
+                "t__EUK2052682 1.50852",
+                "t__EUK263815 1.48894",
+                "t__SGB108644 1.24208",
+                "t__SGB25567 1.21981"
+            ]
+        ],
+        "timestamp": "2026-11-27T11:15:07.03651559",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "toy database - markers [ sam ]": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            [
+                "t__SGB10768 8.47053",
+                "t__SGB147693 8.09953",
+                "t__SGB148571 7.35329",
+                "t__SGB35907 6.07233",
+                "t__SGB27549 5.54814",
+                "t__SGB109194 4.98517",
+                "t__SGB146968 4.01557",
+                "t__SGB110642 3.74088",
+                "t__SGB117088 3.6481",
+                "t__SGB159703 3.64803",
+                "t__SGB33527 3.3427",
+                "t__EUK5741_3 3.0991",
+                "t__SGB90689 3.09263",
+                "t__SGB15356 3.074",
+                "t__SGB4582 2.99292",
+                "t__SGB56613 2.93674",
+                "t__EUK391823 2.8432",
+                "t__EUK64417 2.68098",
+                "t__SGB163894 2.56549",
+                "t__EUK5692 2.14672",
+                "t__SGB147917 1.89475",
+                "t__SGB628 1.80183",
+                "t__EUK4792 1.67788",
+                "t__EUK538568 1.61517",
+                "t__EUK41066 1.6094",
+                "t__EUK5059 1.58552",
+                "t__EUK2052682 1.50813",
+                "t__EUK263815 1.48856",
+                "t__SGB108644 1.24249",
+                "t__SGB25567 1.22021"
+            ]
+        ],
+        "timestamp": "2026-11-27T11:30:58.916404735",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - illumina paired end [ fastq ] - stub": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.bowtie2out.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.mapout.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
                     ]
                 ],
                 "profile": [
@@ -30,155 +178,612 @@
                     ]
                 ],
                 "sam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sam.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
+                    ]
+                ],
+                "subsampled": [
                     
                 ],
                 "versions_metaphlan": [
                     [
                         "METAPHLAN_METAPHLAN",
                         "metaphlan",
-                        "4.1.1"
+                        "4.3"
                     ]
+                ],
+                "vsc": [
+                    
                 ]
             }
         ],
-        "timestamp": "2026-06-09T17:19:58.375514149",
+        "timestamp": "2026-11-27T11:06:18.626133395",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "sarscov2 - illumina pair end [fastq] - save sam": {
+    "sarscov2 - illumina single end [ fastq ] - subsampling": {
         "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapout.bz2:md5,18f6ff1d1f92de78dcb6421dd104fbe6"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.subsampled.fastq.gz"
+                    ]
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
             [
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
+                "#50 reads processed",
+                "#SampleID\tMetaphlan_Analysis",
+                "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
+                "UNCLASSIFIED\t-1\t100.0\t"
+            ],
+            50,
+            "e8f2c93e4c3669bfb4edb742e5484ccd"
+        ],
+        "timestamp": "2026-11-27T11:05:39.465212649",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - illumina paired end [ fastq ] - profile_vsc - stub": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mapout.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_profile.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sam.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
+                    ]
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_vsc.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T11:06:27.131956398",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - illumina paired end [ fastq ]": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mapout.bz2:md5,d3df0d7bbbe34a73c934980418a8ce7e"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            [
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
                 "#196 reads processed",
                 "#SampleID\tMetaphlan_Analysis",
                 "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
                 "UNCLASSIFIED\t-1\t100.0\t"
-            ],
-            true,
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bowtie2out.txt:md5,8c1bc21e1d8484b5551bf46331d61bd8"
-                ]
-            ],
-            "SAM",
-            {
-                "versions_metaphlan": [
-                    [
-                        "METAPHLAN_METAPHLAN",
-                        "metaphlan",
-                        "4.1.1"
-                    ]
-                ]
-            }
+            ]
         ],
-        "timestamp": "2026-06-09T17:19:47.219030947",
+        "timestamp": "2026-11-27T11:04:19.270357",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "sarscov2 - illumina single end [fastq]": {
+    "sarscov2 - illumina paired end [ mapout ]": {
         "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
             [
-                "#100 reads processed",
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
+                "#196 reads processed",
                 "#SampleID\tMetaphlan_Analysis",
                 "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
                 "UNCLASSIFIED\t-1\t100.0\t"
-            ],
-            true,
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2out.txt:md5,ef46a9c6a8ce9cae26fbfd5527116fd5"
-                ]
-            ],
-            {
-                "versions_metaphlan": [
-                    [
-                        "METAPHLAN_METAPHLAN",
-                        "metaphlan",
-                        "4.1.1"
-                    ]
-                ]
-            }
+            ]
         ],
-        "timestamp": "2026-06-09T17:19:05.401336447",
+        "timestamp": "2026-11-27T11:29:59.057028173",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "sarscov2 - illumina single end [fasta]": {
+    "sarscov2 - contigs [ fasta ] - subsampling - stub": {
         "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapout.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.subsampled.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T11:06:36.250483891",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - illumina paired end [ fastq ] - save sam": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mapout.bz2:md5,d3df0d7bbbe34a73c934980418a8ce7e"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.sam.bz2"
+                    ]
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
             [
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
+                "#196 reads processed",
+                "#SampleID\tMetaphlan_Analysis",
+                "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
+                "UNCLASSIFIED\t-1\t100.0\t"
+            ]
+        ],
+        "timestamp": "2026-11-27T11:04:50.194553135",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - contigs [ fasta ]": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapout.bz2:md5,01ed0232c2e9001ed9d05c90b2fc1733"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            [
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
                 "#4 reads processed",
                 "#SampleID\tMetaphlan_Analysis",
                 "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
                 "UNCLASSIFIED\t-1\t100.0\t"
-            ],
-            true,
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.bowtie2out.txt:md5,d99d05d6b011c647adf816f10fc6acbe"
-                ]
-            ],
-            {
-                "versions_metaphlan": [
-                    [
-                        "METAPHLAN_METAPHLAN",
-                        "metaphlan",
-                        "4.1.1"
-                    ]
-                ]
-            }
+            ]
         ],
-        "timestamp": "2026-06-09T17:19:32.907241155",
+        "timestamp": "2026-11-27T11:04:34.625385034",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "sarscov2 - illumina pair end [fastq]": {
+    "sarscov2 - illumina paired end [ fastq ] - biom": {
         "content": [
-            [
-                "#196 reads processed",
-                "#SampleID\tMetaphlan_Analysis",
-                "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
-                "UNCLASSIFIED\t-1\t100.0\t"
-            ],
-            true,
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bowtie2out.txt:md5,8c1bc21e1d8484b5551bf46331d61bd8"
-                ]
-            ],
             {
+                "biom": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.biom"
+                    ]
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.mapout.bz2:md5,d3df0d7bbbe34a73c934980418a8ce7e"
+                    ]
+                ],
+                "profile": [
+                    
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
                 "versions_metaphlan": [
                     [
                         "METAPHLAN_METAPHLAN",
                         "metaphlan",
-                        "4.1.1"
+                        "4.3"
                     ]
+                ],
+                "vsc": [
+                    
                 ]
-            }
+            },
+            true
         ],
-        "timestamp": "2026-06-09T17:19:19.166830424",
+        "timestamp": "2026-11-27T11:05:04.419855926",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - illumina single end [ fastq ]": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapout.bz2:md5,a2d87e1aba517f31ffb6aa37345ea305"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            [
+                "#mpa_vJan25_TOY_CHOCOPhlAnSGB_202503",
+                "#100 reads processed",
+                "#SampleID\tMetaphlan_Analysis",
+                "#clade_name\tNCBI_tax_id\trelative_abundance\tadditional_species",
+                "UNCLASSIFIED\t-1\t100.0\t"
+            ]
+        ],
+        "timestamp": "2026-11-27T11:04:04.806333717",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "toy database - markers [ fasta ] - ignore_markers": {
+        "content": [
+            {
+                "biom": [
+                    
+                ],
+                "mapout": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.mapout.bz2"
+                    ]
+                ],
+                "profile": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test_profile.txt"
+                    ]
+                ],
+                "sam": [
+                    
+                ],
+                "subsampled": [
+                    
+                ],
+                "versions_metaphlan": [
+                    [
+                        "METAPHLAN_METAPHLAN",
+                        "metaphlan",
+                        "4.3"
+                    ]
+                ],
+                "vsc": [
+                    
+                ]
+            },
+            true,
+            [
+                "t__SGB10768 8.4761",
+                "t__SGB147693 8.09524",
+                "t__SGB148571 7.34606",
+                "t__SGB35907 6.0717",
+                "t__SGB27549 5.54991",
+                "t__SGB109194 4.98898",
+                "t__SGB146968 4.01743",
+                "t__SGB110642 3.73774",
+                "t__SGB117088 3.65062",
+                "t__SGB159703 3.64504",
+                "t__SGB33527 3.34018",
+                "t__EUK5741_3 3.10029",
+                "t__SGB90689 3.0934",
+                "t__SGB15356 3.0758",
+                "t__SGB4582 2.99444",
+                "t__SGB56613 2.93805",
+                "t__EUK391823 2.8441",
+                "t__EUK64417 2.68175",
+                "t__SGB163894 2.56398",
+                "t__EUK5692 2.14738",
+                "t__SGB147917 1.89391",
+                "t__SGB628 1.80107",
+                "t__EUK4792 1.67841",
+                "t__EUK538568 1.61566",
+                "t__EUK41066 1.60987",
+                "t__EUK5059 1.586",
+                "t__EUK2052682 1.50856",
+                "t__EUK263815 1.48898",
+                "t__SGB108644 1.23951",
+                "t__SGB25567 1.21985"
+            ]
+        ],
+        "timestamp": "2026-11-27T11:15:23.893243057",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
