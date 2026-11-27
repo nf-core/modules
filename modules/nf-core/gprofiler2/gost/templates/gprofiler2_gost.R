@@ -457,7 +457,7 @@ if (is.null(opt\$token) & !is.null(opt\$organism)) {
 # when we use writeLines and gprofiler_data, so I write it via yaml
 write_yaml(
     list(
-    '"$task.process"'=list(
+    "$task.process"=list(
         "r-base"=r.version,
         "r-ggplot2"=ggplot2.version,
         "r-gprofiler2"=gprofiler2.version,
