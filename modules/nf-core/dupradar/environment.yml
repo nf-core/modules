@@ -5,3 +5,7 @@ channels:
   - bioconda
 dependencies:
   - bioconda::bioconductor-dupradar=1.38.0
+  # Reference BLAS instead of OpenBLAS, whose CPU-specific kernels change the last
+  # digits of the glm() intercept/slope from one machine to another.
+  - conda-forge::libblas=3.11.0=*netlib
+  - conda-forge::r-base=4.4.3
