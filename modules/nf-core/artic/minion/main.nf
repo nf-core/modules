@@ -7,8 +7,8 @@ process ARTIC_MINION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
-        'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f6019bce7e1652ddff248bbfe2a6d9fc1c668137b731cd5ed772e690a7d5ddca/data' :
+        'community.wave.seqera.io/library/artic:1.12.0--ac55155577657f92' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -20,8 +20,6 @@ process ARTIC_MINION {
     tuple val(meta), path("${prefix}.*")                              , emit: results
     tuple val(meta), path("${prefix}.sorted.bam")                     , emit: bam
     tuple val(meta), path("${prefix}.sorted.bam.bai")                 , emit: bai
-    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam")          , emit: bam_trimmed
-    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam.bai")      , emit: bai_trimmed
     tuple val(meta), path("${prefix}.primertrimmed.rg.sorted.bam")    , emit: bam_primertrimmed
     tuple val(meta), path("${prefix}.primertrimmed.rg.sorted.bam.bai"), emit: bai_primertrimmed
     tuple val(meta), path("${prefix}.consensus.fasta")                , emit: fasta
@@ -57,31 +55,31 @@ process ARTIC_MINION {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.1.trimmed.rg.sorted.bam
-    touch ${prefix}.1.trimmed.rg.sorted.bai
-    touch ${prefix}.1.vcf
-    touch ${prefix}.2.trimmed.rg.sorted.bam
-    touch ${prefix}.2.trimmed.rg.sorted.bai
-    touch ${prefix}.2.vcf
+    gzip() { pigz; }
 
-    touch ${prefix}.alignreport.csv
+    touch ${prefix}.1.vcf
+    touch ${prefix}.2.vcf
+    touch ${prefix}.unmatched.vcf
+
+    touch ${prefix}.alignreport.tsv
     touch ${prefix}.amplicon_depths.tsv
+    touch ${prefix}.amplicons.tsv
 
     touch ${prefix}.consensus.fasta
     touch ${prefix}.coverage_mask.txt
-    touch ${prefix}.coverage_mask.txt.1.depths
-    touch ${prefix}.coverage_mask.txt.2.depths
 
     touch ${prefix}.fail.vcf
+    touch ${prefix}.ignore.vcf
 
     touch ${prefix}.merged.vcf
     echo "" | gzip > ${prefix}.merged.vcf.gz
-    touch ${prefix}.merged.vcf.tbi
+    touch ${prefix}.merged.vcf.gz.tbi
 
     touch ${prefix}.minion.log.txt
+    touch ${prefix}.overlaps.tsv
 
     echo "" | gzip > ${prefix}.normalised.vcf.gz
-    touch ${prefix}.normalised.vcf.tbi
+    touch ${prefix}.normalised.vcf.gz.tbi
 
     touch ${prefix}.pass.vcf
     echo "" | gzip > ${prefix}.pass.vcf.gz
@@ -89,15 +87,18 @@ process ARTIC_MINION {
 
     touch ${prefix}.preconsensus.fasta
     touch ${prefix}.preconsensus.fasta.fai
+    touch ${prefix}.pre-normalisation.coverage.tsv
+    touch ${prefix}.post-normalisation.coverage.tsv
 
     touch ${prefix}.primers.vcf
     touch ${prefix}.primersitereport.txt
+    touch ${prefix}.primer_pairs.tsv
     touch ${prefix}.primertrimmed.rg.sorted.bam
     touch ${prefix}.primertrimmed.rg.sorted.bam.bai
 
     touch ${prefix}.sorted.bam
     touch ${prefix}.sorted.bam.bai
-    touch ${prefix}.trimmed.rg.sorted.bam
-    touch ${prefix}.trimmed.rg.sorted.bam.bai
+    touch ${prefix}.split_reads.tsv
+    touch ${prefix}.summary.tsv
     """
 }
