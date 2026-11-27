@@ -58,7 +58,7 @@ process METAPHLAN_METAPHLAN {
         ${vsc_out} \\
         ${subsampling_out} \\
         ${ignore_markers_arg} \\
-        --db_dir \$BT2_DB \\
+        --db_dir "\$BT2_DB" \\
         ${index} \\
         --output_file ${output_file}
 
