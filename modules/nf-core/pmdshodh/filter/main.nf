@@ -17,7 +17,7 @@ process PMDSHODH_FILTER {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("*.pmdshodh.json"), emit: json
     tuple val("${task.process}"), val('pmdshodh'), eval("pmdshodh --version | sed 's/^pmdshodh //'"), topic: versions, emit: versions_pmdshodh
 
     when:
