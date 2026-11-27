@@ -4,11 +4,9 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
 
     conda "${task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml"}"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? (task.accelerator
-            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/837a399f5215e942721f2c5d6923dffb322ec6a8eca2448b6969e65203df7dc3/data'
-            : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7563f28eb5a19550f3a5ed2d07edbaa73c7372b896910c5c0e961d828a72aee/data')
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7563f28eb5a19550f3a5ed2d07edbaa73c7372b896910c5c0e961d828a72aee/data'
         : (task.accelerator
-            ? 'community.wave.seqera.io/library/comebin-llmopt_gzip_tar_pytorch-gpu_cuda-version:bae10c4b04932650'
+            ? 'gitlab-registry.internal.sanger.ac.uk/tol-it/software/docker-images-test/comebin-llmopt:1.1.2-c0'
             : 'community.wave.seqera.io/library/comebin-llmopt_gzip_tar:ef631f4fd52d31e3')}"
 
     input:
