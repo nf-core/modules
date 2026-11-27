@@ -20,7 +20,8 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
     tuple val(meta), path("${prefix}/embeddings.npy"), emit: embeddings
     tuple val(meta), path("${prefix}/covembeddings.npy"), emit: covembeddings
     tuple val(meta), path("${prefix}/embedding_ids.txt"), emit: embedding_ids
-    tuple val("${task.process}"), val('comebin-llmopt'), eval("comebin-llmopt -V | sed 's/COMEBin-LLMopt version: //' | sed s/(.*)//"), topic: versions, emit: versions_comebin
+    tuple val(meta), path("${prefix}/final_selection.txt"), emit: final_selection
+    tuple val("${task.process}"), val('comebin-llmopt'), eval("comebin-llmopt -V | sed 's/COMEBin-LLMopt version: //; s/(.*)//'"), topic: versions, emit: versions_comebin
     tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), topic: versions, emit: versions_cuda
 
     when:
