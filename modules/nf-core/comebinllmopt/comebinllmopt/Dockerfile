@@ -2,12 +2,7 @@ FROM mambaorg/micromamba:2-amazon2023 AS build
 USER root
 COPY --chown=$MAMBA_USER:$MAMBA_USER environment.gpu.yml /tmp/environment.gpu.yml
 # expose `which` at /usr/bin/which for R (bioconda) post-link scripts; the amazon2023 base image lacks it
-RUN micromamba install -y -n base conda-forge::which \
-    && ln -sf "$MAMBA_ROOT_PREFIX/bin/which" /usr/bin/which \
-    && (micromamba install -y -n base -f /tmp/environment.gpu.yml > /tmp/mamba.log 2>&1 \
-    && cat /tmp/mamba.log \
-    || (cat /tmp/mamba.log >&2 && grep -q __cuda /tmp/mamba.log \
-        && CONDA_OVERRIDE_CUDA="99" micromamba install -y -n base -f /tmp/environment.gpu.yml)) \
+RUN CONDA_OVERRIDE_CUDA="99" micromamba install -y -n base -f /tmp/environment.gpu.yml \
     && micromamba install -y -n base conda-forge::procps-ng \
     && micromamba clean -a -y \
     && micromamba env export --name base --explicit > environment.lock \
