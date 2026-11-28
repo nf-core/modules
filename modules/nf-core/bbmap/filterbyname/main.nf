@@ -6,19 +6,19 @@ process BBMAP_FILTERBYNAME {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
-        'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5f02126e0d84b2eb0bcfd4b59c53fb192830fdf6510158c1a3cc121a7d3fff1/data'
+        : 'community.wave.seqera.io/library/bbmap_pigz:7ce06264033efd7e'}"
 
     input:
-    tuple val(meta), path(reads)
+    tuple val(meta), path(reads, stageAs: 'input/*'), path(names_file, stageAs: 'input/*')
     val(names_to_filter)
     val(output_format)
     val(interleaved_output)
 
     output:
-    tuple val(meta), path("*.${output_format}"), emit: reads
-    tuple val(meta), path('*.log')             , emit: log
+    tuple val(meta), path(reads_out)      , emit: reads
+    tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
@@ -26,12 +26,17 @@ process BBMAP_FILTERBYNAME {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = meta.single_end ? "in=${reads}" : "in=${reads[0]} in2=${reads[1]}"
-    def output = (meta.single_end || interleaved_output) ?
-        "out=${prefix}.${output_format}" :
-        "out1=${prefix}_1.${output_format} out2=${prefix}_2.${output_format}"
-    def names_command = names_to_filter ? "names=${names_to_filter}": ""
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def input  = meta.single_end ? "in=\"${reads}\"" : "in=\"${reads[0]}\" in2=\"${reads[1]}\""
+    reads_out = (meta.single_end || interleaved_output) ?
+        ["${prefix}.${output_format}"] :
+        ["${prefix}_1.${output_format}", "${prefix}_2.${output_format}"]
+    def output = reads_out.size() == 1 ?
+        "out=\"${reads_out[0]}\"" :
+        "out1=\"${reads_out[0]}\" out2=\"${reads_out[1]}\""
+    // filterbyname.sh passes its arguments through eval, so a value with spaces needs its own inner quotes
+    def names = [names_to_filter, names_file].flatten().findAll { name -> name }.join(',')
+    def names_command = names ? "names='\"${names}\"'" : ""
 
     def avail_mem = 3
     if (!task.memory) {
@@ -47,14 +52,19 @@ process BBMAP_FILTERBYNAME {
         $output \\
         $names_command \\
         $args \\
-        | tee ${prefix}.log
+        2>| >(tee "${prefix}.log" >&2)
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def filtered = (meta.single_end || interleaved_output) ?
-        "echo '' | gzip > ${prefix}.${output_format}" :
-        "echo '' | gzip >${prefix}_1.${output_format} ; echo '' | gzip >${prefix}_2.${output_format}"
+    prefix = task.ext.prefix ?: "${meta.id}"
+    reads_out = (meta.single_end || interleaved_output) ?
+        ["${prefix}.${output_format}"] :
+        ["${prefix}_1.${output_format}", "${prefix}_2.${output_format}"]
+    def filtered = reads_out.collect { out_file ->
+        output_format.endsWith('.gz')  ? "echo '' | gzip > ${out_file}" :
+        output_format.endsWith('.bz2') ? "echo '' | bzip2 > ${out_file}" :
+                                         "touch ${out_file}"
+    }.join('\n')
 
     """
     $filtered

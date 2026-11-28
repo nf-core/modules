@@ -1,104 +1,14 @@
 {
-    "single end fasta": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.fasta:md5,884c105cedb985918d13266c8f2fc237",
-                        "test_2.fasta:md5,2c6b38825908c9bec9748f486d030487"
-                    ]
-                ]
-            ],
-            "test.log",
-            {
-                "versions_bbmap": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-11T15:30:39.205284073",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "paired end fastq.bz2": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.fastq.bz2:md5,410105042b5c32ed304342f3259f7f80",
-                        "test_2.fastq.bz2:md5,8f7510b06e5123b9511f9ae54863f85d"
-                    ]
-                ]
-            ],
-            "test.log",
-            {
-                "versions_bbmap": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-11T15:30:25.796972012",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "paired end fastq.bz2 - stub": {
+    "sarscov2 - [ fastq_1, fastq_2 ] - names_to_filter - fastq.gz": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test_1.fastq.bz2:md5,1a60c330fb42841e8dcf3cd507a70bfc",
-                            "test_2.fastq.bz2:md5,1a60c330fb42841e8dcf3cd507a70bfc"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ],
                 "log": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.log"
                     ]
                 ],
                 "reads": [
@@ -108,8 +18,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1.fastq.bz2:md5,1a60c330fb42841e8dcf3cd507a70bfc",
-                            "test_2.fastq.bz2:md5,1a60c330fb42841e8dcf3cd507a70bfc"
+                            "test_1.fastq.gz:md5,91dc9a4c9423b78c36bbce6b9c851b9b",
+                            "test_2.fastq.gz:md5,8173c3f5976b6897c41ff34ad6be5f16"
                         ]
                     ]
                 ],
@@ -120,78 +30,23 @@
                         "39.18"
                     ]
                 ]
-            }
+            },
+            "Reads Out:          194"
         ],
-        "timestamp": "2026-03-11T13:51:03.943022163",
+        "timestamp": "2026-11-27T21:14:24.200823438",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
-    "single end fastq.gz filter": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.fasta:md5,8408578e9a56eb5c460304533544ea3f",
-                        "test_2.fasta:md5,582eff5fc721306af42bfd3718b61548"
-                    ]
-                ]
-            ],
-            "test.log",
-            {
-                "versions_bbmap": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-11T15:30:52.600589744",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "single end fastq.gz - stub": {
+    "sarscov2 - fastq_1 - names_to_filter - fastq.gz - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ],
                 "log": [
                     [
                         {
                             "id": "test",
-                            "single_end": false
+                            "single_end": true
                         },
                         "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -200,68 +55,7 @@
                     [
                         {
                             "id": "test",
-                            "single_end": false
-                        },
-                        "test_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "versions_bbmap": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-03-11T15:30:59.221072396",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "paired end fastq.gz filter interleaved - stub": {
-        "content": [
-            {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        "BBMAP_FILTERBYNAME",
-                        "bbmap",
-                        "39.18"
-                    ]
-                ],
-                "log": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "reads": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
+                            "single_end": true
                         },
                         "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
@@ -275,43 +69,169 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T15:31:13.455857273",
+        "timestamp": "2026-11-27T21:14:00.555020284",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
-    "single end fasta - stub": {
+    "sarscov2 - [ fastq_1, fastq_2 ] - fastq.bz2": {
         "content": [
             {
-                "0": [
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
                         [
-                            "test_1.fasta:md5,1a60c330fb42841e8dcf3cd507a70bfc",
-                            "test_2.fasta:md5,1a60c330fb42841e8dcf3cd507a70bfc"
+                            "test_1.fastq.bz2:md5,ab6ff046a185586551852bef2df9ef83",
+                            "test_2.fastq.bz2:md5,7dfe75d280c24b04fe43cec63da0452c"
                         ]
                     ]
                 ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
+                "versions_bbmap": [
                     [
                         "BBMAP_FILTERBYNAME",
                         "bbmap",
                         "39.18"
                     ]
+                ]
+            },
+            "Reads Out:          200"
+        ],
+        "timestamp": "2026-11-27T21:13:26.01593775",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - [ fastq_1, fastq_2 ] - names_file fastq - names_to_filter - fasta": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log"
+                    ]
                 ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.fasta:md5,48d7966ba16abd5b4361d7ad9867ef79",
+                            "test_2.fasta:md5,bfcf3323955fad0d7bc53c9fff9f228e"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          194"
+        ],
+        "timestamp": "2026-11-27T21:17:21.477447218",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - [ fastq_1, fastq_2 ] - names_to_filter - fastq.gz - interleaved": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fastq.gz:md5,8ec84a99872c04c1e4148daa63a64dbc"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          194"
+        ],
+        "timestamp": "2026-11-27T21:14:08.118302396",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - fastq_1 - names_to_filter - fastq.gz": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastq.gz:md5,91dc9a4c9423b78c36bbce6b9c851b9b"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          97"
+        ],
+        "timestamp": "2026-11-27T21:13:53.753356971",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - [ fastq_1, fastq_2 ] - names_to_filter - fastq.gz - stub": {
+        "content": [
+            {
                 "log": [
                     [
                         {
@@ -328,8 +248,8 @@
                             "single_end": false
                         },
                         [
-                            "test_1.fasta:md5,1a60c330fb42841e8dcf3cd507a70bfc",
-                            "test_2.fasta:md5,1a60c330fb42841e8dcf3cd507a70bfc"
+                            "test_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
@@ -342,25 +262,73 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T15:30:45.816503302",
+        "timestamp": "2026-11-27T21:14:32.079254635",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
-    "paired end fastq.gz filter interleaved": {
+    "sarscov2 - fastq_1 - names_file - fastq.gz": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.fastq.gz:md5,91dc9a4c9423b78c36bbce6b9c851b9b"
-                ]
-            ],
-            "test.log",
             {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fastq.gz:md5,bf4f1569c759621962ef65eacdb5c0d0"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          98"
+        ],
+        "timestamp": "2026-11-27T21:14:39.896907906",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - [ fastq_1, fastq_2 ] - fastq.bz2 - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.fastq.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb",
+                            "test_2.fastq.bz2:md5,1a28c1c6c45d5a9390ab5bd1aa5a92eb"
+                        ]
+                    ]
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_FILTERBYNAME",
@@ -370,10 +338,156 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T15:31:06.374723595",
+        "timestamp": "2026-11-27T21:13:33.653272157",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - [ fastq_1, fastq_2 ] - names_to_filter - fastq.gz - interleaved - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T21:14:16.161988025",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - fastq_1 - fasta": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,45f83b9d54d3a4ebd94f54300d2cbfc9"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          100"
+        ],
+        "timestamp": "2026-11-27T21:13:40.187359869",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - fastq_1 - names_to_filter full header - fasta": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,5f9096f5e790f3152ce96bcfe6874589"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            },
+            "Reads Out:          99"
+        ],
+        "timestamp": "2026-11-27T21:14:54.630346591",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "sarscov2 - fastq_1 - fasta - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_FILTERBYNAME",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-27T21:13:46.800467956",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }
