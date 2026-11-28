@@ -9,11 +9,8 @@ nextflow_process {
     tag "modules_nfcore"
     tag "humann3"
     tag "humann3/humann"
-    tag "metaphlan"
-    tag "metaphlan/metaphlan"
 
-    test("sarscov2 - [ fastq, profile ] - demo databases") {
-        def metaphlan_db
+    test("bacteroides - [ fastq, profile ] - demo databases") {
         def nucleotide_db
         def protein_db
         def utility_db
@@ -21,25 +18,9 @@ nextflow_process {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             def humann_db_base_path = modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/'
-            // HUMAnN 3 rejects taxonomic profiles built with a MetaPhlAn database newer than vJan21
-            metaphlan_db = extract(modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz')
             nucleotide_db = extract(humann_db_base_path + 'chocophlan_nfDEMO.tar.gz')
             protein_db = extract(humann_db_base_path + 'uniref_nfDEMO.tar.gz')
             utility_db = extract(humann_db_base_path + 'utility_nfDEMO.tar.gz')
-            run("METAPHLAN_METAPHLAN") {
-                script "../../../../nf-core/metaphlan/metaphlan/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'test', single_end:true ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-                    ])
-                    input[1] = [ [ id:'db' ], file('${metaphlan_db}') ]
-                    input[2] = [ [:], [] ]
-                    input[3] = false
-                    """
-                }
-            }
         }
 
         when {
@@ -47,9 +28,12 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = METAPHLAN_METAPHLAN.out.profile
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
                 input[2] = file('${nucleotide_db}')
                 input[3] = file('${protein_db}')
                 input[4] = file('${utility_db}')
@@ -62,13 +46,13 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["log"]),
-                    path(process.out.log[0][1]).text.findAll(/(?:Total species selected from prescreen|Total gene families after translated alignment|Unaligned reads after translated alignment): \S+/)
+                    path(process.out.log[0][1]).text.findAll(/(?:Total species selected from prescreen|Total gene families from nucleotide alignment|Total gene families after translated alignment|Unaligned reads after translated alignment): \S+/)
                 ).match() }
             )
         }
     }
 
-    test("sarscov2 - [ fastq, profile ] - demo databases - stub") {
+    test("bacteroides - [ fastq, profile ] - demo databases - stub") {
 
         options "-stub"
 
@@ -77,9 +61,12 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = [ [ id:'test', single_end:true ], [] ]
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
                 input[2] = []
                 input[3] = []
                 input[4] = []
@@ -95,7 +82,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [ fastq, profile ] - output format biom - error") {
+    test("bacteroides - [ fastq, profile ] - output format biom - error") {
 
         when {
             params {
@@ -105,9 +92,12 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = [ [ id:'test', single_end:true ], [] ]
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
                 input[2] = []
                 input[3] = []
                 input[4] = []
@@ -123,7 +113,7 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [ fastq, profile ] - output format biom - error - stub") {
+    test("bacteroides - [ fastq, profile ] - output format biom - error - stub") {
 
         options "-stub"
 
@@ -135,9 +125,12 @@ nextflow_process {
                 """
                 input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
                 ])
-                input[1] = [ [ id:'test', single_end:true ], [] ]
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
                 input[2] = []
                 input[3] = []
                 input[4] = []
