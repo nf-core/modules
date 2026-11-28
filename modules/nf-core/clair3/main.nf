@@ -11,7 +11,7 @@ process CLAIR3 {
         : 'community.wave.seqera.io/library/clair3:2.0.5--af64dfa2c8f0b388'}"
 
     input:
-    tuple val(meta), path(bam), path(bai), val(packaged_model), path(user_model), val(platform)
+    tuple val(meta), path(bam), path(bai), path(bed), val(packaged_model), path(user_model), val(platform)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(index)
 
@@ -35,6 +35,7 @@ process CLAIR3 {
     // bioconda clair3 bundles its models next to run_clair3.sh, wherever the environment is installed
     def model = user_model ? "${user_model}" : "\$(dirname \$(command -v run_clair3.sh))/models/${packaged_model}"
     def args = task.ext.args ?: ''
+    def bed_arg = bed ? "--bed_fn=\${PWD}/${bed}" : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     run_clair3.sh \\
@@ -44,6 +45,7 @@ process CLAIR3 {
         --output=. \\
         --platform=${platform} \\
         --model_path=${model} \\
+        ${bed_arg} \\
         ${args}
 
     # Rename to add prefix
