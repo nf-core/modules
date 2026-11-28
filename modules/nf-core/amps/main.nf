@@ -10,7 +10,7 @@ process AMPS {
         : 'community.wave.seqera.io/library/hops:0.35--ec5d92deb3e899f2'}"
 
     input:
-    path maltextract_results
+    path maltextract_results, stageAs: 'maltextract_results/*'
     path taxon_list
     val filter
 
@@ -27,8 +27,12 @@ process AMPS {
     script:
     def args = task.ext.args ?: ''
     """
+    # AMPS writes its output into the MaltExtract results directory.
+    # Work on a copy, so the (symlinked) input is not modified, which would break caching on -resume.
+    cp -rL ${maltextract_results} results
+
     postprocessing.AMPS.r \\
-        -r ${maltextract_results} \\
+        -r results \\
         -n ${taxon_list} \\
         -m ${filter} \\
         -t ${task.cpus} \\
