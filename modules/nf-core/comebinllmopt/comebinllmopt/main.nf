@@ -33,6 +33,9 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
     def device = task.accelerator ? 'cuda' : 'cpu'
     def checkm2db_arg = checkm2db ? "-D ${checkm2db}" : ""
     """
+    mkdir -p tmp/torch
+    export TORCHINDUCTOR_CACHE_DIR=tmp/torch/
+
     comebin-llmopt \\
         -t ${task.cpus} \\
         -d ${device} \\
