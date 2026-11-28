@@ -6,9 +6,9 @@ process KOFAMSCAN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kofamscan:1.3.0--hdfd78af_2':
-        'quay.io/biocontainers/kofamscan:1.3.0--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98c22912f6c82843ff35f6fd072f9329e821da1a897cdf44cc2f812d3ca999e8/data'
+        : 'community.wave.seqera.io/library/kofamscan:1.3.0--0a5b7fcd8f6e6678'}"
 
     input:
     tuple val(meta), path(fasta)

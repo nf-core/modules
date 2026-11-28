@@ -9,8 +9,7 @@ keywords:
   - count
 tools:
   - "kat":
-      description: "KAT is a suite of tools that analyse jellyfish hashes or sequence
-        files (fasta or fastq) using kmer counts"
+      description: "KAT is a suite of tools that analyse jellyfish hashes or sequence files (fasta or fastq) using kmer counts"
       homepage: https://www.earlham.ac.uk/kat-tools
       documentation: https://kat.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/TGAC/KAT
@@ -122,3 +121,17 @@ authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/kat:2.4.2--75e8f5922e348f7c
+      build_id: bd-75e8f5922e348f7c_2
+      scan_id: sc-b9d1ea25094ef453_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kat:2.4.2--3076aab873d7f62d
+      build_id: bd-3076aab873d7f62d_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b722aba17c3463207a656322aab4c4a443f904fef5b305809eed489a2412489/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kat/hist/.conda-lock/linux_amd64-bd-75e8f5922e348f7c_2.txt

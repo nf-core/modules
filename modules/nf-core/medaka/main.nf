@@ -6,9 +6,9 @@ process MEDAKA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/medaka:2.2.2--py312h3050eb1_0' :
-        'quay.io/biocontainers/medaka:2.2.2--py312h3050eb1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b2dc6b24d0d7df71c499d7659ace541f5e14a4ed919c56573139607b826db9b9/data'
+        : 'community.wave.seqera.io/library/medaka:2.2.2--0c20cace7b8dd422'}"
 
     input:
     tuple val(meta), path(reads), path(assembly)

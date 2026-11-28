@@ -7,9 +7,9 @@ process TRINITY {
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trinity:2.15.2--pl5321hdcf5f25_1':
-        'quay.io/biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3cf795f9aca91b99656f28c82743c4b45bf8089400a0c4897719baf16098e16/data'
+        : 'community.wave.seqera.io/library/trinity_salmon:7678061e5e2d0ca8'}"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')

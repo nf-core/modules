@@ -6,9 +6,9 @@ process METAMDBG_ASM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.4--h3be2455_0':
-        'quay.io/biocontainers/metamdbg:1.4--h3be2455_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8cc5344c1450ae8914ecb76febc92ec2dbade6a79e301bd1c65e0133e5b5631f/data'
+        : 'community.wave.seqera.io/library/metamdbg:1.4--553e8e26a319ac0d'}"
 
     input:
     tuple val(meta), path(reads, arity: '1..*')
