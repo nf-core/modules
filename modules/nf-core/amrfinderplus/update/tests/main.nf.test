@@ -9,11 +9,12 @@ nextflow_process {
     tag "amrfinderplus"
     tag "amrfinderplus/update"
 
-    test("amrfinderplus/update") {
+    test("amrfinderplus/update - latest") {
 
         when {
             process {
                 """
+                input[0] = ''
                 """
             }
         }
@@ -30,6 +31,46 @@ nextflow_process {
         }
     }
 
+    test("amrfinderplus/update - pinned version") {
+
+        when {
+            process {
+                """
+                input[0] = '2026-08-07.1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.db.collect { file(it).getName() } +
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("amrfinderplus/update - invalid version") {
+
+        when {
+            process {
+                """
+                input[0] = '1900-01-01.1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { it.contains("AMRFinderPlus database version '1900-01-01.1' not found") } }
+            )
+        }
+    }
+
     test("amrfinderplus/update - stub") {
 
         options "-stub"
@@ -37,6 +78,7 @@ nextflow_process {
         when {
             process {
                 """
+                input[0] = ''
                 """
             }
         }
