@@ -6,8 +6,8 @@ process SINGLEM_DBDOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/singlem:0.20.3--pyhdfd78af_2'
-        : 'quay.io/biocontainers/singlem:0.20.3--pyhdfd78af_2'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c64fb959b73c0d5cefcd3fff9c0d8f388f635ab1e953cb658adf267097eb77df/data'
+        : 'community.wave.seqera.io/library/singlem:0.21.4--12242454960ab14c'}"
 
     output:
     path("*.smpkg.zb")                                                                                                     , emit: singlem_database

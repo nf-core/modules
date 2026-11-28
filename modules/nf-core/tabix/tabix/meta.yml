@@ -1,8 +1,11 @@
 name: tabix_tabix
 description: |
-  DEPRECATED. Use HTSLIB/BGZIPTABIX instead. Create a tabix index from a sorted
+  DEPRECATED. Use nf-core/modules/htslib/bgziptabix instead. Create a tabix index from a sorted
   bgzip TAB-delimited genome file, or extract regions from a bgzipped VCF file
   using an optional regions file.
+deprecated: true
+deprecation_date: "2026-05-22"
+deprecation_pr: "https://github.com/nf-core/modules/pull/11571"
 keywords:
   - index
   - tabix
@@ -14,7 +17,12 @@ tools:
       description: Generic indexer for TAB-delimited genome position files.
       homepage: https://www.htslib.org/doc/tabix.html
       documentation: https://www.htslib.org/doc/tabix.1.html
-      doi: 10.1093/bioinformatics/btq671
+      doi: 10.1093/gigascience/giab007
+      publication:
+        author: "Bonfield, J. K., Marshall, J., Danecek, P., Li, H., Ohan, V., Whitwham, A., Keane, T. & Davies, R. M."
+        year: 2021
+        title: "HTSlib: C library for reading/writing high-throughput sequencing data"
+        source: "GigaScience"
       licence:
         - "MIT"
       identifier: biotools:tabix

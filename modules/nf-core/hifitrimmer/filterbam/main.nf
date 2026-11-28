@@ -45,20 +45,4 @@ process HIFITRIMMER_FILTERBAM {
       ${bed} \\
       ${prefix}.${suffix}
    """
-
-   stub:
-   def deprecation_message = """
-   WARNING: This module has been deprecated.
-
-   Reason:
-   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
-   """
-   assert false: deprecation_message
-   def args = task.ext.args ?: ''
-   def prefix = task.ext.prefix ?: "${meta.id}"
-   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
-   """
-   echo "stub" | gzip > ${prefix}.${suffix}
-   echo ${args}
-   """
 }

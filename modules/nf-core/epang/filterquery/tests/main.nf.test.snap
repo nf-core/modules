@@ -1,0 +1,303 @@
+{
+    "min 3 columns drops the queries with fewer residues in occupied columns": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,ec44343367c7c525e17240265ec2ac94"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,bff0f46ecdafa87feb5482d01fde6a1e"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:09.754279228",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "no query passes: no query file is written but the table is": {
+        "content": [
+            {
+                "query": [
+                    
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,9f6f7c0e46ee7dbbd88dbad43dd8eeeb"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:57:17.915247876",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "gzipped input and a sequence wrapped over several lines": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,ec44343367c7c525e17240265ec2ac94"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,ba6548cd9bb01b7d9024bd2ce5065144"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:57.00089615",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "min 1 column and no coverage limit drops only the query without residues in occupied columns": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,4ee7df3982d1537deeeb4f124cca3a25"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,c2cd8ccb95133df682c5de793faf75b6"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:04.669571745",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "min 0.3 reference coverage drops the queries covering less of the occupied columns": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,92caa5a7d2d3d1273b0affc37fb7edf3"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,797e63a890084300a64cb116b99727ce"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:20.25246441",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "stub": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,a9d50050bb7568e4bf6805c639be26b6"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:57:37.26504375",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "EPA-ng's ambiguity codes count for the thresholds but a query with nothing else is dropped": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,2e894c50cbf3a105b63ac7bd8184d9cc"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,0cdd355a736f45a3cecf6336cb3eacac"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:41.452925184",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "nucleotides: N is a gap, IUPAC codes are residues, and a column with only N is not occupied": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,fdc3bf5fe073844082a471fe581fff6f"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,2923f562a42bbea00cfffb4d2cd1816a"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:46.731417436",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "protein: N is asparagine and counts as a residue, but a query with nothing else is dropped": {
+        "content": [
+            {
+                "query": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.query.fasta.gz:md5,9365d606a0b259435b012331e63e7699"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.filterquery.tsv:md5,3629efb72cdfab87a543c1bb1a606bb0"
+                    ]
+                ],
+                "versions_gawk": [
+                    [
+                        "EPANG_FILTERQUERY",
+                        "gawk",
+                        "5.3.1"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-17T18:56:51.888675275",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

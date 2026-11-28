@@ -49,7 +49,12 @@ process ANNOTSV_ANNOTSV {
         -SVinputFile ${sv_vcf} \\
         ${args}
 
-    mv *_AnnotSV/* .
+    # AnnotSV exits 0 without an output directory when the VCF has no records
+    if compgen -G "*_AnnotSV/*" > /dev/null; then
+        mv *_AnnotSV/* .
+    else
+        touch ${prefix}.tsv
+    fi
     """
 
     stub:

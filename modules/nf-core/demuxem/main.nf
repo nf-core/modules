@@ -6,9 +6,9 @@ process DEMUXEM {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/demuxem:0.1.7.post1--pyhdfd78af_0' :
-        'quay.io/biocontainers/demuxem:0.1.7.post1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7c6c63164c027a83143685618eba0cae8b814c6ffe87c2379b7c9b059402fd0/data'
+        : 'community.wave.seqera.io/library/demuxem_numpy_pandas_python:24f4768270179af6'}"
     input:
     tuple val(meta), path(input_raw_gene_bc_matrices_h5), path(input_hto_csv_file)
     val generate_gender_plot

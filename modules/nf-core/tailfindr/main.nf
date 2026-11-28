@@ -6,9 +6,9 @@ process TAILFINDR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0':
-        'quay.io/biocontainers/mulled-v2-f24f1399a77784f913670cbb36a0f17b78e0631b:80e40d512cd5a71665e3e00e8d0ad1462fc58f76-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6881eb3b607b838a831db5b3ba45f07eac25f9e22c52ed98484460923afea25/data'
+        : 'community.wave.seqera.io/library/ont-fast5-api_r-tailfindr:8aebb514f253bbe7'}"
 
     input:
     tuple val(meta), path(fast5)

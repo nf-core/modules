@@ -7,63 +7,82 @@ process METAPHLAN_METAPHLAN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59f3aa387903d5b87b6e2d3c0172f462f701c662e73cb2e26066d4ec6fd3e8c6/data'
-        : 'community.wave.seqera.io/library/metaphlan_numpy_python:59796ca881a8bb02'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a05e0cb9a7387c4711a0bed4e283152bba02d06712d97c0253aa481b48e1a3e/data'
+        : 'community.wave.seqera.io/library/metaphlan:4.3--6cd977ac2f320230'}"
 
     input:
-    tuple val(meta), path(input)
-    path db_metaphlan_latest
+    tuple val(meta), path(input, stageAs: 'input/*')
+    tuple val(meta2), path(db_metaphlan_latest)
+    tuple val(meta3), path(ignore_markers)
     val save_samfile
 
     output:
-    tuple val(meta), path("*_profile.txt"), emit: profile
-    tuple val(meta), path("*.biom"), emit: biom
-    tuple val(meta), path('*.bowtie2out.txt'), optional: true, emit: bt2out
-    tuple val(meta), path("*.sam"), optional: true, emit: sam
-    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
+    tuple val(meta), path("${prefix}_profile.txt"), optional: true, emit: profile
+    tuple val(meta), path("${prefix}.biom"), optional: true, emit: biom
+    tuple val(meta), path("${prefix}.mapout.bz2"), optional: true, emit: mapout
+    tuple val(meta), path("${prefix}.sam.bz2"), optional: true, emit: sam
+    tuple val(meta), path("${prefix}_vsc.tsv"), optional: true, emit: vsc
+    tuple val(meta), path("${prefix}.subsampled.${input_type}.gz"), optional: true, emit: subsampled
+    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | head -n 1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "--input_type fastq" : "${input}" =~ /.*\.(fasta|fna|fa)/ ? "--input_type fasta" : "${input}".endsWith(".bowtie2out.txt") ? "--input_type bowtie2out" : "--input_type sam"
-    def input_data = ("${input_type}".contains("fastq")) && !meta.single_end ? "${input[0]},${input[1]}" : "${input}"
-    def bowtie2_out = "${input_type}" == "--input_type bowtie2out" || "${input_type}" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
-    def samfile_out = save_samfile ? "-s ${prefix}.sam" : ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "fastq" : "${input}" =~ /.*\.(fasta|fna|fa)/ ? "fasta" : "${input}" =~ /.*\.mapout(\.bz2)?$/ ? "mapout" : "sam"
+    def input_data = input_type == "fastq" && !meta.single_end ? "${input[0]},${input[1]}" : "${input}"
+    def is_reads = input_type in ["fastq", "fasta"]
+    def profile_vsc = args.contains('--profile_vsc')
+    def subsampling = (args =~ /(^|\s)--subsampling(\s|=)/).find() && !args.contains('--mapping_subsampling')
+    def map_out = is_reads ? "--mapout ${prefix}.mapout.bz2" : ''
+    def samfile_out = (save_samfile || profile_vsc) && is_reads ? "-s ${prefix}.sam.bz2" : ''
+    def vsc_out = profile_vsc ? "--vsc_out ${prefix}_vsc.tsv" : ''
+    def subsampling_out = subsampling && is_reads ? "--subsampling_output ${prefix}.subsampled.${input_type}.gz" : ''
+    def ignore_markers_arg = ignore_markers ? "--ignore_markers ${ignore_markers}" : ''
+    def index = args =~ /(^|\s)(--index|-x)\s/ ? '' : "--index \$BT2_DB_INDEX"
+    def output_file = args.contains('--biom_format_output') ? "${prefix}.biom" : "${prefix}_profile.txt"
     """
-    BT2_DB=`find -L "${db_metaphlan_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
-    BT2_DB_INDEX=`find -L ${db_metaphlan_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
+    BT2_DB=`find -L "${db_metaphlan_latest}" -name "*rev.1.bt2*" -exec dirname {} \\; | head -n 1`
+    BT2_DB_INDEX=`find -L "${db_metaphlan_latest}" -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///' | head -n 1`
 
     metaphlan \\
         --nproc ${task.cpus} \\
-        ${input_type} \\
+        --tmp_dir . \\
+        --input_type ${input_type} \\
         ${input_data} \\
         ${args} \\
-        ${bowtie2_out} \\
+        ${map_out} \\
         ${samfile_out} \\
-        --bowtie2db \$BT2_DB \\
-        --index \$BT2_DB_INDEX \\
-        --biom ${prefix}.biom \\
-        --output_file ${prefix}_profile.txt
+        ${vsc_out} \\
+        ${subsampling_out} \\
+        ${ignore_markers_arg} \\
+        --db_dir "\$BT2_DB" \\
+        ${index} \\
+        --output_file ${output_file}
 
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def samfile_cmd = save_samfile ? "touch ${prefix}.sam" : ''
-    def input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "fastq" :
-        "${input}" =~ /.*\.(fasta|fna|fa)/? "fasta" :
-        "${input}".endsWith(".bowtie2out.txt") ? "bowtie2out" :
-        "sam"
-    def bowtie2_cmd = "${input_type}" == "bowtie2out" || "${input_type}" == "sam" ? '' : "touch ${prefix}.bowtie2out.txt"
-
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "fastq" : "${input}" =~ /.*\.(fasta|fna|fa)/ ? "fasta" : "${input}" =~ /.*\.mapout(\.bz2)?$/ ? "mapout" : "sam"
+    def is_reads = input_type in ["fastq", "fasta"]
+    def profile_vsc = args.contains('--profile_vsc')
+    def subsampling = (args =~ /(^|\s)--subsampling(\s|=)/).find() && !args.contains('--mapping_subsampling')
+    def output_file = args.contains('--biom_format_output') ? "${prefix}.biom" : "${prefix}_profile.txt"
+    def map_cmd = is_reads ? "echo '' | bzip2 > ${prefix}.mapout.bz2" : ''
+    def samfile_cmd = (save_samfile || profile_vsc) && is_reads ? "echo '' | bzip2 > ${prefix}.sam.bz2" : ''
+    def vsc_cmd = profile_vsc ? "touch ${prefix}_vsc.tsv" : ''
+    def subsampling_cmd = subsampling && is_reads ? "echo '' | gzip > ${prefix}.subsampled.${input_type}.gz" : ''
     """
-    touch ${prefix}.biom
-    touch ${prefix}_profile.txt
+    echo "${args}"
+    touch ${output_file}
+    ${map_cmd}
     ${samfile_cmd}
-    ${bowtie2_cmd}
+    ${vsc_cmd}
+    ${subsampling_cmd}
 
     """
 }

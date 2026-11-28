@@ -1,0 +1,588 @@
+nextflow_process {
+
+    name "Test Process BISMARK_ALIGN (5-Base and TAPS with bwa-mem3)"
+    script "../main.nf"
+    process "BISMARK_ALIGN"
+    config './bwamem3_modes.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bismark"
+    tag "bismark/align"
+    tag "bwamem3/index"
+
+    setup {
+        run("BWAMEM3_INDEX") {
+            script "../../../bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'sarscov2' ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    // Unconverted reads: in 5-Base and TAPS an unmodified C stays C, so almost every CpG is called unmethylated
+    test("illumina_5base bwamem3 | paired-end | bwamem3 index directory") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def cpg = (report =~ /C methylated in CpG context:\s+([0-9.]+)%/)
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            def bwamem3_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:bwa-mem3') }
+            def threads = (bismark_cl =~ /\s-p (\d+)/)
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--genome tmp ') },
+                { assert bismark_cl.contains('--five_base_index bwamem3_index/bwamem3/genome.fasta ') },
+                { assert threads.find() && bwamem3_cl.contains(" -t ${threads.group(1)} ") },
+                { assert !report.contains('Library chemistry: TAPS') },
+                { assert cpg.find() && (cpg.group(1) as double) < 5 },
+                // getReadsMD5 hashes read sequences only; the report lines pin the alignment and call counts
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    process.out.unmapped,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("taps bwamem3 | paired-end | bwamem3 index directory") {
+
+        when {
+            params {
+                bismark_args = '--taps --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            assertAll(
+                { assert process.success },
+                { assert report.contains('Library chemistry: TAPS (mC->T)') },
+                // report lines pin the TAPS alignment and call counts
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("illumina_5base bwamem3 | paired-end | bwamem3 index prefix files | five_base_baseq 30") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3 --five_base_baseq 30'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index.map { meta, dir -> [ meta, dir.listFiles().toList() ] }
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--five_base_index bwamem3_index/genome.fasta ') },
+                { assert bismark_cl.contains('--five_base_baseq 30') },
+                // report lines pin the call counts at --five_base_baseq 30
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    // Bismark finds <genome>/Bwamem3_Index/genome.fa.*, the layout `bismark_genome_preparation --bwamem3` writes
+    test("illumina_5base bwamem3 | paired-end | index folder holding Bwamem3_Index") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX.out.index.map { meta, dir ->
+                    def genome = workflow.workDir.resolve('bismark_genome_bwamem3')
+                    def sub = genome.resolve('Bwamem3_Index')
+                    sub.mkdirs()
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).copyTo(genome.resolve('genome.fa'))
+                    dir.listFiles().findAll { f -> f.name.startsWith('genome.fasta.') }.each { f -> f.copyTo(sub.resolve(f.name.replace('genome.fasta.', 'genome.fa.'))) }
+                    [ meta, genome ]
+                }
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            def bwamem3_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:bwa-mem3') }
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--genome bismark_genome_bwamem3 ') },
+                { assert !bismark_cl.contains('--five_base_index') },
+                { assert bwamem3_cl.contains('Bwamem3_Index/genome.fa') },
+                // report lines pin the alignment and call counts
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("illumina_5base bwamem3 | paired-end | --five_base_index in ext.args") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3 --five_base_index bismark_genome_ext/bwamem3_meth/genome.fasta'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX.out.index.map { meta, dir ->
+                    def genome = workflow.workDir.resolve('bismark_genome_ext')
+                    def sub = genome.resolve('bwamem3_meth')
+                    sub.mkdirs()
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).copyTo(genome.resolve('genome.fa'))
+                    dir.listFiles().findAll { f -> f.name.startsWith('genome.fasta.') }.each { f -> f.copyTo(sub.resolve(f.name)) }
+                    [ meta, genome ]
+                }
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            def bwamem3_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:bwa-mem3') }
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--genome bismark_genome_ext ') },
+                { assert bismark_cl.contains('--five_base_index bismark_genome_ext/bwamem3_meth/genome.fasta') },
+                { assert bwamem3_cl.contains('bwamem3_meth/genome.fasta') },
+                // report lines pin the alignment and call counts
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("illumina_5base | paired-end | bwamem3 index directory | no --bwamem3") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            def report = file(process.out.report[0][1]).text
+            def cpg = (report =~ /C methylated in CpG context:\s+([0-9.]+)%/)
+            def bismark_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:Bismark') }
+            def bwamem3_cl = bam(process.out.bam[0][1]).getHeader().find { line -> line.startsWith('@PG\tID:bwa-mem3') }
+            def threads = (bismark_cl =~ /\s-p (\d+)/)
+            assertAll(
+                { assert process.success },
+                { assert bismark_cl.contains('--genome tmp ') },
+                { assert bismark_cl.contains('--five_base_index bwamem3_index/bwamem3/genome.fasta ') },
+                { assert !bismark_cl.contains('--bwamem3') },
+                { assert threads.find() && threads.group(1) == '4' },
+                { assert bwamem3_cl.contains(' -t 4 ') },
+                { assert cpg.find() && (cpg.group(1) as double) < 5 },
+                { assert snapshot(
+                    bam(process.out.bam[0][1]).getReadsMD5(),
+                    report.readLines().findAll { line -> line && !(line =~ /(^|\s)\/\S|version|run time|Bismark report for|completed/) },
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("five_base alias without any index fails") {
+
+        when {
+            params {
+                bismark_args = '--five_base'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('bismark/align: --illumina_5base/--taps needs bwamem3_index') }
+            )
+        }
+    }
+
+    test("bwamem3_index without --illumina_5base or --taps fails") {
+
+        when {
+            params {
+                bismark_args = '--bwamem3 --five_base_baseq 30'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('bismark/align: bwamem3_index needs --illumina_5base or --taps in ext.args') }
+            )
+        }
+    }
+
+    test("bwamem3 mode without any index fails") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('needs bwamem3_index') }
+            )
+        }
+    }
+
+    test("illumina_5base bwamem3 | single-end fails") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('--illumina_5base is paired-end only') }
+            )
+        }
+    }
+
+    test("taps bwamem3 | single-end fails") {
+
+        when {
+            params {
+                bismark_args = '--taps --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:true ],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('--taps is paired-end only') }
+            )
+        }
+    }
+
+    test("bwamem3_index together with --five_base_index in ext.args fails") {
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3 --five_base_index other.fa'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('not both') }
+            )
+        }
+    }
+
+    test("bwamem3_index with two index prefixes fails") {
+
+        setup {
+            run("BWAMEM3_INDEX", alias: "BWAMEM3_INDEX_GZ") {
+                script "../../../bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                                [ id:'sarscov2_gz' ],
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                    .combine(BWAMEM3_INDEX_GZ.out.index)
+                    .map { meta, dir, _meta_gz, dir_gz -> [ meta, dir.listFiles().toList() + dir_gz.listFiles().toList() ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('must hold exactly one bwa-mem3 --meth index') }
+            )
+        }
+    }
+
+    test("illumina_5base bwamem3 | paired-end | stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                bismark_args = '--illumina_5base --bwamem3'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                            [ id:'test', single_end:false ],
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
+                ])
+                input[1] = Channel.of([
+                            [ id:'sarscov2'],
+                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                input[2] = [[:], []]
+                input[3] = BWAMEM3_INDEX.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

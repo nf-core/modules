@@ -7,8 +7,8 @@ process BISMARK_COVERAGE2CYTOSINE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d4877a6dc7b42a4fb5086d4620cdfdba48a5e2407e81f1de27357743b4aaf1/data' :
-        'community.wave.seqera.io/library/bismark:3.2.0--3978d640d774e7f9' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd54015a6a5cc268371cf89e1d32b6a58746763323bad8d8d05ed563db93da47/data' :
+        'community.wave.seqera.io/library/bismark:3.5.0--2f04024e3a475197' }"
 
     input:
     tuple val(meta), path(coverage_file)
@@ -27,10 +27,12 @@ process BISMARK_COVERAGE2CYTOSINE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Without a Bismark index, the folder holding the staged FASTA is the genome
+    def genome = index ?: 'tmp'
     """
     coverage2cytosine \\
         ${coverage_file} \\
-        --genome ${index} \\
+        --genome ${genome} \\
         --output ${prefix} \\
         --gzip \\
         ${args}

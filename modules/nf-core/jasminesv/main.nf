@@ -39,6 +39,8 @@ process JASMINESV {
 
     def first_vcf = vcfs[0].name.replaceAll(".gz\$", "")
     def unzip_inputs = vcfs.collect { vcf -> vcf.name.endsWith(".vcf.gz") ? "    bgzip -d --threads ${task.cpus} ${args4} ${vcf}" : "" }.join("\n")
+    // With --output_genotypes Jasmine names the sample columns "<file index>_<sample>", so a header-only output must list them the same way
+    def output_genotypes = args.contains("--output_genotypes")
 
     vcfs.each { vcf ->
         if ("$vcf".startsWith("${prefix}.vcf")) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -64,6 +66,20 @@ process JASMINESV {
     if [ -s ${prefix}.vcf ]; then
         echo "The file is not empty"
         bgzip --threads ${task.cpus} ${args3} ${prefix}.vcf
+    elif ${output_genotypes}; then
+        echo "The file is empty, using the header of the first VCF with the samples of all VCFs as output file"
+        {
+            grep '^##' ${first_vcf}
+            printf '#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\tFORMAT'
+            index=0
+            while read -r vcf; do
+                for sample in \$(grep '^#CHROM' "\${vcf}" | cut -f 10-); do
+                    printf '\\t%s_%s' "\${index}" "\${sample}"
+                done
+                index=\$((index + 1))
+            done < vcfs.txt
+            echo
+        } | bgzip --threads ${task.cpus} ${args3} > ${prefix}.vcf.gz
     else
         echo "The file is empty, using the header of the first VCF as output file"
         cat ${first_vcf} | grep "#" | bgzip --threads ${task.cpus} ${args3} > ${prefix}.vcf.gz

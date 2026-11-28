@@ -1,0 +1,138 @@
+name: "epang_filterquery"
+description: Drop query sequences that have too few residues in the occupied columns of the reference alignment, before EPA-ng placement
+keywords:
+  - epa-ng
+  - phylogenetic placement
+  - alignment
+  - filter
+  - fasta
+tools:
+  - "gawk":
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence:
+        - "GPL v3"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reference:
+        type: file
+        description: |
+          Aligned reference sequences in FASTA format, gzipped or not. A column
+          is occupied when at least one reference sequence has a residue in it; gaps are `-`
+          and `.`, and also `?`, `N` and `n` when the reference is nucleotide. It is taken to be
+          nucleotide when at least 90% of its non-gap characters are A, C, G, T, U or N (either
+          case), otherwise protein, where `N` is asparagine. EPA-ng drops the unoccupied columns.
+        pattern: "*.{fasta,fa,afa,aln}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - query:
+        type: file
+        description: |
+          Query sequences aligned to the reference, in FASTA format, gzipped or
+          not, with the same number of columns as `reference`.
+        pattern: "*.{fasta,fa,afa,aln}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - min_query_columns:
+        type: integer
+        description: |
+          The minimum number of residues a query must have in occupied columns.
+          At least 1, the lowest value EPA-ng accepts. A query is also dropped when it has no
+          unambiguous residue in them, since EPA-ng reads `?`, `N`, `X` and `O` (either case) as
+          gaps and aborts on a query with nothing else, whatever this threshold is.
+    - min_reference_coverage:
+        type: float
+        description: |
+          The minimum fraction of the occupied columns that a query must have a
+          residue in, between 0 and 1. 0 turns this filter off.
+
+output:
+  query:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.query.fasta.gz":
+          type: file
+          description: |
+            The queries that passed both thresholds, gzipped aligned FASTA. Not
+            written when no query passes, since an empty file makes EPA-ng fail.
+          pattern: "*.query.fasta.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.filterquery.tsv":
+          type: file
+          description: |
+            One row per query with the columns `query`, `reference_columns` (the
+            number of occupied columns), `query_columns` (residues of the query in
+            them), `reference_coverage` (the ratio of the two), `unambiguous_columns` (the
+            number of those columns where the query has a residue other than `?`, `N`, `X`
+            and `O`, either case) and `kept` (`true` or `false`).
+          pattern: "*.filterquery.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_gawk:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gawk":
+          type: string
+          description: The name of the tool
+      - "awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gawk":
+          type: string
+          description: The name of the tool
+      - "awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/gawk_gzip:6fab93852b0eb5a5
+      build_id: bd-6fab93852b0eb5a5_1
+      scan_id: sc-0bdc20c1d00f0236_3
+    linux/amd64:
+      name: community.wave.seqera.io/library/gawk_gzip:fe0c202000bc8ed4
+      build_id: bd-fe0c202000bc8ed4_1
+      scan_id: sc-0653c1ae5a7281a7_3
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gawk_gzip:9f1bcf81dc06adb6
+      build_id: bd-9f1bcf81dc06adb6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/0600fdb9287986d3d684b95d6e94f597c41b24a746608532d7c0836bd7b44c15/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gawk_gzip:88d638f9e3f9deb5
+      build_id: bd-88d638f9e3f9deb5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b18bce5d444a24376f0ee2afe5237f65cc62d14ff4cc1b7b1ed4f9a23f38e483/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/epang/filterquery/.conda-lock/linux_amd64-bd-fe0c202000bc8ed4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/epang/filterquery/.conda-lock/linux_arm64-bd-6fab93852b0eb5a5_1.txt

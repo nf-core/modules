@@ -6,164 +6,479 @@ nextflow_process {
     process "METAPHLAN_METAPHLAN"
     tag "modules"
     tag "modules_nfcore"
-    tag "untar"
     tag "metaphlan"
     tag "metaphlan/metaphlan"
 
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [],
-                    file( params.modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz', checkIfExists: true )
-                ])
-                """
-            }
+    test("sarscov2 - illumina single end [ fastq ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
         }
-    }
-
-    test("sarscov2 - illumina single end [fastq]") {
-
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true )
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true )
                 ])
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = false
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        path(process.out.profile[0][1]).readLines()[2..5],
-                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
-                        process.out.bt2out,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                    sanitizeOutput(process.out, unstableKeys: ["profile"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') }
+                ).match() }
             )
         }
     }
 
-    test("sarscov2 - illumina pair end [fastq]") {
+    test("sarscov2 - illumina paired end [ fastq ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true ) ]
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                      file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
                 ])
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = false
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        path(process.out.profile[0][1]).readLines()[2..5],
-                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
-                        process.out.bt2out,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                    sanitizeOutput(process.out, unstableKeys: ["profile"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') }
+                ).match() }
             )
         }
     }
 
-    test("sarscov2 - illumina single end [fasta]") {
+    test("sarscov2 - contigs [ fasta ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:true ], // meta map
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta',checkIfExists: true )
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true )
                 ])
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = false
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                        path(process.out.profile[0][1]).readLines()[2..5],
-                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
-                        process.out.bt2out,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }            )
-        }
-    }
-
-    test("sarscov2 - illumina pair end [fastq] - save sam") {
-
-        when {
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
-                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true )]
-                ])
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = true
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        path(process.out.profile[0][1]).readLines()[2..5],
-                        path(process.out.biom[0][1]).readLines().last().contains('Biological Observation Matrix'),
-                        process.out.bt2out,
-                        sam(process.out.sam.get(0).get(1)).getFileType(),
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                    sanitizeOutput(process.out, unstableKeys: ["profile"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') }
+                ).match() }
             )
         }
     }
 
-    test("sarscov2 - illumina pair end [fastq] - stub") {
+    test("sarscov2 - illumina paired end [ fastq ] - save sam") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                      file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
+                ])
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile", "sam"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina paired end [ fastq ] - biom") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
+
+        when {
+            params {
+                module_args = '--biom_format_output'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                      file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
+                ])
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["biom"]),
+                    path(process.out.biom[0][1]).text.contains('Biological Observation Matrix')
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina paired end [ mapout ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+            run("METAPHLAN_METAPHLAN", alias: "METAPHLAN_MAPOUT") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test', single_end:false ], // meta map
+                        [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                          file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
+                    ])
+                    input[1] = [ [ id: 'db' ], file('${db}') ]
+                    input[2] = [ [:], [] ]
+                    input[3] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = METAPHLAN_MAPOUT.out.mapout
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina single end [ fastq ] - subsampling") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
+
+        when {
+            params {
+                module_args = '--subsampling 50'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true )
+                ])
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile", "subsampled"]),
+                    path(process.out.profile[0][1]).readLines().findAll { line -> !line.startsWith('#/') },
+                    // gzip headers carry a timestamp, so the decompressed reads are compared
+                    path(process.out.subsampled[0][1]).linesGzip.size().intdiv(4),
+                    path(process.out.subsampled[0][1]).linesGzip.join('\n').md5()
+                ).match() }
+            )
+        }
+    }
+
+    test("toy database - markers [ fasta ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( '${db}/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503_SGB.fna.bz2', checkIfExists: true )
+                ])
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            // the sarscov2 test data does not map to the toy database, so the marker sequences themselves give a non-empty profile
+            def species = path(process.out.profile[0][1]).readLines()
+                .findAll { line -> line.contains('|t__') }
+                .collect { line -> line.tokenize('\t') }
+                .collect { cols -> cols[0].tokenize('|').last() + ' ' + cols[2] }
+            assertAll(
+                // mapout rows are written in a thread-dependent order
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile", "mapout"]),
+                    species
+                ).match() }
+            )
+        }
+    }
+
+    test("toy database - markers [ sam ]") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+            run("METAPHLAN_METAPHLAN", alias: "METAPHLAN_SAMOUT") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test', single_end:true ], // meta map
+                        file( '${db}/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503_SGB.fna.bz2', checkIfExists: true )
+                    ])
+                    input[1] = [ [ id: 'db' ], file('${db}') ]
+                    input[2] = [ [:], [] ]
+                    input[3] = true
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--nreads 5999'
+            }
+            process {
+                """
+                input[0] = METAPHLAN_SAMOUT.out.sam
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def species = path(process.out.profile[0][1]).readLines()
+                .findAll { line -> line.contains('|t__') }
+                .collect { line -> line.tokenize('\t') }
+                .collect { cols -> cols[0].tokenize('|').last() + ' ' + cols[2] }
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile"]),
+                    species
+                ).match() }
+            )
+        }
+    }
+
+    test("toy database - markers [ fasta ] - ignore_markers") {
+        def db
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503.tar.gz')
+        }
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( '${db}/mpa_vJan25_TOY_CHOCOPhlAnSGB_202503_SGB.fna.bz2', checkIfExists: true )
+                ])
+                input[1] = [ [ id: 'db' ], file('${db}') ]
+                input[2] = channel.of(
+                    'UniClust90_GBKDJDGP01552|1__13|SGB108644',
+                    'UniRef90_A0A496UIN1|1__14|SGB108644',
+                    'UniClust90_GBKDJDGP01416|1__24|SGB108644'
+                ).collectFile(name: 'ignore_markers.txt', newLine: true).map { f -> [ [ id: 'markers' ], f ] }
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def lines = path(process.out.profile[0][1]).readLines()
+            def species = lines
+                .findAll { line -> line.contains('|t__') }
+                .collect { line -> line.tokenize('\t') }
+                .collect { cols -> cols[0].tokenize('|').last() + ' ' + cols[2] }
+            assertAll(
+                // mapout rows are written in a thread-dependent order
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["profile", "mapout"]),
+                    lines.find { line -> line.startsWith('#/') }.contains('--ignore_markers ignore_markers.txt'),
+                    species
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina paired end [ fastq ] - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
-                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true ),
-                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz',checkIfExists: true )]
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                      file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
                 ])
-                input[1] = UNTAR.out.untar.map{ it[1] }
-                input[2] = false
+                input[1] = [ [ id: 'db' ], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = true
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - illumina paired end [ fastq ] - profile_vsc - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--profile_vsc'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [ file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true ),
+                      file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true ) ]
+                ])
+                input[1] = [ [ id: 'db' ], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs [ fasta ] - subsampling - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--subsampling 50'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true )
+                ])
+                input[1] = [ [ id: 'db' ], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

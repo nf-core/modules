@@ -17,13 +17,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists:true)
                 ]
-                input[1] = [[id: 'model'], [], "hifi"]
+                input[1] = [[id: 'model'], [], "r941_prom_hac_g360+g422"]
                 input[2] = [
-                    [id: "nCov-2019", version: "3.0.0"],
-                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
-                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
+                    [id: "SARS-CoV-2", version: "4.0.0"],
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V4/SARS-CoV-2.reference.fasta', checkIfExists:true),
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V4/SARS-CoV-2.primer.bed', checkIfExists:true)
                 ]
                 input[3] = []
                 """
@@ -39,18 +39,19 @@ nextflow_process {
             }
             assertAll(
                 { assert process.success },
+                { assert process.out.bai.every { path(it[1]).exists() } },
+                { assert process.out.bai_primertrimmed.every { path(it[1]).exists() } },
+                { assert process.out.tbi.every { path(it[1]).exists() } },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith('versions') },
                     fileNames,
                     process.out.bam.collect{ file(it[1]).name },
-                    process.out.bai,
-                    process.out.bam_trimmed.collect{ file(it[1]).name },
-                    process.out.bai_trimmed,
+                    process.out.bai.collect{ [it[0], file(it[1]).name] },
                     process.out.bam_primertrimmed.collect{ file(it[1]).name },
-                    process.out.bai_primertrimmed,
+                    process.out.bai_primertrimmed.collect{ [it[0], file(it[1]).name] },
                     process.out.fasta,
                     process.out.vcf.collect{ file(it[1]).name },
-                    process.out.tbi,
+                    process.out.tbi.collect{ [it[0], file(it[1]).name] },
                     process.out.json
                 ).match() }
             )
@@ -65,13 +66,13 @@ nextflow_process {
                 """
                 input[0] = [
                     [id:'test',single_end:false],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists:true)
                 ]
-                input[1] = [[id: 'model'], [], "hifi"]
+                input[1] = [[id: 'model'], [], "r941_prom_hac_g360+g422"]
                 input[2] = [
-                    [id: "nCov-2019", version: "3.0.0"],
-                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.reference.fasta', checkIfExists:true),
-                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V3/nCoV-2019.primer.bed', checkIfExists:true)
+                    [id: "SARS-CoV-2", version: "4.0.0"],
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V4/SARS-CoV-2.reference.fasta', checkIfExists:true),
+                    file('https://github.com/artic-network/primer-schemes/raw/master/nCoV-2019/V4/SARS-CoV-2.primer.bed', checkIfExists:true)
                 ]
                 input[3] = []
                 """

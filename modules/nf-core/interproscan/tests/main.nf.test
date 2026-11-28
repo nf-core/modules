@@ -7,33 +7,14 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "interproscan"
-    tag "aria2"
-    tag "untar"
 
     test("l_asparaginase - faa - test database") {
         config "./nextflow_database.config"
-
+        def db
         setup {
-            run("ARIA2") {
-                script "../../aria2/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        params.modules_testdata_base_path + 'proteomics/interproscan/interproscan_test.tar.gz' // https URL
-                    ]
-                    """
-                }
-            }
-
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                    process {
-                    """
-                    input[0] = ARIA2.out.downloaded_file
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            db = extract(modules_testdata_base_path + 'proteomics/interproscan/interproscan_test.tar.gz').resolve('data')
         }
 
         when {
@@ -43,7 +24,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
                 ]
-                input[1] = UNTAR.out.untar.map{ f -> f[1] }
+                input[1] = file('${db}')
                 """
             }
         }

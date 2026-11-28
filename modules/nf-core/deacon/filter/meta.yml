@@ -33,10 +33,13 @@ input:
           - edam: "http://edamontology.org/data_3210" # Genome index
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
-        pattern: "*.{fastq,fastq.gz,fqs,fqs.gz,fq,fq.gz}"
+        description: Input reads, one file for single-end and two for paired-end data.
+        pattern: "*.{fastq,fq,fasta,fa}{,.gz,.zst,.xz}"
         ontologies:
           - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+          - edam: "http://edamontology.org/format_4006" # Zstandard format
 
 output:
   fastq_filtered:
@@ -45,12 +48,13 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}*.fq.gz":
+      - fastq_out:
           type: file
-          description: List of output filtered FastQ files of size 1 and 2, for single-end and paired-end data, respectively.
+          description: Filtered reads, one file for single-end and two for paired-end data.
           pattern: "*.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   log:
     - - meta:
           type: map
@@ -63,6 +67,19 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON
+  debug:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information.
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.debug.tsv.gz":
+          type: file
+          description: Optional. Per-record minimizer hits table, written only when `--debug` is in ext.args.
+          pattern: "*.debug.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   versions_deacon:
     - - ${task.process}:
           type: string
@@ -96,24 +113,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/deacon:0.15.0--ac1f965b3a6ea82e
-      build_id: bd-ac1f965b3a6ea82e_1
-      scan_id: sc-acd9a29d29e49fb8_1
+      name: community.wave.seqera.io/library/deacon:0.20.0--09d7e8e5c3f9dc88
+      build_id: bd-09d7e8e5c3f9dc88_1
+      scan_id: sc-94a9cacfdade58f9_1
     linux/arm64:
-      name: community.wave.seqera.io/library/deacon:0.15.0--5e86af07e040e1d8
-      build_id: bd-5e86af07e040e1d8_1
-      scan_id: sc-c1e82658c379ec95_1
+      name: community.wave.seqera.io/library/deacon:0.20.0--58e40f62c8f9e0c0
+      build_id: bd-58e40f62c8f9e0c0_1
+      scan_id: sc-69eb6714a5436a63_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/deacon:0.15.0--174302354dcfcfa2
-      build_id: bd-174302354dcfcfa2_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/244019644d6907dd8be852af47477882b729eeac11602522c18b46309ec6f320/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/deacon:0.15.0--64095a60c1c0d4e1
-      build_id: bd-64095a60c1c0d4e1_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f628781900b19a962ce706a66d7b1d83c26acb5b08d5085947ae1bbea879b1f8/data
+      name: oras://community.wave.seqera.io/library/deacon:0.20.0--e103bc4c34b27103
+      build_id: bd-e103bc4c34b27103_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9f1270fe75323ac6d213bf66d72b9f292c5ff31f7f5ee12300d2bed2b858f5ab/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/deacon:0.20.0--4f65097b35e9f3fb
+      build_id: bd-4f65097b35e9f3fb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e06fdfd83fe659ce97e64e2e98b833fd13d00d090bdbe2ef88029ae580b5a3f/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/deacon/filter/.conda-lock/linux_amd64-bd-ac1f965b3a6ea82e_1.txt
+      lock_file: modules/nf-core/deacon/filter/.conda-lock/linux_amd64-bd-09d7e8e5c3f9dc88_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/deacon/filter/.conda-lock/linux_arm64-bd-5e86af07e040e1d8_1.txt
+      lock_file: modules/nf-core/deacon/filter/.conda-lock/linux_arm64-bd-58e40f62c8f9e0c0_1.txt

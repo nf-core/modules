@@ -1,0 +1,213 @@
+nextflow_process {
+
+    name "Test Process FGUMI_RUNALL"
+    script "../main.nf"
+    process "FGUMI_RUNALL"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/runall"
+    tag "bwamem3/index"
+
+    setup {
+        run("BWAMEM3_INDEX") {
+            script "../../../bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("BWAMEM3_INDEX", alias: "BWAMEM3_INDEX_METH") {
+            script "../../../bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq - extract to sort") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+                    'test_library'
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = BWAMEM3_INDEX.out.index
+                input[3] = 'extract'
+                input[4] = 'sort'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - extract to sort - index as files") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+                    'test_library'
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = BWAMEM3_INDEX.out.index.map { meta, index -> [ meta, index.listFiles().toList() ] }
+                input[3] = 'extract'
+                input[4] = 'sort'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq single-end - extract to sort") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    'test_library'
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = BWAMEM3_INDEX.out.index
+                input[3] = 'extract'
+                input[4] = 'sort'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - extract to sort - meth index") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, meth:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+                    'test_library'
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = BWAMEM3_INDEX_METH.out.index
+                input[3] = 'extract'
+                input[4] = 'sort'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fastq - extract to sort - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ],
+                    'test_library'
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                ]
+                input[2] = BWAMEM3_INDEX.out.index
+                input[3] = 'extract'
+                input[4] = 'sort'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

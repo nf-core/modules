@@ -7,8 +7,8 @@ process ARTIC_GUPPYPLEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
-        'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f6019bce7e1652ddff248bbfe2a6d9fc1c668137b731cd5ed772e690a7d5ddca/data' :
+        'community.wave.seqera.io/library/artic:1.12.0--ac55155577657f92' }"
 
     input:
     tuple val(meta), path(fastq_dir)
@@ -36,6 +36,7 @@ process ARTIC_GUPPYPLEX {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '' | gzip > ${prefix}.fastq.gz
+    gzip() { pigz; }
+    echo "" | gzip > ${prefix}.fastq.gz
     """
 }

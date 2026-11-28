@@ -9,24 +9,13 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gtdbtk"
     tag "gtdbtk/classifywf"
-    tag "untar"
-
-    setup {
-        run("UNTAR") {
-            script "../../../untar/main.nf"
-            process {
-            """
-            input[0] = [
-                [ id:'mockup' ], // meta map
-                file('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_r232_20260507.tar.gz', checkIfExists: true)
-            ]
-            """
-            }
-        }
-    }
 
     // Using special mini test-data provided to use via GTDB developers
     test("E. coli - genome fasta") {
+        def gtdb_db
+        setup {
+            gtdb_db = extract('https://github.com/nf-core/test-datasets/raw/refs/heads/mag/databases/gtdbtk/gtdbtk_mockup_r232_20260507.tar.gz')
+        }
 
         when {
 
@@ -42,7 +31,7 @@ nextflow_process {
                     [ id:'test', single_end:false, assembler:'SPADES' ],
                     [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
                 ]
-                input[1] = UNTAR.out.untar
+                input[1] = [ [ id:'mockup' ], file('${gtdb_db}') ]
                 input[2] = false
                 """
             }
@@ -70,11 +59,8 @@ nextflow_process {
 
             process {
                 """
-                input[0] = [
-                    [ id:'test', single_end:false, assembler:'SPADES' ],
-                    [file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa', checkIfExists: true)]
-                ]
-                input[1] = UNTAR.out.untar
+                input[0] = [ [ id:'test', single_end:false, assembler:'SPADES' ], [] ]
+                input[1] = [ [ id:'mockup' ], [] ]
                 input[2] = false
                 """
             }
