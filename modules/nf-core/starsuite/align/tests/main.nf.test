@@ -1,0 +1,157 @@
+nextflow_process {
+
+    name "Test Process STARSUITE_ALIGN"
+    script "../main.nf"
+    process "STARSUITE_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "starsuite"
+    tag "starsuite/align"
+    tag "starsuite/genomegenerate"
+    config "./nextflow.config"
+
+    setup {
+        run("STARSUITE_GENOMEGENERATE") {
+            script "../../genomegenerate/main.nf"
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test_fasta' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ])
+                input[1] = Channel.of([ [ id:'test_gtf' ],   file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf',   checkIfExists: true) ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - paired_end - transcriptvb") {
+        when {
+            params {
+                genomegenerate_args = '--genomeSAindexNbases 9 --genomeGenerateTranscriptome Yes'
+                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --outReadsUnmapped Fastx --quantMode TranscriptVB --quantVBgenes 1 --quantVBgenesMode Tximport'
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ], [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true) ] ])
+                input[1] = STARSUITE_GENOMEGENERATE.out.index
+                input[2] = Channel.of([ [ id:'test_gtf' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.quant_transcripts.get(0).get(1)).exists() },
+                { assert path(process.out.quant_genes.get(0).get(1)).exists() },
+                { assert path(process.out.quant_genes_tximport.get(0).get(1)).exists() },
+                { assert path(process.out.quant_transcripts.get(0).get(1)).readLines().first() == 'Name\tLength\tEffectiveLength\tTPM\tNumReads' },
+                { assert bam(process.out.bam_sorted.get(0).get(1)).getReadsMD5() },
+                { assert process.out.fastq.get(0).get(1).size() == 2 },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
+            )
+        }
+    }
+
+    test("homo_sapiens - paired_end - alignment_only") {
+        when {
+            params {
+                genomegenerate_args = '--genomeSAindexNbases 9'
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ], [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true) ] ])
+                input[1] = STARSUITE_GENOMEGENERATE.out.index
+                input[2] = Channel.of([ [ id:'test_gtf' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                // No quant flags → no quant.sf. Proves "just STAR" is the default.
+                { assert process.out.quant_transcripts.size() == 0 },
+                { assert process.out.quant_genes.size() == 0 },
+                { assert process.out.quant_genes_tximport.size() == 0 },
+                { assert bam(process.out.bam.get(0).get(1)).getReadsMD5() },
+                { assert process.out.log_final.get(0).get(1) ==~ ".*Log.final.out" }
+            )
+        }
+    }
+
+    test("homo_sapiens - single_end - transcriptvb") {
+        when {
+            params {
+                genomegenerate_args = '--genomeSAindexNbases 9 --genomeGenerateTranscriptome Yes'
+                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --quantMode TranscriptVB --quantVBgenes 1 --quantVBgenesMode Tximport'
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:true ], [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ] ])
+                input[1] = STARSUITE_GENOMEGENERATE.out.index
+                input[2] = Channel.of([ [ id:'test_gtf' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.quant_transcripts.get(0).get(1)).exists() },
+                { assert bam(process.out.bam_sorted.get(0).get(1)).getReadsMD5() },
+                { assert process.out.log_final.get(0).get(1) ==~ ".*Log.final.out" }
+            )
+        }
+    }
+
+    test("homo_sapiens - transcriptvb - index missing transcriptome") {
+        when {
+            params {
+                genomegenerate_args = '--genomeSAindexNbases 9'
+                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --quantMode TranscriptomeSAM TranscriptVB'
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:true ], [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ] ])
+                input[1] = STARSUITE_GENOMEGENERATE.out.index
+                input[2] = Channel.of([ [ id:'test_gtf' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains('TranscriptVB quantification requires transcriptome.fa') }
+            )
+        }
+    }
+
+    test("homo_sapiens - paired_end - transcriptvb - stub") {
+        options "-stub"
+        when {
+            params {
+                genomegenerate_args = '--genomeSAindexNbases 9 --genomeGenerateTranscriptome Yes'
+                module_args = '--outSAMtype BAM SortedByCoordinate --outBAMsortMethod samtools --quantMode TranscriptVB --quantVBgenes 1 --quantVBgenesMode Tximport'
+            }
+            process {
+                """
+                input[0] = Channel.of([ [ id:'test', single_end:false ], [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true) ] ])
+                input[1] = STARSUITE_GENOMEGENERATE.out.index
+                input[2] = Channel.of([ [ id:'test_gtf' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
