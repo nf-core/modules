@@ -33,8 +33,11 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
     def device = task.accelerator ? 'cuda' : 'cpu'
     def checkm2db_arg = checkm2db ? "-D ${checkm2db}" : ""
     """
-    mkdir -p tmp/torch
-    export TORCHINDUCTOR_CACHE_DIR=tmp/torch/
+    ## We are currently using pytorch 2.12.0 - it tries to get the username to create a
+    ## tmpdir which is not available under docker: https://github.com/pytorch/pytorch/issues/140765
+    ##
+    ## Can be removed once this builds with a newer version!
+    export TORCHINDUCTOR_CACHE_DIR=/tmp/torchinductor_comebin/
 
     comebin-llmopt \\
         -t ${task.cpus} \\
