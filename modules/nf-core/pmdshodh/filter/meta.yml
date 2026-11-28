@@ -1,0 +1,135 @@
+name: "pmdshodh_filter"
+description: Keep ancient DNA reads by post-mortem damage (PMD) score, scoring SAM, BAM or CRAM directly
+keywords:
+  - aDNA
+  - ancient DNA
+  - damage
+  - pmd
+  - filter
+  - bam
+tools:
+  - "pmdshodh":
+      description: |
+        Per-read post-mortem damage (PMD) scoring and filtering of ancient DNA alignments,
+        compatible with PMDtools. Reads reference bases from MD tags or from an indexed FASTA,
+        so no samtools calmd step is needed.
+      homepage: "https://github.com/dpatel511/pmdshodh"
+      documentation: "https://github.com/dpatel511/pmdshodh/blob/main/README.md"
+      tool_dev_url: "https://github.com/dpatel511/pmdshodh"
+      doi: "10.1073/pnas.1318934111"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - input:
+        type: file
+        description: |
+          SAM, BAM or CRAM file. Without a reference, every mapped read needs an MD tag.
+          CRAM needs the reference it was written against.
+        pattern: "*.{sam,bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573" # SAM
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_3462" # CRAM
+  - threshold:
+      type: float
+      description: Keep reads with a PMD score of at least this value (commonly 3)
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: |
+          Optional reference FASTA (pass `[]` to use MD tags). With it, reference bases come
+          from the FASTA and MD tags are checked against it. Required for CRAM input.
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Index of the reference FASTA, from samtools faidx
+        pattern: "*.fai"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM with the kept reads, unchanged and in input order, plus an @PG line
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.pmdshodh.json":
+          type: file
+          description: |
+            Run summary: read counts, skipped reads by reason, score and length
+            histograms, and damage tables by position
+          pattern: "*.pmdshodh.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_pmdshodh:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdshodh:
+          type: string
+          description: The name of the tool
+      - pmdshodh --version | sed 's/^pmdshodh //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdshodh:
+          type: string
+          description: The name of the tool
+      - pmdshodh --version | sed 's/^pmdshodh //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dpatel511"
+maintainers:
+  - "@dpatel511"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pmdshodh:0.3.3--021d57dd06dae595
+      build_id: bd-021d57dd06dae595_1
+      scan_id: sc-2f04427109239d6b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pmdshodh:0.3.3--4d662c161631c5ad
+      build_id: bd-4d662c161631c5ad_1
+      scan_id: sc-2ebee70d59d7e594_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pmdshodh:0.3.3--ea94781a7285ea0d
+      build_id: bd-ea94781a7285ea0d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d22759c412c0f04dda74a9a3153c666b7d4f2417911b7b92c924d4c78935253/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pmdshodh:0.3.3--ea776d43687bb696
+      build_id: bd-ea776d43687bb696_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8bdc1b50afea6c4c60f579807586e2d1603ebf5bc06bc414ed116dfad9e8b8d3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/pmdshodh/filter/.conda-lock/linux_amd64-bd-4d662c161631c5ad_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/pmdshodh/filter/.conda-lock/linux_arm64-bd-021d57dd06dae595_1.txt
