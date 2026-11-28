@@ -120,7 +120,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output prefix") } }
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
             )
         }
 
@@ -145,6 +145,30 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - unsafe prefix - fails - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test\$(touch PWNED)' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
             )
         }
 
