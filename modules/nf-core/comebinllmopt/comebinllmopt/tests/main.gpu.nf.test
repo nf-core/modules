@@ -1,0 +1,46 @@
+nextflow_process {
+
+    name "Test Process COMEBINLLMOPT_COMEBINLLMOPT (GPU)"
+    script "../main.nf"
+    process "COMEBINLLMOPT_COMEBINLLMOPT"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "comebinllmopt"
+    tag "comebinllmopt/comebinllmopt"
+
+    test("metagenome - binning - gpu") {
+
+        config "./nextflow.gpu.config"
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                ])
+                input[1] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bins.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        // bin contents vary between machines, due to BLAS and OpenMP
+                        unstableKeys: ["tsv"],
+                        ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
+                ).match() }
+            )
+        }
+
+    }
+
+}
