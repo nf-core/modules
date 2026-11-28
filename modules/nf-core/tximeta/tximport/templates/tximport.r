@@ -86,6 +86,7 @@ write_se_table <- function(params, prefix) {
 #' @param tx_col Column name for transcript IDs.
 #' @param gene_id_col Column name for gene IDs.
 #' @param gene_name_col Column name for gene names.
+#' @param ignore_tx_version Whether to strip version suffixes from the transcript IDs.
 #'
 #' @return A list containing four elements:
 #' - `transcript`: A data frame with transcript IDs, gene IDs, and gene names, indexed by transcript IDs.
@@ -97,7 +98,7 @@ write_se_table <- function(params, prefix) {
 #'   column headers preserved.
 #' - `extra`: A character vector of transcript IDs found in quantification output but missing from the tx2gene file.
 
-read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col){
+read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col, ignore_tx_version = FALSE){
     info <- file.info(tinfo_path)
     if (info\$size == 0) {
         stop("tx2gene file is empty")
@@ -117,6 +118,18 @@ read_transcript_info <- function(tinfo_path, tx_col, gene_id_col, gene_name_col)
         gene_name = raw_info[[resolved_gene_name_col]],
         check.names = FALSE
     )
+    if (ignore_tx_version) {
+        transcript_info[["tx"]] <- strip_tx_version(transcript_info[["tx"]])
+        transcript_info <- transcript_info[!duplicated(transcript_info[, c("tx", "gene_id")]), ]
+        conflicting <- unique(transcript_info[["tx"]][duplicated(transcript_info[["tx"]])])
+        if (length(conflicting) > 0) {
+            stop(
+                "Removing transcript versions maps ", length(conflicting), " transcript IDs in the tx2gene ",
+                "to more than one gene, so --ignore_tx_version cannot be used with it. ",
+                "First 5: ", paste(head(conflicting, 5), collapse = ", ")
+            )
+        }
+    }
 
     extra <- setdiff(rownames(txi[[1]]), as.character(transcript_info[["tx"]]))
     if (length(extra) > 0) {
@@ -169,6 +182,36 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
         rowData = row_data)
 }
 
+#' Strip version suffixes from transcript IDs
+#'
+#' Removes a trailing '.<digits>' version. Unlike tximport's `ignoreTxVersion`,
+#' which removes everything after the first '.', this keeps suffixes such as
+#' GENCODE's '_PAR_Y' distinct from the IDs they are attached to. Such IDs keep
+#' their inner version (e.g. 'ENST00000381192.10_PAR_Y'), so they only match a
+#' tx2gene with the same version.
+#'
+#' @param ids Character vector of transcript IDs.
+#'
+#' @return Character vector of transcript IDs without version suffixes.
+
+strip_tx_version <- function(ids) {
+    sub("\\\\.[0-9]+\$", "", ids)
+}
+
+#' Replace the transcript IDs of a tximport list
+#'
+#' @param txi_obj List returned by tximport() with txOut = TRUE and no inferential replicates.
+#' @param ids Character vector of new transcript IDs, in the row order of txi_obj.
+#'
+#' @return txi_obj with the row names of its assays set to ids.
+
+set_tx_ids <- function(txi_obj, ids) {
+    for (assay in c("abundance", "counts", "length")) {
+        rownames(txi_obj[[assay]]) <- ids
+    }
+    txi_obj
+}
+
 ################################################
 ################################################
 ## Main script starts here                    ##
@@ -179,7 +222,8 @@ create_summarized_experiment <- function(counts, abundance, length, col_data, ro
 opt <- list(
     tx_col = "transcript_id",
     gene_id_col = "gene_id",
-    gene_name_col = "gene_name"
+    gene_name_col = "gene_name",
+    ignore_tx_version = FALSE
 )
 
 # Apply parameter overrides from ext.args
@@ -188,6 +232,14 @@ for (ao in names(args_opt)) {
     if (ao %in% names(opt)) {
         opt[[ao]] <- args_opt[[ao]]
     }
+}
+# parse_args() drops options given without a value, so a bare flag is checked separately
+if (is.null(args_opt[["ignore_tx_version"]]) && "--ignore_tx_version" %in% strsplit('$task.ext.args', " +")[[1]]) {
+    opt\$ignore_tx_version <- TRUE
+}
+opt\$ignore_tx_version <- as.logical(opt\$ignore_tx_version)
+if (is.na(opt\$ignore_tx_version)) {
+    stop("--ignore_tx_version must be true or false")
 }
 
 # Define pattern for file names based on quantification type
@@ -205,14 +257,26 @@ if ('$quant_type' == "rsem") {
     fns <- list.files('quants', pattern = pattern, recursive = TRUE, full.names = TRUE)
     names <- basename(dirname(fns))
     names(fns) <- names
-    dropInfReps <- '$quant_type' == "kallisto"
 
-    # Import transcript-level quantifications
-    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = dropInfReps)
+    # Import transcript-level quantifications. No output uses inferential replicates.
+    txi <- tximport(fns, type = '$quant_type', txOut = TRUE, dropInfReps = TRUE)
+}
+
+if (opt\$ignore_tx_version) {
+    tx_ids <- strip_tx_version(rownames(txi[["counts"]]))
+    duplicated_ids <- unique(tx_ids[duplicated(tx_ids)])
+    if (length(duplicated_ids) > 0) {
+        stop(
+            "Removing transcript versions makes ", length(duplicated_ids), " transcript IDs ",
+            "ambiguous, so --ignore_tx_version cannot be used with these quantifications. ",
+            "First 5: ", paste(head(duplicated_ids, 5), collapse = ", ")
+        )
+    }
+    txi <- set_tx_ids(txi, tx_ids)
 }
 
 # Read transcript and sample data
-transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col)
+transcript_info <- read_transcript_info('$tx2gene', opt\$tx_col, opt\$gene_id_col, opt\$gene_name_col, opt\$ignore_tx_version)
 
 # Make coldata just to appease the summarizedexperiment
 coldata <- data.frame(files = fns, names = names, check.names = FALSE)
@@ -222,10 +286,28 @@ rownames(coldata) <- coldata[["names"]]
 se <- create_summarized_experiment(txi[["counts"]], txi[["abundance"]], txi[["length"]],
     DataFrame(coldata), transcript_info\$transcript)
 
+# Transcript-level scaled counts, as tximport computes them for countsFromAbundance.
+# dtuScaledTPM is lengthScaledTPM with the median transcript length of each gene, as in
+# tximport's internal medianLengthOverIsoform(); the augmented tx2gene is in txi row order.
+# makeCountsFromAbundance() only uses the row means of the length matrix, so one column suffices.
+assays(se)[["counts_scaled"]] <- makeCountsFromAbundance(txi\$counts, txi\$abundance, txi\$length, "scaledTPM")
+
+# Gene IDs are indexed by name below, so numeric IDs must not be used as positions
+tx_gene <- as.character(transcript_info\$tx2gene[["gene_id"]])
+gene_median_length <- tapply(rowMeans(txi\$length), tx_gene, median)[tx_gene]
+assays(se)[["counts_dtu_scaled"]] <- makeCountsFromAbundance(
+    txi\$counts,
+    txi\$abundance,
+    matrix(gene_median_length, ncol = 1, dimnames = list(rownames(txi\$length), NULL)),
+    "lengthScaledTPM"
+)
+
 # Setting parameters for writing tables
 params <- list(
     list(obj = se, slot = "abundance", suffix = "transcript_tpm.tsv"),
     list(obj = se, slot = "counts", suffix = "transcript_counts.tsv"),
+    list(obj = se, slot = "counts_scaled", suffix = "transcript_counts_scaled.tsv"),
+    list(obj = se, slot = "counts_dtu_scaled", suffix = "transcript_counts_dtu_scaled.tsv"),
     list(obj = se, slot = "length", suffix = "transcript_lengths.tsv")
 )
 
@@ -306,11 +388,13 @@ sink()
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 tximeta.version <- as.character(packageVersion('tximeta'))
+tximport.version <- as.character(packageVersion('tximport'))
 
 writeLines(
     c(
         '"${task.process}":',
-        paste('    bioconductor-tximeta:', tximeta.version)
+        paste('    bioconductor-tximeta:', tximeta.version),
+        paste('    bioconductor-tximport:', tximport.version)
     ),
 'versions.yml')
 

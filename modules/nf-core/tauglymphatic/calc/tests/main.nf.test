@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process TAUGLYMPHATIC_CALC"
+    script "../main.nf"
+    process "TAUGLYMPHATIC_CALC"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tauglymphatic"
+    tag "tauglymphatic/calc"
+
+    test("human - healthy ALPS - APOE-e4 x1 - txt") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_txt' ],
+                    1.50,
+                    1,
+                    false,
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def reportText = path(process.out.report[0][1]).text
+            assertAll(
+                { assert reportText.contains("DTI-ALPS Index:") },
+                { assert reportText.contains("ACTIVE GLYMPHATIC CLEARANCE (EQUILIBRIUM)") },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - low ALPS - APOE-e4 x2 - TREM2 - NLRP3 - json") {
+
+        when {
+            params {
+                module_args = '--json'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_json' ],
+                    1.15,
+                    2,
+                    true,
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def parsed = new groovy.json.JsonSlurper().parseText(path(process.out.report[0][1]).text)
+            assertAll(
+                { assert parsed.inputs.dti_alps_index == 1.15 },
+                { assert parsed.inputs.apoe_e4_alleles == 2 },
+                { assert parsed.inputs.trem2_r47h == true },
+                { assert parsed.inputs.nlrp3_activated == true },
+                { assert parsed.biophysical_diagnostics.regime == "PATHOLOGIC EXPONENTIAL EXPANSION (STASIS NICHES)" },
+                { assert parsed.biophysical_diagnostics.net_stasis_ratio > 1.0 },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - healthy ALPS - APOE-e4 x1 - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_txt' ],
+                    1.50,
+                    1,
+                    false,
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - low ALPS - APOE-e4 x2 - TREM2 - NLRP3 - json - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--json'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_json' ],
+                    1.15,
+                    2,
+                    true,
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

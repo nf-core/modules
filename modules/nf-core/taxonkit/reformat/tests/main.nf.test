@@ -1,0 +1,153 @@
+nextflow_process {
+
+    name "Test Process TAXONKIT_REFORMAT"
+    script "../main.nf"
+    process "TAXONKIT_REFORMAT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "taxonkit"
+    tag "taxonkit/reformat"
+    tag "taxonkit/lineage"
+
+    test("sarscov2 - lineage tsv") {
+
+        def taxdump
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+            run("TAXONKIT_LINEAGE") {
+                script "../../lineage/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        "2697049",
+                        []
+                    ]
+                    input[1] = file('${taxdump}')
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TAXONKIT_LINEAGE.out.tsv
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus - lineage tsv - format fill prefix") {
+
+        def taxdump
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+            run("TAXONKIT_LINEAGE") {
+                script "../../lineage/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        "727",
+                        []
+                    ]
+                    input[1] = file('${taxdump}')
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '-f "{k};{p};{c};{o};{f};{g};{s}" -F -P'
+            }
+            process {
+                """
+                input[0] = TAXONKIT_LINEAGE.out.tsv
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - taxid list - taxid field") {
+
+        def taxdump
+        setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            taxdump = extract(modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz').resolve('taxdump')
+        }
+
+        when {
+            params {
+                module_args = '-I 1 -f "{k};{p};{c};{o};{f};{g};{s}"'
+            }
+            process {
+                """
+                input[0] = channel.of( [ [ id:'test', single_end:false ] ] )
+                    .combine( channel.of("2697049").collectFile( name:'taxids.txt', newLine: true ) )
+                input[1] = [ [ id:'taxdump' ], file('${taxdump}') ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - lineage tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file('test.lineage.tsv')
+                ]
+                input[1] = [ [ id:'taxdump' ], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

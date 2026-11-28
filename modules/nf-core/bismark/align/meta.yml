@@ -1,6 +1,8 @@
 name: bismark_align
 description: Performs alignment of BS-Seq reads using bismark
 keywords:
+  - 5-base
+  - taps
   - bismark
   - 3-letter genome
   - map
@@ -56,8 +58,22 @@ input:
           e.g. [ id:'test', single_end:false ]
     - index:
         type: directory
-        description: Bismark genome index directory
+        description: |
+          Bismark genome index directory. Optional with --illumina_5base or --taps: a folder
+          holding Bwamem3_Index/, or [] to use the fasta input with the bwamem3_index input.
         pattern: "BismarkIndex"
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - bwamem3_index:
+        type: file
+        description: |
+          bwa-mem3 `--meth` index (a directory or the index files), passed to Bismark as
+          --five_base_index. Requires --illumina_5base or --taps in ext.args; pass [] otherwise.
+        pattern: "*.{amb,ann,pac,meth.amb,meth.ann,meth.pac,meth.bwt.2bit.64}"
+        ontologies: []
 output:
   bam:
     - - meta:
@@ -140,24 +156,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bismark_bwa-mem3:1eb534160cb7def7
-      build_id: bd-1eb534160cb7def7_2
-      scan_id: sc-34516715d42552ed_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:0cace1e159351cc0
+      build_id: bd-0cace1e159351cc0_1
+      scan_id: sc-1b4be3e289f63e37_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bismark_bwa-mem3:60746007c6266ec6
-      build_id: bd-60746007c6266ec6_2
-      scan_id: sc-70a71f6c3827f515_1
+      name: community.wave.seqera.io/library/bismark_bwa-mem3:1f4172ca33e2e64e
+      build_id: bd-1f4172ca33e2e64e_1
+      scan_id: sc-e4368bf3b84940e7_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:c2f1948797e73d2d
-      build_id: bd-c2f1948797e73d2d_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/20bce4b3bce2e7045431676190322012e22a96cef1a53eaadd14acc89de2e232/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:a31c24f4dc22d74e
+      build_id: bd-a31c24f4dc22d74e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f649b628c613bd75e37f5671cc6d088d18e46326069f6c514192e21ac15bf98/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:1c63481bbe3e9b04
-      build_id: bd-1c63481bbe3e9b04_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/62f1fecca07a62d06cfa93d1ee63ec7a329a3d62f7ecf00abb3f7d4ac896b889/data
+      name: oras://community.wave.seqera.io/library/bismark_bwa-mem3:cada91065d0b1744
+      build_id: bd-cada91065d0b1744_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a896a7f906af1b121987feb820b9b0923d809970a4a92eef333a4b6187bbe707/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-1eb534160cb7def7_2.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_amd64-bd-0cace1e159351cc0_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-60746007c6266ec6_2.txt
+      lock_file: modules/nf-core/bismark/align/.conda-lock/linux_arm64-bd-1f4172ca33e2e64e_1.txt

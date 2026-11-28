@@ -8,45 +8,20 @@ nextflow_process {
     tag "modules_nfcore"
     tag "custom"
     tag "custom/rsemmergecounts"
-    tag "untar"
 
     test("saccharomyces_cerevisiae") {
-
+        def rsem
         setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([
-                        [ id: 'rsem_results' ],
-                        file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            rsem = extract(modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/rsem_results.tar.gz')
         }
 
         when {
             process {
                 """
-                input[0] = UNTAR.out.untar.flatMap { meta, dir ->
-                    def files = []
-                    dir.toFile().eachFileRecurse { f ->
-                        if (f.name.endsWith('.genes.results')) {
-                            files << f.toPath()
-                        }
-                    }
-                    files
-                }.collect().map { files -> [ [ id: 'rsem_merged' ], files ] }
-                input[1] = UNTAR.out.untar.flatMap { meta, dir ->
-                    def files = []
-                    dir.toFile().eachFileRecurse { f ->
-                        if (f.name.endsWith('.isoforms.results')) {
-                            files << f.toPath()
-                        }
-                    }
-                    files
-                }.collect()
+                input[0] = [ [ id: 'rsem_merged' ], files('${rsem}/*/*.genes.results') ]
+                input[1] = files('${rsem}/*/*.isoforms.results')
                 """
             }
         }
@@ -74,10 +49,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                 ).collect().map { files -> [ [ id: 'rsem_merged' ], files ] }
-                input[1] = Channel.of(
+                input[1] = channel.of(
                     file(params.modules_testdata_base_path + 'genomics/eukaryotes/saccharomyces_cerevisiae/genome_gfp.gtf', checkIfExists: true)
                 ).collect()
                 """

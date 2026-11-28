@@ -7,8 +7,7 @@ keywords:
   - searching
 tools:
   - "mmseqs":
-      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
-        suite"
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering suite"
       homepage: "https://github.com/soedinglab/MMseqs2"
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
@@ -19,9 +18,7 @@ tools:
 input:
   - database:
       type: string
-      description: Database available through the mmseqs2 databases interface -
-        see https://github.com/soedinglab/MMseqs2/wiki#downloading-databases for
-        details
+      description: Database available through the mmseqs2 databases interface - see https://github.com/soedinglab/MMseqs2/wiki#downloading-databases for details
 output:
   database:
     - ${prefix}/:
@@ -52,3 +49,27 @@ authors:
   - "@prototaxites"
 maintainers:
   - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mmseqs2_wget:4ce0f9394a204754
+      build_id: bd-4ce0f9394a204754_1
+      scan_id: sc-2c6895fc9bdde984_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mmseqs2_wget:bcca3f3e897a5634
+      build_id: bd-bcca3f3e897a5634_1
+      scan_id: sc-97439476c20f06a6_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mmseqs2_wget:0b3048d88cab4e0b
+      build_id: bd-0b3048d88cab4e0b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d7965c5a47700e9e99ec3080dcd9f91e7099f221f98b92a1cd781af9e4d6fec1/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mmseqs2_wget:dc879769f0a73131
+      build_id: bd-dc879769f0a73131_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7df92cbef82c41ca1fcdc2959e9beeeeb6106099accfdaaed468b2990587061/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mmseqs/databases/.conda-lock/linux_amd64-bd-4ce0f9394a204754_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/mmseqs/databases/.conda-lock/linux_arm64-bd-bcca3f3e897a5634_1.txt

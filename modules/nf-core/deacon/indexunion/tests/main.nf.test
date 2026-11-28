@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test-1'],
+                    [ id:'test-1' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
@@ -28,8 +28,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test-2'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test-2' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -40,15 +40,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test-3'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'test-3' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/plasmids/pUTI89/pUTI89.fna.gz', checkIfExists: true)
                 ]
                 """
             }
         }
     }
 
-    test("index union sarscov2 - 2 indexes") {
+    test("sarscov2, escherichia_coli - 2 indexes") {
 
         when {
             process {
@@ -61,14 +61,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test("index union sarscov2 - 3 indexes") {
+    test("sarscov2, escherichia_coli, plasmid - 3 indexes") {
 
         when {
             process {
@@ -82,8 +82,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -108,8 +108,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

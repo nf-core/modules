@@ -11,7 +11,6 @@ nextflow_workflow {
     tag "bcftools/norm"
     tag "vepyr"
     tag "vepyr/annotate"
-    tag "untar"
     tag "huggingface"
     tag "huggingface/download"
 
@@ -21,18 +20,11 @@ nextflow_workflow {
 
         // raw.githubusercontent.com serves blobs, not directory trees, so the cache
         // is published as an archive and extracted here.
+        def cache
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'116_GRCh38_ensembl' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz').resolve('cache')
             run("BCFTOOLS_NORM", alias: "BCFTOOLS_JOIN_MULTIALLELICS") {
                 script "modules/nf-core/bcftools/norm/main.nf"
                 process {
@@ -55,7 +47,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = BCFTOOLS_JOIN_MULTIALLELICS.out.vcf.map { _meta, vcf -> [ [ id:'test' ], vcf, [] ] }
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
@@ -91,18 +83,11 @@ nextflow_workflow {
 
         config "./nextflow.config"
 
+        def cache
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'116_GRCh38_ensembl' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz').resolve('cache')
             run("BCFTOOLS_NORM", alias: "BCFTOOLS_JOIN_MULTIALLELICS") {
                 script "modules/nf-core/bcftools/norm/main.nf"
                 process {
@@ -128,7 +113,7 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = BCFTOOLS_JOIN_MULTIALLELICS.out.vcf.map { _meta, vcf -> [ [ id:'test' ], vcf, [] ] }
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
@@ -162,18 +147,11 @@ nextflow_workflow {
 
     test("homo_sapiens - vcf - no normalise") {
 
+        def cache
         setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'116_GRCh38_ensembl' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
+            def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+            cache = extract(modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz').resolve('cache')
         }
 
         when {
@@ -184,7 +162,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
                 ])
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('${cache}') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
@@ -304,20 +282,6 @@ nextflow_workflow {
 
         options "-stub"
 
-        setup {
-            run("UNTAR") {
-                script "modules/nf-core/untar/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'116_GRCh38_ensembl' ],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                    ])
-                    """
-                }
-            }
-        }
-
         when {
             workflow {
                 """
@@ -326,7 +290,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
                     []
                 ])
-                input[1] = UNTAR.out.untar.collect()
+                input[1] = [ [ id:'116_GRCh38_ensembl' ], file('cache') ]
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
@@ -385,7 +349,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('set either ch_cache or val_hf_repo, not both') } }
+                { assert workflow.errorReport.contains('set either ch_cache or val_hf_repo, not both') }
             )
         }
     }
@@ -420,7 +384,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.failed },
-                { assert workflow.stdout.any { it.contains('no cache given, set ch_cache or val_hf_repo') } }
+                { assert workflow.errorReport.contains('no cache given, set ch_cache or val_hf_repo') }
             )
         }
     }

@@ -9,13 +9,13 @@ nextflow_process {
     tag "deacon"
     tag "deacon/index"
 
-    test("index sarscov2 - fasta") {
+    test("sarscov2 - fasta") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test'],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
@@ -23,37 +23,37 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("index sarscov2 - fasta gzipped") {
+    test("escherichia_coli - fasta gzipped") {
 
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/escherichia_coli/genome/genome.fa.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
 
-    test("index sarscov2 - fasta - stub") {
+    test("sarscov2 - fasta - stub") {
 
         options "-stub"
 
@@ -61,7 +61,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test'],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 """
@@ -69,8 +69,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

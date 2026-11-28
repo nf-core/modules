@@ -16,16 +16,18 @@ process TXIMETA_TXIMPORT {
     val quant_type
 
     output:
-    tuple val(meta), path("*gene_tpm.tsv")                 , emit: tpm_gene
-    tuple val(meta), path("*gene_counts.tsv")              , emit: counts_gene
-    tuple val(meta), path("*gene_counts_length_scaled.tsv"), emit: counts_gene_length_scaled
-    tuple val(meta), path("*gene_counts_scaled.tsv")       , emit: counts_gene_scaled
-    tuple val(meta), path("*gene_lengths.tsv")             , emit: lengths_gene
-    tuple val(meta), path("*transcript_tpm.tsv")           , emit: tpm_transcript
-    tuple val(meta), path("*transcript_counts.tsv")        , emit: counts_transcript
-    tuple val(meta), path("*transcript_lengths.tsv")       , emit: lengths_transcript
-    tuple val(meta), path("*tx2gene_augmented.tsv")        , emit: tx2gene_augmented
-    path "versions.yml"                                    , emit: versions, topic: versions
+    tuple val(meta), path("*gene_tpm.tsv")                       , emit: tpm_gene
+    tuple val(meta), path("*gene_counts.tsv")                    , emit: counts_gene
+    tuple val(meta), path("*gene_counts_length_scaled.tsv")      , emit: counts_gene_length_scaled
+    tuple val(meta), path("*gene_counts_scaled.tsv")             , emit: counts_gene_scaled
+    tuple val(meta), path("*gene_lengths.tsv")                   , emit: lengths_gene
+    tuple val(meta), path("*transcript_tpm.tsv")                 , emit: tpm_transcript
+    tuple val(meta), path("*transcript_counts.tsv")              , emit: counts_transcript
+    tuple val(meta), path("*transcript_counts_scaled.tsv")       , emit: counts_transcript_scaled
+    tuple val(meta), path("*transcript_counts_dtu_scaled.tsv")   , emit: counts_transcript_dtu_scaled
+    tuple val(meta), path("*transcript_lengths.tsv")             , emit: lengths_transcript
+    tuple val(meta), path("*tx2gene_augmented.tsv")              , emit: tx2gene_augmented
+    path "versions.yml"                                          , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,12 +44,15 @@ process TXIMETA_TXIMPORT {
     touch ${meta.id}.gene_lengths.tsv
     touch ${meta.id}.transcript_tpm.tsv
     touch ${meta.id}.transcript_counts.tsv
+    touch ${meta.id}.transcript_counts_scaled.tsv
+    touch ${meta.id}.transcript_counts_dtu_scaled.tsv
     touch ${meta.id}.transcript_lengths.tsv
     touch ${meta.id}.tx2gene_augmented.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         bioconductor-tximeta: \$(Rscript -e "library(tximeta); cat(as.character(packageVersion('tximeta')))")
+        bioconductor-tximport: \$(Rscript -e "library(tximport); cat(as.character(packageVersion('tximport')))")
     END_VERSIONS
     """
 }

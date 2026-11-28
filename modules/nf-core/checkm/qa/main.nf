@@ -7,8 +7,8 @@ process CHECKM_QA {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e77f70239b60110da040c4307b8048749ed1fc86262e07d27f1eb12a314d14f/data'
-        : 'community.wave.seqera.io/library/checkm-genome:1.2.5--8d1d1a2477a013ce'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75911411b834b3cbd473babea3721a6f8ca3d5c55783cc02cffadf583e8d6dd5/data'
+        : 'community.wave.seqera.io/library/checkm-genome:1.4.0--c2e5d2423bcf948a'}"
 
     input:
     tuple val(meta), path(analysis_dir), path(marker_file), path(coverage_file)

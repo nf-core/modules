@@ -79,6 +79,18 @@ output:
           description: BED file resulting from the conversion of the GFF input file when the '--bed' argument is present
           pattern: "*.bed"
           ontologies: []
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing meta data
+            e.g. [ id:'test' ]
+      - "*.tsv":
+          type: file
+          description: Tab-separated table of the attributes listed with the '--table' argument, one row per transcript and no header
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_gffread:
     - - ${task.process}:
           type: string

@@ -2,7 +2,11 @@
 name: "tximeta_tximport"
 description: |
   Import transcript-level abundances and estimated counts for gene-level
-  analysis packages
+  analysis packages. `ext.args` accepts `--tx_col`, `--gene_id_col` and
+  `--gene_name_col` to select tx2gene columns, and `--ignore_tx_version true`
+  to strip trailing version suffixes from transcript IDs in both the
+  quantifications and the tx2gene before matching them. With it, the
+  transcript-level tables and `tx2gene_augmented.tsv` use the stripped IDs.
 keywords:
   - gene
   - kallisto
@@ -19,6 +23,14 @@ tools:
       doi: "10.1371/journal.pcbi.1007664"
       licence: ["GPL-2"]
       identifier: biotools:tximeta
+  - "tximport":
+      description: "Import and summarise transcript-level estimates for transcript- and gene-level analysis"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/tximport.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/tximport/inst/doc/tximport.html"
+      tool_dev_url: "https://github.com/thelovelab/tximport"
+      doi: "10.12688/f1000research.7563.1"
+      licence: ["LGPL-2.0-or-later"]
+      identifier: biotools:tximport
 
 input:
   - - meta:
@@ -143,6 +155,37 @@ output:
             Count values derived from tximport output without
             summarizeToGene(), without a 'countsFromAbundance' specification
           pattern: "*transcript_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  counts_transcript_scaled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information related to the experiment as a whole
+            e.g. `[ id:'SRP123456' ]`
+      - "*transcript_counts_scaled.tsv":
+          type: file
+          description: |
+            Count values derived from tximport output without summarizeToGene(),
+            with a 'countsFromAbundance' specification of 'scaledTPM'
+          pattern: "*transcript_counts_scaled.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  counts_transcript_dtu_scaled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information related to the experiment as a whole
+            e.g. `[ id:'SRP123456' ]`
+      - "*transcript_counts_dtu_scaled.tsv":
+          type: file
+          description: |
+            Count values derived from tximport output without summarizeToGene(),
+            with a 'countsFromAbundance' specification of 'dtuScaledTPM', the
+            recommended input for differential transcript usage analysis with
+            e.g. DRIMSeq or DEXSeq. Transcripts missing from the input tx2gene
+            are treated as the only isoform of their own gene.
+          pattern: "*transcript_counts_dtu_scaled.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   lengths_transcript:

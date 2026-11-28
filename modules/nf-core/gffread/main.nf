@@ -19,6 +19,7 @@ process GFFREAD {
     tuple val(meta), path("*.gff3") , emit: gffread_gff     , optional: true
     tuple val(meta), path("*.fasta"), emit: gffread_fasta   , optional: true
     tuple val(meta), path("*.bed")  , emit: bed             , optional: true
+    tuple val(meta), path("*.tsv")  , emit: tsv             , optional: true
     tuple val("${task.process}"), val('gffread'), eval('gffread --version 2>&1'), topic: versions, emit: versions_gffread
 
     when:
@@ -27,7 +28,7 @@ process GFFREAD {
     script:
     def args        = task.ext.args             ?: ''
     def prefix      = task.ext.prefix           ?: "${meta.id}"
-    def extension   = args.contains("--bed")    ? 'bed' : ( args.contains("-T")       ? 'gtf' : ( ( ['-w', '-x', '-y' ].any { flag -> args.contains(flag) } ) ? 'fasta' : 'gff3' ) )
+    def extension   = args.contains("--bed")    ? 'bed' : ( args.contains("--table") ? 'tsv' : ( args.contains("-T")       ? 'gtf' : ( ( ['-w', '-x', '-y' ].any { flag -> args.contains(flag) } ) ? 'fasta' : 'gff3' ) ) )
     def gff_gz      = gff.name.endsWith('.gz')
     def fasta_gz    = fasta && fasta.name.endsWith('.gz')
     def fasta_in    = fasta_gz                  ? fasta.baseName : fasta
@@ -53,7 +54,7 @@ process GFFREAD {
     stub:
     def args        = task.ext.args             ?: ''
     def prefix      = task.ext.prefix           ?: "${meta.id}"
-    def extension   = args.contains("--bed")    ? 'bed' : ( args.contains("-T")       ? 'gtf' : ( ( ['-w', '-x', '-y' ].any { flag -> args.contains(flag) } ) ? 'fasta' : 'gff3' ) )
+    def extension   = args.contains("--bed")    ? 'bed' : ( args.contains("--table") ? 'tsv' : ( args.contains("-T")       ? 'gtf' : ( ( ['-w', '-x', '-y' ].any { flag -> args.contains(flag) } ) ? 'fasta' : 'gff3' ) ) )
     def fasta_in    = fasta && fasta.name.endsWith('.gz') ? fasta.baseName : fasta
     def output_name = "${prefix}.${extension}"
     if ( "$output_name" in [ "$gff", "$fasta", "$fasta_in" ] ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
