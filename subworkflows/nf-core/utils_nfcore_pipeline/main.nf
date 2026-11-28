@@ -82,13 +82,28 @@ def getWorkflowVersion() {
 //
 def processVersionsFromYAML(yaml_file) {
     def yaml = new org.yaml.snakeyaml.Yaml()
-    def versions = yaml.compose(new StringReader(yaml_file.text)).value.collectEntries { process_tuple ->
-        def tools = process_tuple.valueNode.value.collectEntries { tool_tuple ->
-            [tool_tuple.keyNode.value, tool_tuple.valueNode.value]
-        }
-        [process_tuple.keyNode.value.tokenize(':')[-1], tools]
+    def root = yaml.compose(new StringReader(yaml_file.text))
+    def versions = root == null ? null : yamlNodeToObject(root)
+    if (!versions) {
+        return ''
     }
-    return yaml.dumpAsMap(versions).trim()
+    if (!(versions instanceof Map) || !versions.keySet().every { process -> process instanceof String && process.tokenize(':') }) {
+        error("Versions file ${yaml_file} is not a mapping of process names to tool versions")
+    }
+    return yaml.dumpAsMap(versions.collectEntries { process, tools -> [process.tokenize(':')[-1], tools] }).trim()
+}
+
+//
+// Convert a composed YAML node to maps, lists and strings
+//
+def yamlNodeToObject(node) {
+    if (node instanceof org.yaml.snakeyaml.nodes.MappingNode) {
+        return node.value.collectEntries { tuple -> [yamlNodeToObject(tuple.keyNode), yamlNodeToObject(tuple.valueNode)] }
+    }
+    if (node instanceof org.yaml.snakeyaml.nodes.SequenceNode) {
+        return node.value.collect { item -> yamlNodeToObject(item) }
+    }
+    return node.tag == org.yaml.snakeyaml.nodes.Tag.NULL ? null : node.value
 }
 
 //
