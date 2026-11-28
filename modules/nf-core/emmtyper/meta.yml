@@ -62,3 +62,17 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/emmtyper:0.2.0--cc7e9aa35421a631
+      build_id: bd-cc7e9aa35421a631_1
+      scan_id: sc-ae74ee7cc7397b05_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/emmtyper:0.2.0--126d8806ba3da51a
+      build_id: bd-126d8806ba3da51a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0ff2de4d7146b9da64cc2100c8fa40c0fbf52327affe11b0a45f17e395d2d44d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/emmtyper/.conda-lock/linux_amd64-bd-cc7e9aa35421a631_1.txt

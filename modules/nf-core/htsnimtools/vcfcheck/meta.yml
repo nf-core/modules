@@ -1,7 +1,5 @@
 name: "htsnimtools_vcfcheck"
-description: This tools takes a background VCF, such as gnomad, that has full
-  genome (though in some cases, users will instead want whole exome) coverage
-  and uses that as an expectation of variants.
+description: This tools takes a background VCF, such as gnomad, that has full genome (though in some cases, users will instead want whole exome) coverage and uses that as an expectation of variants.
 keywords:
   - validation
   - check
@@ -55,8 +53,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tsv":
           type: file
-          description: A tab-delimited file comparing the variant count of each
-            region in the query VCF and background VCF
+          description: A tab-delimited file comparing the variant count of each region in the query VCF and background VCF
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -85,3 +82,27 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hts-nim-tools:0.3.31--e705f8578bf971e8
+      build_id: bd-e705f8578bf971e8_3
+      scan_id: sc-7cc68832bcf0a46f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hts-nim-tools:0.3.31--83dd95ab1e9d4108
+      build_id: bd-83dd95ab1e9d4108_3
+      scan_id: sc-993a420dc2ee92ec_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hts-nim-tools:0.3.31--7291d62cdf4610ad
+      build_id: bd-7291d62cdf4610ad_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e83030e0fd490b217e51050658481e37370e4b2e6dc68576467eb504626708d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hts-nim-tools:0.3.31--90cf4596889bf119
+      build_id: bd-90cf4596889bf119_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b51f9035816962700f4ed874e8f0cc2dfcafb198e9a1db2ed54cb514ea8b9767/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/htsnimtools/vcfcheck/.conda-lock/linux_amd64-bd-e705f8578bf971e8_3.txt
+    linux/arm64:
+      lock_file: modules/nf-core/htsnimtools/vcfcheck/.conda-lock/linux_arm64-bd-83dd95ab1e9d4108_3.txt

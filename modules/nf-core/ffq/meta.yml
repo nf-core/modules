@@ -1,6 +1,5 @@
 name: "ffq"
-description: A command line tool that makes it easier to find sequencing data from
-  the SRA / GEO / ENA.
+description: A command line tool that makes it easier to find sequencing data from the SRA / GEO / ENA.
 keywords:
   - SRA
   - ENA
@@ -11,8 +10,7 @@ keywords:
   - databases
 tools:
   - "ffq":
-      description: "A command line tool that makes it easier to find sequencing data
-        from the SRA / GEO / ENA."
+      description: "A command line tool that makes it easier to find sequencing data from the SRA / GEO / ENA."
       homepage: https://github.com/pachterlab/ffq
       documentation: https://github.com/pachterlab/ffq#usage
       tool_dev_url: https://github.com/pachterlab/ffq
@@ -57,3 +55,27 @@ authors:
   - "@drpatelh"
 maintainers:
   - "@drpatelh"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ffq_python:35a46c5cfc68513a
+      build_id: bd-35a46c5cfc68513a_1
+      scan_id: sc-2451c960e1d5b139_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ffq_python:1b4df44896918bd7
+      build_id: bd-1b4df44896918bd7_1
+      scan_id: sc-3519b811d20b46ab_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ffq_python:5522cdcb3168e4ef
+      build_id: bd-5522cdcb3168e4ef_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f651420b3d10407351f47545bb8d274e3be9d98c709a348696de84101e36a95c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ffq_python:156bef69bfa34350
+      build_id: bd-156bef69bfa34350_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc80eb213663ca05a035c11b804b4eee7435879f98019c57efe3212c6172be6b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ffq/.conda-lock/linux_amd64-bd-1b4df44896918bd7_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ffq/.conda-lock/linux_arm64-bd-35a46c5cfc68513a_1.txt

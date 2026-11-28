@@ -6,9 +6,9 @@ process GFATOOLS_GFA2FA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfatools:0.5--h577a1d6_5':
-        'quay.io/biocontainers/gfatools:0.5--h577a1d6_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/590e92e087843842a825609903dc3b83bba5077f768aafd48af0f551ddb143e8/data'
+        : 'community.wave.seqera.io/library/gfatools:0.5--d580643976f2e334'}"
 
     input:
     tuple val(meta), path(gfa)
@@ -34,6 +34,6 @@ process GFATOOLS_GFA2FA {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.fasta.gz
+    echo "" | gzip > ${prefix}.fasta.gz
     """
 }
