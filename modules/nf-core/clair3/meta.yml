@@ -40,6 +40,11 @@ input:
         description: BAM index file
         pattern: "*.bai"
         ontologies: []
+    - bed:
+        type: file
+        description: Optional BED file of regions to call (passed to --bed_fn); use [] for none
+        pattern: "*.bed"
+        ontologies: []
     - packaged_model:
         type: string
         description: string containing the name of a prepackaged Clair3 model full
@@ -72,11 +77,6 @@ input:
         description: reference index file
         pattern: "*.fai"
         ontologies: []
-  - bed:
-      type: file
-      description: Optional BED file of regions to call (passed to --bed_fn); use [] for none
-      pattern: "*.bed"
-      ontologies: []
 output:
   vcf:
     - - meta:
