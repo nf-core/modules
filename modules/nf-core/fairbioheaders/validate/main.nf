@@ -23,6 +23,7 @@ process FAIRBIOHEADERS_VALIDATE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${prefix}.validate.txt" =~ /[\$`"\\\/\p{Cntrl}]/ || prefix.startsWith('-')) error "Unsafe output name '${prefix}.validate.txt': it must not contain \$ ` \" \\ / or control characters, or start with a hyphen, set prefix in module configuration to change it!"
     // A group, not a pipe, so that invalid metadata fails the task.
     """
     {
@@ -36,6 +37,7 @@ process FAIRBIOHEADERS_VALIDATE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${prefix}.validate.txt" =~ /[\$`"\\\/\p{Cntrl}]/ || prefix.startsWith('-')) error "Unsafe output name '${prefix}.validate.txt': it must not contain \$ ` \" \\ / or control characters, or start with a hyphen, set prefix in module configuration to change it!"
     """
     touch "${prefix}.validate.txt"
     """

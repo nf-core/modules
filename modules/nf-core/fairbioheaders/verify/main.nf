@@ -23,6 +23,7 @@ process FAIRBIOHEADERS_VERIFY {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${prefix}.verify.txt" =~ /[\$`"\\\/\p{Cntrl}]/ || prefix.startsWith('-')) error "Unsafe output name '${prefix}.verify.txt': it must not contain \$ ` \" \\ / or control characters, or start with a hyphen, set prefix in module configuration to change it!"
     // A group, not a pipe, so that a failed check fails the task.
     """
     {
@@ -36,6 +37,7 @@ process FAIRBIOHEADERS_VERIFY {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${prefix}.verify.txt" =~ /[\$`"\\\/\p{Cntrl}]/ || prefix.startsWith('-')) error "Unsafe output name '${prefix}.verify.txt': it must not contain \$ ` \" \\ / or control characters, or start with a hyphen, set prefix in module configuration to change it!"
     """
     touch "${prefix}.verify.txt"
     """

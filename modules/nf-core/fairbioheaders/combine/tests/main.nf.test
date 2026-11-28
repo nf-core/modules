@@ -147,6 +147,76 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fasta - fhr - unsafe prefix - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test\$(touch PWNED)' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - unsafe extension - fails") {
+
+        when {
+            process {
+                """
+                def fasta = workflow.workDir.resolve('genome.\$(touch PWNED)')
+                fasta.text = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - ids with brackets and non-ASCII letters") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of(
+                    [ [ id:'sample(1)' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ],
+                    [ [ id:'Müller_01' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                )
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.sequence.collect { meta, sequence -> file(sequence).name }.sort() == [ 'Müller_01.fasta', 'sample(1).fasta' ] }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - fhr - stub") {
 
         options "-stub"
@@ -192,6 +262,58 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - unsafe prefix - fails - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test\$(touch PWNED)' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - fhr - unsafe extension - fails - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def fasta = workflow.workDir.resolve('genome.\$(touch PWNED)')
+                fasta.text = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    fasta
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output name") } }
             )
         }
 

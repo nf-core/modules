@@ -270,6 +270,85 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fhr yaml - json - unsafe prefix - fails") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_prefix = 'test`touch PWNED`\$(touch PWNED)'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output prefix") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - unsupported format - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json; touch PWNED'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsupported format") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - json - leading hyphen prefix - fails") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_prefix = '-test'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output prefix") } }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - no header - fails") {
 
         when {
@@ -383,6 +462,61 @@ nextflow_process {
             assertAll(
                 { assert process.failed },
                 { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - json - unsafe prefix - fails - stub") {
+
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'test`touch PWNED`\$(touch PWNED)'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsafe output prefix") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr yaml - unsupported format - fails - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'json; touch PWNED'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("Unsupported format") } }
             )
         }
 
