@@ -180,6 +180,111 @@ nextflow_function {
         }
     }
 
+    test("Test Function processVersionsFromYAML returns an empty string for an empty mapping") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '{}\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.success },
+                { assert function.result == '' }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML stops on a scalar file") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '1.0\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.failed },
+                { assert function.stdout.any { line -> line.contains('is not a mapping of process names to tool versions') } }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML stops on a list file") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '- samtools: 1.20\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.failed },
+                { assert function.stdout.any { line -> line.contains('is not a mapping of process names to tool versions') } }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML stops on a null process name") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '~:\\n  samtools: 1.20\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.failed },
+                { assert function.stdout.any { line -> line.contains('is not a mapping of process names to tool versions') } }
+            )
+        }
+    }
+
+    test("Test Function processVersionsFromYAML stops on an empty process name") {
+        function "processVersionsFromYAML"
+
+        when {
+            function {
+                """
+                def versions_file = file("${outputDir}/versions.yml")
+                versions_file.text = '\\'\\':\\n  samtools: 1.20\\n'
+                input[0] = versions_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert function.failed },
+                { assert function.stdout.any { line -> line.contains('is not a mapping of process names to tool versions') } }
+            )
+        }
+    }
+
     test("Test Function getSingleReport with a single file") {
         function "getSingleReport"
 

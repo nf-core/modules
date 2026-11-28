@@ -87,6 +87,9 @@ def processVersionsFromYAML(yaml_file) {
     if (!versions) {
         return ''
     }
+    if (!(versions instanceof Map) || !versions.keySet().every { process -> process instanceof String && process.tokenize(':') }) {
+        error("Versions file ${yaml_file} is not a mapping of process names to tool versions")
+    }
     return yaml.dumpAsMap(versions.collectEntries { process, tools -> [process.tokenize(':')[-1], tools] }).trim()
 }
 
