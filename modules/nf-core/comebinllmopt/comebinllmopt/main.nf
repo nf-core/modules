@@ -37,7 +37,7 @@ process COMEBINLLMOPT_COMEBINLLMOPT {
     ## tmpdir which is not available under docker: https://github.com/pytorch/pytorch/issues/140765
     ##
     ## Can be removed once this builds with a newer version!
-    export TORCHINDUCTOR_CACHE_DIR=/tmp/torchinductor_comebin/
+    export TORCHINDUCTOR_CACHE_DIR=\$PWD/tmp/torchinductor_comebin/
 
     comebin-llmopt \\
         -t ${task.cpus} \\
