@@ -1,5 +1,7 @@
 name: humann3_humann
-description: Functional analysis of metagenome or metatranscriptome data
+description: |
+  Functional profiling of metagenome or metatranscriptome data (gene families, pathway abundance and coverage)
+  Tables are collected as gzipped TSV, so `--output-format biom` in `ext.args` stops the process with an error.
 keywords:
   - function
   - metagenomics
@@ -15,102 +17,112 @@ tools:
       doi: "10.7554/eLife.65088"
       licence:
         - "MIT"
-      identifier: ""
+      args_id: "$args"
+      identifier: biotools:humann
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test' ]
+          e.g. `[ id:'test' ]`
     - input:
         type: file
-        description: |
-          A metagenome (DNA reads) or metatranscriptome (RNA reads) [fastq,fastq.gz,fasta,fasta.gz]
-          OR pre-computed mappings [sam,bam,blastm8]
-          OR pre-computed abundance tables [tsv,biom]
+        description: Reads (FASTQ or FASTA), alignments (SAM, BAM, BLAST tabular) or a pre-computed gene table (TSV, BIOM)
         pattern: "*.{fastq,fastq.gz,fasta,fasta.gz,sam,bam,blastm8,tsv,biom}"
         ontologies:
-          - edam: http://edamontology.org/format_1930
-          - edam: http://edamontology.org/format_3475
-          - edam: http://edamontology.org/format_3746
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_1333 # BLAST results
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3746 # BIOM format
   - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test' ]
+          e.g. `[ id:'test' ]`
     - profile:
         type: file
         description: Pre-computed MetaPhlAn taxonomic profile
-        pattern: "*.{txt}"
-        ontologies: []
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - nucleotide_db:
       type: directory
-      description: |
-        ChocoPhlAn nucleotide database directory (v3: *.ffn.gz, v4: *.fna.gz)
+      description: ChocoPhlAn nucleotide database directory, searched for `*.ffn.gz` files
   - protein_db:
       type: directory
-      description: |
-        UniRef protein database directory containing *.dmnd files
+      description: UniRef protein database directory, searched for `*.dmnd` files
   - utility_db:
       type: directory
-      description: |
-        HUMAnN utility mapping database directory
+      description: HUMAnN utility mapping database directory
 output:
   genefamilies:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*_genefamilies.tsv.gz":
+            e.g. `[ id:'test' ]`
+      - ${prefix}_genefamilies.tsv.gz:
           type: file
-          description: Compressed gene families abundance table
-          pattern: "*.{tsv.gz}"
-          ontologies: []
+          description: Gzipped gene families abundance table
+          pattern: "*_genefamilies.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   pathabundance:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*_pathabundance.tsv.gz":
+            e.g. `[ id:'test' ]`
+      - ${prefix}_pathabundance.tsv.gz:
           type: file
-          description: Compressed pathway abundance table
-          pattern: "*.{tsv.gz}"
-          ontologies: []
+          description: Gzipped pathway abundance table
+          pattern: "*_pathabundance.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   pathcoverage:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*_pathcoverage.tsv.gz":
+            e.g. `[ id:'test' ]`
+      - ${prefix}_pathcoverage.tsv.gz:
           type: file
-          description: Compressed pathway coverage table
-          pattern: "*.{tsv.gz}"
-          ontologies: []
+          description: Optional. Gzipped pathway coverage table
+          pattern: "*_pathcoverage.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   reactions:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*_reactions.tsv.gz":
+            e.g. `[ id:'test' ]`
+      - ${prefix}_reactions.tsv.gz:
           type: file
-          description: Compressed reactions abundance table
-          pattern: "*.{tsv.gz}"
-          ontologies: []
+          description: Optional. Never produced by HUMAnN 3.6.1 (only gene families, pathway abundance and coverage)
+          pattern: "*_reactions.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3989 # GZIP format
   log:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test' ]
-      - "*.log":
+            e.g. `[ id:'test' ]`
+      - ${prefix}.log:
           type: file
-          description: HUMAnN run log file
-          pattern: "*.{log}"
-          ontologies: []
+          description: HUMAnN run log
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_humann:
     - - ${task.process}:
           type: string
@@ -128,7 +140,7 @@ output:
       - MetaPhlAn:
           type: string
           description: The name of the tool
-      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
+      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //; s/ (.*//':
           type: eval
           description: The expression to obtain the version of the tool
   versions_python:
@@ -158,7 +170,7 @@ topics:
       - MetaPhlAn:
           type: string
           description: The name of the tool
-      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //':
+      - metaphlan --version 2>&1 | sed 's/MetaPhlAn version //; s/ (.*//':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -177,3 +189,27 @@ authors:
 maintainers:
   - "@nickp60"
   - "@vinisalazar"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/humann_metaphlan_python:b495f09ecad9af49
+      build_id: bd-b495f09ecad9af49_1
+      scan_id: sc-6e570c0e3dea7c1d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/humann_metaphlan_python:32e0695c6246be68
+      build_id: bd-32e0695c6246be68_1
+      scan_id: sc-f473341ade734802_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/humann_metaphlan_python:2d875e6df2c5aefc
+      build_id: bd-2d875e6df2c5aefc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/77e6bd3288b76cfe9a97103190253ed1bad09be287acce4e5360e61c35ed36c7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/humann_metaphlan_python:4934994e37d613e2
+      build_id: bd-4934994e37d613e2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95f380956879dcff4fa68af3200b3a8c212016d1a767b19da47ecf305e2cc902/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/humann3/humann/.conda-lock/linux_amd64-bd-32e0695c6246be68_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/humann3/humann/.conda-lock/linux_arm64-bd-b495f09ecad9af49_1.txt

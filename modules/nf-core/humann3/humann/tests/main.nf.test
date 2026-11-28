@@ -3,90 +3,146 @@ nextflow_process {
     name "Test Process HUMANN3_HUMANN"
     script "../main.nf"
     process "HUMANN3_HUMANN"
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "humann3"
     tag "humann3/humann"
-    tag "metaphlan"
-    tag "metaphlan/metaphlan"
 
-    test("humann3 sarscov2 - fastq") {
-        def metaphlan_db
+    test("bacteroides - [ fastq, profile ] - demo databases") {
         def nucleotide_db
         def protein_db
         def utility_db
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def modules_testdata_base_path = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            metaphlan_db = extract(modules_testdata_base_path + 'delete_me/metaphlan4_database.tar.gz')
-            nucleotide_db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/funcprofiler/data/database/humann/v3/chocophlan_nfDEMO.tar.gz')
-            protein_db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/funcprofiler/data/database/humann/v3/uniref_nfDEMO.tar.gz')
-            utility_db = extract('https://raw.githubusercontent.com/nf-core/test-datasets/funcprofiler/data/database/humann/v3/utility_nfDEMO.tar.gz')
-            run("METAPHLAN_METAPHLAN", alias: "MPAHUMANN3") {
-                script "../../../../nf-core/metaphlan/metaphlan/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'test', single_end:true ], // meta map
-                        file( params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',checkIfExists: true )
-                    ])
-                    input[1] = [ [ id: 'db' ], file('${metaphlan_db}') ]
-                    input[2] = [ [:], [] ]
-                    input[3] = false
-                        """
-                }
-            }
+            def humann_db_base_path = modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/'
+            nucleotide_db = extract(humann_db_base_path + 'chocophlan_nfDEMO.tar.gz')
+            protein_db = extract(humann_db_base_path + 'uniref_nfDEMO.tar.gz')
+            utility_db = extract(humann_db_base_path + 'utility_nfDEMO.tar.gz')
         }
 
         when {
             process {
                 """
-                input[0]= channel.of([
-                    [ id:'test', single_end:false, run_accession:"abc" ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-        ])
-              input[1] = MPAHUMANN3.out.profile
-              input[2] = file('${nucleotide_db}')
-              input[3] = file('${protein_db}')
-              input[4] = file('${utility_db}')
-                 """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
+                input[2] = file('${nucleotide_db}')
+                input[3] = file('${protein_db}')
+                input[4] = file('${utility_db}')
+                """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions, process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    path(process.out.log[0][1]).text.findAll(/(?:Total species selected from prescreen|Total gene families from nucleotide alignment|Total gene families after translated alignment|Unaligned reads after translated alignment): \S+/)
+                ).match() }
             )
         }
-
     }
 
-    test("humann3 sarscov2 - fastq - stub") {
+    test("bacteroides - [ fastq, profile ] - demo databases - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0]= channel.of([
-                    [ id:'test', single_end:false, run_accession:"abc" ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-        ])
-              input[1] = [ [ id:'test', single_end:true ], [] ]
-              input[2] = []
-              input[3] = []
-              input[4] = []
-                 """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.pathabundance, process.out.pathcoverage, process.out.reactions, process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
+    }
 
+    test("bacteroides - [ fastq, profile ] - output format biom - error") {
+
+        when {
+            params {
+                module_args = '--output-format biom'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("HUMANN3_HUMANN does not support '--output-format biom'") }
+            )
+        }
+    }
+
+    test("bacteroides - [ fastq, profile ] - output format biom - error - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--output-format biom'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:true ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_subset.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/biobakery/humann3/demo_profile.txt', checkIfExists: true)
+                ]
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("HUMANN3_HUMANN does not support '--output-format biom'") }
+            )
+        }
     }
 }
