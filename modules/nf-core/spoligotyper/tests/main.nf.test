@@ -1,0 +1,134 @@
+nextflow_process {
+
+    name "Test Process SPOLIGOTYPER"
+    script "../main.nf"
+    process "SPOLIGOTYPER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "spoligotyper"
+
+    // nf-core test data has no M. tuberculosis complex genome: these tests check that the module runs and
+    // writes its outputs ("MTBC not detected" is the expected result).
+    test("sarscov2 - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            def json = path(process.out.json[0][1]).json
+            def sample = json.samples[0]
+            assertAll(
+                // Stable checks for the unstable channels: json and pdf embed run timestamps
+                { assert sample.sample == 'test' },
+                { assert sample.file_type == 'fasta' && sample.data == 'assembly' },
+                { assert sample.counts.size() == 43 && sample.spacers_present == 0 },
+                { assert sample.binary == '0' * 43 },
+                { assert sample.species.mtbc == false },
+                { assert json.run.database.default == true && json.run.database.patterns == 1976 },
+                { assert json.run.sit_database == [:] },
+                { assert file(process.out.pdf[0][1]).getText('ISO-8859-1').startsWith('%PDF') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "pdf"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - paired-end fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            def json = path(process.out.json[0][1]).json
+            def sample = json.samples[0]
+            assertAll(
+                // Stable checks for the unstable channels: json and pdf embed run timestamps
+                { assert sample.sample == 'test' },
+                { assert sample.file_type == 'fastq' && sample.data == 'reads' },
+                { assert sample.files.size() == 2 && sample.reads == 200 },
+                { assert sample.min_count == 5 },
+                { assert sample.counts.size() == 43 && sample.spacers_present == 0 },
+                { assert sample.species.mtbc == false },
+                { assert file(process.out.pdf[0][1]).getText('ISO-8859-1').startsWith('%PDF') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "pdf"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - custom databases") {
+        when {
+            process {
+                """
+                // A spoligotype database and a SIT database with the all-absent pattern, to check that both are used
+                def absent = '0' * 43
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = channel.of("000000000000000 TEST0001 \${absent}").collectFile(name: 'spoligotype_db.txt', newLine: true)
+                    .map { db -> [ [ id:'test_db' ], db ] }
+                input[2] = channel.of("octal\\tbinary\\tsit\\tfamily", "000000000000000\\t\${absent}\\t9999\\tTEST-FAMILY")
+                    .collectFile(name: 'sit_database.tsv', newLine: true, sort: false)
+                    .map { db -> [ [ id:'test_sit_db' ], db ] }
+                """
+            }
+        }
+        then {
+            assert process.success
+            def json = path(process.out.json[0][1]).json
+            def sample = json.samples[0]
+            assertAll(
+                // Stable checks for the unstable channels: json and pdf embed run timestamps
+                { assert json.run.database.default == false && json.run.database.patterns == 1 },
+                { assert json.run.sit_database.patterns == 1 && json.run.sit_database.sits == 1 },
+                { assert sample.sb == 'TEST0001' },
+                { assert sample.sit == 'SIT9999' && sample.sit_family == 'TEST-FAMILY' },
+                { assert file(process.out.pdf[0][1]).getText('ISO-8859-1').startsWith('%PDF') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "pdf"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
