@@ -67,3 +67,27 @@ authors:
   - "@mashehu"
 maintainers:
   - "@mashehu"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/paraclu:10--cb8e357f7b680730
+      build_id: bd-cb8e357f7b680730_1
+      scan_id: sc-d6f0f0d9aefca535_2
+    linux/amd64:
+      name: community.wave.seqera.io/library/paraclu:10--deebde97d0710127
+      build_id: bd-deebde97d0710127_1
+      scan_id: sc-b822676bae3a9927_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/paraclu:10--99646194a37099ac
+      build_id: bd-99646194a37099ac_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7373888fa81c58ac160754cb3603810d3e9babc9907184dad4646b685b3d3e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/paraclu:10--bc32c297dd66fc63
+      build_id: bd-bc32c297dd66fc63_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a993bef59145dfbd32d42280ad6cbd72f409161ae323adcfb776fbbfde4f162f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/paraclu/.conda-lock/linux_amd64-bd-deebde97d0710127_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/paraclu/.conda-lock/linux_arm64-bd-cb8e357f7b680730_1.txt

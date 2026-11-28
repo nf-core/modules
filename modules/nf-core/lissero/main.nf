@@ -6,9 +6,9 @@ process LISSERO {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lissero:0.4.9--py_0' :
-        'quay.io/biocontainers/lissero:0.4.9--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d01259103ce477a73daf284e6d14d0d3f6d5d5e61e7b2ff1cb25d6468b0b706c/data'
+        : 'community.wave.seqera.io/library/lissero_python_setuptools:cd14be39fe2fb07a'}"
 
     input:
     tuple val(meta), path(fasta)

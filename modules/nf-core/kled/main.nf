@@ -6,9 +6,9 @@ process KLED {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kled:1.2.11--he5eddf3_0' :
-        'quay.io/biocontainers/kled:1.2.11--he5eddf3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eb9594b1026dfe8488841c804e7ceea2b91d71e5428a973b556df2bc4831b0b/data'
+        : 'community.wave.seqera.io/library/kled:1.2.11--5acfc45087909514'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

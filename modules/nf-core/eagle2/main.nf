@@ -6,9 +6,9 @@ process EAGLE2 {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/eagle2:2.4.1--h6a68c12_0':
-        'quay.io/biocontainers/eagle2:2.4.1--h6a68c12_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/728a05bf8f9095424da613d399448cc2179bb7ef62cf8c440a36135e7580b8d4/data'
+        : 'community.wave.seqera.io/library/eagle2:2.4.1--d1c1375e35ddb68b'}"
 
     input:
     tuple val(meta), path(input), path(index), path(ref_vcf), path(ref_index), path(map)

@@ -6,9 +6,9 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gvcftools:0.17.0--he941832_3':
-        'quay.io/biocontainers/gvcftools:0.17.0--he941832_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fdb04e4a4691f8b49b231aad66c6960651332a6db4cbafa0ffdeb520369e085a/data'
+        : 'community.wave.seqera.io/library/gvcftools:0.17.0--7149cd44f22982ef'}"
 
     input:
     tuple val(meta), path(gvcf)
